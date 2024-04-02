@@ -9,35 +9,28 @@
 	<link rel="stylesheet" href="~/WebQuanLyNhaKhoa.styles.css" asp-append-version="true" />
 
 	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="./js/site.js"></script>
 
 </head>
+
 <body>
 	<header>
-		<button id="navBtn" style="font-size:30px">&#9776;</button>
+        <button onclick="sideNavAnimation()" style="font-size:30px">&#9776;</button>
 	</header>
 
-	<main id="main">
-		@RenderBody()
-	</main>
+	<div id="main">
+		<div>
+            @RenderBody()
+		</div>
+	</div>
 
-	<nav id="sidenav" class="sidenav">
+	<nav id="sideNav" class="sideNav">
 		<a href="#">About</a>
 		<a href="#">Services</a>
 		<a href="#">Clients</a>
 		<a href="#">Contact</a>
 	</nav>
 
-	<script>
-		const navBtn = document.getElementById("navBtn");
-		const nav = document.getElementById("sidenav");
-		navBtn.addEventListener("click", function () {
-			nav.classList.toggle("active");
-			document.getElementById("main").classList.toggle("active");
-		});
-	</script>
-
-	<footer class="border-top footer text-muted">
-	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
