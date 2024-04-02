@@ -1,37 +1,53 @@
 ﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+body > header {
+    display: block;
+    position: relative;
+    height: 49px;
+    border-block-color:grey;
+    background-color: #800080;
 }
 
-a {
-  color: #0077cc;
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 49px;
+    left: 0;
+    background-color: #800080;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 5px;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.sidenav.active{
+    width: 250px;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        border-bottom-color:grey;
+        transition: 0.5s;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+#main {
+    margin-left: -10px;
+    transition: margin-left .5s;
+    padding: 16px;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+#main.active{
+    margin-left: 250px;
 }
 
 button.accept-policy {
