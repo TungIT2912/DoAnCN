@@ -1,0 +1,104 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.DichVu>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    .Services img{
+        width: 100%;
+        object-fit:cover
+    }
+    .services__container {
+        width: 1320px;
+        max-width: calc(100% - 60px);
+        margin: 0 auto;
+    }
+
+    .services__row {
+        display: flex;
+        margin-top: 20px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .services__left h1 {
+        text-transform: uppercase;
+        font-size: 36px;
+        font-style: italic;
+        color: rgb(37 99 235);
+        text-decoration: underline;
+        font-weight: 700;
+        
+    }
+
+    .services__left span {
+        font-size: 20px;
+        font-style: italic;
+        font-weight: 400;
+        color:rgb(245 158 11);
+    }
+
+    .services__right img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover
+    }
+    .services__body table{
+        margin-top: 20px;
+        width: 100%;
+    }
+    .services__body tbody{
+        text-align:center;
+        border: 2px solid rgb(34 211 238);
+        color: black;
+
+    }
+    .services__body th{
+        padding: 10px;
+        boder: 2px solid rgb(34 211 238);
+    }
+</style>
+
+
+<!-- Page Header End -->
+<div class="Services">  
+    <img src="~/images/poster__services.jpg" class="services__image" />
+    <div class="services__container">
+        <!-- Service Header Start-->
+        <div class="services__row">
+            <div class="services__left">
+                <h1 >Bảng giá dịch vụ</h1>
+                <span>(Áp dụng từ ngày 04/03/2023)</span>
+            </div>
+            <div class="services__right">
+                <img src="./images/logo.jpeg" alt="Alternate Text" />
+            </div>
+        </div>
+        <!-- Service Header End-->
+
+        <!-- Service Body Start-->
+        <div class="services__body">
+            <table class="w-100" >
+                <tbody class="border-2 border-cyan-400 border-solid text-center text-black">
+                    <tr >
+                        <th class="p-3 border-3">STT</th>
+                        <th class="p-3 border-3 ">Tên dịch vụ</th>
+                        <th class="p-3 border-3">Đơn vị</th>
+                        <th class="p-3 border-3">Giá tham khảo</th>
+                    </tr>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <th class="p-3 border-3">@item.IddichVu</th>
+                            <th class="p-3 border-3 ">@item.TenDichVu</th>
+                            <th class="p-3 border-3">@item.DonViTinh</th>
+                            <th class="p-3 border-3">@item.DonGia VND</th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
