@@ -1,0 +1,105 @@
+﻿@model WebQuanLyNhaKhoa.Data.BenhNhan
+<style>
+    header {
+        position: relative;
+    }
+
+</style>
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <p class="d-inline-block border rounded-pill py-1 px-4">Appointment</p>
+                <h1 class="mb-4">Make An Appointment To Visit Our Doctor</h1>
+                <p class="mb-4">Hãy đăng kí lịch khám để gặp gỡ các nha sĩ có nhiều năm kinh nghiệm của chúng tôi. Chúng tôi xin hứa sẽ giúp cho hàm răng của bạn trắng sáng và ngày càng mạnh khỏe hơn</p>
+                <div class="bg-light rounded d-flex align-items-center p-5 mb-4">
+                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                        <i class="fa fa-phone-alt text-primary"></i>
+                    </div>
+                    <div class="ms-4">
+                        <p class="mb-2">Call Us Now</p>
+                        <h5 class="mb-0">+0348859428</h5>
+                    </div>
+                </div>
+                <div class="bg-light rounded d-flex align-items-center p-5">
+                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                        <i class="fa fa-envelope-open text-primary"></i>
+                    </div>
+                    <div class="ms-4">
+                        <p class="mb-2">Mail Us Now</p>
+                        <h5 class="mb-0">nhakhoahoanmy@gmail.com</h5>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="bg-light rounded h-100 d-flex align-items-center p-5">
+                    <form asp-action="Add" id ="form" method="post">
+                        <div class="row g-3" style="align-items: f">
+                            <div class="col-12 col-sm-6">
+                                <label asp-for="IdbenhNhan" class="control-label">Mã bệnh nhân</label>
+                                <input type="text" asp-for="IdbenhNhan" required class="form-control border-0" placeholder="Sample: ntl" style="height: 55px;">
+                                <span asp-validation-for="IdbenhNhan" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label asp-for="Gioi" class="control-label" style="display: block">Giới tính</label>
+                                <input asp-for="Gioi" type="radio" value="true">
+                                <label asp-for="Gioi" class="control-label">Nam</label>
+                                <input asp-for="Gioi" type="radio" value="false">
+                                <label asp-for="Gioi" class="control-label">Nữ</label>
+                                <span asp-validation-for="Gioi" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label asp-for="HoTen" class="control-label">Họ tên</label>
+                                <input asp-for="HoTen" required type="text" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
+                            </div>
+
+                            <div class="col-12 col-sm-6">
+                                <label asp-for="NamSinh" class="control-label">Năm sinh</label>
+                                <input asp-for="NamSinh" type="text" class="form-control border-0" style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label asp-for="Sdt" class="control-label">Số điện thoại</label>
+                                <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                                <input asp-for="DiaChi" type="tel" class="form-control border-0" style="height: 55px;">
+                            </div>
+                            <div class="col-12 col-sm-6" style=" width: 100%;">
+                                <div class="date" id="date" data-target-input="nearest">
+                                    <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                    <input asp-for="NgayKhamDau" type="datetime"
+                                           class="form-control border-0 datetimepicker-input"
+                                           placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control border-0" rows="5" placeholder="Describe your problem"></textarea>
+                            </div>
+                            <div class="col-12">
+
+                                <button class="btn btn-primary w-100 py-3" value="Create" type="submit">Book Appointment</button>
+                            </div>
+                        </div>
+                    </form>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var formEL = document.getElementById('form');
+
+    formEL.addEventListener('submit', (e) => {
+        e.preventDefault();
+        toastr.susscess('My name is Inigo Montoya. You killed my father, prepare to die!')
+      //  toastr.success('Have fun storming the castle!', 'Miracle Max Says')
+    });
+</script>
+
+
+

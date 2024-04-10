@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.Models;
 
 namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
@@ -34,6 +36,22 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             }
             return "/images/" + image.FileName;
         }
-       
+        public IActionResult BookAppointment()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult BookAppointment(BenhNhan benhNhan)
+        {
+            if (ModelState.IsValid)
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.BenhNhans.Add(benhNhan);
+                    _context.SaveChanges();
+                }
+            }
+            return View(benhNhan);
+        }
     }
 }

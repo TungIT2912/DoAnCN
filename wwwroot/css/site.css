@@ -20,3 +20,7 @@ html {
 a {
     color: #8D8E92
 }
+
+.toast-message {
+    color: black;
+}

@@ -1,0 +1,57 @@
+﻿@model WebQuanLyNhaKhoa.Data.BenhNhan
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>BenhNhan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdbenhNhan" />
+            <div class="form-group">
+                <label asp-for="HoTen" class="control-label"></label>
+                <input asp-for="HoTen" class="form-control" />
+                <span asp-validation-for="HoTen" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Gioi" /> @Html.DisplayNameFor(model => model.Gioi)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="NamSinh" class="control-label"></label>
+                <input asp-for="NamSinh" class="form-control" />
+                <span asp-validation-for="NamSinh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sdt" class="control-label"></label>
+                <input asp-for="Sdt" class="form-control" />
+                <span asp-validation-for="Sdt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiaChi" class="control-label"></label>
+                <input asp-for="DiaChi" class="form-control" />
+                <span asp-validation-for="DiaChi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayKhamDau" class="control-label"></label>
+                <input asp-for="NgayKhamDau" class="form-control" />
+                <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

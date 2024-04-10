@@ -1,0 +1,58 @@
+﻿@model WebQuanLyNhaKhoa.Data.NhanVien
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<div class="flex justify-center items-center h-screen">
+    <div class="container p-[20px] max-w-[700px] max-h-[500px] bg-white rounded-xl">
+        <div class="relative">
+            <h1 class="text-[32px] font-bold">New Employee</h1>
+            <span class="absolute inline-block w-[70px] h-[4px] bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-xl"></span>
+        </div>
+        <div class="flex justify-center gap-10 mt-[10px]">
+            <form asp-action="Create" method="post" class="flex-wrap flex justify-around items-center" enctype="multipart/form-data">
+                <div class="w-6/12">
+                        <div>
+                            <label asp-for="Ten" class="text-[20px] font-bold">Full Name:</label>
+                            <input asp-for="Ten" type="text"
+                                   class="mt-[10px] block w-9/12 py-[5px] px-[10px] outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400"
+                                   placeholder="Enter your name" />
+                            <span asp-validation-for="Ten" class="text-danger"></span>
+                        </div>
+                        <div class="mt-[10px]">
+                            <label asp-for="Sdt" class="text-[20px] font-bold ">Telephone:</label>
+                            <input asp-for="Sdt" type="text"
+                                   class="mt-[10px] block w-9/12 py-[5px] px-[10px] outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400 group-focus"
+                                   placeholder="Enter your tel" />
+                            <span asp-validation-for="Sdt" class="text-danger"></span>
+                        </div>
+                        <div class="mt-[10px]">
+                            <label asp-for="MaCv" class="text-[20px] font-bold">Loại Chức vụ:</label>
+                            <select asp-for="MaCv" class="mt-[10px] w-9/12 border border-solid py-[5px] px-[10px] rounded-xl transition-all border-b-2 focus:border-fuchsia-400 group-focus " asp-items="ViewBag.MaCv"></select>
+                        </div>
+                </div>
+                <div class="w-6/12">
+                    <div>
+                        <label asp-for="TenDangNhap" class="text-[20px] font-bold">Loại Nhân viên</label>
+                        <select asp-for="TenDangNhap" class="mt-[10px] w-9/12 block border border-solid py-[5px] px-[10px] rounded-xl transition-all border-b-2 focus:border-fuchsia-400 group-focus " asp-items="ViewBag.TenDangNhap"></select>
+                    </div>
+                    <div class="mt-[10px]">
+                        <label asp-for="KinhNghiem" class="text-[20px] font-bold ">Experience:</label>
+                        <input asp-for="KinhNghiem" type="text"
+                               class="mt-[10px] block w-9/12 py-[5px] px-[10px] outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400 group-focus" />
+                    </div>
+                    <div class="mt-[10px]">
+                        <label asp-for="Hinh" class="text-[20px] font-bold">Image</label>
+                        <input asp-for="Hinh" type="file"
+                               class="mt-[10px] block w-9/12 py-[5px] px-[10px] outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400"
+                               accept="image/*" />
+                        <span asp-validation-for="Hinh" class="text-danger"></span>
+                    </div>
+                 </div>
+                <div class="mt-[10px] w-full">
+                    <button value="Create" type ="submit" class="bg-gradient-to-r from-violet-500 to-fuchsia-500 w-full rounded-xl py-[5px]">Add Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
