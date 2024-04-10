@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.NhanVien>
 
-@{
-    ViewData["Title"] = "Index";
-}
 <!-- Header Start -->
 <div class="container-fluid header bg-primary p-0 mb-5">
     <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
@@ -229,7 +226,7 @@
             <h1>Our Experience Doctors</h1>
         </div>
         <div class="row g-4">
-             @foreach(var item in Model)
+            @foreach (var item in Model)
             {
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item position-relative rounded overflow-hidden">
@@ -281,45 +278,49 @@
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5 ">
-                    <form>
+                    <form >
                         <div class="row g-3">
                             <div class="col-12 col-sm-6">
                                 <label>Mã bệnh nhân</label>
-                                <input type="text" p class="form-control border-0 mt-1 text-black" placeholder="For example:thanhlong03" style="height: 55px;">
+                                <input type="text" readonly p class="form-control border-0 mt-1 text-black" name="benhNhan" placeholder="For example:thanhlong03" style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
                                 <span>Giới tính</span> <br />
-                                <input type="radio" name="gender">
+                                <input type="radio" readonly name="benhNhan" value="true">
                                 <labe style="padding: 15px">Nam</labe>
-                                <input type="radio" name="gender">
-                                <label style ="padding: 15px">Nữ</label>
+                                <input type="radio" readonly name="benhNhan" value="false">
+                                <label style="padding: 15px">Nữ</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>Số điện thoại</label>
+                                <input type="text" readonly p class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
                                 <span>Tên bệnh nhân</span> <br />
-                                <input type="text" class="form-control border-0 mt-1 text-black" style="height: 55px;">
+                                <input type="text" readonly class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
                             </div>
-                           
+
                             <div class="col-12 col-sm-6">
                                 <label>Năm sinh</label>
-                                <input type="text" class="form-control border-0 mt-1 text-black" style="height: 55px;">
+                                <input type="text" readonly class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label>Nơi sinh sống</label>
-                                <input type="text" class="form-control border-0 mt-1 text-black" style="height: 55px;">
+                                <input type="text" readonly class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
                             </div>
-                            <div class="col-12 col-sm-6">
+                            <div class="col-12 col-sm-6" style="width: 100%">
                                 <div class="date" id="date" data-target-input="nearest">
                                     <label>Đặt lịch khám</label>
-                                    <input type="text"
+                                    <input type="text" readonly name="benhNhan"
                                            class="form-control border-0 mt-1 text-black datetimepicker-input"
-                                           placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
+                                           placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px; width: 100%">
                                 </div>
                             </div>
                             <div class="col-12">
-                                <textarea class="form-control border-0 mt-1 text-black" rows="5" placeholder="Describe your problem"></textarea>
+                                <textarea class="form-control border-0 mt-1 text-black" rows="5" readonly placeholder="Describe your problem"></textarea>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Book Appointment</button>
+                                <button class="btn btn-primary w-100 py-3" type="submit" asp-action="Add" asp-controller="BookAppointment">Move Book Appointment</button>
                             </div>
                         </div>
                     </form>

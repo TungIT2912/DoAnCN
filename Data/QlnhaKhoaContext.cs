@@ -51,7 +51,7 @@ public partial class QlnhaKhoaContext : DbContext
     {
         modelBuilder.Entity<BenhNhan>(entity =>
         {
-            entity.HasKey(e => e.IdbenhNhan).HasName("PK__BenhNhan__33CC78E4829BD0A0");
+            entity.HasKey(e => e.IdbenhNhan).HasName("PK__BenhNhan__33CC78E474561638");
 
             entity.ToTable("BenhNhan");
 
@@ -75,7 +75,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<ChanDoan>(entity =>
         {
-            entity.HasKey(e => e.IdchanDoan).HasName("PK__ChanDoan__38CFF32232253635");
+            entity.HasKey(e => e.IdchanDoan).HasName("PK__ChanDoan__38CFF322700B43DE");
 
             entity.ToTable("ChanDoan");
 
@@ -89,7 +89,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<ChucVu>(entity =>
         {
-            entity.HasKey(e => e.MaCv).HasName("PK__ChucVu__27258E76689F50B1");
+            entity.HasKey(e => e.MaCv).HasName("PK__ChucVu__27258E76D3EF7ACC");
 
             entity.ToTable("ChucVu");
 
@@ -105,7 +105,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<CtdonThuoc>(entity =>
         {
-            entity.HasKey(e => e.Idctdt).HasName("PK__CTDonThu__0F8780C1AF0DCE4E");
+            entity.HasKey(e => e.Idctdt).HasName("PK__CTDonThu__0F8780C15265290C");
 
             entity.ToTable("CTDonThuoc");
 
@@ -128,7 +128,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<DanhSachKham>(entity =>
         {
-            entity.HasKey(e => e.Idkham).HasName("PK__DanhSach__1AB7B4EBA974DD15");
+            entity.HasKey(e => e.Idkham).HasName("PK__DanhSach__1AB7B4EB275914B0");
 
             entity.ToTable("DanhSachKham");
 
@@ -142,9 +142,7 @@ public partial class QlnhaKhoaContext : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("IDBenhNhan");
-            entity.Property(e => e.MaNv)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("MaNV");
+            entity.Property(e => e.MaNv).HasColumnName("MaNV");
             entity.Property(e => e.NgayKham).HasColumnType("datetime");
 
             entity.HasOne(d => d.IdbenhNhanNavigation).WithMany(p => p.DanhSachKhams)
@@ -154,13 +152,12 @@ public partial class QlnhaKhoaContext : DbContext
 
             entity.HasOne(d => d.MaNvNavigation).WithMany(p => p.DanhSachKhams)
                 .HasForeignKey(d => d.MaNv)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("chk_MaNV_DanhSachKham");
         });
 
         modelBuilder.Entity<DichVu>(entity =>
         {
-            entity.HasKey(e => e.IddichVu).HasName("PK__DichVu__C0C95928AAD7BBF9");
+            entity.HasKey(e => e.IddichVu).HasName("PK__DichVu__C0C95928D02B15D4");
 
             entity.ToTable("DichVu");
 
@@ -186,7 +183,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<DieuTri>(entity =>
         {
-            entity.HasKey(e => e.IddieuTri).HasName("PK__DieuTri__85B3D346371CE83A");
+            entity.HasKey(e => e.IddieuTri).HasName("PK__DieuTri__85B3D34652702CB3");
 
             entity.ToTable("DieuTri");
 
@@ -226,7 +223,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<DonThuoc>(entity =>
         {
-            entity.HasKey(e => e.IddonThuoc).HasName("PK__DonThuoc__51DB14E8DCBA91E9");
+            entity.HasKey(e => e.IddonThuoc).HasName("PK__DonThuoc__51DB14E89204C0B9");
 
             entity.ToTable("DonThuoc");
 
@@ -249,7 +246,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<HoaDon>(entity =>
         {
-            entity.HasKey(e => e.IdhoaDon).HasName("PK__HoaDon__5B896F49AE800E25");
+            entity.HasKey(e => e.IdhoaDon).HasName("PK__HoaDon__5B896F495AD6F91D");
 
             entity.ToTable("HoaDon");
 
@@ -273,7 +270,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<Kho>(entity =>
         {
-            entity.HasKey(e => e.IddungCu).HasName("PK__Kho__50E8F16014F2903C");
+            entity.HasKey(e => e.IddungCu).HasName("PK__Kho__50E8F160F069D824");
 
             entity.ToTable("Kho");
 
@@ -299,7 +296,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<LichSuNhapXuat>(entity =>
         {
-            entity.HasKey(e => e.MaLs).HasName("PK__LichSuNh__2725C7722C143E14");
+            entity.HasKey(e => e.MaLs).HasName("PK__LichSuNh__2725C77203F210F3");
 
             entity.ToTable("LichSuNhapXuat");
 
@@ -325,7 +322,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<NhanVien>(entity =>
         {
-            entity.HasKey(e => e.MaNv).HasName("PK__NhanVien__2725D70AAEA43874");
+            entity.HasKey(e => e.MaNv).HasName("PK__NhanVien__2725D70A55BC44EB");
 
             entity.ToTable("NhanVien");
 
@@ -359,7 +356,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<TaiKhoan>(entity =>
         {
-            entity.HasKey(e => e.TenDangNhap).HasName("PK__TaiKhoan__55F68FC114F8E371");
+            entity.HasKey(e => e.TenDangNhap).HasName("PK__TaiKhoan__55F68FC1EC79E80A");
 
             entity.ToTable("TaiKhoan");
 
@@ -373,7 +370,7 @@ public partial class QlnhaKhoaContext : DbContext
 
         modelBuilder.Entity<ThiTruong>(entity =>
         {
-            entity.HasKey(e => e.IdsanPham).HasName("PK__ThiTruon__9D45E58A6CF0A801");
+            entity.HasKey(e => e.IdsanPham).HasName("PK__ThiTruon__9D45E58A3804CB2D");
 
             entity.ToTable("ThiTruong");
 
