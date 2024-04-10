@@ -17,7 +17,7 @@ public partial class HoaDon
 
     public decimal TongTien { get; set; }
 
-    public decimal NgayLap { get; set; }
+    public DateTime NgayLap { get; set; }
 
     public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
 }
