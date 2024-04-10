@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,6 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
     public class HomeController : Controller
     {
         private readonly QlnhaKhoaContext _context;
-
         public HomeController(QlnhaKhoaContext context)
         {
             _context = context;
@@ -34,6 +34,6 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             }
             return "/images/" + image.FileName;
         }
-       
+
     }
 }
