@@ -2,7 +2,7 @@ using WebQuanLyNhaKhoa.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace WebQuanLyNhaKhoa.Controllers
+namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     public class HomeController : Controller
     {

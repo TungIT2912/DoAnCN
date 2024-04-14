@@ -1,0 +1,58 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.HoaDon>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PhuongThucThanhToan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TienThuoc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TienDieuTri)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TongTien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayLap)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhuongThucThanhToan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TienThuoc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TienDieuTri)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayLap)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdhoaDon">Thanh toán</a> 
+                <a asp-action="Details" asp-route-id="@item.IdhoaDon">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

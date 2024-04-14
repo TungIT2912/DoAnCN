@@ -9,11 +9,19 @@ public partial class DonThuoc
 
     public string Idkham { get; set; } = null!;
 
+    public string IddungCu { get; set; } = null!;
+
+    public int SoLuong { get; set; }
+
+    public decimal ThanhGia { get; set; }
+
     public decimal TongTien { get; set; }
 
     public DateTime? NgayLapDt { get; set; }
 
-    public virtual ICollection<CtdonThuoc> CtdonThuocs { get; set; } = new List<CtdonThuoc>();
+    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+
+    public virtual Kho IddungCuNavigation { get; set; } = null!;
 
     public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
 }

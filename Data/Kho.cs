@@ -19,6 +19,8 @@ public partial class Kho
 
     public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
 
+    public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
+
     public virtual ThiTruong IdsanPhamNavigation { get; set; } = null!;
 
     public virtual ICollection<LichSuNhapXuat> LichSuNhapXuats { get; set; } = new List<LichSuNhapXuat>();
