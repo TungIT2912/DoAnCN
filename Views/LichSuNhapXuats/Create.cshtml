@@ -3,8 +3,16 @@
 @{
     ViewData["Title"] = "Create";
 }
+<style>
+    h1 {
+        text-align: center;
+    }
 
-<h1>Create</h1>
+    .back {
+        padding: 15px;
+    }
+</style>
+<h1>Tạo mới</h1>
 
 <h4>LichSuNhapXuat</h4>
 <hr />
@@ -40,7 +48,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="back" asp-action="Index">Trở lại trang chính lịch sử</a>
 </div>
 
 @section Scripts {

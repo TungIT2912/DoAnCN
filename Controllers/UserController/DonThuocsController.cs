@@ -60,7 +60,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IddonThuoc,Idkham,IddungCu,SoLuong,ThanhGia,TongTien,NgayLapDt")] DonThuoc donThuoc,int id)
+        public async Task<IActionResult> Create([Bind("IddonThuoc,Idkham,IddungCu,SoLuong,ThanhGia,TongTien,NgayLapDt")] DonThuoc donThuoc,string id)
         {
             if (donThuoc.NgayLapDt < DateTime.Today)
             {
@@ -89,8 +89,9 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
                     var Loai = await _context.Khos.Where(k => k.IddungCu == donThuoc.IddungCu).Select(k => k.Loai).FirstOrDefaultAsync();
                     var DVT = await _context.Khos.Where(k => k.IddungCu == donThuoc.IddungCu).Select(k => k.DonViTinh).FirstOrDefaultAsync();
                     var Don = await _context.Khos.Where(k => k.IddungCu == donThuoc.IddungCu).Select(k => k.IdsanPhamNavigation.DonGia).FirstOrDefaultAsync();
-                    ViewData["Idkham"] = new SelectList(_context.DanhSachKhams, "Idkham", "Idkham", donThuoc.Idkham);
-                    donThuoc.Idkham = (Request.Form["Idkham"]).ToString();
+                    //ViewData["Idkham"] = new SelectList(_context.DanhSachKhams, "Idkham", "Idkham", donThuoc.Idkham);
+                    //donThuoc.Idkham = (Request.Form["Idkham"]).ToString();
+                    donThuoc.Idkham = id;
                     donThuoc.ThanhGia = Don;
                     donThuoc.NgayLapDt = DateTime.Today;
                     donThuoc.TongTien = (decimal)donThuoc.SoLuong * Don;
@@ -101,6 +102,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
                         TenDungCu= tenDungCu,
                         Loai= Loai,
                         DonViTinh= DVT,
+                        Don= Don,
                         SoLuongNhapXuat=donThuoc.SoLuong,
                         ThanhTien=donThuoc.TongTien,
                         NgayNhap= (DateTime)donThuoc.NgayLapDt
