@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
 
+using System.Drawing.Printing;
+using WebQuanLyNhaKhoa.Models;
+using X.PagedList;
 namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 {
     public class NhanViensController : Controller
@@ -17,9 +20,16 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         {
             _context = context;
         }
+        public IActionResult ShowNhanViensPaging(int page = 1)
+        {
+            page = page < 1 ? 1 : page;
+            int pagesize = 6;
+            var nvs = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToPagedList(page, pagesize).ToList();
+            return View(nvs);
+        }
 
         // GET: NhanViens
-        public IActionResult Index(string query = "", string role = "nothing", string sort = "nothing")
+        public IActionResult Index(string query = "", string role = "nothing", string sort = "nothing",int page = 1)
         {
             if (query == "")
             {
@@ -27,8 +37,18 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 {
                     if (sort == "nothing")
                     {
+                        page = page < 1 ? 1: page;
+                        int pagesize = 8;
                         List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToList();
-                        return View(nhanViens);
+                        //const int pageSize = 5;
+                        //if (pg < 1)
+                        //    pg = 1;
+                        //int nvCount = nhanViens.Count;
+                        //var pager = new Pager(nvCount, pg, pageSize);
+                        //int recSkip = (pg -1) * pageSize;
+                        //var data = nhanViens.Skip(recSkip).Take(pager.PageSize).ToList();
+                        //this.ViewBag.Pager = pager;
+                        return View(nhanViens.ToPagedList(page, pagesize));
                     }
                     else
                     {

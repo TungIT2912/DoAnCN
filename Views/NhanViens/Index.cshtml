@@ -1,4 +1,31 @@
-﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.NhanVien>
+﻿ @model X.PagedList.IPagedList<WebQuanLyNhaKhoa.Data.NhanVien> 
+ @using X.PagedList
+ @using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    .pager{
+        margin: 10px;
+    }
+    .pager .pagination{
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+    .pager li {
+        padding-bottom: 10px;
+        background: yellow;
+        display: block;
+        width: 50px;
+        text-align: center;
+        padding-top: 10px;
+        padding: 25px, 0;
+        border-radius: 10px
+    }
+</style>
+
 <body class="font-mono bg-slate-800">
     <div class="categories">
         <div class="m-auto w-[1320px]">
@@ -20,7 +47,7 @@
                                 <option value="nhanvien">Nhân viên quản lý (OffLine)</option>
                                 <option value="admin">Nhân viên quản lý (Online) </option>
                             </select>
-                            <button type="submit" class="outline-none gap-[3px] flex w-[45px] h-[36px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]"><i class="fa-solid fa-filter"></i>Lọc</button>
+                            <button type="submit" class="outline-none gap-[3px] flex w-[45px] h-[32px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]"><i class="fa-solid fa-filter"></i>Lọc</button>
                         </form>
                     </div>
                     <!-- Tìm kiếm -->
@@ -49,7 +76,7 @@
                                 <option value="Ten">Theo tên</option>
                                 <option value="Chucvu">Chức vụ</option>
                             </select>
-                            <button type ="submit" class="outline-none gap-[3px] flex w-[45px] h-[36px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]">
+                            <button type ="submit" class="outline-none gap-[3px] flex w-[45px] h-[32px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]">
                                 <i class="fa-solid fa-sort"></i>Sort
                             </button>
                         </form>
@@ -58,29 +85,32 @@
                 </div>
             </div>
             <ul class="grid grid-cols-4 gap-5 mt-[50px]">
-                 @foreach (var item in Model)
-                   {
-                 <li class="w-80 bg-pink-100 p-[20px] rounded-xl group">
-                   
-                        <img src="@item.Hinh"
-                             alt="@item.Ten"
-                             class="h-[420px] w-full object-cover rounded-md transition-all duration-300 transform group-hover:scale-110" />
-                        <div class="mt-3">
-                            <h2 class="my-[16px] text-center text-xl font-bold">@item.Ten</h2>
-                            <p class="text-center text-sm mt-2">@item.MaCvNavigation.TenCv</p>
-                        </div>
-                        <div class="flex justify-center gap-4 mt-5">
-                            <a asp-action="Delete" asp-controller="NhanViens" asp-route-id="@item.MaNv" class="flex items-center justify-center w-24 h-14 bg-red-500 rounded-md text-[20px] text-center">
-                                Delete
-                            </a>
-                            <a asp-action="Edit" asp-controller="NhanViens" asp-route-id="@item.MaNv" class="flex items-center justify-center w-24 h-14 mx-[5px] bg-emerald-300 rounded-md text-[20px]">
+                    @foreach (var item in Model)
+                    {
+                    <li class="w-80 bg-pink-100 p-[20px] rounded-xl group" style="background-color:#0000ff3d">
+
+                            <img src="@Html.DisplayFor(modelItem => item.Hinh)"
+                                 alt="@item.Ten"
+                                 class="h-[420px] w-full object-cover rounded-md transition-all duration-300 transform group-hover:scale-110" />
+                            <div class="mt-3">
+                            <h2 class="my-[16px] text-center text-xl font-bold">@Html.DisplayFor(modelItem => item.Ten)</h2>
+                            <p class="text-center text-sm mt-2">@Html.DisplayFor(modelItem => item.MaCvNavigation.TenCv)</p>
+                            </div>
+                            <div class="flex justify-center gap-4 mt-5">
+                                <a asp-action="Delete" asp-controller="NhanViens" asp-route-id="@item.MaNv" class="flex items-center justify-center w-24 h-14 bg-red-500 rounded-md text-[20px] text-center">
+                                    Delete
+                                </a>
+                                <a asp-action="Edit" asp-controller="NhanViens" asp-route-id="@item.MaNv" class="flex items-center justify-center w-24 h-14 mx-[5px] bg-emerald-300 rounded-md text-[20px]">
                                     Edit
-                            </a>
-                        </div>
-                  
-                </li>
-                }
+                                </a>
+                            </div>
+
+                        </li>
+                  }
             </ul>
+            <div class="pager">
+                @Html.PagedListPager(Model,page => Url.Action("Index","NhanViens", new {page = page}))
+            </div>
             <a asp-action="Create" class="mt-8 block">
                 <button class="py-3 w-full bg-teal-400 rounded-xl ease-in duration-200 hover:outline outline-offset-2 outline-pink-500">
                     Thêm nhân viên <i class="fa-solid fa-user-plus"></i>

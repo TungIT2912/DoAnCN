@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.DanhSachKham>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h1>Index</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ngày đăng kí khám
+            </th>
+            <th>
+              Tên bệnh nhân
+            </th>
+            <th>
+                Năm sinh bệnh nhân
+            </th>
+            <th>
+                Nhân viên khám
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayKham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.HoTen)
+            </td>
+             <td>
+                    @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.NamSinh)
+             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaNvNavigation.Ten)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Idkham">Đăng kí nhân viên khám</a> |
+                    <a asp-action="Add" asp-controller="DieuTri" asp-route-id="@item.Idkham">Chuyển bệnh nhân vào điều trị</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
