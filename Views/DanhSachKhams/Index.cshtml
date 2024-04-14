@@ -3,11 +3,21 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    h1 {
+        text-align: center;
+    }
 
-<h1>Index</h1>
+    p {
+        display: flex;
+        justify-content: flex-start;
+        padding: 15px;
+    }
+</style>
+<h1>Thông tin danh sách đăng kí khám của các bệnh nhân</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Tạo thêm danh sách khám</a>
 </p>
 <table class="table">
     <thead>
@@ -16,10 +26,13 @@
                 @Html.DisplayNameFor(model => model.NgayKham)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdbenhNhanNavigation)
+                @Html.DisplayNameFor(model => model.IdbenhNhanNavigation.HoTen)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaNvNavigation)
+                @Html.DisplayNameFor(model => model.MaNvNavigation.Ten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayKham)
             </th>
             <th></th>
         </tr>
@@ -31,19 +44,19 @@
                 @Html.DisplayFor(modelItem => item.NgayKham)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.IdbenhNhan)
+                @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.HoTen)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaNvNavigation.MaNv)
+                @Html.DisplayFor(modelItem => item.MaNvNavigation.Ten)
             </td>
-                <td><a asp-controller="DonThuocs" asp-action="Create" asp-route-id="@item.Idkham" >Tạo mới đơn thuốc</a></td>
-                <td><a href="@Url.Action("Create", "HoaDons", new { idKham = item.Idkham })">Tạo mới hoá đơn</a></td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Idkham">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Idkham">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Idkham">Delete</a>
+                @Html.DisplayFor(modelItem => item.NgayKham)
             </td>
-                   
+            <td><a href="@Url.Action("Create", "DonThuocs", new { idKham = item.Idkham })">Tạo mới đơn thuốc</a></td>
+            <td><a href="@Url.Action("Create", "HoaDons", new { idKham = item.Idkham })">Tạo mới hoá đơn</a></td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Idkham">Details</a> 
+            </td>   
         </tr>
 }
         <a asp-action="Index" asp-controller="HoaDons">Xem hóa đơn của các bệnh nhân</a>

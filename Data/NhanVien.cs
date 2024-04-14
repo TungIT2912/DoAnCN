@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace WebQuanLyNhaKhoa.Data;
 
@@ -9,6 +10,7 @@ public partial class NhanVien
 
     public string TenDangNhap { get; set; } = null!;
 
+    [DisplayName("Tên nhân viên")]
     public string Ten { get; set; } = null!;
 
     public string? Sdt { get; set; }

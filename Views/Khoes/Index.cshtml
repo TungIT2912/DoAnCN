@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    h1{
+        text-align:center;
+    }
+</style>
+<h1>Kho hàng của nha khoa</h1>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -23,9 +24,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SoLuong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdsanPhamNavigation)
             </th>
             <th></th>
         </tr>
@@ -44,9 +42,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SoLuong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdsanPhamNavigation.IdsanPham)
             </td>
         </tr>
 }

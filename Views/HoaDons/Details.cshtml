@@ -3,8 +3,12 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
+<style>
+    h1 {
+        text-align: center;
+    }
+</style>
+<h1>Thông tin hóa đơn</h1>
 
 <div>
     <h4>HoaDon</h4>
@@ -50,5 +54,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.IdhoaDon">Thanh toán</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Trở lại danh sách các hóa đơn</a>
 </div>

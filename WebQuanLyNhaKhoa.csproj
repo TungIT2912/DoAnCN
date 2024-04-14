@@ -26,4 +26,26 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\AdminDashboard\js\components\chart-01.js" />
+    <None Include="wwwroot\AdminDashboard\js\components\chart-02.js" />
+    <None Include="wwwroot\AdminDashboard\js\components\chart-03.js" />
+    <None Include="wwwroot\AdminDashboard\js\components\chart-04.js" />
+    <None Include="wwwroot\AdminDashboard\js\components\map-01.js" />
+    <None Include="wwwroot\AdminDashboard\js\index.js" />
+    <None Include="wwwroot\AdminDashboard\js\us-aea-en.js" />
+    <None Include="wwwroot\AdminDashboard\lib\chart\chart.min.js" />
+    <None Include="wwwroot\AdminDashboard\lib\easing\easing.js" />
+    <None Include="wwwroot\AdminDashboard\lib\easing\easing.min.js" />
+    <None Include="wwwroot\AdminDashboard\lib\owlcarousel\LICENSE" />
+    <None Include="wwwroot\AdminDashboard\lib\owlcarousel\owl.carousel.js" />
+    <None Include="wwwroot\AdminDashboard\lib\owlcarousel\owl.carousel.min.js" />
+    <None Include="wwwroot\AdminDashboard\lib\tempusdominus\js\moment-timezone.min.js" />
+    <None Include="wwwroot\AdminDashboard\lib\tempusdominus\js\moment.min.js" />
+    <None Include="wwwroot\AdminDashboard\lib\tempusdominus\js\tempusdominus-bootstrap-4.js" />
+    <None Include="wwwroot\AdminDashboard\lib\tempusdominus\js\tempusdominus-bootstrap-4.min.js" />
+    <None Include="wwwroot\AdminDashboard\lib\waypoints\links.php" />
+    <None Include="wwwroot\AdminDashboard\lib\waypoints\waypoints.min.js" />
+  </ItemGroup>
+
 </Project>

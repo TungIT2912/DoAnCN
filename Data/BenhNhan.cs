@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace WebQuanLyNhaKhoa.Data;
 
@@ -7,6 +8,7 @@ public partial class BenhNhan
 {
     public string IdbenhNhan { get; set; } = null!;
 
+    [DisplayName("Tên bệnh nhân")]
     public string HoTen { get; set; } = null!;
 
     public bool? Gioi { get; set; }
