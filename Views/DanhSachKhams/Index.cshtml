@@ -36,7 +36,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MaNvNavigation.MaNv)
             </td>
-                <td><a href="@Url.Action("Create", "DonThuocs", new { idKham = item.Idkham })">Tạo mới đơn thuốc</a></td>
+                <td><a asp-controller="DonThuocs" asp-action="Create" asp-route-id="@item.Idkham" >Tạo mới đơn thuốc</a></td>
                 <td><a href="@Url.Action("Create", "HoaDons", new { idKham = item.Idkham })">Tạo mới hoá đơn</a></td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Idkham">Edit</a> |

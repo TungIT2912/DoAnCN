@@ -13,11 +13,7 @@ builder.Services.AddDbContext<QlnhaKhoaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NhaKhoa"));
 });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-	.AddCookie(options => {
-		options.LoginPath = "/Login";
-		options.AccessDeniedPath = "/AccessDenied";
-							});
+builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -40,6 +36,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=LichSuNhapXuats}/{action=Index}/{id?}");
+    pattern: "{controller=HoaDons}/{action=Index}/{id?}");
 
 app.Run();
