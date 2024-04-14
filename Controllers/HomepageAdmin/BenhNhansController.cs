@@ -225,7 +225,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 _context.BenhNhans.Remove(benhNhan);
             }
 
-            await _context.SaveChangesAsync();
+             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
