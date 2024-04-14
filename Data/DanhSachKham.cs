@@ -9,7 +9,7 @@ public partial class DanhSachKham
 
     public string IdbenhNhan { get; set; } = null!;
 
-    public int MaNv { get; set; }
+    public int? MaNv { get; set; }
 
     public DateTime NgayKham { get; set; }
 
@@ -21,5 +21,5 @@ public partial class DanhSachKham
 
     public virtual BenhNhan IdbenhNhanNavigation { get; set; } = null!;
 
-    public virtual NhanVien MaNvNavigation { get; set; } = null!;
+    public virtual NhanVien? MaNvNavigation { get; set; }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
 
-namespace WebQuanLyNhaKhoa.Controllers
+namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     public class LichSuNhapXuatsController : Controller
     {
@@ -119,98 +119,6 @@ namespace WebQuanLyNhaKhoa.Controllers
             }
 
             return View(lichSuNhapXuat);
-        }
-
-        // GET: LichSuNhapXuats/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var lichSuNhapXuat = await _context.LichSuNhapXuats.FindAsync(id);
-            if (lichSuNhapXuat == null)
-            {
-                return NotFound();
-            }
-            ViewData["IddungCu"] = new SelectList(_context.Khos, "IddungCu", "IddungCu", lichSuNhapXuat.IddungCu);
-            return View(lichSuNhapXuat);
-        }
-
-        // POST: LichSuNhapXuats/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaLs,NoiDung,IddungCu,TenDungCu,Loai,DonViTinh,SoLuongNhapXuat,Don,ThanhTien,NgayNhap")] LichSuNhapXuat lichSuNhapXuat)
-        {
-            if (id != lichSuNhapXuat.MaLs)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(lichSuNhapXuat);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LichSuNhapXuatExists(lichSuNhapXuat.MaLs))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IddungCu"] = new SelectList(_context.Khos, "IddungCu", "IddungCu", lichSuNhapXuat.IddungCu);
-            return View(lichSuNhapXuat);
-        }
-
-        // GET: LichSuNhapXuats/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var lichSuNhapXuat = await _context.LichSuNhapXuats
-                .Include(l => l.IddungCuNavigation)
-                .FirstOrDefaultAsync(m => m.MaLs == id);
-            if (lichSuNhapXuat == null)
-            {
-                return NotFound();
-            }
-
-            return View(lichSuNhapXuat);
-        }
-
-        // POST: LichSuNhapXuats/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var lichSuNhapXuat = await _context.LichSuNhapXuats.FindAsync(id);
-            if (lichSuNhapXuat != null)
-            {
-                _context.LichSuNhapXuats.Remove(lichSuNhapXuat);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool LichSuNhapXuatExists(int id)
-        {
-            return _context.LichSuNhapXuats.Any(e => e.MaLs == id);
         }
     }
 }

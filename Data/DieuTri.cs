@@ -17,6 +17,8 @@ public partial class DieuTri
 
     public decimal ThanhTien { get; set; }
 
+    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+
     public virtual DichVu IddichVuNavigation { get; set; } = null!;
 
     public virtual Kho IddungCuNavigation { get; set; } = null!;
