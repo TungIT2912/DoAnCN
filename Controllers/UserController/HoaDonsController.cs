@@ -129,7 +129,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdhoaDon,IddonThuoc,IddieuTri,IDKham,PhuongThucThanhToan,TienThuoc,TienDieuTri,TongTien,NgayLap,EmailBn")] HoaDon hoaDon, DonThuoc donThuoc ,DanhSachKham ds,string Id)
+        public async Task<IActionResult> Edit(int id, [Bind("IdhoaDon,IddonThuoc,IddieuTri,IDKham,PhuongThucThanhToan,TienThuoc,TienDieuTri,TongTien,NgayLap,EmailBn")] HoaDon hoaDon)
         {
             if (id != hoaDon.IdhoaDon)
             {
@@ -143,6 +143,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
                                         .Include(p => p.IddieuTriNavigation)
                                         .FirstOrDefaultAsync(p => p.IdhoaDon == id);
                 hoaDon.NgayLap = DateTime.Today;
+                hoaDon.Idkham = existingHoadon.Idkham;
                 hoaDon.IddonThuoc = existingHoadon.IddonThuoc;
                 hoaDon.IddieuTri = existingHoadon.IddieuTri;
                 hoaDon.TienThuoc = existingHoadon.TienThuoc;
@@ -177,7 +178,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
                         throw;
                     }
                 }
-                 return View("SuccessPayment",Id);
+                 return View("SuccessPayment",hoaDon.Idkham);
 
             ViewData["IddonThuoc"] = new SelectList(_context.DonThuocs, "IddonThuoc", "IddonThuoc", hoaDon.IddonThuoc);
             return View(hoaDon);
