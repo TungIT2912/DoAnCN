@@ -2,13 +2,13 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <main>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
         <!-- Breadcrumb Start -->
         <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class=" text-2xl font-bold text-black dark:text-white" style="color: rgb(21 21 22 / 65%);">
+            <h2 class=" text-xl font-bold text-black dark:text-white" style="color: rgb(21 21 22 / 65%);">
                 Patient Tables
             </h2>
             <form asp-action="Index" class="relative">
@@ -132,9 +132,8 @@
                                     </div>
 
                                 <div class="flex gap-[10px] col-span-1">
-                                        <a asp-action="Edit" asp-route-id="@item.IdbenhNhan" class="float-right text-primary text-yellow-400">Edit</a>
-                                        <a asp-action="Delete" asp-route-id="@item.IdbenhNhan" class="float-right text-primary text-red-600">Delete</a>
-                                        <a asp-action="Move" asp-route-id="@item.IdbenhNhan" class="float-right text-primary text-green-600">Move</a>
+                                        <a asp-action="Edit" asp-route-id="@item.IdbenhNhan" class="float-right  text-yellow-400">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdbenhNhan" class="float-right  text-red-600">Delete</a>
                                 </div>
                             </div>
                             }

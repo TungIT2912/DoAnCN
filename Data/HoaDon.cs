@@ -9,7 +9,9 @@ public partial class HoaDon
 
     public int IddonThuoc { get; set; }
 
-    public string Idkham { get; set; } = null!;
+    public int IddieuTri { get; set; }
+
+    public string? Idkham { get; set; }
 
     public string? PhuongThucThanhToan { get; set; }
 
@@ -19,9 +21,13 @@ public partial class HoaDon
 
     public decimal TongTien { get; set; }
 
-    public decimal NgayLap { get; set; }
+    public DateTime NgayLap { get; set; }
+
+    public string? EmailBn { get; set; }
+
+    public virtual DieuTri IddieuTriNavigation { get; set; } = null!;
 
     public virtual DonThuoc IddonThuocNavigation { get; set; } = null!;
 
-    public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
+    public virtual DanhSachKham? IdkhamNavigation { get; set; }
 }

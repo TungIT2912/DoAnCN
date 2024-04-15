@@ -24,3 +24,6 @@ a {
 .toast-message {
     color: black;
 }
+body {
+  margin-bottom: 60px;
+}

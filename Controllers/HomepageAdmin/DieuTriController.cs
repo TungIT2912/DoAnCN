@@ -17,10 +17,11 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 
         public IActionResult Index()
         {
+            var qlnhaKhoaContext = _context.DieuTris.Include(d => d.IddichVuNavigation).Include(d => d.IddungCuNavigation).ToList();
             ViewData["Idkham"] = new SelectList(_context.DanhSachKhams, "Idkham", "Idkham");
             ViewData["IddichVu"] = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
             ViewData["IddungCu"] = new SelectList(_context.Khos, "IddungCu", "TenDungCu");
-            return View();
+            return View(qlnhaKhoaContext);
         }
         public async Task<IActionResult> Add(string id)
         {
@@ -33,9 +34,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         public async Task<IActionResult> Add(string id, DieuTri dt)
         {
             var khoExists = await _context.Khos.AnyAsync(k => k.IddungCu == dt.IddungCu);
-            var thanhTienLSNX = _context.LichSuNhapXuats.SingleOrDefault(k => k.IddungCu == dt.IddungCu).Don;
-            var DonGia = _context.DichVus.SingleOrDefault(m => m.IddichVu == dt.IddichVu).DonGia;
             var khoId = _context.Khos.Find(dt.IddungCu);
+            var thanhTienLSNX = _context.ThiTruongs.SingleOrDefault(k => k.TenSanPham == khoId.TenDungCu).DonGia;
+            var DonGia = _context.DichVus.SingleOrDefault(m => m.IddichVu == dt.IddichVu).DonGia;
             var DonviTinh = _context.ThiTruongs.FirstOrDefault(k => k.TenSanPham == khoId.TenDungCu);
             if (khoExists)
             {
@@ -86,7 +87,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                     };
                     await _context.DieuTris.AddAsync(newdt);
                      _context.SaveChanges();
-                    return RedirectToAction("Index", "DanhSachKhams");
+                    return RedirectToAction("Index");
                 }
             }
             return View();

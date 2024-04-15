@@ -3,7 +3,7 @@
  @using X.PagedList.Mvc.Core
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
     .pager{
@@ -26,28 +26,28 @@
     }
 </style>
 
-<body class="font-mono bg-slate-800">
+
     <div class="categories">
-        <div class="m-auto w-[1320px]">
+    <div class="m-auto max-w-screen-xl">
             <h1 class="categories__title uppercase text-center my-[10px] font-bold text-4xl bg-clip-text bg-gradient-to-r from-violet-500 to-fuchsia-500 text-transparent tracking-widest">
                 Danh sách nhân sự
             </h1>
             <div class="my-5">
                 <div class="flex gap-[20px] items-end">
                     <!-- Chức vụ -->
-                    <div class="flex flex-col items-center w-96">
+                <div class="flex flex-col items-center w-96">
                         <span for="Employee" class="text-amber-400 text-center text-2xl">
                             Categories Employee:
                         </span>
-                        <form asp-action="Index" class="relative w-full mt-[10px]">
+                        <form asp-action="Index" class="relative w-[94%] mt-[10px]">
                             <select name="role"
                                     id="Employee"
-                                    class="outline-none w-full rounded-md border-solid border-2 border-red-200 bg-red-200 py-[5px] px-5">
+                                    class="outline-none w-full rounded-md border-solid border-2 border-red-200 bg-red-200 py-[5px] px-2">
                                 <option value="nothing">Nothing</option>
                                 <option value="nhanvien">Nhân viên quản lý (OffLine)</option>
                                 <option value="admin">Nhân viên quản lý (Online) </option>
                             </select>
-                            <button type="submit" class="outline-none gap-[3px] flex w-[45px] h-[32px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]"><i class="fa-solid fa-filter"></i>Lọc</button>
+                            <button type="submit" class="outline-none gap-[3px] flex w-[45px] h-[37px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]"><i class="fa-solid fa-filter"></i>Lọc</button>
                         </form>
                     </div>
                     <!-- Tìm kiếm -->
@@ -56,8 +56,8 @@
                         <form method="post" asp-action="Index" class="relative w-full mt-[10px]">
                             <input type="text"
                                    placeholder="Search Employee"
-                                   class="w-full py-[5px] px-5 rounded-md outline-none" name="query" />
-                            <button type = "submit"  class="flex w-[45px] h-[34px] bg-amber-300 absolute top-0 right-[-1px] justify-center items-center rounded-r-lg">
+                               class="w-full py-[7px] px-2 rounded-md outline-none bg-red-200" name="query" />
+                            <button type = "submit"  class="flex w-[45px] h-[37px] bg-amber-300 absolute top-0 right-[-1px] justify-center items-center rounded-r-lg">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>  
                         </form>
@@ -68,15 +68,15 @@
                         <span for="Employee" class="text-amber-400 text-center text-2xl">
                             Sort Employee:
                         </span>
-                        <form asp-action="Index" class="relative w-full mt-[10px]">
+                        <form asp-action="Index" class="relative w-[94%] mt-[10px]">
                             <select name="sort"
                                     id="Employee"
-                                    class="outline-none w-full rounded-md border-solid border-2 border-red-200 bg-red-200 py-[5px] px-5">
+                                    class="outline-none w-full rounded-md border-solid border-2 border-red-200 bg-red-200 py-[5px] px-2">
                                 <option value="nothing">Nothing</option>
                                 <option value="Ten">Theo tên</option>
                                 <option value="Chucvu">Chức vụ</option>
                             </select>
-                            <button type ="submit" class="outline-none gap-[3px] flex w-[45px] h-[32px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]">
+                            <button type ="submit" class="outline-none gap-[3px] flex w-[45px] h-[37px] bg-amber-300 absolute justify-center items-center rounded-r-lg top-[1px] right-[-1px]">
                                 <i class="fa-solid fa-sort"></i>Sort
                             </button>
                         </form>
@@ -87,11 +87,11 @@
             <ul class="grid grid-cols-4 gap-5 mt-[50px]">
                     @foreach (var item in Model)
                     {
-                    <li class="w-80 bg-pink-100 p-[20px] rounded-xl group" style="background-color:#0000ff3d">
+                    <li class="flex flex-col items-center max-w-3xl bg-pink-100 p-[20px] rounded-xl group" style="background-color:#0000ff3d">
 
                             <img src="@Html.DisplayFor(modelItem => item.Hinh)"
                                  alt="@item.Ten"
-                                 class="h-[420px] w-full object-cover rounded-md transition-all duration-300 transform group-hover:scale-110" />
+                                 class="h-[400px] w-full object-cover rounded-md transition-all duration-300 transform group-hover:scale-110" />
                             <div class="mt-3">
                             <h2 class="my-[16px] text-center text-xl font-bold">@Html.DisplayFor(modelItem => item.Ten)</h2>
                             <p class="text-center text-sm mt-2">@Html.DisplayFor(modelItem => item.MaCvNavigation.TenCv)</p>
@@ -118,5 +118,4 @@
             </a>
         </div>
     </div>
-</body>
 
