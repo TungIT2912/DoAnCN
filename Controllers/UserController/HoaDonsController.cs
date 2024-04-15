@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
+using WebQuanLyNhaKhoa.ServicesPay;
 
 namespace WebQuanLyNhaKhoa.Controllers.UserController
 {
@@ -15,12 +17,13 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
     {
         private readonly QlnhaKhoaContext _context;
         private readonly EmailService _emailService;
+        private readonly IVnPayService _vnPayService;
 
-
-        public HoaDonsController(QlnhaKhoaContext context, EmailService emailService)
+        public HoaDonsController(QlnhaKhoaContext context, EmailService emailService,IVnPayService vnPayService)
         {
             _context = context;
             _emailService = emailService;
+            _vnPayService = vnPayService;
         }
 
         // GET: HoaDons
@@ -129,8 +132,9 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdhoaDon,IddonThuoc,IddieuTri,IDKham,PhuongThucThanhToan,TienThuoc,TienDieuTri,TongTien,NgayLap,EmailBn")] HoaDon hoaDon)
+        public async Task<IActionResult> Edit(int id , [Bind("IdhoaDon,IddonThuoc,IddieuTri,IDKham,PhuongThucThanhToan,TienThuoc,TienDieuTri,TongTien,NgayLap,EmailBn")] HoaDon hoaDon, string payment )
         {
+           
             if (id != hoaDon.IdhoaDon)
             {
                 return NotFound();
@@ -156,15 +160,31 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
                 //_context.Update(hoaDon);
                 _context.Entry(existingHoadon).CurrentValues.SetValues(hoaDon);
                 await _context.SaveChangesAsync();
-                var patientEmail = hoaDon.EmailBn; // Replace with the patient's email
-                var emailSubject = "Thanh toán hóa đơn";
-                var emailMessage = $"Bạn đã thanh toán thành công tiền viện phí.<br><br> " +
-                                    $"Bạn đã thanh toán thành công tiền viện phí vào lúc {currentTime}.<br><br>" +
-                                    $"Tổng tiền cần thanh toán là {Tien.ToString("C", new CultureInfo("vi-VN"))}<br><br>" +
-                                    $"Thông tin chi tiết:<br><br>" +
-                                    $"Số tiền điều trị: {TienDT.ToString("C", new CultureInfo("vi-VN"))}.<br><br> " +
-                                    $"Số tiền thuốc: {TienDonT.ToString("C", new CultureInfo("vi-VN"))}.<br><br> ";
-                await _emailService.SendEmailAsync(patientEmail, emailSubject, emailMessage);
+                if (payment == "Thanh toán VnPay")
+                {
+                    var vnPayModel = new VnPaymentRequestModel()
+                    {
+                        Amount = (double)hoaDon.TongTien,
+                        CreateDate = DateTime.Now,
+                        Description = "Thanh toán viện phí",
+                        OrderId = hoaDon.IdhoaDon
+
+                    };
+                    return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPayModel));
+                }
+                else
+                {
+                    var patientEmail = hoaDon.EmailBn; // Replace with the patient's email
+                    var emailSubject = "Thanh toán hóa đơn";
+                    var emailMessage = $"Bạn đã thanh toán thành công tiền viện phí.<br><br> " +
+                                        $"Bạn đã thanh toán thành công tiền viện phí vào lúc {currentTime}.<br><br>" +
+                                        $"Tổng tiền cần thanh toán là {Tien.ToString("C", new CultureInfo("vi-VN"))}<br><br>" +
+                                        $"Thông tin chi tiết:<br><br>" +
+                                        $"Số tiền điều trị: {TienDT.ToString("C", new CultureInfo("vi-VN"))}.<br><br> " +
+                                        $"Số tiền thuốc: {TienDonT.ToString("C", new CultureInfo("vi-VN"))}.<br><br> ";
+                    await _emailService.SendEmailAsync(patientEmail, emailSubject, emailMessage);
+                }
+               
 
             }
                 catch (DbUpdateConcurrencyException)
@@ -185,8 +205,33 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
         }
 
         // GET: HoaDons/Delete/5
-       
+        [Authorize]
+        public IActionResult PaymetFail()
+        {
+            return View();
+        }
+        [Authorize]
+        public IActionResult PaymentCallBack([Bind("IdhoaDon,IddonThuoc,IddieuTri,IDKham,PhuongThucThanhToan,TienThuoc,TienDieuTri,TongTien,NgayLap,EmailBn")] HoaDon hoaDon)
+        {
 
+            var response = _vnPayService.PaymentExcute(Request.Query);
+            if (response == null    || response.VnPayResponseCode != "00")
+            {
+                TempData["Message"] = "Lỗi thanh toán VnPay";
+                return RedirectToAction("PaymetFail");
+            }
+            //var existingHoadon =  _context.HoaDons
+            //                           .Include(p => p.IddieuTriNavigation)
+            //                           .FirstOrDefaultAsync(p => p.IdhoaDon == id);
+            //hoaDon.NgayLap = DateTime.Today;
+            //hoaDon.Idkham = existingHoadon.Idkham;
+            //hoaDon.IddonThuoc = existingHoadon.IddonThuoc;
+            //hoaDon.IddieuTri = existingHoadon.IddieuTri;
+            //hoaDon.TienThuoc = existingHoadon.TienThuoc;
+            //hoaDon.TienDieuTri = existingHoadon.TienDieuTri;
+            //hoaDon.TongTien = existingHoadon.TienDieuTri + existingHoadon.TienThuoc;
+            return View("AnouncePayment");
+        }
         private bool HoaDonExists(int id)
         {
             return _context.HoaDons.Any(e => e.IdhoaDon == id);
