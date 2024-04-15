@@ -1,19 +1,21 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.ServicesPay;
 using WebQuanLyNhaKhoa.wwwroot.AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSingleton<IVnPayService,VnPayService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddAuthentication();
 builder.Services.AddDbContext<QlnhaKhoaContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("NhaKhoa"));
 });
 
-builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
