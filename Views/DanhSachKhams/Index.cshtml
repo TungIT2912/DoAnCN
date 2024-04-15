@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.DanhSachKham>
-
+@* @using Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@using Microsoft.AspNetCore.Identity
+@{
+    Layout = "Views/Shared/_LayoutEployee.cshtml";
+} *@
 @{
     ViewData["Title"] = "Index";
 }
@@ -23,9 +29,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NgayKham)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.IdbenhNhanNavigation.HoTen)
             </th>
             <th>
@@ -40,9 +43,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayKham)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.HoTen)
             </td>
