@@ -11,37 +11,38 @@
 </style>
 <h1>Tạo hóa đơn chi tiết cho bệnh nhân</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* <div class="form-group">
+<main class="h-screen px-5 py-5">
+    <a asp-action="Index" asp-controller="DanhSachKhams">
+        <button class="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300"><i class="fa-solid fa-arrow-left"></i> Trờ lại danh sách khám </button>
+    </a>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @* <div class="form-group">
                 <label asp-for="IddonThuoc" class="control-label"></label>
                 <select asp-for="IddonThuoc" class ="form-control" asp-items="ViewBag.IddonThuoc"></select>
-            </div>
-            <div class="form-group">
+                </div>
+                <div class="form-group">
                 <label asp-for="IddieuTri" class="control-label"></label>
                 <select asp-for="IddieuTri" class ="form-control" asp-items="ViewBag.IddieuTri"></select>
-            </div> *@
-            <div class="form-group">
-                <label asp-for="Idkham" class="control-label"></label>
-                <select name="Id" asp-for="Idkham" class ="form-control" asp-items="ViewBag.Idkham" ></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="NgayLap" class="control-label"></label>
-                <input asp-for="NgayLap" class="form-control" />
-                <span asp-validation-for="NgayLap" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                </div> *@
+                <div class="form-group">
+                    <label asp-for="Idkham" class="control-label"></label>
+                    <select name="Id" asp-for="Idkham" class="form-control" asp-items="ViewBag.Idkham"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NgayLap" class="control-label"></label>
+                    <input asp-for="NgayLap" class="form-control" />
+                    <span asp-validation-for="NgayLap" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Trở lại danh sách thuốc</a>
-</div>
+</main>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

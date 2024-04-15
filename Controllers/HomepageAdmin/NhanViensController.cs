@@ -20,16 +20,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         {
             _context = context;
         }
-        public IActionResult ShowNhanViensPaging(int page = 1)
-        {
-            page = page < 1 ? 1 : page;
-            int pagesize = 6;
-            var nvs = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToPagedList(page, pagesize).ToList();
-            return View(nvs);
-        }
-
         // GET: NhanViens
-        public IActionResult Index(string query = "", string role = "nothing", string sort = "nothing",int page = 1)
+        public IActionResult Index(string query = "", string role = "nothing", string sort = "nothing", int page = 1)
         {
             if (query == "")
             {
@@ -37,18 +29,11 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 {
                     if (sort == "nothing")
                     {
-                        page = page < 1 ? 1: page;
+                     
+                        page = page < 1 ? 1 : page;
                         int pagesize = 8;
-                        List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToList();
-                        //const int pageSize = 5;
-                        //if (pg < 1)
-                        //    pg = 1;
-                        //int nvCount = nhanViens.Count;
-                        //var pager = new Pager(nvCount, pg, pageSize);
-                        //int recSkip = (pg -1) * pageSize;
-                        //var data = nhanViens.Skip(recSkip).Take(pager.PageSize).ToList();
-                        //this.ViewBag.Pager = pager;
-                        return View(nhanViens.ToPagedList(page, pagesize));
+                        var nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToPagedList(page, pagesize);
+                        return View(nhanViens);
                     }
                     else
                     {
@@ -84,10 +69,11 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 {
                     if (sort == "nothing")
                     {
-                        List<NhanVien> nhanViens = _context.NhanViens
+                        int pagesize = 6;
+                        var nhanViens = _context.NhanViens
                         .Include(n => n.MaCvNavigation)
                         .Include(n => n.TenDangNhapNavigation)
-                        .Where(n => n.Ten.Contains(query)).ToList();
+                        .Where(n => n.Ten.Contains(query)).ToPagedList(page, pagesize); ;
                         return View(nhanViens);
                     }
                     else

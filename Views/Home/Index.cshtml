@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.NhanVien>
-
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
 <!-- Header Start -->
 <div class="container-fluid header bg-primary p-0 mb-5">
     <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
@@ -15,7 +17,7 @@
                 <div class="col-sm-4">
                     <div class="border-start border-light ps-4">
                         <h2 class="text-white mb-1" data-toggle="counter-up">2638</h2>
-                        <p class="text-light mb-0">Medical Stuff</p>
+                        <p class="text-light mb-0">Medical Stuff</p> 
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -231,7 +233,7 @@
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="team-item position-relative rounded overflow-hidden">
                         <div class="overflow-hidden">
-                            <img class="img-fluid" src="@item.Hinh" alt="">
+                            <img class="img-fluid" src="/@item.Hinh" alt="">
                         </div>
                         <div class="team-text bg-light text-center p-4">
                             <h5>@item.Ten</h5>

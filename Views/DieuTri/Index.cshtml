@@ -3,10 +3,93 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<p>
-    <a asp-action="Index" asp-controller="DanhSachKhams">Quay về danh sách khám</a>
-</p>
-<table class="table">
+
+<main>
+    <a asp-action="Index" asp-controller="DanhSachKhams">
+        <button class="rounded-lg px-4 py-2 bg-green-300 hover:bg-green-400 duration-300"><i class="fa-solid fa-arrow-left"></i> Quay về danh sách khám</button>
+    </a>
+    <div class="flex flex-col gap-10 my-3">
+        <!-- ====== Table Four Start -->
+        <div class="overflow-hidden rounded-[10px]">
+            <div class="max-w-full overflow-x-auto">
+                <div class="min-w-[1170px]">
+                    <!-- table header start -->
+                    <div class="grid grid-cols-12 bg-[#F9FAFB] px-5 py-4 dark:bg-meta-4 lg:px-7.5 2xl:px-11 justify-items-center" style="background-color: rgb(60 80 224); color: rgb(255 255 255) ">
+                        <div class="col-span-2">
+                            <h5 class="font-medium ">
+                               Số lượng
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                                Thành tiền
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                               Tên dịch vụ
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                                Tên dụng cụ
+                            </h5>
+                        </div>
+                        <div class="col-span-4">
+                            <h5 class="font-medium">
+                                Id Khám
+                            </h5>
+                        </div>
+
+                    </div>
+                    <!-- table header end -->
+                    <!-- table body start -->
+                    <div class="bg-white dark:bg-boxdark">
+                        <!-- table row item -->
+                        @foreach (var item in Model)
+                        {
+                            <div class="grid grid-cols-12 border-t border-[#EEEEEE] px-5 py-4 dark:border-strokedark lg:px-7.5 2xl:px-11 justify-items-center align-items-center">
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.SoLuong)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.ThanhTien)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.IddichVuNavigation.TenDichVu)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.IddungCuNavigation.TenDungCu)
+                                    </p>
+                                </div>
+                                <div class="col-span-4">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.Idkham)
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- table body end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@* <table class="table">
     <thead>
         <tr>
             <th>
@@ -53,4 +136,4 @@
         </tr>
         }
     </tbody>
-</table>
+</table> *@

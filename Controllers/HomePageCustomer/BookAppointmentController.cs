@@ -12,10 +12,6 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
         public IActionResult Add()
         {
             return View();
@@ -23,15 +19,10 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         [HttpPost]
         public IActionResult Add(BenhNhan benhNhan)
         {
-            if (ModelState.IsValid)
-            {
-                if (ModelState.IsValid)
-                {
-                    _context.BenhNhans.Add(benhNhan);
-                    _context.SaveChanges();
-                }
-            }
-            return View(benhNhan);
+         _context.BenhNhans.Add(benhNhan);
+         _context.SaveChanges();
+            //return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

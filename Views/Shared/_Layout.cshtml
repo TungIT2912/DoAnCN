@@ -56,7 +56,7 @@
                         <img class="rounded-circle" src="~/images/customer-3.jpg" alt="" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
-                    <div class="ms-3">
+                    <div class="ms-3 text-center">
                         <h6 class="mb-0">Thanh Tùng</h6>
                         <span>Admin</span>
                     </div>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </nav>
-            <main style="background-color: rgb(241 245 249 / 57%);">
+            <main style="background-color:#0000ff66; padding:5px 10px">
                 @RenderBody()
             </main>
         </div>
@@ -117,7 +117,7 @@
     <script src="~/AdminDashboard/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="~/AdminDashboard/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"></script>
     <!-- Template Javascript -->
     <script src="~/AdminDashboard/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

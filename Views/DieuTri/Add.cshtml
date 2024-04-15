@@ -5,40 +5,43 @@
 }
 <h4>DieuTri</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Add">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IddichVu" class="control-label"></label>
-                <select asp-for="IddichVu" class ="form-control" asp-items="ViewBag.IddichVu"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Idkham" class="control-label"></label>
-                <select asp-for="Idkham" class ="form-control" asp-items="ViewBag.Idkham"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="IddungCu" class="control-label"></label>
-                <select asp-for="IddungCu" class ="form-control" asp-items="ViewBag.IddungCu"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SoLuong" class="control-label"></label>
-                <input asp-for="SoLuong" class="form-control" />
-                <span asp-validation-for="SoLuong" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="display: none">
-                <label asp-for="ThanhTien" class="control-label"></label>
-                <input asp-for="ThanhTien" class="form-control" />
-                <span asp-validation-for="ThanhTien" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<main class="px-5 py-5 h-screen">
+    <div>
+        <a class="rounded-lg px-4 py-2 bg-green-300 hover:bg-green-400 duration-300" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Quay về danh sách điều trị</a>
     </div>
-</div>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Add">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="IddichVu" class="control-label"></label>
+                    <select asp-for="IddichVu" class="form-control" asp-items="ViewBag.IddichVu"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Idkham" class="control-label"></label>
+                    <select asp-for="Idkham" class="form-control" asp-items="ViewBag.Idkham"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IddungCu" class="control-label"></label>
+                    <select asp-for="IddungCu" class="form-control" asp-items="ViewBag.IddungCu"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SoLuong" class="control-label"></label>
+                    <input asp-for="SoLuong" class="form-control" />
+                    <span asp-validation-for="SoLuong" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="display: none">
+                    <label asp-for="ThanhTien" class="control-label"></label>
+                    <input asp-for="ThanhTien" class="form-control" />
+                    <span asp-validation-for="ThanhTien" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
