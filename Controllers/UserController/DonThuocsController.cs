@@ -93,7 +93,6 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
                     //donThuoc.Idkham = (Request.Form["Idkham"]).ToString();
                     donThuoc.Idkham = id;
                     donThuoc.ThanhGia = Don;
-                    donThuoc.NgayLapDt = DateTime.Today;
                     donThuoc.TongTien = (decimal)donThuoc.SoLuong * Don;
                     var productInKho = await _context.Khos.FirstOrDefaultAsync(k => k.IddungCu == donThuoc.IddungCu);
                     LichSuNhapXuat ls = new LichSuNhapXuat() { 

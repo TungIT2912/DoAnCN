@@ -9,10 +9,10 @@ public partial class DanhSachKham
     [DisplayName("ID khám")]
     public string Idkham { get; set; } = null!;
 
-   
+    [DisplayName("Tên bệnh nhân")]
     public string IdbenhNhan { get; set; } = null!;
 
-    
+    [DisplayName("Tên nhân viên")]
     public int? MaNv { get; set; }
 
     [DisplayName("Ngày khám")]
