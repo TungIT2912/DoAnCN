@@ -38,5 +38,4 @@ app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=DanhSachKhams}/{action=Index}/{id?}");
-
 app.Run();

@@ -1,4 +1,7 @@
 ﻿@model WebQuanLyNhaKhoa.Data.BenhNhan
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
 <style>
     header {
         position: relative;
@@ -35,8 +38,8 @@
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5">
-                    <form asp-action="Add" id ="form" method="post">
-                        <div class="row g-3" style="align-items: f">
+
+                        <form class="row g-3" style="align-items:center" asp-action="Add" id="form" method="post" enctype="multipart/form-data">
                             <div class="col-12 col-sm-6">
                                 <label asp-for="IdbenhNhan" class="control-label">Mã bệnh nhân</label>
                                 <input type="text" asp-for="IdbenhNhan" required class="form-control border-0" placeholder="Sample: ntl" style="height: 55px;">
@@ -79,18 +82,15 @@
                                 <textarea class="form-control border-0" rows="5" placeholder="Describe your problem"></textarea>
                             </div>
                             <div class="col-12">
-
-                                <button class="btn btn-primary w-100 py-3" value="Create" type="submit">Book Appointment</button>
+                                <button type="submit" class="btn btn-primary w-100 py-3" value="Create">Book Appointment</button>
                             </div>
-                        </div>
-                    </form>
-                  
+                        </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+@* 
 <script>
     var formEL = document.getElementById('form');
 
@@ -99,7 +99,7 @@
         toastr.susscess('My name is Inigo Montoya. You killed my father, prepare to die!')
       //  toastr.success('Have fun storming the castle!', 'Miracle Max Says')
     });
-</script>
+</script> *@
 
 
 
