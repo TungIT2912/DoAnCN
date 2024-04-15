@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
+using X.PagedList;
 
 namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 {
@@ -17,7 +18,6 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         {
             _context = context;
         }
-
         // GET: BenhNhans
         public async Task<IActionResult> Index(string query = "", string filter = "nothing")
         {
@@ -97,7 +97,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
             DanhSachKham ds = new DanhSachKham
             {
                 IdbenhNhan = bn.IdbenhNhan,
-                NgayKham = (DateTime)bn.NgayKhamDau,
+                NgayKham = DateTime.Now,
                 Idkham = randomNumber.ToString()
             };
             await _context.DanhSachKhams.AddAsync(ds);

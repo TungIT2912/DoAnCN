@@ -2,23 +2,38 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>Index</h1>
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        display: flex;
+        justify-content: flex-start;
+        padding: 15px;
+    }
+</style>
+<h1>Thông tin danh sách đăng kí khám của các bệnh nhân</h1>
+
+<p>
+    <a asp-action="Create">Tạo thêm danh sách khám</a>
+</p>
 <table class="table">
     <thead>
         <tr>
+             <th>
+                ID khám
+            </th
             <th>
-                Ngày đăng kí khám
-            </th>
-            <th>
-              Tên bệnh nhân
-            </th>
-            <th>
-                Năm sinh bệnh nhân
+                 Họ tên bệnh nhân
             </th>
             <th>
                 Nhân viên khám
+            </th>
+            <th>
+               Ngày đăng kí khám
             </th>
         </tr>
     </thead>
@@ -26,22 +41,25 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NgayKham)
+                @Html.DisplayFor(modelItem => item.Idkham)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.HoTen)
             </td>
-             <td>
-                    @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.NamSinh)
-             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MaNvNavigation.Ten)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Idkham">Đăng kí nhân viên khám</a> |
-                    <a asp-action="Add" asp-controller="DieuTri" asp-route-id="@item.Idkham">Chuyển bệnh nhân vào điều trị</a> |
+                @Html.DisplayFor(modelItem => item.NgayKham)
             </td>
+            <td><a href="@Url.Action("Create", "DonThuocs", new { idKham = item.Idkham })">Tạo mới đơn thuốc</a></td>
+            <td><a asp-action="Add" asp-controller="DieuTri" asp-route-id = "@item.Idkham">Tạo điều trị</a></td>
+            <td><a href="@Url.Action("Create", "HoaDons", new { idKham = item.Idkham })">Tạo mới hoá đơn</a></td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Idkham">Details</a> 
+            </td> 
         </tr>
 }
+        <a asp-action="Index" asp-controller="HoaDons">Xem hóa đơn của các bệnh nhân</a>
     </tbody>
 </table>
