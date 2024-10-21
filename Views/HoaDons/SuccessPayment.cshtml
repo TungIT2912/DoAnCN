@@ -1,0 +1,18 @@
+﻿@model string
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        color: black;
+        text-align: center;
+    }
+</style>
+<main class="flex flex-col items-center justify-center h-screen" >
+    <span class="w-[50px] h-[50px] bg-green-700" style="display: flex; align-items: center; justify-content: center; border-radius: 100%">
+        <i class="fa-solid fa-check"></i>
+    </span>
+    <h2 class="mt-[20px]">Hoàn tất thanh toán</h2>
+    <p>Khách hàng với ID khám là: @Model<br />. Đã thanh toán viện phí.</p>
+    <a asp-action="Index" asp-controller="DanhSachKhams" class="rounded-lg px-4 py-2 bg-blue-500 text-black-100 hover:bg-blue-600 duration-300 hover:text-white ">Trờ về Danh sách khám</a>
+</main>
