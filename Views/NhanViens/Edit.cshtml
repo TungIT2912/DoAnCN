@@ -1,0 +1,61 @@
+﻿@model WebQuanLyNhaKhoa.Data.NhanVien
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row font-mono">
+    <div class="flex justify-center items-center h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
+        <div class="container p-[20px] max-w-[650px] max-h-[500px] bg-white rounded-xl">
+            <div class="flex justify-between items-center gap-[20px]">
+                <div class="w-2/5">
+                     <img src="/@Model.Hinh" "
+                     class="w-full h-[400px] object-cover" />
+                 </div>
+                <div class="w-3/5">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="MaNv" />
+                        <div class="form-group" style="display: none">
+                            <label asp-for="TenDangNhap" class="control-label"></label>
+                            <select asp-for="TenDangNhap" class="form-control" asp-items="ViewBag.TenDangNhap"></select>
+                            <span asp-validation-for="TenDangNhap" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-[20px]">
+                            <label asp-for="Ten" class="control-label">Họ tên</label>
+                            <input asp-for="Ten" class="form-control py-[5px] px-[10px] border-none outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400" />
+                            <span asp-validation-for="Ten" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-[20px]">
+                            <label asp-for="Sdt" class="control-label">Số điện thoại</label>
+                            <input asp-for="Sdt" class="form-control py-[5px] px-[10px] border-none outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400" />
+                            <span asp-validation-for="Sdt" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-[20px]">
+                            <label asp-for="MaCv" class="control-label">Chức vụ:</label>
+                            <select asp-for="MaCv" class="w-[100px] form-control py-[5px] px-[10px] border-none outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400" asp-items="ViewBag.MaCv"></select>
+                            <span asp-validation-for="MaCv" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-[20px]">
+                            <label asp-for="KinhNghiem" class="control-label">Kinh nghiệm:</label>
+                            <input asp-for="KinhNghiem" class="form-control py-[5px] px-[10px] border-none outline-none rounded-xl border-solid border-[1px] border-stone-400 text-[16px] transition-all border-b-2 focus:border-fuchsia-400" />
+                            <span asp-validation-for="KinhNghiem" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-[20px]" style="display: none">
+                            <label asp-for="Hinh" class="control-label"></label>
+                            <input asp-for="Hinh" type="file" accept="image/*" class="form-control" />
+                            <img src="/@Model.Hinh" style="width: 200px; height: 200px" />
+                        </div>
+                        <div class="form-group mt-[20px]">
+                  @*           <input type="submit" value="Save" class="btn btn-primary rounded-lg px-4 py-2 bg-yellow-500 hover:bg-yellow-600 duration-300 text-xl" /> *@
+                            <button type="submit" value="Save" class="rounded-lg px-4 py-2 bg-yellow-500 hover:bg-yellow-600 duration-300 text-xl">
+                                Edit
+                            </button>
+                            <button asp-action="Index" class="rounded-lg px-4 py-2 bg-green-300 hover:bg-green-400 duration-300 text-xl">
+                                Quay về danh sách
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

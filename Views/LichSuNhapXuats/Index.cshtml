@@ -1,0 +1,89 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.LichSuNhapXuat>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+}
+<style>
+    h1{
+        text-align:center;
+    }
+    .kho{
+        display:flex;
+        justify-content:flex-start;
+        padding:15px;
+    }
+</style>
+<h1>Thông tin chi tiết bảng nhập xuất</h1>
+<div>
+    <a class="kho" href="~/Khoes/Index">Kho vật tư</a>
+</div>
+<p>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NoiDung)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenDungCu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DonViTinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoLuongNhapXuat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Don)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ThanhTien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayNhap)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoiDung)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenDungCu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonViTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuongNhapXuat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Don)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThanhTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayNhap)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.MaLs">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

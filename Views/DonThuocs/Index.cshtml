@@ -1,0 +1,111 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.DonThuoc>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    h1 {
+        text-align: center;
+    }
+</style>
+
+
+<main class="px-5 py-5 h-screen">
+    <h1 class="uppercase text-4xl font-semibold tracking-[.2rem]">Trang danh sách thuốc </h1>
+
+        <a class="inline-block rounded-lg px-4 py-2 bg-blue-500 text-black-100 hover:bg-blue-600 hover:text-white duration-300 mt-[20px]" asp-controller="DanhSachKhams" asp-action="Index"><i class="fa-solid fa-arrow-left"></i> Trở lại trang danh sách để đăng kí thêm thuốc cho bệnh nhân</a>
+    
+    <div class="flex flex-col gap-10 mt-[20px]">
+        <!-- ====== Table Four Start -->
+        <div class="overflow-hidden rounded-[10px]">
+            <div class="max-w-full overflow-x-auto">
+                <div class="max-w-[1170px]">
+                    <!-- table header start -->
+                    <div class="grid text-white grid-cols-12 bg-[#F9FAFB] px-5 py-4 dark:bg-meta-4 lg:px-7.5 2xl:px-11 justify-items-center" style="background-color: rgb(60 80 224); color: rgb(255 255 255) ">
+                        <div class="col-span-2">
+                            <h5 class="font-medium ">
+                                ID Khám
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                               Số lượng
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                               Thành giá 
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                                Tổng tiền
+                            </h5>
+                        </div>
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                             Tên dụng cụ
+                            </h5>
+                        </div>
+                        <div class="col-span-2">
+                            <h5 class="font-medium">
+                               Action
+                            </h5>
+                        </div>
+
+                    </div>
+                    <!-- table header end -->
+                    <!-- table body start -->
+                    <div class="bg-white dark:bg-boxdark">
+                        <!-- table row item -->
+                        
+                            <div class="grid grid-cols-12 border-t border-[#EEEEEE] text-center text-[16px] px-5 py-4 dark:border-strokedark lg:px-7.5 2xl:px-11 justify-items-center align-items-center">
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.IdkhamNavigation.Idkham)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.SoLuong)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.ThanhGia)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.TongTien)
+                                    </p>
+                                </div>
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.IddungCuNavigation.TenDungCu)
+                                    </p>
+                                </div>
+                                <div class="flex gap-[10px] col-span-2">
+                                    <a asp-action="Details" asp-route-id="@item.IddonThuoc">Thông tin</a>
+                              </div>
+                            }
+                            </div>
+                                        <!-- table body end -->
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
