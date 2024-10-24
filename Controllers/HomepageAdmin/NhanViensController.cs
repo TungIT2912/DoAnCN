@@ -14,9 +14,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 {
     public class NhanViensController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public NhanViensController(QlnhaKhoaContext context)
+        public NhanViensController(ApplicationDbContext context)
         {
             _context = context;
         }

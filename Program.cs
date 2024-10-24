@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+
 using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.wwwroot.AutoMapper;
 
@@ -8,10 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<QlnhaKhoaContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("NhaKhoa"));
-});
+// Configure the DbContext with connection string from configuration
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<EmailService>();
 

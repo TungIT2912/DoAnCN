@@ -11,9 +11,9 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     public class LichSuNhapXuatsController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LichSuNhapXuatsController(QlnhaKhoaContext context)
+        public LichSuNhapXuatsController(ApplicationDbContext context)
         {
             _context = context;
         }

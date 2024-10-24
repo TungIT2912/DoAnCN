@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\AdminDashboard\js\components\chart-01.js" />
     <None Include="wwwroot\AdminDashboard\js\components\chart-02.js" />
     <None Include="wwwroot\AdminDashboard\js\components\chart-03.js" />

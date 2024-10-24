@@ -7,10 +7,10 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
 	public class RegisterController : Controller
 	{
-		private readonly QlnhaKhoaContext _context;
+		private readonly ApplicationDbContext _context;
 
 		private readonly IMapper _mapper;
-		public RegisterController(QlnhaKhoaContext context, IMapper mapper)
+		public RegisterController(ApplicationDbContext context, IMapper mapper)
 		{
 			_context = context;
 			_mapper = mapper;
