@@ -11,9 +11,9 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
 {
     public class DanhSachKhamsController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DanhSachKhamsController(QlnhaKhoaContext context)
+        public DanhSachKhamsController(ApplicationDbContext context)
         {
             _context = context;
         }

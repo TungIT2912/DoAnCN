@@ -12,9 +12,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 {
     public class BenhNhansController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BenhNhansController(QlnhaKhoaContext context)
+        public BenhNhansController(ApplicationDbContext context)
         {
             _context = context;
         }

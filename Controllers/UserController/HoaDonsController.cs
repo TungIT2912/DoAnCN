@@ -13,11 +13,11 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
 {
     public class HoaDonsController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly EmailService _emailService;
 
 
-        public HoaDonsController(QlnhaKhoaContext context, EmailService emailService)
+        public HoaDonsController(ApplicationDbContext context, EmailService emailService)
         {
             _context = context;
             _emailService = emailService;

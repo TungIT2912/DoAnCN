@@ -8,9 +8,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 {
     public class DieuTriController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DieuTriController(QlnhaKhoaContext context)
+        public DieuTriController(ApplicationDbContext context)
         {
             _context = context;
         }

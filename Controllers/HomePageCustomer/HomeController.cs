@@ -13,9 +13,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
     public class HomeController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(QlnhaKhoaContext context)
+        public HomeController(ApplicationDbContext context)
         {
             _context = context;
         }
