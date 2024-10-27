@@ -11,10 +11,10 @@ namespace WebQuanLyNhaKhoa.Data
 		[Key]
 		public int MaNv { get; set; }
 
-		[ForeignKey("TaiKhoan")]
-		[Required]
-		[StringLength(50)]
-		public string TenDangNhap { get; set; } = null!;
+		//[ForeignKey("TaiKhoan")]
+		//[Required]
+		//[StringLength(50)]
+		//public string TenDangNhap { get; set; } = null!;
 
 		[Required]
 		[StringLength(100)]
@@ -37,6 +37,6 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual ChucVu MaCvNavigation { get; set; } = null!;
 
-		public virtual TaiKhoan TenDangNhapNavigation { get; set; } = null!;
+		//public virtual TaiKhoan TenDangNhapNavigation { get; set; } = null!;
 	}
 }

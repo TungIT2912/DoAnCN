@@ -23,114 +23,114 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         // GET: NhanViens
         public IActionResult Index(string query = "", string role = "nothing", string sort = "nothing", int page = 1)
         {
-            if (query == "")
-            {
-                if (role == "nothing")
-                {
-                    if (sort == "nothing")
-                    {
+            //if (query == "")
+            //{
+            //    if (role == "nothing")
+            //    {
+            //        if (sort == "nothing")
+            //        {
                      
-                        page = page < 1 ? 1 : page;
-                        int pagesize = 8;
-                        var nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToPagedList(page, pagesize);
-                        return View(nhanViens);
-                    }
-                    else
-                    {
-                        if (sort == "Ten")
-                        {
-                            List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).OrderBy(n => n.Ten).ToList();
-                            return View(nhanViens);
-                        }
-                        else
-                        {
-                            List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).OrderBy(n => n.MaCvNavigation.TenCv).ToList();
-                            return View(nhanViens);
-                        }
-                    }
-                }
-                else
-                {
-                    if (sort == "Ten")
-                    {
-                        List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).Where(n => n.TenDangNhap == role).OrderBy(n => n.Ten).ToList();
-                        return View(nhanViens);
-                    }
-                    else
-                    {
-                        List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).Where(n => n.TenDangNhap == role).OrderBy(n => n.MaCvNavigation.TenCv).ToList();
-                        return View(nhanViens);
-                    }
-                }
-            }
-            else
-            {
-                if (role == "nothing")
-                {
-                    if (sort == "nothing")
-                    {
-                        int pagesize = 6;
-                        var nhanViens = _context.NhanViens
-                        .Include(n => n.MaCvNavigation)
-                        .Include(n => n.TenDangNhapNavigation)
-                        .Where(n => n.Ten.Contains(query)).ToPagedList(page, pagesize); ;
-                        return View(nhanViens);
-                    }
-                    else
-                    {
-                        if (sort == "Ten")
-                        {
-                            List<NhanVien> nhanViens = _context.NhanViens
-                       .Include(n => n.MaCvNavigation)
-                       .Include(n => n.TenDangNhapNavigation)
-                       .Where(n => n.Ten.Contains(query)).OrderBy(n => n.Ten).ToList();
-                            return View(nhanViens);
-                        }
-                        else
-                        {
-                            List<NhanVien> nhanViens = _context.NhanViens
-                    .Include(n => n.MaCvNavigation)
-                    .Include(n => n.TenDangNhapNavigation)
-                     .Where(n => n.Ten.Contains(query)).OrderBy(n => n.MaCvNavigation.TenCv).ToList();
-                            return View(nhanViens);
-                        }
-                    }
+            //            page = page < 1 ? 1 : page;
+            //            int pagesize = 8;
+            //            ////var nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToPagedList(page, pagesize);
+            //            return View(nhanViens);
+            //        }
+            //        else
+            //        {
+            //            if (sort == "Ten")
+            //            {
+            //                List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).OrderBy(n => n.Ten).ToList();
+            //                return View(nhanViens);
+            //            }
+            //            else
+            //            {
+            //                List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).OrderBy(n => n.MaCvNavigation.TenCv).ToList();
+            //                return View(nhanViens);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (sort == "Ten")
+            //        {
+            //            List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).Where(n => n.TenDangNhap == role).OrderBy(n => n.Ten).ToList();
+            //            return View(nhanViens);
+            //        }
+            //        else
+            //        {
+            //            List<NhanVien> nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).Where(n => n.TenDangNhap == role).OrderBy(n => n.MaCvNavigation.TenCv).ToList();
+            //            return View(nhanViens);
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (role == "nothing")
+            //    {
+            //        if (sort == "nothing")
+            //        {
+            //            int pagesize = 6;
+            //            var nhanViens = _context.NhanViens
+            //            .Include(n => n.MaCvNavigation)
+            //            .Include(n => n.TenDangNhapNavigation)
+            //            .Where(n => n.Ten.Contains(query)).ToPagedList(page, pagesize); ;
+            //            return View(nhanViens);
+            //        }
+            //        else
+            //        {
+            //            if (sort == "Ten")
+            //            {
+            //                List<NhanVien> nhanViens = _context.NhanViens
+            //           .Include(n => n.MaCvNavigation)
+            //           .Include(n => n.TenDangNhapNavigation)
+            //           .Where(n => n.Ten.Contains(query)).OrderBy(n => n.Ten).ToList();
+            //                return View(nhanViens);
+            //            }
+            //            else
+            //            {
+            //                List<NhanVien> nhanViens = _context.NhanViens
+            //        .Include(n => n.MaCvNavigation)
+            //        .Include(n => n.TenDangNhapNavigation)
+            //         .Where(n => n.Ten.Contains(query)).OrderBy(n => n.MaCvNavigation.TenCv).ToList();
+            //                return View(nhanViens);
+            //            }
+            //        }
 
-                }
-                else
-                {
-                    if (sort == "nothing")
-                    {
-                        List<NhanVien> nhanViens = _context.NhanViens
-                                 .Include(n => n.MaCvNavigation)
-                                 .Include(n => n.TenDangNhapNavigation)
-                                 .Where(n => n.Ten.Contains(query)).Where(n => n.TenDangNhap == role).ToList();
-                        return View(nhanViens);
-                    }
-                    else
-                    {
-                        if (sort == "Ten")
-                        {
-                            List<NhanVien> nhanViens = _context.NhanViens
-                       .Include(n => n.MaCvNavigation)
-                       .Include(n => n.TenDangNhapNavigation)
-                       .Where(n => n.Ten.Contains(query)).Where(n => n.TenDangNhap == role)
-                       .OrderBy(n => n.Ten).ToList();
-                            return View(nhanViens);
-                        }
-                        else
-                        {
-                            List<NhanVien> nhanViens = _context.NhanViens
-                    .Include(n => n.MaCvNavigation)
-                    .Include(n => n.TenDangNhapNavigation)
-                     .Where(n => n.Ten.Contains(query)).Where(n => n.TenDangNhap == role)
-                     .OrderBy(n => n.MaCvNavigation.TenCv).ToList();
-                            return View(nhanViens);
-                        }
-                    }
+            //    }
+            //    else
+            //    {
+            //        if (sort == "nothing")
+            //        {
+            //            List<NhanVien> nhanViens = _context.NhanViens
+            //                     .Include(n => n.MaCvNavigation)
+            //                     .Include(n => n.TenDangNhapNavigation)
+            //                     .Where(n => n.Ten.Contains(query)).Where(n => n.TenDangNhap == role).ToList();
+            //            return View(nhanViens);
+            //        }
+            //        else
+            //        {
+            //            if (sort == "Ten")
+            //            {
+            //                List<NhanVien> nhanViens = _context.NhanViens
+            //           .Include(n => n.MaCvNavigation)
+            //           .Include(n => n.TenDangNhapNavigation)
+            //           .Where(n => n.Ten.Contains(query)).Where(n => n.TenDangNhap == role)
+            //           .OrderBy(n => n.Ten).ToList();
+            //                return View(nhanViens);
+            //            }
+            //            else
+            //            {
+            //                List<NhanVien> nhanViens = _context.NhanViens
+            //        .Include(n => n.MaCvNavigation)
+            //        .Include(n => n.TenDangNhapNavigation)
+            //         .Where(n => n.Ten.Contains(query)).Where(n => n.TenDangNhap == role)
+            //         .OrderBy(n => n.MaCvNavigation.TenCv).ToList();
+            //                return View(nhanViens);
+            //            }
+            //        }
 
-                }
-            }
+            //    }
+            //}
 
             return View();
         }
@@ -144,7 +144,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 
             var nhanVien = await _context.NhanViens
                 .Include(n => n.MaCvNavigation)
-                .Include(n => n.TenDangNhapNavigation)
+                //.Include(n => n.TenDangNhapNavigation)
                 .FirstOrDefaultAsync(m => m.MaNv == id);
             if (nhanVien == null)
             {
@@ -166,12 +166,12 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         public IActionResult Create()
         {
             ViewData["MaCv"] = new SelectList(_context.ChucVus, "MaCv", "TenCv");
-            ViewData["TenDangNhap"] = new SelectList(_context.TaiKhoans, "TenDangNhap", "TenDangNhap");
+            //ViewData["TenDangNhap"] = new SelectList(_context.TaiKhoans, "TenDangNhap", "TenDangNhap");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaNv,TenDangNhap,Ten,Sdt,MaCv,KinhNghiem,Hinh")] NhanVien nhanVien, IFormFile Hinh)
+        public async Task<IActionResult> Create([Bind("MaNv,Ten,Sdt,MaCv,KinhNghiem,Hinh")] NhanVien nhanVien, IFormFile Hinh)
         {
 
             if (Hinh != null)
@@ -183,7 +183,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MaCv"] = new SelectList(_context.ChucVus, "MaCv", "TenCv", nhanVien.MaCv);
-            ViewData["TenDangNhap"] = new SelectList(_context.TaiKhoans, "TenDangNhap", "TenDangNhap", nhanVien.TenDangNhap);
+            //ViewData["TenDangNhap"] = new SelectList(_context.TaiKhoans, "TenDangNhap", "TenDangNhap", nhanVien.TenDangNhap);
             return View(nhanVien);
         }
         // GET: NhanViens/Edit/5
@@ -200,13 +200,13 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 return NotFound();
             }
             ViewData["MaCv"] = new SelectList(_context.ChucVus, "MaCv", "TenCv", nhanVien.MaCv);
-            ViewData["TenDangNhap"] = new SelectList(_context.TaiKhoans, "TenDangNhap", "TenDangNhap", nhanVien.TenDangNhap);
+            //ViewData["TenDangNhap"] = new SelectList(_context.TaiKhoans, "TenDangNhap", "TenDangNhap", nhanVien.TenDangNhap);
             return View(nhanVien);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,[Bind("MaNv,TenDangNhap,Ten,Sdt,MaCv,KinhNghiem,Hinh")] NhanVien nhanVien, IFormFile Hinh)
+        public async Task<IActionResult> Edit(int id,[Bind("MaNv,Ten,Sdt,MaCv,KinhNghiem,Hinh")] NhanVien nhanVien, IFormFile Hinh)
         {
             ModelState.Remove("Hinh"); // Loại bỏ xác thực ModelState cho ImageUrl
             if (id != nhanVien.MaNv)
@@ -227,7 +227,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 existingNV.Hinh = await SaveImage(Hinh);
             }
             // Cập nhật các thông tin khác của sản phẩm
-            existingNV.TenDangNhap = nhanVien.TenDangNhap;
+            //existingNV.TenDangNhap = nhanVien.TenDangNhap;
             existingNV.Ten = nhanVien.Ten;
             existingNV.Sdt = nhanVien.Sdt;
             existingNV.MaCv = nhanVien.MaCv;
@@ -247,7 +247,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 
             var nhanVien = await _context.NhanViens
                 .Include(n => n.MaCvNavigation)
-                .Include(n => n.TenDangNhapNavigation)
+                //.Include(n => n.TenDangNhapNavigation)
                 .FirstOrDefaultAsync(m => m.MaNv == id);
             if (nhanVien == null)
             {

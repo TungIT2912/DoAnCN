@@ -10,10 +10,12 @@ namespace WebQuanLyNhaKhoa.Data
 		[Column("IdKham")]
 		public string Idkham { get; set; } = null!;
 
+
 		[ForeignKey("BenhNhan")]
 		public string IdbenhNhan { get; set; } = null!;
 
 		public int? MaNv { get; set; }
+
 
 		public DateTime NgayKham { get; set; }
 

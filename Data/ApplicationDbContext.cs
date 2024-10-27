@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebQuanLyNhaKhoa.Data
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
@@ -32,7 +33,7 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual DbSet<NhanVien> NhanViens { get; set; }
 
-		public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
+		//public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
 
 		public virtual DbSet<ThiTruong> ThiTruongs { get; set; }
 

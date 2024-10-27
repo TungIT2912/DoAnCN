@@ -19,10 +19,10 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // GET: OurDoctors
-        public async Task<IActionResult> Index()
-        {
-            var qlnhaKhoaContext = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation);
-            return View(await qlnhaKhoaContext.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    var qlnhaKhoaContext = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation);
+        //    return View(await qlnhaKhoaContext.ToListAsync());
+        //}
     }
 }
