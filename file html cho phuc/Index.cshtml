@@ -1,0 +1,109 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.DanhSachKham>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        display: flex;
+        justify-content: flex-start;
+        padding: 15px;
+    }
+</style>
+<main class="px-5 py-5">
+    <h1 class="uppercase text-4xl font-semibold tracking-[.2rem]">Thông tin danh sách đăng kí khám </h1>
+    <div class="my-5">
+        <a asp-action="Index" asp-controller="HoaDons">
+            <button class="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Xem hóa đơn các bệnh nhân <i class="fa-solid fa-eye"></i></button>
+        </a>
+        <a asp-action="Create">
+            <button class="rounded-lg px-4 py-2 bg-green-700 text-green-100 hover:bg-green-800 duration-300">Tạo thêm danh sách khám <i class="fa-solid fa-user-plus"></i></button>
+        </a>
+    </div>
+    <div class="flex flex-col gap-10">
+            <!-- ====== Table Four Start -->
+     <div class="overflow-hidden rounded-[10px]">
+                <div class="max-w-full overflow-x-auto">
+                    <div class="max-w-[1170px]">
+                        <!-- table header start -->
+                <div class="grid text-white grid-cols-12 bg-[#F9FAFB] px-5 py-4 dark:bg-meta-4 lg:px-7.5 2xl:px-11 justify-items-center" style="background-color: rgb(60 80 224); color: rgb(255 255 255) ">
+                            <div class="col-span-2">
+                                <h5 class="font-medium ">
+                                    ID Khám
+                                </h5>
+                            </div>
+
+                            <div class="col-span-2">
+                                <h5 class="font-medium">
+                                    Họ tên
+                                </h5>
+                            </div>
+
+                            <div class="col-span-2">
+                                <h5 class="font-medium">
+                                   Nhân viên phụ trách
+                                </h5>
+                            </div>
+
+                            <div class="col-span-2">
+                                <h5 class="font-medium">
+                                    Ngày đăng kí
+                                </h5>
+                            </div>
+                          <div class="col-span-4">
+                                <h5 class="font-medium">
+                                    Hành động
+                                </h5>
+                            </div> 
+
+                        </div>
+                        <!-- table header end -->
+                        <!-- table body start -->
+                        <div class="bg-white dark:bg-boxdark">
+                            <!-- table row item -->
+                            @foreach (var item in Model)
+                            {
+                        <div class="grid grid-cols-12 border-t border-[#EEEEEE] text-[12px] px-5 py-4 dark:border-strokedark lg:px-7.5 2xl:px-11 justify-items-center align-items-center">
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                         @Html.DisplayFor(modelItem => item.Idkham)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                      @Html.DisplayFor(modelItem => item.IdbenhNhanNavigation.HoTen)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                    @Html.DisplayFor(modelItem => item.MaNvNavigation.Ten)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                        <p class="text-[#637381] dark:text-bodydark">
+                                          @Html.DisplayFor(modelItem => item.NgayKham)
+                                        </p>
+                                </div>
+
+                                <div class="flex gap-[10px] col-span-4">
+                                    <a href="@Url.Action("Create", "DonThuocs", new { idKham = item.Idkham })">Tạo mới đơn thuốc <i class="fa-solid fa-file-circle-plus"></i></a>
+                                    <a asp-action="Add" asp-controller="DieuTri" asp-route-id="@item.Idkham">Tạo điều trị <i class="fa-solid fa-vial-circle-check"></i></a>
+                                    <a asp-action="Create" asp-controller="HoaDons"  asp-route-id="@item.Idkham">Tạo mới hoá đơn <i class="fa-solid fa-folder-closed"></i></a>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        <!-- table body end -->
+                    </div>
+                </div>
+            </div>
+     </div>
+</main>
