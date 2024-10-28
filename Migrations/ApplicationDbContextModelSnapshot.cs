@@ -166,9 +166,25 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("Age")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AvatarPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChucVu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CustomerID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomerIdbenhNhan")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -178,8 +194,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -207,6 +225,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("StaffId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -216,6 +237,8 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerIdbenhNhan");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -224,12 +247,15 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("StaffId");
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>
                 {
                     b.Property<string>("IdbenhNhan")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("IdBenhNhan");
 
@@ -255,6 +281,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("Sdt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("IdbenhNhan");
 
                     b.ToTable("BenhNhans");
@@ -263,6 +292,7 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChanDoan", b =>
                 {
                     b.Property<string>("IdchanDoan")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("IdChanDoan");
 
@@ -279,6 +309,7 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChucVu", b =>
                 {
                     b.Property<string>("MaCv")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("MaCV");
 
@@ -295,6 +326,7 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DanhSachKham", b =>
                 {
                     b.Property<string>("Idkham")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("IdKham");
 
@@ -326,6 +358,7 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DichVu", b =>
                 {
                     b.Property<string>("IddichVu")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("IdDichVu");
 
@@ -496,6 +529,7 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Kho", b =>
                 {
                     b.Property<string>("IdsanPham")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DonViTinh")
@@ -593,6 +627,14 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaNv"));
 
+                    b.Property<string>("Diachi")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("Hinh")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -616,6 +658,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("MaNv");
 
                     b.HasIndex("MaCvNavigationMaCv");
@@ -623,9 +669,42 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.ToTable("NhanViens");
                 });
 
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.TaiKhoan", b =>
+                {
+                    b.Property<string>("TenDangNhap")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("BenhNhanIdbenhNhan")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("MaBN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MaNV")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MatKhau")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("NhanVienMaNv")
+                        .HasColumnType("int");
+
+                    b.HasKey("TenDangNhap");
+
+                    b.HasIndex("BenhNhanIdbenhNhan");
+
+                    b.HasIndex("NhanVienMaNv");
+
+                    b.ToTable("TaiKhoans");
+                });
+
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ThiTruong", b =>
                 {
                     b.Property<string>("IdsanPham")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -701,6 +780,21 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ApplicationUser", b =>
+                {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.BenhNhan", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerIdbenhNhan");
+
+                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DanhSachKham", b =>
@@ -820,6 +914,21 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasForeignKey("MaCvNavigationMaCv");
 
                     b.Navigation("MaCvNavigation");
+                });
+
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.TaiKhoan", b =>
+                {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.BenhNhan", "BenhNhan")
+                        .WithMany()
+                        .HasForeignKey("BenhNhanIdbenhNhan");
+
+                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "NhanVien")
+                        .WithMany()
+                        .HasForeignKey("NhanVienMaNv");
+
+                    b.Navigation("BenhNhan");
+
+                    b.Navigation("NhanVien");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>

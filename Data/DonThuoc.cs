@@ -7,7 +7,8 @@ namespace WebQuanLyNhaKhoa.Data
 	public class DonThuoc
 	{
 		[Key]
-		public int IddonThuoc { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IddonThuoc { get; set; }
 
 		[ForeignKey("DanhSachKham")]
 		public string Idkham { get; set; } = null!;
