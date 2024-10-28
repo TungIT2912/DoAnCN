@@ -1,29 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using WebQuanLyNhaKhoa.Data;
 
-namespace WebQuanLyNhaKhoa.Data;
-
-public partial class NhanVien
+namespace WebQuanLyNhaKhoa.Data
 {
-    public int MaNv { get; set; }
+	public partial class NhanVien
+	{
+		[Key]
+		public int MaNv { get; set; }
 
-    public string TenDangNhap { get; set; } = null!;
+		//[ForeignKey("TaiKhoan")]
+		//[Required]
+		//[StringLength(50)]
+		//public string TenDangNhap { get; set; } = null!;
 
-    [DisplayName("Tên nhân viên")]
-    public string Ten { get; set; } = null!;
+		[Required]
+		[StringLength(100)]
+		public string Ten { get; set; } = null!;
 
-    public string? Sdt { get; set; }
+		[Phone]
+		public string? Sdt { get; set; }
 
-    public string MaCv { get; set; } = null!;
+		[ForeignKey("ChucVu")]
+		[Required]
+		public string MaCv { get; set; } = null!;
 
-    public string? KinhNghiem { get; set; }
+		[StringLength(200)]
+		public string? KinhNghiem { get; set; }
 
-    public string? Hinh { get; set; }
+		[StringLength(100)]
+		public string? Hinh { get; set; }
 
-    public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
+		public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
 
-    public virtual ChucVu MaCvNavigation { get; set; } = null!;
+		public virtual ChucVu MaCvNavigation { get; set; } = null!;
 
-    public virtual TaiKhoan TenDangNhapNavigation { get; set; } = null!;
+		//public virtual TaiKhoan TenDangNhapNavigation { get; set; } = null!;
+	}
 }

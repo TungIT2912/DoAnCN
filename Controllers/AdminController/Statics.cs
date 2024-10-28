@@ -8,8 +8,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     public class Statics : Controller
     {
-        QlnhaKhoaContext _context;
-        public Statics(QlnhaKhoaContext context)
+        ApplicationDbContext _context;
+        public Statics(ApplicationDbContext context)
         {
             _context = context;
         }

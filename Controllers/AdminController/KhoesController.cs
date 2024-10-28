@@ -11,9 +11,9 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     public class KhoesController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public KhoesController(QlnhaKhoaContext context)
+        public KhoesController(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -15,11 +15,16 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
 {
     public class HoaDonsController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly EmailService _emailService;
         private readonly IVnPayService _vnPayService;
 
-        public HoaDonsController(QlnhaKhoaContext context, EmailService emailService,IVnPayService vnPayService)
+
+
+        
+
+        public HoaDonsController(ApplicationDbContext context, EmailService emailService,IVnPayService vnPayService)
+
         {
             _context = context;
             _emailService = emailService;
@@ -102,8 +107,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
                 hoaDon.TongTien = s + dieuTriAmount;
                 hoaDon.Idkham = Id;
                 _context.HoaDons.Add(hoaDon);
-
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
 
