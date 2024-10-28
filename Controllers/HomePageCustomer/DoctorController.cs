@@ -6,4 +6,8 @@ public class DoctorController : Controller
     {
         return View();
     }
+    public ActionResult DoctorDetails()
+    {
+        return View();
+    }
 }
