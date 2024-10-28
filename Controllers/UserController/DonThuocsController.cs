@@ -11,9 +11,9 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
 {
     public class DonThuocsController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DonThuocsController(QlnhaKhoaContext context)
+        public DonThuocsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -21,6 +21,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
         // GET: DonThuocs
         public async Task<IActionResult> Index()
         {
+
             var qlnhaKhoaContext = _context.DonThuocs.Include(d => d.IddungCuNavigation).Include(d => d.IdkhamNavigation);
             return View(await qlnhaKhoaContext.ToListAsync());
         }

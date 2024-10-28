@@ -1,40 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using WebQuanLyNhaKhoa.Data;
 
-namespace WebQuanLyNhaKhoa.Data;
-
-public partial class DonThuoc
+namespace WebQuanLyNhaKhoa.Data
 {
-    [DisplayName("ID đơn thuốc")]
-    public int IddonThuoc { get; set; }
+	public class DonThuoc
+	{
+		[Key]
+		public int IddonThuoc { get; set; }
 
-    [DisplayName("ID khám")]
-    public string Idkham { get; set; } = null!;
+		[ForeignKey("DanhSachKham")]
+		public string Idkham { get; set; } = null!;
 
-    [DisplayName("ID thuốc")]
-    public string IddungCu { get; set; } = null!;
+		[ForeignKey("Kho")]
+		public string IddungCu { get; set; } = null!;
 
-    [DisplayName("Số lượng")]
-    public int SoLuong { get; set; }
+		public int SoLuong { get; set; }
 
-    [DisplayName("Đơn giá")]
-    public decimal ThanhGia { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal ThanhGia { get; set; }
 
-    [DisplayName("Thành tiền")]
-    public decimal TongTien { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal TongTien { get; set; }
 
-    [DisplayName("Ngày lập")]
-    public DateTime? NgayLapDt { get; set; }
+		public DateTime? NgayLapDt { get; set; }
 
+		public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
-    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
-
-
-    [DisplayName("Tên thuốc")]
-    public virtual Kho IddungCuNavigation { get; set; } = null!;
-
-
-    [DisplayName("Tên bệnh nhân")]
-    public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
+		public virtual Kho IddungCuNavigation { get; set; } = null!;
+		public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
+	}
 }

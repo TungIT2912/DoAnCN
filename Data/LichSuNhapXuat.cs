@@ -1,39 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebQuanLyNhaKhoa.Data;
-
-public partial class LichSuNhapXuat
+namespace WebQuanLyNhaKhoa.Data
 {
-    public int MaLs { get; set; }
+	public partial class LichSuNhapXuat
+	{
+		[Key]
+		public int MaLs { get; set; }
 
-    [DisplayName("Nội dung")]
-    public string NoiDung { get; set; } = null!;
+		[Required]
+		[StringLength(500)]
+		public string NoiDung { get; set; } = null!;
 
-    [DisplayName("ID dụng cụ")]
-    public string IddungCu { get; set; } = null!;
+		[ForeignKey("Kho")]
+		[Required]
+		public string IddungCu { get; set; } = null!;
 
-    [DisplayName("Tên dụng cụ")]
-    public string TenDungCu { get; set; } = null!;
+		[Required]
+		[StringLength(100)]
+		public string TenDungCu { get; set; } = null!;
 
-    [DisplayName("Loại")]
-    public string Loai { get; set; } = null!;
+		[Required]
+		[StringLength(50)]
+		public string Loai { get; set; } = null!;
 
-    [DisplayName("Đơn vị tính")]
-    public string DonViTinh { get; set; } = null!;
+		[Required]
+		[StringLength(50)]
+		public string DonViTinh { get; set; } = null!;
 
-    [DisplayName("Số lượng")]
-    public int? SoLuongNhapXuat { get; set; }
+		public int? SoLuongNhapXuat { get; set; }
 
-    [DisplayName("Đơn giá")]
-    public decimal Don { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal Don { get; set; }
 
-    [DisplayName("Thành tiền")]
-    public decimal ThanhTien { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal ThanhTien { get; set; }
 
-    [DisplayName("Ngày tạo")]
-    public DateTime NgayNhap { get; set; }
+		public DateTime NgayNhap { get; set; }
 
-    public virtual Kho IddungCuNavigation { get; set; } = null!;
+		public virtual Kho IddungCuNavigation { get; set; } = null!;
+	}
 }

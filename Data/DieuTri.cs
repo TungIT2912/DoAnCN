@@ -1,27 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using WebQuanLyNhaKhoa.Data;
 
-namespace WebQuanLyNhaKhoa.Data;
-
-public partial class DieuTri
+namespace WebQuanLyNhaKhoa.Data
 {
-    public int IddieuTri { get; set; }
+	public class DieuTri
+	{
+		[Key]
+		public int IddieuTri { get; set; }
 
-    public string IddichVu { get; set; } = null!;
+		[ForeignKey("DichVu")]
+		public string IddichVu { get; set; } = null!;
 
-    public string Idkham { get; set; } = null!;
+		[ForeignKey("DanhSachKham")]
+		public string Idkham { get; set; } = null!;
 
-    public string IddungCu { get; set; } = null!;
+		[ForeignKey("Kho")]
+		public string IddungCu { get; set; } = null!;
 
-    public int SoLuong { get; set; }
+		public int SoLuong { get; set; }
 
-    public decimal ThanhTien { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal ThanhTien { get; set; }
 
-    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+		public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
-    public virtual DichVu IddichVuNavigation { get; set; } = null!;
-
-    public virtual Kho IddungCuNavigation { get; set; } = null!;
-
-    public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
+		public virtual DichVu IddichVuNavigation { get; set; } = null!;
+		public virtual Kho IddungCuNavigation { get; set; } = null!;
+		public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
+	}
 }

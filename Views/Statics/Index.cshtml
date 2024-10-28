@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <form asp-controller="Statics" asp-action="Index" method="post">
     <input name="year" type="number" id="inputYear" min="1900" max="2100" placeholder="Nhập năm..." required>

@@ -1,44 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebQuanLyNhaKhoa.Data;
-
-public partial class HoaDon
+namespace WebQuanLyNhaKhoa.Data
 {
-    [DisplayName("ID hóa đơn")]
-    public int IdhoaDon { get; set; }
+	public class HoaDon
+	{
+		[Key]
+		public int IdhoaDon { get; set; }
 
-    [DisplayName("ID đơn thuốc")]
-    public int IddonThuoc { get; set; }
+		public int IddonThuoc { get; set; }
 
-    [DisplayName("ID điều trị")]
-    public int IddieuTri { get; set; }
+		public int IddieuTri { get; set; }
 
-    [DisplayName("ID khám")]
-    public string? Idkham { get; set; }
+		public string? Idkham { get; set; }
 
-    [DisplayName("Phương thức thanh toán")]
-    public string? PhuongThucThanhToan { get; set; }
+		public string? PhuongThucThanhToan { get; set; }
 
-    [DisplayName("Tổng tiền thuốc")]
-    public decimal TienThuoc { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal TienThuoc { get; set; }
 
-    [DisplayName("Tổng tiền điều trị")]
-    public decimal TienDieuTri { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal TienDieuTri { get; set; }
 
-    [DisplayName("Thành tiền")]
-    public decimal TongTien { get; set; }
+		[Range(0, double.MaxValue)]
+		public decimal TongTien { get; set; }
 
-    [DisplayName("Ngày tạo")]
-    public DateTime NgayLap { get; set; }
+		public DateTime NgayLap { get; set; }
 
-    [DisplayName("Email bệnh nhân")]
-    public string? EmailBn { get; set; }
+		[EmailAddress]
+		public string? EmailBn { get; set; }
 
-    public virtual DieuTri IddieuTriNavigation { get; set; } = null!;
-
-    public virtual DonThuoc IddonThuocNavigation { get; set; } = null!;
-
-    public virtual DanhSachKham? IdkhamNavigation { get; set; }
+		public virtual DieuTri IddieuTriNavigation { get; set; } = null!;
+		public virtual DonThuoc IddonThuocNavigation { get; set; } = null!;
+		public virtual DanhSachKham? IdkhamNavigation { get; set; }
+	}
 }
