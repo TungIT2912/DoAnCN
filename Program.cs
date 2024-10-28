@@ -18,7 +18,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 		.AddDefaultTokenProviders()
 		.AddDefaultUI()
 		.AddEntityFrameworkStores<ApplicationDbContext>();
@@ -56,6 +57,11 @@ app.UseAuthorization();
 //app.MapControllerRoute(
 //	name: "default",
 //	pattern: "{controller=DanhSachKhams}/{action=Index}/{id?}");
+app.MapAreaControllerRoute(
+    name: "Admin",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+);
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
