@@ -6,10 +6,12 @@ namespace WebQuanLyNhaKhoa.Data
 	public class BenhNhan
 	{
 		[Key]
-		[Column("IdBenhNhan")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("IdBenhNhan")]
 		public string IdbenhNhan { get; set; } = null!;
-
-		[Required]
+        [ForeignKey("UserId")]
+        public string? UserId { get; set; }
+        [Required]
 		[StringLength(100)]
 		public string HoTen { get; set; } = null!;
 
@@ -28,5 +30,5 @@ namespace WebQuanLyNhaKhoa.Data
 
 		// Quan hệ 1-n với DanhSachKham
 		public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
-	}
+    }
 }

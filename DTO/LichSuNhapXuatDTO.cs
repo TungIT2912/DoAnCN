@@ -2,32 +2,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebQuanLyNhaKhoa.Data
+namespace WebQuanLyNhaKhoa.DTO
 {
-	public partial class LichSuNhapXuat
+	public partial class LichSuNhapXuatDTO
 	{
-		[Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MaLs { get; set; }
-
-		[Required]
-		[StringLength(500)]
 		public string NoiDung { get; set; } = null!;
 
-		[ForeignKey("Kho")]
-		[Required]
 		public string IddungCu { get; set; } = null!;
 
-		[Required]
-		[StringLength(100)]
 		public string TenDungCu { get; set; } = null!;
 
-		[Required]
-		[StringLength(50)]
 		public string Loai { get; set; } = null!;
 
-		[Required]
-		[StringLength(50)]
 		public string DonViTinh { get; set; } = null!;
 
 		public int? SoLuongNhapXuat { get; set; }
@@ -39,7 +25,5 @@ namespace WebQuanLyNhaKhoa.Data
 		public decimal ThanhTien { get; set; }
 
 		public DateTime NgayNhap { get; set; }
-
-		public virtual Kho IddungCuNavigation { get; set; } = null!;
 	}
 }

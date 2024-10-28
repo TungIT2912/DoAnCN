@@ -7,7 +7,8 @@ namespace WebQuanLyNhaKhoa.Data
 	public class ChucVu
 	{
 		[Key]
-		[Column("MaCV")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("MaCV")]
 		public string MaCv { get; set; } = null!;
 
 		[Required]

@@ -7,7 +7,8 @@ namespace WebQuanLyNhaKhoa.Data
 	public class DichVu
 	{
 		[Key]
-		[Column("IdDichVu")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("IdDichVu")]
 		public string IddichVu { get; set; } = null!;
 
 		[ForeignKey("ChanDoan")]

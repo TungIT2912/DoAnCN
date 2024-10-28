@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebQuanLyNhaKhoa.Data
+namespace WebQuanLyNhaKhoa.DTO
 {
-	public class HoaDon
+	public class HoaDonDTO
 	{
-		[Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdhoaDon { get; set; }
 
 		public int IddonThuoc { get; set; }
 
@@ -16,23 +13,11 @@ namespace WebQuanLyNhaKhoa.Data
 		public string? Idkham { get; set; }
 
 		public string? PhuongThucThanhToan { get; set; }
-
-		[Range(0, double.MaxValue)]
 		public decimal TienThuoc { get; set; }
-
-		[Range(0, double.MaxValue)]
 		public decimal TienDieuTri { get; set; }
-
-		[Range(0, double.MaxValue)]
 		public decimal TongTien { get; set; }
 
 		public DateTime NgayLap { get; set; }
-
-		[EmailAddress]
 		public string? EmailBn { get; set; }
-
-		public virtual DieuTri IddieuTriNavigation { get; set; } = null!;
-		public virtual DonThuoc IddonThuocNavigation { get; set; } = null!;
-		public virtual DanhSachKham? IdkhamNavigation { get; set; }
 	}
 }

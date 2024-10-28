@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebQuanLyNhaKhoa.Data;
 
@@ -26,6 +27,7 @@ namespace WebQuanLyNhaKhoa.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -118,7 +120,22 @@ namespace WebQuanLyNhaKhoa.Areas.Identity.Pages.Account
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
         }
+        private async Task<string> SaveImage(IFormFile image)
+        {
+            if (image == null)
+            {
+                // Sử dụng hình ảnh mặc định nếu không có ảnh tải lên
+                return "/images/anonymous.png";
+            }
 
+            var savePath = Path.Combine("wwwroot/images", image.FileName);
+            using (var fileStream = new FileStream(savePath, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            return "/images/" + image.FileName; // Trả về đường dẫn tương đối
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -148,8 +165,20 @@ namespace WebQuanLyNhaKhoa.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FullName = Input.FullName;
                 user.Address = Input.Address;
+                if (!string.IsNullOrEmpty(Input.Role))
+                {
+                    user.ChucVu = Input.Role;
+                }
+                else
+                {
+
+                    user.ChucVu = "Khách hàng";
+                }
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                //var imagePath = await SaveImage(Input.Avatar);
+                //user.AvatarPath = imagePath;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -164,6 +193,14 @@ namespace WebQuanLyNhaKhoa.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_Customer);
                     }
+                    var customer = new BenhNhan
+                    {
+                        UserId = user.Id,
+                        HoTen = Input.FullName
+                     
+                    };
+                    _context.BenhNhans.Add(customer);
+                    await _context.SaveChangesAsync();
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
