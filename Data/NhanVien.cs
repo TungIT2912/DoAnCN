@@ -9,7 +9,8 @@ namespace WebQuanLyNhaKhoa.Data
 	public partial class NhanVien
 	{
 		[Key]
-		public int MaNv { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int MaNv { get; set; }
 
 		//[ForeignKey("TaiKhoan")]
 		//[Required]
@@ -27,16 +28,20 @@ namespace WebQuanLyNhaKhoa.Data
 		[Required]
 		public string MaCv { get; set; } = null!;
 
-		[StringLength(200)]
+        [ForeignKey("UserId")]
+        public string UserId { get; set; }
+        [StringLength(200)]
 		public string? KinhNghiem { get; set; }
+        [StringLength(200)]
+        public string? Diachi { get; set; }
+        [StringLength(200)]
+        public string? Email { get; set; }
 
-		[StringLength(100)]
+        [StringLength(100)]
 		public string? Hinh { get; set; }
 
 		public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
 
 		public virtual ChucVu MaCvNavigation { get; set; } = null!;
-
-		//public virtual TaiKhoan TenDangNhapNavigation { get; set; } = null!;
-	}
+    }
 }

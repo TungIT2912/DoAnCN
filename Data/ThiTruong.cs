@@ -8,7 +8,8 @@ namespace WebQuanLyNhaKhoa.Data
 	public partial class ThiTruong
 	{
 		[Key]
-		[StringLength(50)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [StringLength(50)]
 		public string IdsanPham { get; set; } = null!;
 
 		[Required]
