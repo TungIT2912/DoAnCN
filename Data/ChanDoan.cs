@@ -6,7 +6,8 @@ namespace WebQuanLyNhaKhoa.Data
 {
 	public class ChanDoan
 	{
-		[Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
 		[Column("IdChanDoan")]
 		public string IdchanDoan { get; set; } = null!;
 

@@ -7,7 +7,8 @@ namespace WebQuanLyNhaKhoa.Data
 	public class DieuTri
 	{
 		[Key]
-		public int IddieuTri { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IddieuTri { get; set; }
 
 		[ForeignKey("DichVu")]
 		public string IddichVu { get; set; } = null!;

@@ -36,11 +36,13 @@ namespace WebQuanLyNhaKhoa.Data
 		//public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
 
 		public virtual DbSet<ThiTruong> ThiTruongs { get; set; }
+        public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<HoaDon>()
+          
+            modelBuilder.Entity<HoaDon>()
 				.HasOne(h => h.IddieuTriNavigation)
 				.WithMany(d => d.HoaDons)
 				.HasForeignKey(h => h.IddieuTri)

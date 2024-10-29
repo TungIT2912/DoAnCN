@@ -12,11 +12,11 @@ using WebQuanLyNhaKhoa.Models;
 using X.PagedList;
 namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 {
-    public class NhanViensController : Controller
+    public class testEmployee : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public NhanViensController(ApplicationDbContext context)
+        public testEmployee(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
             //    {
             //        if (sort == "nothing")
             //        {
-                     
+
             //            page = page < 1 ? 1 : page;
             //            int pagesize = 8;
             //            ////var nhanViens = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation).ToPagedList(page, pagesize);

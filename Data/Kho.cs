@@ -7,7 +7,8 @@ namespace WebQuanLyNhaKhoa.Data
 	public class Kho
 	{
 		[Key]
-		public string IdsanPham { get; set; } = null!;
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string IdsanPham { get; set; } = null!;
 
 		[ForeignKey("ThiTruong")]
 		public string IddungCu { get; set; } = null!;

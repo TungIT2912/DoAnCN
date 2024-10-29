@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class tesst : Migration
+    public partial class connect : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,37 +26,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BenhNhans",
                 columns: table => new
                 {
                     IdBenhNhan = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HoTen = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Gioi = table.Column<bool>(type: "bit", nullable: true),
                     NamSinh = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
@@ -127,6 +101,199 @@ namespace WebQuanLyNhaKhoa.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DichVus",
+                columns: table => new
+                {
+                    IdDichVu = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdchanDoan = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IdchanDoanNavigationIdchanDoan = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DichVus", x => x.IdDichVu);
+                    table.ForeignKey(
+                        name: "FK_DichVus_ChanDoans_IdchanDoanNavigationIdchanDoan",
+                        column: x => x.IdchanDoanNavigationIdchanDoan,
+                        principalTable: "ChanDoans",
+                        principalColumn: "IdChanDoan");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NhanViens",
+                columns: table => new
+                {
+                    MaNv = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MaCv = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KinhNghiem = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Diachi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Hinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    MaCvNavigationMaCv = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NhanViens", x => x.MaNv);
+                    table.ForeignKey(
+                        name: "FK_NhanViens_ChucVus_MaCvNavigationMaCv",
+                        column: x => x.MaCvNavigationMaCv,
+                        principalTable: "ChucVus",
+                        principalColumn: "MaCV");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Khos",
+                columns: table => new
+                {
+                    IdsanPham = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IddungCu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenDungCu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SoLuong = table.Column<int>(type: "int", nullable: true),
+                    IdsanPhamNavigationIdsanPham = table.Column<string>(type: "nvarchar(50)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Khos", x => x.IdsanPham);
+                    table.ForeignKey(
+                        name: "FK_Khos_ThiTruongs_IdsanPhamNavigationIdsanPham",
+                        column: x => x.IdsanPhamNavigationIdsanPham,
+                        principalTable: "ThiTruongs",
+                        principalColumn: "IdsanPham",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Age = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerID = table.Column<int>(type: "int", nullable: true),
+                    StaffId = table.Column<int>(type: "int", nullable: true),
+                    ChucVu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CustomerIdbenhNhan = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_BenhNhans_CustomerIdbenhNhan",
+                        column: x => x.CustomerIdbenhNhan,
+                        principalTable: "BenhNhans",
+                        principalColumn: "IdBenhNhan");
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_NhanViens_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "NhanViens",
+                        principalColumn: "MaNv");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DanhSachKhams",
+                columns: table => new
+                {
+                    IdKham = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdbenhNhan = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MaNv = table.Column<int>(type: "int", nullable: true),
+                    NgayKham = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IdbenhNhanNavigationIdbenhNhan = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MaNvNavigationMaNv = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DanhSachKhams", x => x.IdKham);
+                    table.ForeignKey(
+                        name: "FK_DanhSachKhams_BenhNhans_IdbenhNhanNavigationIdbenhNhan",
+                        column: x => x.IdbenhNhanNavigationIdbenhNhan,
+                        principalTable: "BenhNhans",
+                        principalColumn: "IdBenhNhan");
+                    table.ForeignKey(
+                        name: "FK_DanhSachKhams_NhanViens_MaNvNavigationMaNv",
+                        column: x => x.MaNvNavigationMaNv,
+                        principalTable: "NhanViens",
+                        principalColumn: "MaNv");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaiKhoans",
+                columns: table => new
+                {
+                    TenDangNhap = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    MatKhau = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    MaBN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BenhNhanIdbenhNhan = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MaNV = table.Column<int>(type: "int", nullable: true),
+                    NhanVienMaNv = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TaiKhoans", x => x.TenDangNhap);
+                    table.ForeignKey(
+                        name: "FK_TaiKhoans_BenhNhans_BenhNhanIdbenhNhan",
+                        column: x => x.BenhNhanIdbenhNhan,
+                        principalTable: "BenhNhans",
+                        principalColumn: "IdBenhNhan");
+                    table.ForeignKey(
+                        name: "FK_TaiKhoans_NhanViens_NhanVienMaNv",
+                        column: x => x.NhanVienMaNv,
+                        principalTable: "NhanViens",
+                        principalColumn: "MaNv");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LichSuNhapXuats",
+                columns: table => new
+                {
+                    MaLs = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoiDung = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IddungCu = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenDungCu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SoLuongNhapXuat = table.Column<int>(type: "int", nullable: true),
+                    Don = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IddungCuNavigationIdsanPham = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LichSuNhapXuats", x => x.MaLs);
+                    table.ForeignKey(
+                        name: "FK_LichSuNhapXuats_Khos_IddungCuNavigationIdsanPham",
+                        column: x => x.IddungCuNavigationIdsanPham,
+                        principalTable: "Khos",
+                        principalColumn: "IdsanPham");
                 });
 
             migrationBuilder.CreateTable(
@@ -212,126 +379,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DichVus",
-                columns: table => new
-                {
-                    IdDichVu = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IdchanDoan = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IdchanDoanNavigationIdchanDoan = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DichVus", x => x.IdDichVu);
-                    table.ForeignKey(
-                        name: "FK_DichVus_ChanDoans_IdchanDoanNavigationIdchanDoan",
-                        column: x => x.IdchanDoanNavigationIdchanDoan,
-                        principalTable: "ChanDoans",
-                        principalColumn: "IdChanDoan");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NhanViens",
-                columns: table => new
-                {
-                    MaNv = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MaCv = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KinhNghiem = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Hinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    MaCvNavigationMaCv = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NhanViens", x => x.MaNv);
-                    table.ForeignKey(
-                        name: "FK_NhanViens_ChucVus_MaCvNavigationMaCv",
-                        column: x => x.MaCvNavigationMaCv,
-                        principalTable: "ChucVus",
-                        principalColumn: "MaCV");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Khos",
-                columns: table => new
-                {
-                    IdsanPham = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IddungCu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenDungCu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: true),
-                    IdsanPhamNavigationIdsanPham = table.Column<string>(type: "nvarchar(50)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Khos", x => x.IdsanPham);
-                    table.ForeignKey(
-                        name: "FK_Khos_ThiTruongs_IdsanPhamNavigationIdsanPham",
-                        column: x => x.IdsanPhamNavigationIdsanPham,
-                        principalTable: "ThiTruongs",
-                        principalColumn: "IdsanPham",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DanhSachKhams",
-                columns: table => new
-                {
-                    IdKham = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IdbenhNhan = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaNv = table.Column<int>(type: "int", nullable: true),
-                    NgayKham = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdbenhNhanNavigationIdbenhNhan = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MaNvNavigationMaNv = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DanhSachKhams", x => x.IdKham);
-                    table.ForeignKey(
-                        name: "FK_DanhSachKhams_BenhNhans_IdbenhNhanNavigationIdbenhNhan",
-                        column: x => x.IdbenhNhanNavigationIdbenhNhan,
-                        principalTable: "BenhNhans",
-                        principalColumn: "IdBenhNhan");
-                    table.ForeignKey(
-                        name: "FK_DanhSachKhams_NhanViens_MaNvNavigationMaNv",
-                        column: x => x.MaNvNavigationMaNv,
-                        principalTable: "NhanViens",
-                        principalColumn: "MaNv");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LichSuNhapXuats",
-                columns: table => new
-                {
-                    MaLs = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NoiDung = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IddungCu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenDungCu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SoLuongNhapXuat = table.Column<int>(type: "int", nullable: true),
-                    Don = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IddungCuNavigationIdsanPham = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LichSuNhapXuats", x => x.MaLs);
-                    table.ForeignKey(
-                        name: "FK_LichSuNhapXuats_Khos_IddungCuNavigationIdsanPham",
-                        column: x => x.IddungCuNavigationIdsanPham,
-                        principalTable: "Khos",
-                        principalColumn: "IdsanPham");
                 });
 
             migrationBuilder.CreateTable(
@@ -473,6 +520,16 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_CustomerIdbenhNhan",
+                table: "AspNetUsers",
+                column: "CustomerIdbenhNhan");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_StaffId",
+                table: "AspNetUsers",
+                column: "StaffId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -548,6 +605,16 @@ namespace WebQuanLyNhaKhoa.Migrations
                 name: "IX_NhanViens_MaCvNavigationMaCv",
                 table: "NhanViens",
                 column: "MaCvNavigationMaCv");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TaiKhoans_BenhNhanIdbenhNhan",
+                table: "TaiKhoans",
+                column: "BenhNhanIdbenhNhan");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TaiKhoans_NhanVienMaNv",
+                table: "TaiKhoans",
+                column: "NhanVienMaNv");
         }
 
         /// <inheritdoc />
@@ -573,6 +640,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             migrationBuilder.DropTable(
                 name: "LichSuNhapXuats");
+
+            migrationBuilder.DropTable(
+                name: "TaiKhoans");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
