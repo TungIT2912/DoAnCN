@@ -1,0 +1,148 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.BenhNhan>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <!-- Breadcrumb Start -->
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class=" text-xl font-bold text-black dark:text-white" style="color: rgb(21 21 22 / 65%);">
+                Patient Tables
+            </h2>
+            <form asp-action="Index" class="relative">
+                <input type="text" name="query" class="w-[800px] px-3 py-2 rounded-xl outline-none border-none text-gray-950" placeholder="Search for patients" />
+                <button type="submit" class="absolute rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300 right-[-1px]">Search</button>
+            </form>
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li>
+                        <a class="font-medium">Dashboard /</a>
+                    </li>
+                    <li class="font-medium" style="color: rgb(60 80 224)">Patient Tables</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="flex gap-3 ">
+            <a asp-action="Create">
+                <button class="rounded-lg px-4 py-2 bg-green-700 text-green-100 hover:bg-green-800 duration-300">Create Patient <i class="fa-solid fa-user-plus"></i></button>
+            </a>
+            <form asp-action="Index" style="position: relative">
+                <select name="filter" style="width: 200px; outline: none; border: none; border-radius: 10px; padding: 8px">
+                    <option value="nothing">Nothing</option>
+                    <option value="Nam">Male</option>
+                    <option value="Nữ">Female</option>
+                    <option value="BN">Patient in Days</option>
+                </select>
+                <button style="position: absolute;right: 0px;top: 0px; color: white" type="submit" class="rounded-lg px-4 py-2 bg-yellow-500 hover:bg-yellow-600 duration-300">
+                    Filter
+                </button>
+            </form>
+        </div>
+        <!-- Breadcrumb End -->
+        <!-- ====== Table Section Start -->
+        <div class="flex flex-col gap-10 my-3">
+            <!-- ====== Table Four Start -->
+            <div class="overflow-hidden rounded-[10px]">
+                <div class="max-w-full overflow-x-auto">
+                    <div class="min-w-[1170px]">
+                        <!-- table header start -->
+                        <div class="grid grid-cols-12 bg-[#F9FAFB] px-5 py-4 dark:bg-meta-4 lg:px-7.5 2xl:px-11" style="background-color: rgb(60 80 224); color: rgb(255 255 255)">
+                            <div class="col-span-2">
+                                <h5 class="font-medium ">
+                                    Name
+                                </h5>
+                            </div>
+
+                            <div class="col-span-2">
+                                <h5 class="font-medium">
+                                    Gender
+                                </h5>
+                            </div>
+
+                            <div class="col-span-2">
+                                <h5 class="font-medium">
+                                    Year of Birth
+                                </h5>
+                            </div>
+
+                            <div class="col-span-2">
+                                <h5 class="font-medium">
+                                    Address
+                                </h5>
+                            </div>
+                            <div class="col-span-2">
+                                <h5 class="font-medium">
+                                    Registration date
+                                </h5>
+                            </div>
+
+                        </div>
+                        <!-- table header end -->
+                        <!-- table body start -->
+                        <div class="bg-white dark:bg-boxdark">
+                            <!-- table row item -->
+                            @foreach (var item in Model)
+                            {
+                                DateTime ngayHienTai = DateTime.Now;
+                                string ngayHienTaiFormatted = ngayHienTai.ToString("dd/MM/yyyy");
+                                <div class="grid grid-cols-12 border-t border-[#EEEEEE] px-5 py-4 dark:border-strokedark lg:px-7.5 2xl:px-11">
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @item.HoTen
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                            @if (@item.Gioi == true)
+                                            {
+
+                                                <span>Nữ</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Nam</span>
+                                            }
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @item.NamSinh
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">@item.DiaChi
+                                        </p>
+                                </div>
+                                    <div class="col-span-2">
+                                        <p class="text-[#637381] dark:text-bodydark">
+                                            @if(@item.NgayKhamDau == null)
+                                            {
+                                                <span>@ngayHienTaiFormatted</span>
+                                            }
+                                            else{
+                                            <span>@item.NgayKhamDau?.ToString("dd/MM/yyyy")</span>
+                                            
+                                            }
+                                        </p>
+                                    </div>
+
+                                <div class="flex gap-[10px] col-span-1">
+                                        <a asp-action="Edit" asp-route-id="@item.IdbenhNhan" class="float-right  text-yellow-400">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdbenhNhan" class="float-right  text-red-600">Delete</a>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        <!-- table body end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ====== Table Section End -->
+    </div>
+</main>
