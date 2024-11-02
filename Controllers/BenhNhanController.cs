@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace WebQuanLyNhaKhoa.Controllers
 {
-    [Authorize(Policy = "RequireAuthenticatedUser")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BenhNhanController : ControllerBase
@@ -18,7 +22,9 @@ namespace WebQuanLyNhaKhoa.Controllers
             _context = context;
         }
 
-        // GET: api/BenhNhan1
+        // GET: api/BenhNhan
+        // Only accessible by Admin role
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BenhNhan>>> GetBenhNhans(string query = "", string filter = "nothing")
         {
@@ -47,7 +53,8 @@ namespace WebQuanLyNhaKhoa.Controllers
             return Ok(await queryable.ToListAsync());
         }
 
-        // GET: api/BenhNhan1/5
+        // GET: api/BenhNhan/{id}
+        [Authorize(Roles = "Admin,Staff")]
         [HttpGet("{id}")]
         public async Task<ActionResult<BenhNhan>> GetBenhNhan(string id)
         {
@@ -61,7 +68,9 @@ namespace WebQuanLyNhaKhoa.Controllers
             return Ok(benhNhan);
         }
 
-        // POST: api/BenhNhan1/Move
+        // POST: api/BenhNhan/Move/{id}
+        // Only accessible by Admin and Staff
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPost("Move/{id}")]
         public async Task<IActionResult> Move(string id)
         {
@@ -88,7 +97,8 @@ namespace WebQuanLyNhaKhoa.Controllers
             return Ok();
         }
 
-        // POST: api/BenhNhan1
+        // POST: api/BenhNhan
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPost]
         public async Task<ActionResult<BenhNhan>> PostBenhNhan(BenhNhan benhNhan)
         {
@@ -103,7 +113,8 @@ namespace WebQuanLyNhaKhoa.Controllers
             return CreatedAtAction(nameof(GetBenhNhan), new { id = benhNhan.IdbenhNhan }, benhNhan);
         }
 
-        // PUT: api/BenhNhan1/5
+        // PUT: api/BenhNhan/{id}
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBenhNhan(string id, BenhNhan benhNhan)
         {
@@ -133,7 +144,8 @@ namespace WebQuanLyNhaKhoa.Controllers
             return NoContent();
         }
 
-        // DELETE: api/BenhNhan1/5
+        // DELETE: api/BenhNhan/{id}
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBenhNhan(string id)
         {
@@ -155,5 +167,4 @@ namespace WebQuanLyNhaKhoa.Controllers
             return _context.BenhNhans.Any(e => e.IdbenhNhan == id);
         }
     }
-
 }

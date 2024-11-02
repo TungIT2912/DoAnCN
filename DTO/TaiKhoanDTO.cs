@@ -7,6 +7,7 @@ namespace WebQuanLyNhaKhoa.DTO
 {
     public partial class TaiKhoanDTO
     {
+        [EmailAddress]
         public string TenDangNhap { get; set; }
         public string MatKhau { get; set; }
     }

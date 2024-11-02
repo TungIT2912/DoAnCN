@@ -32,8 +32,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+
 
 
 // Configure the DbContext with connection string from configuration
@@ -43,18 +42,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-		.AddDefaultTokenProviders()
-		.AddDefaultUI()
-		.AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+//        .AddDefaultTokenProviders()
+//        .AddDefaultUI()
+//        .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add services to the container
 builder.Services.AddControllersWithViews();
-// Thêm dịch vụ cho Authorization
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("RequireAuthenticatedUser", policy => policy.RequireAuthenticatedUser());
-    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
+    options.AddPolicy("StaffPolicy", policy => policy.RequireRole("Staff"));
 });
 
 builder.Services.AddRazorPages();
