@@ -45,7 +45,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             return Ok(new { message = "Đăng ký thành công.", role = user.Role });
         }
 
-        
+
         [HttpPost("api/login")]
         [Produces("application/json")]
         public async Task<IActionResult> LoginApi([FromBody] TaiKhoanDTO loginRequest)
