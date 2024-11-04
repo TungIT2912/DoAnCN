@@ -9,10 +9,10 @@ namespace WebQuanLyNhaKhoa.Data
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("IdDichVu")]
-		public string IddichVu { get; set; } = null!;
+		public int IddichVu { get; set; } 
 
 		[ForeignKey("ChanDoan")]
-		public string IdchanDoan { get; set; } = null!;
+		public int IdchanDoan { get; set; } 
 
 		[Required]
 		[StringLength(100)]

@@ -6,8 +6,8 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class DonThuocDTO
 	{
-		public string Idkham { get; set; }
-		public string IddungCu { get; set; }
+		public int Idkham { get; set; }
+		public int IddungCu { get; set; }
 
 		public int SoLuong { get; set; }
 		public decimal ThanhGia { get; set; }

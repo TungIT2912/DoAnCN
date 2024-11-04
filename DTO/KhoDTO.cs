@@ -6,9 +6,9 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class KhoDTO
 	{
-		public string IddungCu { get; set; } = null!;
+		public int IddungCu { get; set; } 
 
-		public string TenDungCu { get; set; } = null!;
+		public int TenDungCu { get; set; } 
 
 		public string Loai { get; set; } = null!;
 

@@ -9,13 +9,13 @@ namespace WebQuanLyNhaKhoa.Data
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("MaCV")]
-		public string MaCv { get; set; } = null!;
+		public int MaCv { get; set; } 
 
 		[Required]
 		[StringLength(50)]
 		public string TenCv { get; set; } = null!;
 
 		// Quan hệ 1-n với NhanVien
-		public virtual ICollection<NhanVien> NhanViens { get; set; } = new List<NhanVien>();
+		public virtual List<NhanVien> NhanViens { get; set; } = new List<NhanVien>();
 	}
 }

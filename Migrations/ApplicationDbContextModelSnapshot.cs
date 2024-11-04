@@ -183,9 +183,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int?>("CustomerID")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerIdbenhNhan")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -237,8 +234,6 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerIdbenhNhan");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -247,17 +242,17 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("StaffId");
-
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>
                 {
-                    b.Property<string>("IdbenhNhan")
+                    b.Property<int>("IdbenhNhan")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("int")
                         .HasColumnName("IdBenhNhan");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdbenhNhan"));
 
                     b.Property<string>("DiaChi")
                         .HasMaxLength(200)
@@ -282,19 +277,25 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("IdbenhNhan");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("BenhNhans");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChanDoan", b =>
                 {
-                    b.Property<string>("IdchanDoan")
+                    b.Property<int>("IdchanDoan")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("int")
                         .HasColumnName("IdChanDoan");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchanDoan"));
 
                     b.Property<string>("TenChanDoan")
                         .IsRequired()
@@ -308,10 +309,12 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChucVu", b =>
                 {
-                    b.Property<string>("MaCv")
+                    b.Property<int>("MaCv")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("int")
                         .HasColumnName("MaCV");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaCv"));
 
                     b.Property<string>("TenCv")
                         .IsRequired()
@@ -325,17 +328,18 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DanhSachKham", b =>
                 {
-                    b.Property<string>("Idkham")
+                    b.Property<int>("Idkham")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("int")
                         .HasColumnName("IdKham");
 
-                    b.Property<string>("IdbenhNhan")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Idkham"));
 
-                    b.Property<string>("IdbenhNhanNavigationIdbenhNhan")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdbenhNhan")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdbenhNhanNavigationIdbenhNhan")
+                        .HasColumnType("int");
 
                     b.Property<int?>("MaNv")
                         .HasColumnType("int");
@@ -357,10 +361,12 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DichVu", b =>
                 {
-                    b.Property<string>("IddichVu")
+                    b.Property<int>("IddichVu")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("int")
                         .HasColumnName("IdDichVu");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddichVu"));
 
                     b.Property<decimal>("DonGia")
                         .HasColumnType("decimal(18,2)");
@@ -370,12 +376,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("IdchanDoan")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IdchanDoan")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IdchanDoanNavigationIdchanDoan")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdchanDoanNavigationIdchanDoan")
+                        .HasColumnType("int");
 
                     b.Property<string>("TenDichVu")
                         .IsRequired()
@@ -397,27 +402,23 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddieuTri"));
 
-                    b.Property<string>("IddichVu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IddichVu")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IddichVuNavigationIddichVu")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IddichVuNavigationIddichVu")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IddungCu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IddungCu")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IddungCuNavigationIdsanPham")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IddungCuNavigationIdsanPham")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Idkham")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Idkham")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IdkhamNavigationIdkham")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdkhamNavigationIdkham")
+                        .HasColumnType("int");
 
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
@@ -444,20 +445,17 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddonThuoc"));
 
-                    b.Property<string>("IddungCu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IddungCu")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IddungCuNavigationIdsanPham")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IddungCuNavigationIdsanPham")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Idkham")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Idkham")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IdkhamNavigationIdkham")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IdkhamNavigationIdkham")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("NgayLapDt")
                         .HasColumnType("datetime2");
@@ -497,8 +495,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("IddonThuoc")
                         .HasColumnType("int");
 
-                    b.Property<string>("Idkham")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("Idkham")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("NgayLap")
                         .HasColumnType("datetime2");
@@ -528,22 +526,22 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Kho", b =>
                 {
-                    b.Property<string>("IdsanPham")
+                    b.Property<int>("IdsanPham")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdsanPham"));
 
                     b.Property<string>("DonViTinh")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("IddungCu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IddungCu")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IdsanPhamNavigationIdsanPham")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("IdsanPhamNavigationIdsanPham")
+                        .HasColumnType("int");
 
                     b.Property<string>("Loai")
                         .IsRequired()
@@ -581,12 +579,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("IddungCu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IddungCu")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IddungCuNavigationIdsanPham")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("IddungCuNavigationIdsanPham")
+                        .HasColumnType("int");
 
                     b.Property<string>("Loai")
                         .IsRequired()
@@ -643,12 +640,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("MaCv")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MaCvNavigationMaCv")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("MaCv")
+                        .HasColumnType("int");
 
                     b.Property<string>("Sdt")
                         .HasColumnType("nvarchar(max)");
@@ -660,11 +653,14 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("MaNv");
 
-                    b.HasIndex("MaCvNavigationMaCv");
+                    b.HasIndex("MaCv");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("NhanViens");
                 });
@@ -675,8 +671,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("BenhNhanIdbenhNhan")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("BenhNhanIdbenhNhan")
+                        .HasColumnType("int");
 
                     b.Property<string>("MaBN")
                         .HasColumnType("nvarchar(max)");
@@ -703,10 +699,12 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ThiTruong", b =>
                 {
-                    b.Property<string>("IdsanPham")
+                    b.Property<int>("IdsanPham")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdsanPham"));
 
                     b.Property<decimal>("DonGia")
                         .HasColumnType("decimal(18,2)");
@@ -782,26 +780,22 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ApplicationUser", b =>
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.BenhNhan", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerIdbenhNhan");
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ApplicationUser", "ApplicationUser")
+                        .WithOne("Customer")
+                        .HasForeignKey("WebQuanLyNhaKhoa.Data.BenhNhan", "UserId");
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Staff");
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DanhSachKham", b =>
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.BenhNhan", "IdbenhNhanNavigation")
                         .WithMany("DanhSachKhams")
-                        .HasForeignKey("IdbenhNhanNavigationIdbenhNhan");
+                        .HasForeignKey("IdbenhNhanNavigationIdbenhNhan")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "MaNvNavigation")
                         .WithMany("DanhSachKhams")
@@ -816,7 +810,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "IdchanDoanNavigation")
                         .WithMany("DichVus")
-                        .HasForeignKey("IdchanDoanNavigationIdchanDoan");
+                        .HasForeignKey("IdchanDoanNavigationIdchanDoan")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("IdchanDoanNavigation");
                 });
@@ -825,7 +821,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.DichVu", "IddichVuNavigation")
                         .WithMany("DieuTris")
-                        .HasForeignKey("IddichVuNavigationIddichVu");
+                        .HasForeignKey("IddichVuNavigationIddichVu")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "IddungCuNavigation")
                         .WithMany("DieuTris")
@@ -835,7 +833,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "IdkhamNavigation")
                         .WithMany("DieuTris")
-                        .HasForeignKey("IdkhamNavigationIdkham");
+                        .HasForeignKey("IdkhamNavigationIdkham")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("IddichVuNavigation");
 
@@ -854,7 +854,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "IdkhamNavigation")
                         .WithMany("DonThuocs")
-                        .HasForeignKey("IdkhamNavigationIdkham");
+                        .HasForeignKey("IdkhamNavigationIdkham")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("IddungCuNavigation");
 
@@ -902,18 +904,30 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "IddungCuNavigation")
                         .WithMany()
-                        .HasForeignKey("IddungCuNavigationIdsanPham");
+                        .HasForeignKey("IddungCuNavigationIdsanPham")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("IddungCuNavigation");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.NhanVien", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.ChucVu", "MaCvNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ChucVu", "ChucVu")
                         .WithMany("NhanViens")
-                        .HasForeignKey("MaCvNavigationMaCv");
+                        .HasForeignKey("MaCv")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("MaCvNavigation");
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ApplicationUser", "ApplicationUser")
+                        .WithOne("Staff")
+                        .HasForeignKey("WebQuanLyNhaKhoa.Data.NhanVien", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("ChucVu");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.TaiKhoan", b =>
@@ -929,6 +943,13 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Navigation("BenhNhan");
 
                     b.Navigation("NhanVien");
+                });
+
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ApplicationUser", b =>
+                {
+                    b.Navigation("Customer");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>

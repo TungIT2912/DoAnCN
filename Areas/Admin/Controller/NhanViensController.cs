@@ -1,81 +1,113 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
-using WebQuanLyNhaKhoa.DTO;
 
-namespace WebQuanLyNhaKhoa.Areas.Admin.Controller
+using System.Drawing.Printing;
+using WebQuanLyNhaKhoa.Models;
+using X.PagedList;
+using WebQuanLyNhaKhoa.DTO;
+using Microsoft.AspNetCore.Identity;
+using WebQuanLyNhaKhoa.Areas.Admin.API;
+namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class NhanViensController : ControllerBase
+    [Area("Admin")]
+    [Route("Admin/[controller]")]
+    public class NhanViensController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<NhanViensController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMapper _mapper;
 
-        public NhanViensController(ILogger<NhanViensController> logger,UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IMapper mapper)
+        public NhanViensController(ILogger<NhanViensController> logger, UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _logger = logger;
             _roleManager = roleManager;
             _userManager = userManager;
             _context = context;
-            _mapper = mapper;
         }
-
-        // GET: api/NhanViens
+        // GET: NhanViens
         [HttpGet]
+        public IActionResult Index()
+        {
+
+            return View();
+        }
+        [HttpGet("api/NhanViens")]
         public async Task<ActionResult<IEnumerable<NhanVienDTO>>> GetNhanViens()
         {
-            var nhanViens = await _context.NhanViens.ToListAsync();
-            var nhanVienDTOs = _mapper.Map<List<NhanVienDTO>>(nhanViens);
+            var nhanViens = await _context.NhanViens
+       .Include(nv => nv.ApplicationUser) // Ensure ApplicationUser is loaded
+       .ToListAsync();
+            var nhanVienDTOs = nhanViens.Select(nv => new NhanVienDTO
+            {
+                Ten = nv.Ten,
+                Sdt = nv.Sdt,
+                MaCv = nv.MaCv,
+                KinhNghiem = nv.KinhNghiem,
+                Diachi = nv.Diachi,
+                Hinh = nv.Hinh,
+                Email = nv.Email,
+                MatKhau = nv.ApplicationUser.PasswordHash,
+                Role = nv.ApplicationUser.ChucVu
+            }).ToList();
 
             return Ok(nhanVienDTOs);
         }
-
-        // Create a new employee
-        [HttpPost]
-        public async Task<IActionResult> CreateNhanVien([FromBody] NhanVienDTO dto)
+        // GET: NhanViens/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
+           
 
+            return View();
+        }
+
+        // GET: NhanViens/Create
+        public IActionResult Create()
+        {
+            ViewData["MaCv"] = new SelectList(_context.ChucVus, "MaCv", "TenCv");
+            return View();
+        }
+        [HttpPost("api/NhanViens")]
+        public async Task<IActionResult> CreateNhanVien([FromBody] NhanVienDTO dto, IFormFile? hinh)
+        {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return BadRequest(new { success = false, errors });
             }
+
+
             var existingAccount = await _context.Users
-      .FirstOrDefaultAsync(x => x.Email == dto.Email);
+                .FirstOrDefaultAsync(x => x.Email == dto.Email);
 
             if (existingAccount != null)
             {
-                // Return error response if the email already exists
                 return BadRequest(new { success = false, message = "Email already exists." });
             }
-            var chucVu = await _context.ChucVus.FindAsync(dto.MaCv);
-            if (chucVu == null)
+
+            var existingChucVu = await _context.ChucVus.FindAsync(dto.MaCv);
+            if (existingChucVu == null)
             {
                 return NotFound($"ChucVu with MaCv {dto.MaCv} not found.");
             }
+
             var user = new ApplicationUser
             {
                 UserName = dto.Email,
                 FullName = dto.Ten,
                 Email = dto.Email,
-                ChucVu = dto.MaCv,
+                ChucVu = dto.Role,
                 Address = dto.Diachi
             };
+
             var result = await _userManager.CreateAsync(user, dto.MatKhau);
-            // Manual mapping from NhanVienDTO to NhanVien
-         
             if (result.Succeeded)
             {
                 var roleName = dto.Role switch
@@ -96,10 +128,20 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controller
                 }
                 else
                 {
-                    return BadRequest("Invalid role specified."); // Handle invalid roles
+                    return BadRequest("Invalid role specified.");
                 }
 
                 await _userManager.AddToRoleAsync(user, roleName);
+
+                // Handle image upload
+                if (hinh != null)
+                {
+                    dto.Hinh = await SaveImage(hinh);
+                }
+                else
+                {
+                    dto.Hinh = "/images/anonymous.png"; // Set default image if none uploaded
+                }
 
                 var newNhanVien = new NhanVien
                 {
@@ -110,16 +152,13 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controller
                     KinhNghiem = dto.KinhNghiem,
                     Hinh = dto.Hinh,
                     Email = dto.Email,
-
                 };
 
-                // Add the new employee to the context
                 _context.NhanViens.Add(newNhanVien);
                 await _context.SaveChangesAsync();
 
-                // Create a response DTO manually
                 var createdNhanVienDTO = new NhanVienDTO
-                { // Assuming you want to return the newly created ID
+                {
                     Ten = newNhanVien.Ten,
                     Sdt = newNhanVien.Sdt,
                     MaCv = newNhanVien.MaCv,
@@ -127,23 +166,29 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controller
                     Hinh = newNhanVien.Hinh,
                     Email = newNhanVien.Email
                 };
-                return CreatedAtAction(nameof(GetNhanVienById), new { id = newNhanVien.MaNv }, new { success = true, message = "Employee created successfully." });
+
+                return CreatedAtAction(nameof(GetNhanVienById), new { id = newNhanVien.MaNv }, createdNhanVienDTO);
             }
-            AddErrors(result);
 
-            // Return a response indicating success
-            
-
-            // If user creation failed, log and return the errors
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
-                _logger.LogWarning("User creation error: {Error}", error.Description);
             }
 
-            // Return the model state errors if user creation was unsuccessful
             return BadRequest(ModelState);
         }
+
+        private async Task<string> SaveImage(IFormFile hinh)
+        {
+            var savePath = Path.Combine("wwwroot/images", hinh.FileName);
+            using (var fileStream = new FileStream(savePath, FileMode.Create))
+            {
+                await hinh.CopyToAsync(fileStream);
+            }
+            return "/images/" + hinh.FileName; // Return relative path
+        }
+
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -151,8 +196,6 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controller
                 ModelState.AddModelError(string.Empty, error.Description);
             }
         }
-
-        // Get a specific employee by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<NhanVienDTO>> GetNhanVienById(int id)
         {
@@ -162,28 +205,93 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controller
                 return NotFound();
             }
 
-            var nhanVienDTO = _mapper.Map<NhanVienDTO>(nhanVien);
+            var nhanVienDTO = new NhanVienDTO
+            {
+                Ten = nhanVien.Ten,
+                Sdt = nhanVien.Sdt,
+                MaCv = nhanVien.MaCv,
+                KinhNghiem = nhanVien.KinhNghiem,
+                Diachi = nhanVien.Diachi,
+                Hinh = nhanVien.Hinh,
+                Email = nhanVien.Email,
+                MatKhau = nhanVien.ApplicationUser.PasswordHash,
+                Role = nhanVien.ApplicationUser.ChucVu
+            };
             return nhanVienDTO;
         }
-        // DELETE: api/NhanViens/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteNhanVien(int id)
+
+        // GET: NhanViens/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var nhanVien = await _context.NhanViens.FindAsync(id);
             if (nhanVien == null)
             {
                 return NotFound();
             }
+            ViewData["MaCv"] = new SelectList(_context.ChucVus, "MaCv", "TenCv", nhanVien.MaCv);
+            //ViewData["TenDangNhap"] = new SelectList(_context.TaiKhoans, "TenDangNhap", "TenDangNhap", nhanVien.TenDangNhap);
+            return View(nhanVien);
+        }
 
-            _context.NhanViens.Remove(nhanVien);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("MaNv,Ten,Sdt,MaCv,KinhNghiem,Hinh")] NhanVien nhanVien, IFormFile Hinh)
+        {
+            ModelState.Remove("Hinh"); // Loại bỏ xác thực ModelState cho ImageUrl
+            if (id != nhanVien.MaNv)
+            {
+                return NotFound();
+            }
+
+            var existingNV = _context.NhanViens.FirstOrDefault(n => n.MaNv == id); // Giả định có phương thức GetByIdAsync
+
+            // Giữ nguyên thông tin hình ảnh nếu không có hình mới được tải lên
+            if (Hinh == null)
+            {
+                existingNV.Hinh = existingNV.Hinh;
+            }
+            else
+            {
+                // Lưu hình ảnh mới
+                existingNV.Hinh = await SaveImage(Hinh);
+            }
+            // Cập nhật các thông tin khác của sản phẩm
+            //existingNV.TenDangNhap = nhanVien.TenDangNhap;
+            existingNV.Ten = nhanVien.Ten;
+            existingNV.Sdt = nhanVien.Sdt;
+            existingNV.MaCv = nhanVien.MaCv;
+            existingNV.KinhNghiem = nhanVien.KinhNghiem;
+
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-            return NoContent();
+       
+
+        // POST: NhanViens/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var nhanVien = await _context.NhanViens.FindAsync(id);
+            if (nhanVien != null)
+            {
+                _context.NhanViens.Remove(nhanVien);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool NhanVienExists(int id)
         {
             return _context.NhanViens.Any(e => e.MaNv == id);
         }
+
     }
 }

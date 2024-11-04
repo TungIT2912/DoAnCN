@@ -18,6 +18,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 		.AddDefaultTokenProviders()
@@ -51,6 +60,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 
