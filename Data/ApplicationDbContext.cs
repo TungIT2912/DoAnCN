@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebQuanLyNhaKhoa.Data
 {
-	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+	public class ApplicationDbContext : DbContext
     {
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
@@ -37,6 +37,7 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual DbSet<ThiTruong> ThiTruongs { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
+        //public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

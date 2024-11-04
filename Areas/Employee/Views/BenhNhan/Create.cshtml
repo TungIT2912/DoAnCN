@@ -1,0 +1,176 @@
+﻿@model WebQuanLyNhaKhoa.Data.BenhNhan
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+<main>
+    <div class="p-4 sm:p-6 xl:p-10">
+        <div class="rounded-md border border-stroke bg-whiter p-4 py-3 dark:border-strokedark dark:bg-meta-4 sm:px-6 sm:py-5.5 xl:px-7.5">
+            <nav>
+                <ol class="flex flex-wrap items-center gap-3">
+                    <li>
+                        <a asp-action ="Index" class="flex items-center gap-3.5 font-medium hover:text-primary">
+                            Home
+                        </a>
+                    </li>
+                    <li class="flex items-center gap-3 font-medium text-black ">
+                        <svg class="fill-current" width="6" height="15" viewBox="0 0 6 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.80682 0.818303L2.05682 14.7501H0.255682L4.00568 0.818303H5.80682Z" fill=""></path>
+                        </svg>
+                        Create
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <!-- Breadcrumb Start -->
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="font-bold text-black text-2xl">
+                Created Paitent Form
+            </h2>
+
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li>
+                        <a class="font-medium" href="index.html">Dashboard /</a>
+                    </li>
+                    <li class="font-medium text-primary text-black">Created Paitent Form</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- Breadcrumb End -->
+        <!-- ====== Form Layout Section Start -->
+        <div class="grid grid-cols-1 gap-9 sm:grid-cols-2">
+            <div class="flex flex-col gap-9">
+                <!-- Contact Form Two -->
+                <div class="rounded-sm border border-stroke bg-white p-[20px] shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                        <h3 class="font-medium text-black text-center">
+                            Question Form
+                        </h3>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-black">
+                            Do you have any medical history? If so, can you describe it in more detail?
+                        </h3>
+                        <div class="my-5 mx-3">
+                            <input type="radio" name="name" value="" />
+                            <span>Yes</span>
+                        </div>
+                        <div class="my-5 mx-3">
+                            <input type="radio" name="name" value="" />
+                            <span>No</span>
+                         </div>
+                        <div class="my-5 mx-3">
+                           
+                            <textarea rows="6" placeholder="Type here" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"></textarea>
+                        </div>
+                    </div>
+                    <div >
+                        <h3 class="font-medium text-black">
+                            Are you allergic to any medications or foods?
+                        </h3>
+                        <div class="my-5 mx-3">
+                            <input type="radio" name="allergic" value="" />
+                            <span>Yes</span>
+                        </div>
+                        <div class="my-5 mx-3">
+                            <input type="radio" name="allergic" value="" />
+                            <span>No</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-9">
+                <!-- Survey Form -->
+                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                        <h3 class="font-medium text-black text-center">
+                            Patient Form
+                        </h3>
+                    </div>
+                    <form asp-action="Create" class="p-[20px]" method="post" enctype="multipart/form-data">
+                        <div class="p-6.5">
+                            <!--ID Paitent Start-->
+                            <div class="my-5 mx-3">
+                                <label asp-for="IdbenhNhan" class="mb-3 block text-sm font-medium text-black">
+                                    ID Patient
+                                </label>
+                                <input asp-for="IdbenhNhan" type="text" placeholder="Enter your id patient" maxlength="3" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary">
+                                <span asp-validation-for="HoTen" class="text-danger"></span>
+                            </div>
+                            <!--ID Paitent End-->
+                            <!--Name Patient Start-->
+                            <div class="my-5 mx-3">
+                                <label asp-for= "HoTen" class="mb-3 block text-sm font-medium text-black">
+                                    Name
+                                </label>
+                                <input asp-for="HoTen" type="text" placeholder="Enter your full name" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-black dark:focus:border-primary">
+                                <span asp-validation-for="HoTen" class="text-danger"></span>
+                            </div>
+                            <!--Name Patient End-->
+                            <div class="my-5 mx-3">
+                                <div>
+                                   <input asp-for = "Gioi" type="radio" name="gender" value="True"/>
+                                   <span>Nữ</span>
+                                  
+                                </div>
+                                <div>
+                                   <input asp-for ="Gioi" type="radio" name="gender" value="False"/>
+                                   <span>Nam</span>
+                                </div>
+                            </div>
+                            <!--Age Patient Start-->
+                            <div class="my-5 mx-3">
+                                <label asp-for ="NamSinh" class="mb-3 block text-sm font-medium text-black">
+                                    Age:
+                                </label>
+                                <input asp-for="NamSinh" type="text" placeholder="Enter your age" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary">
+                            </div>
+                            <!--Age Patient End-->
+                            <!--Tel Patient Start-->
+                            <div class="my-5 mx-3">
+                                <label asp-for="Sdt" class="mb-3 block text-sm font-medium text-black">
+                                    Telephone:
+                                </label>
+                                <input asp-for="Sdt" type="tel" placeholder="Enter your telephone" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary">
+                            </div>
+                            <!--Tel Patient End-->
+                            <!--Address  Patient Start-->
+                            <div class="my-5 mx-3">
+                                <label asp-for="DiaChi" class="mb-3 block text-sm font-medium text-black">
+                                    Address:
+                                </label>
+                                <input asp-for="DiaChi" type="text" placeholder="Enter your address" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                            </div>
+                            <!--Address Patient End-->
+                            <div class="my-5 mx-3">
+                                <label asp-for="NgayKhamDau" class="mb-3 block text-sm font-medium text-black">
+                                    Registration Day:
+                                </label>
+                                <input asp-for="NgayKhamDau" type="datetime-local" placeholder="Enter your Registration Day" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                            </div>
+
+                            <div class="my-5 mx-3">
+                                <label class="mb-3 block text-sm font-medium text-black">
+                                    Any comments or suggestions?
+                                </label>
+                                <textarea rows="6" placeholder="Type here" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Create Patient</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- ====== Form Layout Section End -->
+    </div>
+</main>
+
+

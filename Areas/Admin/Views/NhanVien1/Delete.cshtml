@@ -1,0 +1,93 @@
+﻿@model WebQuanLyNhaKhoa.Data.NhanVien
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body class="font-mono">
+    <div class="flex justify-center items-center h-screen bg-gradient-to-r from-violet-500 to-fuchsia-500">
+        <div class="container p-[20px] max-w-[600px] max-h-[500px] bg-white rounded-xl">
+            <div class="flex justify-between items-center gap-[45px]">
+                <div class="w-2/5">
+                    <img src="/@Html.DisplayFor(model => model.Hinh)"
+                         class="w-full h-[300px] object-cover" />
+                </div>
+                <div class="w-3/5 text-left">
+                    <form asp-action="Delete">
+                        <div class="mt-[20px]">
+                            <label>Họ tên:</label>
+                            <span class="ml-[10px] text-xl">@Html.DisplayFor(model => model.Ten)</span> <br />
+                        </div>
+                        <div class="mt-[20px]">
+                            <label>Số điện thoại:</label>
+                            <span class="ml-[10px] text-xl">@Html.DisplayFor(model => model.Sdt)</span><br />
+                        </div>
+                        <div class="mt-[20px]">
+                            <label>Kinh nghiệm:</label>
+                            <span class="ml-[10px] text-xl">@Html.DisplayFor(model => model.KinhNghiem) năm</span><br />
+                        </div>
+                        <div class="mt-[20px]">
+                            <label>Chức vụ:</label>
+                            <span class="ml-[10px] text-xl">@Html.DisplayFor(model => model.MaCvNavigation.TenCv)</span><br />
+                        </div>
+                        <div class="mt-[20px]">
+                            <button type="submit" value="Delete" class="rounded-lg px-4 py-2 bg-red-600 text-red-100 hover:bg-red-700 duration-300 text-xl">
+                                Delete
+                            </button>
+                            <button asp-action="Index" class="rounded-lg px-4 py-2 bg-green-300 hover:bg-green-400 duration-300 text-xl">
+                                Quay về danh sách
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+@* <div>
+    <h4>NhanVien</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ten)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ten)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Sdt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sdt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.KinhNghiem)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.KinhNghiem)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hinh)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hinh)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaCvNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaCvNavigation.MaCv)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TenDangNhapNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TenDangNhapNavigation.TenDangNhap)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MaNv" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
+ *@

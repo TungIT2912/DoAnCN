@@ -1,0 +1,150 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.HoaDon>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main class="px-5 py-5">
+<h1 class="uppercase text-4xl font-semibold tracking-[.4rem] text-center">Thông tin danh sách hóa đơn</h1>
+<div class="my-5">
+    <a asp-action="Index" asp-controller="DanhSachKhams">
+        <button class="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300"><i class="fa-solid fa-arrow-left"></i>  Quay về danh sách điều trị</button>
+    </a>
+ </div>
+    <div class="flex flex-col gap-10">
+        <!-- ====== Table Four Start -->
+        <div class="overflow-hidden rounded-[10px]">
+            <div class="max-w-full overflow-x-auto">
+                <div class="max-w-[1170px]">
+                    <!-- table header start -->
+                    <div class="grid text-white grid-cols-12 bg-[#F9FAFB] px-5 py-4 dark:bg-meta-4 lg:px-7.5 2xl:px-11 justify-items-center text-[15px]" style="background-color: rgb(60 80 224); color:white !important">
+                        <div class="col-span-2">
+                            <h5 class="font-medium" style="color: inherit">
+                                Phương thức thanh toán
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium" style="color: inherit">
+                                Tiền thuốc
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium" style="color: inherit">
+                                Tiền điều trị
+                            </h5>
+                        </div>
+
+                        <div class="col-span-2">
+                            <h5 class="font-medium" style="color: inherit">
+                                Tổng tiền
+                            </h5>
+                        </div>
+                        <div class="col-span-2">
+                            <h5 class="font-medium" style="color: inherit">
+                                Ngày lập
+                            </h5>
+                        </div>
+                        <div class="col-span-2">
+                            <h5 class="font-medium" style="color: inherit">
+                               Action
+                            </h5>
+                        </div>
+                    </div>
+                    <!-- table header end -->
+                    <!-- table body start -->
+                    <div class="bg-white dark:bg-boxdark">
+                        <!-- table row item -->
+                        @foreach (var item in Model)
+                        {
+                            <div class="grid grid-cols-12 border-t border-[#EEEEEE] text-[12px] px-5 py-4 dark:border-strokedark lg:px-7.5 2xl:px-11 justify-items-center align-items-center">
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.PhuongThucThanhToan)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.TienThuoc)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.TienDieuTri)
+                                    </p>
+                                </div>
+
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.TongTien)
+                                    </p>
+                                </div>
+                                <div class="col-span-2">
+                                    <p class="text-[#637381] dark:text-bodydark">
+                                        @Html.DisplayFor(modelItem => item.NgayLap)
+                                    </p>
+                                </div>
+                                <div class="col-span-2">
+                                    <a asp-action="Edit" asp-route-id="@item.IdhoaDon" class="rounded-lg px-4 py-2 bg-green-300 hover:bg-green-400 duration-300">
+                                        Thanh toán
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- table body end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@* <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PhuongThucThanhToan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TienThuoc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TienDieuTri)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TongTien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayLap)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhuongThucThanhToan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TienThuoc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TienDieuTri)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayLap)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdhoaDon">Thanh toán</a> 
+                <a asp-action="Details" asp-route-id="@item.IdhoaDon">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table> *@
