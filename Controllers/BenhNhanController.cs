@@ -72,7 +72,7 @@ namespace WebQuanLyNhaKhoa.Controllers
         // Only accessible by Admin and Staff
         [Authorize(Roles = "Admin,Staff")]
         [HttpPost("Move/{id}")]
-        public async Task<IActionResult> Move(string id)
+        public async Task<IActionResult> Move(int id)
         {
             var benhnhan = await _context.BenhNhans.FirstOrDefaultAsync(m => m.IdbenhNhan == id);
 
@@ -88,7 +88,7 @@ namespace WebQuanLyNhaKhoa.Controllers
             {
                 IdbenhNhan = benhnhan.IdbenhNhan,
                 NgayKham = DateTime.Now,
-                Idkham = randomNumber.ToString()
+                Idkham = randomNumber
             };
 
             await _context.DanhSachKhams.AddAsync(ds);
@@ -116,7 +116,7 @@ namespace WebQuanLyNhaKhoa.Controllers
         // PUT: api/BenhNhan/{id}
         [Authorize(Roles = "Admin,Staff")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBenhNhan(string id, BenhNhan benhNhan)
+        public async Task<IActionResult> PutBenhNhan(int id, BenhNhan benhNhan)
         {
             if (id != benhNhan.IdbenhNhan)
             {
@@ -162,7 +162,7 @@ namespace WebQuanLyNhaKhoa.Controllers
             return NoContent();
         }
 
-        private bool BenhNhanExists(string id)
+        private bool BenhNhanExists(int id)
         {
             return _context.BenhNhans.Any(e => e.IdbenhNhan == id);
         }

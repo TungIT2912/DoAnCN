@@ -68,7 +68,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdhoaDon,IddonThuoc,IddieuTri,IDKham,PhuongThucThanhToan,TienThuoc,TienDieuTri,TongTien,NgayLap,EmailBn")] HoaDon hoaDon, DanhSachKham ds, String Id)
+        public async Task<IActionResult> Create([Bind("IdhoaDon,IddonThuoc,IddieuTri,IDKham,PhuongThucThanhToan,TienThuoc,TienDieuTri,TongTien,NgayLap,EmailBn")] HoaDon hoaDon, DanhSachKham ds, int Id)
         {
 
             if (hoaDon.NgayLap < DateTime.Today)
@@ -95,7 +95,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
                 var IdDieutri = await _context.DieuTris.Where(k => k.Idkham == Id).Select(k => k.IddieuTri).FirstOrDefaultAsync();
                 var IdDonThuoc = await _context.DonThuocs.Where(k => k.Idkham == Id).Select(k => k.IddonThuoc).FirstOrDefaultAsync();
                 ViewData["Idkham"] = new SelectList(_context.DanhSachKhams, "Idkham", "Idkham", hoaDon.Idkham);
-                hoaDon.Idkham = (Request.Form["Idkham"]).ToString();
+                //hoaDon.Idkham = (Request.Form["Idkham"]);
                 hoaDon.IddieuTri = IdDieutri;
                 hoaDon.IddonThuoc = IdDonThuoc;
                 var thuocExist = await _context.DonThuocs.AnyAsync(k => k.IddonThuoc == hoaDon.IddonThuoc);

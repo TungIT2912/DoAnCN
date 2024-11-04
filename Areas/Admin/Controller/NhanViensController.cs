@@ -12,8 +12,7 @@ using WebQuanLyNhaKhoa.Models;
 using X.PagedList;
 using WebQuanLyNhaKhoa.DTO;
 using Microsoft.AspNetCore.Identity;
-using WebQuanLyNhaKhoa.Areas.Admin.API;
-namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
+namespace WebQuanLyNhaKhoa.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
@@ -22,14 +21,12 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<NhanViensController> _logger;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public NhanViensController(ILogger<NhanViensController> logger, UserManager<ApplicationUser> userManager,
+        public NhanViensController(ILogger<NhanViensController> logger,
             RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _logger = logger;
             _roleManager = roleManager;
-            _userManager = userManager;
             _context = context;
         }
         // GET: NhanViens
@@ -43,7 +40,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         public async Task<ActionResult<IEnumerable<NhanVienDTO>>> GetNhanViens()
         {
             var nhanViens = await _context.NhanViens
-       .Include(nv => nv.ApplicationUser) // Ensure ApplicationUser is loaded
+       .Include(nv => nv.TaiKhoan) // Ensure ApplicationUser is loaded
        .ToListAsync();
             var nhanVienDTOs = nhanViens.Select(nv => new NhanVienDTO
             {
@@ -54,8 +51,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 Diachi = nv.Diachi,
                 Hinh = nv.Hinh,
                 Email = nv.Email,
-                MatKhau = nv.ApplicationUser.PasswordHash,
-                Role = nv.ApplicationUser.ChucVu
+                MatKhau = nv.TaiKhoan.MatKhau,
+                Role = nv.TaiKhoan.Role
             }).ToList();
 
             return Ok(nhanVienDTOs);
@@ -63,7 +60,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
         // GET: NhanViens/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-           
+
 
             return View();
         }
@@ -83,56 +80,43 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 return BadRequest(new { success = false, errors });
             }
 
-
-            var existingAccount = await _context.Users
-                .FirstOrDefaultAsync(x => x.Email == dto.Email);
+            // Check if account already exists
+            var existingAccount = await _context.TaiKhoans
+                .FirstOrDefaultAsync(x => x.TenDangNhap == dto.Email);
 
             if (existingAccount != null)
             {
                 return BadRequest(new { success = false, message = "Email already exists." });
             }
 
+            // Check if ChucVu exists
             var existingChucVu = await _context.ChucVus.FindAsync(dto.MaCv);
             if (existingChucVu == null)
             {
-                return NotFound($"ChucVu with MaCv {dto.MaCv} not found.");
+                return NotFound(new { success = false, message = $"ChucVu with MaCv {dto.MaCv} not found." });
             }
 
-            var user = new ApplicationUser
+            // Validate role
+            var validRoles = new[] { "Admin", "Customer", "Staff" };
+            if (!validRoles.Contains(dto.Role))
             {
-                UserName = dto.Email,
-                FullName = dto.Ten,
-                Email = dto.Email,
-                ChucVu = dto.Role,
-                Address = dto.Diachi
+                return BadRequest(new { success = false, message = "Invalid role specified." });
+            }
+
+            // Create new TaiKhoan entity
+            var user = new TaiKhoan
+            {
+                TenDangNhap = dto.Email,
+                MatKhau = BCrypt.Net.BCrypt.HashPassword(dto.MatKhau),
+                Role = dto.Role
             };
 
-            var result = await _userManager.CreateAsync(user, dto.MatKhau);
-            if (result.Succeeded)
+            // Add user to context and save changes
+            await _context.TaiKhoans.AddAsync(user);
+            var userSaveResult = await _context.SaveChangesAsync();
+
+            if (userSaveResult > 0) // Check if user was added successfully
             {
-                var roleName = dto.Role switch
-                {
-                    "admin" => "Admin",
-                    "employee" => "Employee",
-                    _ => null
-                };
-
-                if (roleName != null)
-                {
-                    var role = await _roleManager.FindByNameAsync(roleName);
-                    if (role == null)
-                    {
-                        role = new IdentityRole(roleName);
-                        await _roleManager.CreateAsync(role);
-                    }
-                }
-                else
-                {
-                    return BadRequest("Invalid role specified.");
-                }
-
-                await _userManager.AddToRoleAsync(user, roleName);
-
                 // Handle image upload
                 if (hinh != null)
                 {
@@ -140,9 +124,10 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 }
                 else
                 {
-                    dto.Hinh = "/images/anonymous.png"; // Set default image if none uploaded
+                    dto.Hinh = "/images/anonymous.png"; // Default image if none provided
                 }
 
+                // Create new NhanVien entity
                 var newNhanVien = new NhanVien
                 {
                     Ten = dto.Ten,
@@ -154,29 +139,31 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                     Email = dto.Email,
                 };
 
+                // Add NhanVien to context and save changes
                 _context.NhanViens.Add(newNhanVien);
-                await _context.SaveChangesAsync();
+                var nhanVienSaveResult = await _context.SaveChangesAsync();
 
-                var createdNhanVienDTO = new NhanVienDTO
+                if (nhanVienSaveResult > 0) // Check if NhanVien was added successfully
                 {
-                    Ten = newNhanVien.Ten,
-                    Sdt = newNhanVien.Sdt,
-                    MaCv = newNhanVien.MaCv,
-                    KinhNghiem = newNhanVien.KinhNghiem,
-                    Hinh = newNhanVien.Hinh,
-                    Email = newNhanVien.Email
-                };
+                    // Return created response
+                    var createdNhanVienDTO = new NhanVienDTO
+                    {
+                        Ten = newNhanVien.Ten,
+                        Sdt = newNhanVien.Sdt,
+                        MaCv = newNhanVien.MaCv,
+                        KinhNghiem = newNhanVien.KinhNghiem,
+                        Hinh = newNhanVien.Hinh,
+                        Email = newNhanVien.Email
+                    };
 
-                return CreatedAtAction(nameof(GetNhanVienById), new { id = newNhanVien.MaNv }, createdNhanVienDTO);
+                    return CreatedAtAction(nameof(GetNhanVienById), new { id = newNhanVien.MaNv }, createdNhanVienDTO);
+                }
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return BadRequest(ModelState);
+            // If any save operation fails, return a BadRequest with an error message
+            return BadRequest(new { success = false, message = "Failed to create NhanVien." });
         }
+
 
         private async Task<string> SaveImage(IFormFile hinh)
         {
@@ -214,8 +201,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
                 Diachi = nhanVien.Diachi,
                 Hinh = nhanVien.Hinh,
                 Email = nhanVien.Email,
-                MatKhau = nhanVien.ApplicationUser.PasswordHash,
-                Role = nhanVien.ApplicationUser.ChucVu
+                MatKhau = nhanVien.TaiKhoan.MatKhau,
+                Role = nhanVien.TaiKhoan.Role
             };
             return nhanVienDTO;
         }
@@ -271,7 +258,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomepageAdmin
             return RedirectToAction(nameof(Index));
         }
 
-       
+
 
         // POST: NhanViens/Delete/5
         [HttpPost, ActionName("Delete")]

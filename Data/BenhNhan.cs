@@ -9,8 +9,8 @@ namespace WebQuanLyNhaKhoa.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("IdBenhNhan")]
 		public int IdbenhNhan { get; set; }
-        [ForeignKey("ApplicationUser")]
-        public string? UserId { get; set; }
+        [ForeignKey("TaiKhoan")]
+        public int? UserId { get; set; }
         [Required]
 		[StringLength(100)]
 		public string HoTen { get; set; } = null!;
@@ -30,6 +30,6 @@ namespace WebQuanLyNhaKhoa.Data
 
 		// Quan hệ 1-n với DanhSachKham
 		public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
-        public virtual ApplicationUser? ApplicationUser { get; set; }
+        public virtual TaiKhoan? TaiKhoan { get; set; }
     }
 }

@@ -9,11 +9,10 @@ using WebQuanLyNhaKhoa.ServicesPay;
 using WebQuanLyNhaKhoa.wwwroot.AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
-// Get JWT settings from appsettings.json
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
-// Add JWT authentication configuration
+// Configure JWT authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -33,30 +32,20 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
-
-// Configure the DbContext with connection string from configuration
+// Configure the DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-
+// CORS configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+    options.AddPolicy("AllowAllOrigins", policy =>
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 });
 
 builder.Services.AddControllers().AddNewtonsoftJson();
-
-//builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-//        .AddDefaultTokenProviders()
-//        .AddDefaultUI()
-//        .AddEntityFrameworkStores<ApplicationDbContext>();
-
-// Add services to the container
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization(options =>
 {
@@ -67,42 +56,31 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages();
 
-
-builder.Services.AddSingleton<IVnPayService,VnPayService>();
+// Dependency Injection setup
+builder.Services.AddSingleton<IVnPayService, VnPayService>();
 builder.Services.AddScoped<EmailService>();
-//builder.Services.AddAuthentication();
-
-
-
-
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
-
-//Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-app.UseHsts();
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-//app.UseStaticFiles();
+app.UseStaticFiles(); // Ensure this is uncommented if serving static files
 
 app.UseRouting();
 
-app.UseAuthentication(); // Thêm middleware xác thực
-app.UseAuthorization();  // Thêm middleware ủy quyền
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCors("AllowAllOrigins");
 
-app.UseAuthorization();
-
-//app.MapControllerRoute(
-//	name: "default",
-//	pattern: "{controller=DanhSachKhams}/{action=Index}/{id?}");
+// Area and Controller Routing
 app.MapAreaControllerRoute(
     name: "Admin",
     areaName: "Admin",
