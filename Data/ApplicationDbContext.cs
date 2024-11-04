@@ -42,7 +42,7 @@ namespace WebQuanLyNhaKhoa.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-          
+           
             modelBuilder.Entity<HoaDon>()
 				.HasOne(h => h.IddieuTriNavigation)
 				.WithMany(d => d.HoaDons)

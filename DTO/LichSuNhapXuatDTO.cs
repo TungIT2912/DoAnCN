@@ -8,7 +8,7 @@ namespace WebQuanLyNhaKhoa.DTO
 	{
 		public string NoiDung { get; set; } = null!;
 
-		public string IddungCu { get; set; } = null!;
+		public int IddungCu { get; set; } 
 
 		public string TenDungCu { get; set; } = null!;
 

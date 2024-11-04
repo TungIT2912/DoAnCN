@@ -9,11 +9,11 @@ namespace WebQuanLyNhaKhoa.Data
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("IdKham")]
-        public string Idkham { get; set; } = null!;
+        public int Idkham { get; set; } 
 
 
         [ForeignKey("BenhNhan")]
-        public string IdbenhNhan { get; set; } = null!;
+        public int IdbenhNhan { get; set; } 
 
         public int? MaNv { get; set; }
 

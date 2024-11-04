@@ -10,8 +10,7 @@ namespace WebQuanLyNhaKhoa.Data
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [StringLength(50)]
-		public string IdsanPham { get; set; } = null!;
-
+		public int IdsanPham { get; set; } 
 		[Required]
 		[StringLength(100)]
 		public string TenSanPham { get; set; } = null!;
