@@ -74,6 +74,7 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controllers
         [HttpPost("api/NhanViens")]
         public async Task<IActionResult> CreateNhanVien([FromBody] NhanVienDTO dto, IFormFile? hinh)
         {
+            // Validate the model state
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
@@ -98,7 +99,9 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controllers
 
             // Validate role
             var validRoles = new[] { "Admin", "Customer", "Staff" };
-            if (!validRoles.Contains(dto.Role))
+
+            // Use Any with a case-insensitive comparison
+            if (!validRoles.Any(role => role.Equals(dto.Role, StringComparison.OrdinalIgnoreCase)))
             {
                 return BadRequest(new { success = false, message = "Invalid role specified." });
             }
@@ -111,58 +114,67 @@ namespace WebQuanLyNhaKhoa.Areas.Admin.Controllers
                 Role = dto.Role
             };
 
-            // Add user to context and save changes
-            await _context.TaiKhoans.AddAsync(user);
-            var userSaveResult = await _context.SaveChangesAsync();
-
-            if (userSaveResult > 0) // Check if user was added successfully
+            try
             {
-                // Handle image upload
-                if (hinh != null)
-                {
-                    dto.Hinh = await SaveImage(hinh);
-                }
-                else
-                {
-                    dto.Hinh = "/images/anonymous.png"; // Default image if none provided
-                }
+                // Attempt to add user to context and save changes
+                await _context.TaiKhoans.AddAsync(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                // Log the exception (optional)
+                // You can use logging here if you have set up a logger
 
-                // Create new NhanVien entity
-                var newNhanVien = new NhanVien
+                // Return a BadRequest with error messages
+                return BadRequest(new { success = false, message = "Failed to create user.", details = dbEx.InnerException?.Message });
+            }
+            // Handle image upload
+            if (hinh != null)
+            {
+                dto.Hinh = await SaveImage(hinh);
+            }
+            else
+            {
+                dto.Hinh = "/images/anonymous.png"; // Default image if none provided
+            }
+
+            // Create new NhanVien entity
+            var newNhanVien = new NhanVien
+            {
+                Ten = dto.Ten,
+                UserId = user.Id,
+                Sdt = dto.Sdt,
+                MaCv = dto.MaCv,
+                KinhNghiem = dto.KinhNghiem,
+                Hinh = dto.Hinh,
+                Email = dto.Email,
+            };
+
+            // Add NhanVien to context and save changes
+            _context.NhanViens.Add(newNhanVien);
+            var nhanVienSaveResult = await _context.SaveChangesAsync();
+
+            // Check if NhanVien was added successfully
+            if (nhanVienSaveResult > 0)
+            {
+                // Return created response
+                var createdNhanVienDTO = new NhanVienDTO
                 {
-                    Ten = dto.Ten,
-                    UserId = user.Id,
-                    Sdt = dto.Sdt,
-                    MaCv = dto.MaCv,
-                    KinhNghiem = dto.KinhNghiem,
-                    Hinh = dto.Hinh,
-                    Email = dto.Email,
+                    Ten = newNhanVien.Ten,
+                    Sdt = newNhanVien.Sdt,
+                    MaCv = newNhanVien.MaCv,
+                    KinhNghiem = newNhanVien.KinhNghiem,
+                    Hinh = newNhanVien.Hinh,
+                    Email = newNhanVien.Email
                 };
 
-                // Add NhanVien to context and save changes
-                _context.NhanViens.Add(newNhanVien);
-                var nhanVienSaveResult = await _context.SaveChangesAsync();
-
-                if (nhanVienSaveResult > 0) // Check if NhanVien was added successfully
-                {
-                    // Return created response
-                    var createdNhanVienDTO = new NhanVienDTO
-                    {
-                        Ten = newNhanVien.Ten,
-                        Sdt = newNhanVien.Sdt,
-                        MaCv = newNhanVien.MaCv,
-                        KinhNghiem = newNhanVien.KinhNghiem,
-                        Hinh = newNhanVien.Hinh,
-                        Email = newNhanVien.Email
-                    };
-
-                    return CreatedAtAction(nameof(GetNhanVienById), new { id = newNhanVien.MaNv }, createdNhanVienDTO);
-                }
+                return CreatedAtAction(nameof(GetNhanVienById), new { id = newNhanVien.MaNv }, createdNhanVienDTO);
             }
 
             // If any save operation fails, return a BadRequest with an error message
             return BadRequest(new { success = false, message = "Failed to create NhanVien." });
         }
+
 
 
         private async Task<string> SaveImage(IFormFile hinh)
