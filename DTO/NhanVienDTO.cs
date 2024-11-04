@@ -14,6 +14,7 @@ namespace WebQuanLyNhaKhoa.DTO
 		public int MaCv { get; set; }
 		public string? KinhNghiem { get; set; }
         public string? Diachi { get; set; }
+        public bool? Gioi { get; set; }
         public string? Hinh { get; set; } = "/images/anonymous.png";
         public string Email { get; set; }
         public string MatKhau { get; set; }

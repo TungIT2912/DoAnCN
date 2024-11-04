@@ -23,10 +23,11 @@ namespace WebQuanLyNhaKhoa.Data
 		[Required]
 		public int MaCv { get; set; }
 
-        [ForeignKey("ApplicationUser")]
-        public string UserId { get; set; } = null!;
+        [ForeignKey("TaiKhoan")]
+        public int  UserId { get; set; } 
         [StringLength(200)]
 		public string? KinhNghiem { get; set; }
+        public bool? Gioi { get; set; }
         [StringLength(200)]
         public string? Diachi { get; set; }
         [StringLength(200)]
@@ -36,7 +37,7 @@ namespace WebQuanLyNhaKhoa.Data
 		public string? Hinh { get; set; }
 
 		public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
-        public virtual ApplicationUser ApplicationUser { get; set; } = null!;
+        public virtual TaiKhoan TaiKhoan { get; set; } = null!;
         public virtual ChucVu ChucVu { get; set; } = null!;
     }
 }
