@@ -80,7 +80,7 @@ app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-//app.UseStaticFiles();
+app.UseStaticFiles();
 
 app.UseRouting();
 
@@ -89,8 +89,8 @@ app.UseAuthorization();  // Thêm middleware ủy quyền
 
 
 //app.MapControllerRoute(
-//	name: "default",
-//	pattern: "{controller=DanhSachKhams}/{action=Index}/{id?}");
+//    name: "default",
+//    pattern: "{controller=DanhSachKhams}/{action=Index}/{id?}");
 app.MapAreaControllerRoute(
     name: "Admin",
     areaName: "Admin",
@@ -100,6 +100,13 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.MapControllers();
 app.MapRazorPages();
