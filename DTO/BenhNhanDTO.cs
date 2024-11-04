@@ -6,6 +6,7 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class BenhNhanDTO
 	{
+        [Required]
         public string HoTen { get; set; } 
 
         public bool? Gioi { get; set; }

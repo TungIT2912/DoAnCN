@@ -13,7 +13,7 @@ namespace WebQuanLyNhaKhoa.Data
         public int? UserId { get; set; }
         [Required]
 		[StringLength(100)]
-		public string HoTen { get; set; } = null!;
+		public string HoTen { get; set; }
 
 		public bool? Gioi { get; set; }
 
