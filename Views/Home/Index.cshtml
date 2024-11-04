@@ -1,137 +1,337 @@
 ﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.NhanVien>
-    <html lang="vn">
-        <meta charset="utf-8">
 
 
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
 
+<!DOCTYPE html>
+<html lang="vn">
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:35:40 GMT -->
+<head>
+<meta charset="utf-8">
+
+<!-- Stylesheets -->
+<link href="~/css/bootstrap.css" rel="stylesheet">
+<link href="~/css/style.css" rel="stylesheet">
+<link href="~/css/responsive.css" rel="stylesheet">
+
+<!--Color Themes-->
+<link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
+
+<!--Color Switcher Mockup-->
+<link href="~/css/color-switcher-design.css" rel="stylesheet">
+
+<link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+<link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+
+<!-- Responsive -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+</head>
+
+<body>
+
 <div class="page-wrapper">
 
-    <!-- Preloader -->
-    <div class="preloader"></div>
-    
+ 
 
-
-    <!-- Bnner Section One -->
-    <section class="banner-section-one">
+    <!-- Bnner Section Two -->
+    <section class="banner-section-two">
         <div class="banner-carousel owl-carousel owl-theme default-arrows dark">
             <!-- Slide Item -->
-            <div class="slide-item" style="background-image: url(/images/main-slider/1.jpg);">
+            <div class="slide-item" style="background-image: url(images/main-slider/3-1.jpg);">
                 <div class="auto-container">
                     <div class="content-outer">
                         <div class="content-box">
-                            <span class="title">Welcome to our Medical Care Center</span>
-                            <h2>We take care our <br>patients health</h2>
-                            <div class="text">I realized that becoming a doctor, I can only help a small community. <br>But by becoming a doctor, I can help my whole country. </div>
-                            <div class="btn-box">
-                                <a href="about-us.html" class="theme-btn btn-style-one"><span class="btn-title">About Us</span></a>
-                                <a href="departments.html" class="theme-btn btn-style-two"><span class="btn-title">Our Services</span></a>
-                            </div>
+                            <div class="icon-box"><span class="icon flaticon-dental-insurance"></span></div>
+                            <h1>Medicoz</h1>
+                            <h3>Dental Center in Londan</h3>
+                            <div class="text">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </div>
+                            <div class="btn-box"><a href="#" class="theme-btn btn-style-one bg-scarlet"><span class="btn-title">Take Service</span></a></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Slide Item -->
-            <div class="slide-item" style="background-image: url(/images/main-slider/2.jpg);">
+            <div class="slide-item" style="background-image: url(images/main-slider/3-2.jpg);">
                 <div class="auto-container">
                     <div class="content-outer">
                         <div class="content-box">
-                            <span class="title">Welcome to our Medical Care Center</span>
-                            <h2>We take care our <br>patients health</h2>
-                            <div class="text">I realized that becoming a doctor, I can only help a small community. <br>But by becoming a doctor, I can help my whole country. </div>
-                            <div class="btn-box">
-                                <a href="about-us.html" class="theme-btn btn-style-one"><span class="btn-title">About Us</span></a>
-                                <a href="departments.html" class="theme-btn btn-style-two"><span class="btn-title">Our Services</span></a>
-                            </div>
+                            <div class="icon-box"><span class="icon flaticon-dental-insurance"></span></div>
+                            <h1>Medicoz</h1>
+                            <h3>Dental Center in Londan</h3>
+                            <div class="text">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </div>
+                            <div class="btn-box"><a href="#" class="theme-btn btn-style-one bg-scarlet"><span class="btn-title">Take Service</span></a></div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
-    <!-- End Bnner Section One -->
+    <!-- End Bnner Section -->
 
-    <!-- Top Features -->
-    <section class="top-features">
-        <div class="auto-container">
-            <div class="row">
-                <!-- Feature Block -->
-                <div class="feature-block col-lg-4 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <span class="icon flaticon-charity"></span>
-                        <h4><a href="#">Quality & Safety</a></h4>
-                        <p>Our Delmont hospital utilizes state of the art technology and employs a team of true experts.</p>
-                    </div>
-                </div>
-
-                <!-- Feature Block -->
-                <div class="feature-block col-lg-4 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <span class="icon flaticon-lifeline"></span>
-                        <h4><a href="#">Leading Technology</a></h4>
-                        <p>Our Delmont hospital utilizes state of the art technology and employs a team of true experts.</p>
-                    </div>
-                </div>
-
-                <!-- Feature Block -->
-                <div class="feature-block col-lg-4 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <span class="icon flaticon-doctor"></span>
-                        <h4><a href="#">Experts by Experience</a></h4>
-                        <p>Our Delmont hospital utilizes state of the art technology and employs a team of true experts.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Features Section -->
-
-
-    <!-- About Section -->
-    <section class="about-section">
+    <!-- About Section Three -->
+    <section class="about-section-three">
         <div class="auto-container">
             <div class="row">
                 <!-- Content Column -->
-                <div class="content-column col-lg-6 col-md-12 col-sm-12 order-2">
+                <div class="content-column col-lg-5 col-md-12 col-sm-12 order-2">
                     <div class="inner-column">
                         <div class="sec-title">
-                            <span class="sub-title">OUR MEDICAL</span>
-                            <h2>We're setting Standards in Research what's more, Clinical Care.</h2>
+                            <span class="sub-title">How We Get to This Point</span>
+                            <h2>Story About Our Hospital.</h2>
                             <span class="divider"></span>
-                            <p>We provide the most full medical services, so every person could have the pportunity o receive qualitative medical help.</p>
-                            <p> Our Clinic has grown to provide a world class facility for the treatment of tooth loss, dental cosmetics and bore advanced restorative dentistry. We are among the most qualified implant providers in the AUS with over 30 years of uality training and experience.</p>
+                            <p>One of the first major discoveries relevant to the field of pulmonology was the discovery of pulmonary circulation. Originally, it was thought that blood reaching the right side of the heart passed through small ‘pores’ in the septum.</p>
                         </div>
-                        <div class="link-box">
-                            <figure class="signature"><img src="images/resource/signature.png" alt=""></figure>
-                            <a href="#" class="theme-btn btn-style-one"><span class="btn-title">More About</span></a>
+                        <div class="about-owner">
+                            <img src="images/icons/sign.png" alt="" class="sign-img">
+                            <h4 class="name">Victoria Fernandez</h4>
+                            <span class="designation">Founder of Mediz Hospital</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Images Column -->
-                <div class="images-column col-lg-6 col-md-12 col-sm-12">
-                    <div class="inner-column">
-                        <div class="video-link">
-                            <a href="https://www.youtube.com/watch?v=4UvS3k8D4rs" class="play-btn lightbox-image" data-fancybox="images"><span class="flaticon-play-button-1"></span></a>
+                <div class="image-column col-lg-7 col-md-12 col-sm-12">
+                    <div class="image-box">
+                        <figure class="image"><img src="images/resource/image-6.jpg" alt=""></figure>
+                    </div>
+                </div>
+
+
+                <div class="blocks-column col-lg-12 order-3">
+                    <div class="row">
+                        <!-- Feature BLock -->
+                        <div class="feature-block-three col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <span class="icon flaticon-dentist"></span>
+                                <h4>Best Dental Suargeons</h4>
+                                <p>Dentistry, also known as Dental and Oral Medicine, is a branch of medicine that consists.</p>
+                            </div>
                         </div>
-                        <figure class="image-1"><img src="images/resource/image-1.png" alt=""></figure>
-                        <figure class="image-2"><img src="images/resource/image-2.png" alt=""></figure>
-                        <figure class="image-3">
-                            <span class="hex"></span>
-                            <img src="images/resource/image-3.png" alt="">
-                        </figure>
+
+                        <!-- Feature BLock -->
+                        <div class="feature-block-three col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <span class="icon flaticon-toothbrush"></span>
+                                <h4>Quick Examination</h4>
+                                <p>Dentistry, also known as Dental and Oral Medicine, is a branch of medicine that consists.</p>
+                            </div>
+                        </div>
+
+                        <!-- Feature BLock -->
+                        <div class="feature-block-three col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <span class="icon flaticon-drilling"></span>
+                                <h4>Painless procedures</h4>
+                                <p>Dentistry, also known as Dental and Oral Medicine, is a branch of medicine that consists.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- End About Section -->
+    <!-- End About Section Three -->
 
-    <!-- Services Section -->
-    <section class="services-section">
+    <!-- Fun Fact Section Three-->
+    <section class="fun-fact-section-three">
+        <div class="auto-container">
+            <div class="background-layer"></div>
+            <div class="row">
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-user-experience"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="25">0</span>
+                        <h4 class="counter-title">Years of Experience</h4>
+                    </div>
+                </div>
+
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="400ms">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-team"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="470">0</span>
+                        <h4 class="counter-title">Medical Spesialities</h4>
+                    </div>
+                </div>
+
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="800ms">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-hospital"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="689">0</span>
+                        <h4 class="counter-title">Medical Spesialities</h4>
+                    </div>
+                </div>
+
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="1200ms">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-add-friend"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="9036">0</span>
+                        <h4 class="counter-title">Happy Patients</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Fun Fact Section Three -->
+
+    <!-- Team Section Two -->
+    <section class="team-section-two">
+        <div class="auto-container">
+            <div class="sec-title text-center">
+                <span class="sub-title">MEET OUR EXPERIENCED TEAM</span>
+                <h2>Our Dedicated Doctors Team.</h2>
+                <span class="divider"></span>
+            </div>
+
+            <div class="row">
+                <!-- Team Block -->
+                <div class="team-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <figure class="image"><a href="doctor-detail.html"><img src="images/resource/team-5.jpg" alt=""></a></figure>
+                            <ul class="social-links">
+                                <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="info-box">
+                            <h5 class="name"><a href="doctor-detail.html">Emily Haden</a></h5>
+                            <span class="designation">Dental Surgeon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Block -->
+                <div class="team-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="400ms">
+                    <div class="inner-box">
+                        <div class="image-box">
+                           <figure class="image"><a href="doctor-detail.html"><img src="images/resource/team-6.jpg" alt=""></a></figure>
+                            <ul class="social-links">
+                                <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="info-box">
+                            <h5 class="name"><a href="doctor-detail.html">Hellen Hill</a></h5>
+                            <span class="designation">Dental Surgeon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Block -->
+                <div class="team-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="800ms">
+                    <div class="inner-box">
+                        <div class="image-box">
+                           <figure class="image"><a href="doctor-detail.html"><img src="images/resource/team-7.jpg" alt=""></a></figure>
+                            <ul class="social-links">
+                                <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="info-box">
+                            <h5 class="name"><a href="doctor-detail.html">Audrey Button</a></h5>
+                            <span class="designation">Dental Surgeon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sec-bottom-text">Don’t hesitate, contact us for better help and services. <a href="#">Explore all Dr. Team</a></div>
+        </div>
+    </section>
+    <!--End Team Section -->
+
+    <!-- Skill Section -->
+    <section class="skill-section">
+        <div class="outer-container clearfix">
+            <div class="skill-column">
+                <div class="inner-column">
+                    <div class="sec-title">
+                        <span class="sub-title">BEST OF THE BEST</span>
+                        <h2>High End Equipments.</h2>
+                        <span class="divider"></span>
+                        <div class="text">Surgery of the respiratory tract is generally performed by specialists in cardiothoracic surgery (or thoracic surgery) though minor procedures may be performed by pulmonologists. Pulmonology is closely.</div>
+                    </div>
+
+                    <!--Skills-->
+                    <div class="skills">
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">CARDIO-ONCOLOGY</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="55">0</span>%</div></div>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="55"></div></div>
+                            </div>
+                        </div>
+
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">HEART ASSESSMENT</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="72">0</span>%</div></div>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="72"></div></div>
+                            </div>
+                        </div>
+
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">Dental SURGERY</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="88">0</span>%</div></div>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="88"></div></div>
+                            </div>
+                        </div>
+
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">HEART ASSESSMENT</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="78">0</span>%</div></div>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="78"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-box"><a href="#" class="theme-btn btn-style-three"><span class="btn-title">Learn More</span></a></div>
+                </div>
+            </div>
+
+            <div class="image-column" style="background-image: url(images/resource/image-7.jpg);">
+                <div class="image-box">
+                    <figure class="image"><img src="images/resource/image-7.jpg" alt=""></figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End Skill Section -->
+
+    <!-- Services Section Three-->
+    <section class="services-section-three">
         <div class="auto-container">
             <div class="sec-title text-center">
                 <span class="sub-title">OUR SERVICES</span>
@@ -141,56 +341,62 @@
 
             <div class="row">
                 <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-heartbeat"></span>
-                        <h5><a href="#">Health Check</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                        <span class="icon flaticon-dentist"></span>
+                        <h5><a href="#">General Dentistry</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-dentist"></span>
                     </div>
                 </div>
 
                 <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-surgery-room"></span>
-                        <h5><a href="#">Operation Theater</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                        <span class="icon flaticon-braces"></span>
+                        <h5><a href="#">Orthodontics</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-braces"></span>
                     </div>
                 </div>
 
                 <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-pharmacy"></span>
-                        <h5><a href="#">Pharmacy Support</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                        <span class="icon flaticon-implant"></span>
+                        <h5><a href="#">Dental Implants</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-implant"></span>
                     </div>
                 </div>
 
                 <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-transport"></span>
-                        <h5><a href="#">Ambulance Car</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                        <span class="icon flaticon-teeth"></span>
+                        <h5><a href="#">Teeth Whitening</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-teeth"></span>
                     </div>
                 </div>
 
                 <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-lab"></span>
-                        <h5><a href="#">Lat Tests</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                        <span class="icon flaticon-dental-insurance"></span>
+                        <h5><a href="#">Cosmetic Dentistry</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-dental-insurance"></span>
                     </div>
                 </div>
 
                 <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-first-aid"></span>
-                        <h5><a href="#">Intensive Care</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                        <span class="icon flaticon-tooth"></span>
+                        <h5><a href="#">Gum Treatment</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-tooth"></span>
                     </div>
                 </div>
             </div>
@@ -198,154 +404,8 @@
     </section>
     <!--End Services Section -->
 
-    <!-- Team Section -->
-    <section class="team-section">
-        <div class="auto-container">
-            <div class="sec-title text-center">
-                <span class="sub-title">Our Doctor</span>
-                <h2>Our Dedicated Doctors Team</h2>
-                <span class="divider"></span>
-            </div>
-
-            <div class="row">
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-1.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-2.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-3.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-4.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sec-bottom-text">Don’t hesitate, contact us for better help and services <a href="#">Explore all Dr. Team</a></div>
-        </div>
-    </section>
-    <!-- End Team Section -->
-
-    <!-- Appointment Section -->
-    <section class="appointment-section">
-        <div class="image-layer" style="background-image: url(images/background/2.jpg);"></div>
-        <div class="auto-container">
-            <div class="row">
-                <!-- Content Column -->
-                <div class="content-column col-lg-6 col-md-12 col-sm-12">
-                    <div class="inner-column">
-                        <span class="title">Need a Doctor for Check-up?</span>
-                        <h2>Just Make an Appointment <br>and You’re Done!</h2>
-                        <div class="number">Get Your Quote or Call: <strong>(0080) 123-453-789</strong></div>
-                        <a href="#" class="theme-btn btn-style-three"><span class="btn-title">Get an Appointment</span></a>
-                    </div>
-                </div>
-                <div class="image-column col-lg-6 col-md-12 col-sm-12">
-                    <figure class="image"><img src="images/resource/image-4.png" alt=""></figure>
-                </div>
-            </div>
-
-            <div class="fun-fact-section">
-                <div class="row">
-                    <!--Column-->
-                    <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                        <div class="count-box">
-                            <div class="icon-box"><span class="icon flaticon-user-experience"></span></div>
-                            <h4 class="counter-title">Years of Experience</h4>
-                            <span class="count-text" data-speed="3000" data-stop="25">0</span>
-                        </div>
-                    </div>
-
-                    <!--Column-->
-                    <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="400ms">
-                        <div class="count-box">
-                            <div class="icon-box"><span class="icon flaticon-team"></span></div>
-                            <h4 class="counter-title">Medical Spesialities</h4>
-                            <span class="count-text" data-speed="3000" data-stop="470">0</span>
-                        </div>
-                    </div>
-
-                    <!--Column-->
-                    <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="800ms">
-                        <div class="count-box">
-                            <div class="icon-box"><span class="icon flaticon-hospital"></span></div>
-                            <h4 class="counter-title">Medical Spesialities</h4>
-                            <span class="count-text" data-speed="3000" data-stop="689">0</span>
-                        </div>
-                    </div>
-
-                    <!--Column-->
-                    <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="1200ms">
-                        <div class="count-box">
-                            <div class="icon-box"><span class="icon flaticon-add-friend"></span></div>
-                            <h4 class="counter-title">Happy Patients</h4>
-                            <span class="count-text" data-speed="3000" data-stop="9036">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Appointment Section -->
-
-    <!-- Testimonial Section -->
-    <section class="testimonial-section">
+        <!-- Testimonial Section -->
+    <section class="testimonial-section-two">
         <div class="auto-container">
             <!-- Sec Title -->
             <div class="sec-title text-center">
@@ -355,45 +415,6 @@
             </div>
             
             <div class="testimonial-outer">
-                <!-- Client Testimonial Carousel -->
-                <div class="client-testimonial-carousel owl-carousel owl-theme">
-                
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                    
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                    
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                    
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Product Thumbs Carousel -->
                 <div class="client-thumb-outer">
                     <div class="client-thumbs-carousel owl-carousel owl-theme">
@@ -439,116 +460,75 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Testimonial Section -->
 
-    <!-- Pricing Section -->
-    <section class="pricing-section">
-        <div class="auto-container">
-            <div class="sec-title text-center">
-                <span class="sub-title">Our Pricing</span>
-                <h2>Pricing Plan</h2>
-                <span class="divider"></span>
-            </div>
-
-            <div class="outer-box">
-                <div class="row">
-                    <!-- Pricing Block -->
-                    <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
+                <!-- Client Testimonial Carousel -->
+                <div class="client-testimonial-carousel default-dots owl-carousel owl-theme">
+                
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
                         <div class="inner-box">
-                            <div class="price-box">
-                                <h4 class="price">$299</h4>
-                                <div class="validaty">Per Month</div>
-                            </div>
-                            <h3 class="title">Cardiology</h3>
-                            <ul class="features">
-                                <li>Functional Diagnotics</li>
-                                <li>Allergens Drugs</li>
-                                <li>Pollen Allergens</li>
-                                <li>Food Allergens</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" class="theme-btn">Get Offer</a>
-                            </div>
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
+                        </div>
+                    </div>
+                    
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
+                        </div>
+                    </div>
+                    
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
                         </div>
                     </div>
 
-                    <!-- Pricing Block -->
-                    <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
                         <div class="inner-box">
-                            <div class="price-box">
-                                <h4 class="price">$120</h4>
-                                <div class="validaty">Per Month</div>
-                            </div>
-                            <h3 class="title">Detal Care</h3>
-                            <ul class="features">
-                                <li>Tooth implantation</li>
-                                <li>Lase Dentistry</li>
-                                <li>Tests and Treatment</li>
-                                <li>Medical Consultation</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" class="theme-btn">Get Offer</a>
-                            </div>
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
                         </div>
                     </div>
-
-                    <!-- Pricing Block -->
-                    <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
+                    
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
                         <div class="inner-box">
-                            <div class="price-box">
-                                <h4 class="price">$150</h4>
-                                <div class="validaty">Per Month</div>
-                            </div>
-                            <h3 class="title">Body Checkup</h3>
-                            <ul class="features">
-                                <li>Tests and Treatment</li>
-                                <li>Tests and Treatment</li>
-                                <li>Laboratory Services</li>
-                                <li>Food Allergens</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" class="theme-btn">Get Offer</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pricing Block -->
-                    <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                        <div class="inner-box">
-                            <div class="price-box">
-                                <h4 class="price">$100</h4>
-                                <div class="validaty">Per Month</div>
-                            </div>
-                            <h3 class="title">Blood Test</h3>
-                            <ul class="features">
-                                <li>Blood Test Service</li>
-                                <li>Safety Training Tips</li>
-                                <li>Tests and Treatment</li>
-                                <li>Food Allergens</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" class="theme-btn">Get Offer</a>
-                            </div>
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="sec-bottom-text">Don’t hesitate, contact us for better help and services <a href="#">Explore all Dr. Team</a></div>
+            <!-- Call To Action -->
+            <div class="call-to-action">
+                <div class="inner-container">
+                    <div class="content-column">
+                        <h4>We Employ The Latest Technology</h4>
+                        <h2>We Ensure Safe Dental Sergery </h2>
+                        <a href="#" class="theme-btn btn-style-three"><span class="btn-title">Take Appointment</span></a>
+                    </div>
+
+                    <div class="video-column">
+                        <div class="btn-box">
+                            <a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-now" data-fancybox="gallery" data-caption=""><i class="icon flaticon-play-button" aria-hidden="true"></i><span class="ripple"></span></a>
+                            <span class="title">Watch now</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-    <!--End Pricing Section -->
+    <!-- End Testimonial Section -->
 
-     <!-- News Section -->
-    <section class="news-section">
+    <!-- News Section Two -->
+    <section class="news-section-two">
         <div class="auto-container">
             <!-- Sec Title -->
-            <div class="sec-title text-center">
-                <span class="title">OUR BLOG</span>
-                <h2>Recent Articles and News</h2>
+            <div class="sec-title">
+                <span class="title">OUR latest BLOG</span>
+                <h2>Articles and News</h2>
                 <span class="divider"></span>
             </div>
 
@@ -558,15 +538,12 @@
                     <div class="inner-box">
                         <div class="image-box">
                             <figure class="image"><a href="blog-post-image.html"><img src="images/resource/news-1.jpg" alt=""></a></figure>
-                            <a href="#" class="date">Sep 19, 2020</a>
                         </div>
                         <div class="lower-content">
                             <h4><a href="blog-post-image.html">What is The Success rate<br> of a root canel?</a></h4>
-                            <div class="text">Nullam mauris vitae tortor sodales efficitur. Quisque orci ante. Proin amet turpis</div>
                             <div class="post-info">
-                                <div class="post-author">By Admin Rose</div>
+                                <div class="post-author">By<a href="#">Admin Rose</a></div>
                                 <ul class="post-option">
-                                    <li><a href="#">0 <i class="far fa-heart"></i></a></li>
                                     <li><a href="#">0 <i class="far fa-comments"></i></a></li>
                                 </ul>
                             </div>
@@ -579,15 +556,12 @@
                     <div class="inner-box">
                         <div class="image-box">
                             <figure class="image"><a href="blog-post-image.html"><img src="images/resource/news-2.jpg" alt=""></a></figure>
-                            <a href="#" class="date">Sep 19, 2020</a>
                         </div>
                         <div class="lower-content">
                             <h4><a href="blog-post-image.html">How to handle your kids’ <Br>mystery ailments?</a></h4>
-                            <div class="text">Nullam mauris vitae tortor sodales efficitur. Quisque orci ante. Proin amet turpis</div>
                             <div class="post-info">
-                                <div class="post-author">By Admin Rose</div>
+                                <div class="post-author">By<a href="#">Admin Rose</a></div>
                                 <ul class="post-option">
-                                    <li><a href="#">0 <i class="far fa-heart"></i></a></li>
                                     <li><a href="#">0 <i class="far fa-comments"></i></a></li>
                                 </ul>
                             </div>
@@ -600,15 +574,12 @@
                     <div class="inner-box">
                         <div class="image-box">
                             <figure class="image"><a href="blog-post-image.html"><img src="images/resource/news-3.jpg" alt=""></a></figure>
-                            <a href="#" class="date">Sep 19, 2020</a>
                         </div>
                         <div class="lower-content">
                             <h4><a href="blog-post-image.html">How to help the cardiology <br>department</a></h4>
-                            <div class="text">Nullam mauris vitae tortor sodales efficitur. Quisque orci ante. Proin amet turpis</div>
                             <div class="post-info">
-                                <div class="post-author">By Admin Rose</div>
+                                <div class="post-author">By<a href="#">Admin Rose</a></div>
                                 <ul class="post-option">
-                                    <li><a href="#">0 <i class="far fa-heart"></i></a></li>
                                     <li><a href="#">0 <i class="far fa-comments"></i></a></li>
                                 </ul>
                             </div>
@@ -619,7 +590,7 @@
             </div>
         </div>
     </section>
-    <!--End News Section -->
+    <!--End News Section Two -->
 
     <!-- Clients Section -->
     <section class="clients-section">
@@ -641,7 +612,7 @@
     <!--End Clients Section -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
+    <footer class="main-footer style-three">
         <!--Widgets Section-->
         <div class="widgets-section" style="background-image: url(images/background/7.jpg);">
             <div class="auto-container">
@@ -653,7 +624,7 @@
                             <div class="footer-column col-xl-7 col-lg-6 col-md-6 col-sm-12">
                                 <div class="footer-widget about-widget">
                                     <div class="logo">
-                                        <a href="index.html"><img src="images/logo-2.png" alt="" /></a>
+                                        <a href="index.html"><img src="images/logo-5.png" alt="" /></a>
                                     </div>
                                     <div class="text">
                                         <p>Our Clinic has grown to provide a world class facility for the clinic advanced restorative. </p>
@@ -661,7 +632,7 @@
                                     </div>
                                     <ul class="social-icon-three">
                                         <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-pinterest"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
                                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
                                         <li><a href="#"><i class="fab fa-skype"></i></a></li>
                                         <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
@@ -741,7 +712,7 @@
                                                 <div class="text">Do you have a Question?<br>
                                                 <a href="mailto:info@gmail.com"><strong>info@gmail.com</strong></a></div>
                                             </li>
-
+                                            
                                             <li>
                                                 <span class="icon flaticon-back-in-time"></span>
                                                 <div class="text">Mon - Sat 8.00 - 18.00<br>
@@ -783,6 +754,7 @@
 
 </div><!-- End Page Wrapper -->
 
+
 <!-- Color Palate / Color Switcher -->
 <div class="color-palate">
     <div class="inner-palate">
@@ -801,9 +773,9 @@
         <div class="various-color clearfix">
             <div class="colors-list">
                 <h6>Choose Your Color</h6>
-                <span class="palate default-color active" data-theme-file="~/css/color-themes/default-theme.css"></span>
+                <span class="palate default-color" data-theme-file="~/css/color-themes/default-theme.css"></span>
                 <span class="palate tealblue-color" data-theme-file="~/css/color-themes/tealblue.css"></span>
-                <span class="palate scarlet-color" data-theme-file="~/css/color-themes/scarlet.css"></span>
+                <span class="palate scarlet-color active" data-theme-file="~/css/color-themes/scarlet.css"></span>
                 <span class="palate kellygreen-color" data-theme-file="~/css/color-themes/kellygreen.css"></span>
                 <span class="palate dodgerblue-color" data-theme-file="~/css/color-themes/dodgerblue.css"></span>
                 <span class="palate red-color" data-theme-file="~/css/color-themes/red.css"></span>
@@ -842,5 +814,25 @@
             <a href="https://themeforest.net/item/medicoz-clinic-hospital-html-template/28397578?ref=bold_touch" class="purchase-btn">Purchase now $12</a>
         </div>
     </div>
-</div>
-<!-- End Color Switcher -->
+</div><!-- End Color Switcher -->
+
+<script src="~/js/jquery.js"></script>  
+<script src="~/js/popper.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.fancybox.js"></script>
+<script src="~/js/jquery.modal.min.js"></script>
+<script src="~/js/mmenu.polyfills.js"></script>
+<script src="~/js/mmenu.js"></script>
+<script src="~/js/appear.js"></script>
+<script src="~/js/mixitup.js"></script>
+<script src="~/js/owl.js"></script>
+<script src="~/js/wow.js"></script>
+<script src="~/js/script.js"></script>
+<!-- Color Setting -->
+<script src="~/js/color-settings.js"></script>
+</body>
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:35:56 GMT -->
+</html>
+
+
