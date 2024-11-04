@@ -6,9 +6,9 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class DieuTriDTO
 	{
-		public string IddichVu { get; set; } = null!;
-		public string Idkham { get; set; } = null!;
-		public string IddungCu { get; set; } = null!;
+		public int IddichVu { get; set; } 
+		public int Idkham { get; set; }
+		public int IddungCu { get; set; }
 
 		public int SoLuong { get; set; }
 

@@ -52,7 +52,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
             return View(danhSachKham);
         }
 
-        private bool DanhSachKhamExists(string id)
+        private bool DanhSachKhamExists(int id)
         {
             return _context.DanhSachKhams.Any(e => e.Idkham == id);
         }

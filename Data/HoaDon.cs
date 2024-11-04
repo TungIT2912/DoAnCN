@@ -13,7 +13,7 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public int IddieuTri { get; set; }
 
-		public string? Idkham { get; set; }
+		public int? Idkham { get; set; }
 
 		public string? PhuongThucThanhToan { get; set; }
 

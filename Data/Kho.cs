@@ -8,10 +8,10 @@ namespace WebQuanLyNhaKhoa.Data
 	{
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string IdsanPham { get; set; } = null!;
+        public int IdsanPham { get; set; } 
 
 		[ForeignKey("ThiTruong")]
-		public string IddungCu { get; set; } = null!;
+		public int IddungCu { get; set; } 
 
 		[Required]
 		[StringLength(100)]

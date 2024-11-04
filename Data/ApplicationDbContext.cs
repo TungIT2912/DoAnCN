@@ -41,7 +41,14 @@ namespace WebQuanLyNhaKhoa.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-          
+            modelBuilder.Entity<ApplicationUser>()
+                 .HasOne(u => u.Customer) // ApplicationUser has one BenhNhan
+                 .WithOne(b => b.ApplicationUser) // BenhNhan has one ApplicationUser
+                 .HasForeignKey<BenhNhan>(b => b.UserId); // Foreign key in BenhNhan
+            modelBuilder.Entity<ApplicationUser>()
+                           .HasOne(u => u.Staff) // ApplicationUser has many NhanVien
+                           .WithOne(n => n.ApplicationUser) // NhanVien has one ApplicationUser
+                           .HasForeignKey<NhanVien>(b => b.UserId);
             modelBuilder.Entity<HoaDon>()
 				.HasOne(h => h.IddieuTriNavigation)
 				.WithMany(d => d.HoaDons)

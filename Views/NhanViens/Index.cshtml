@@ -94,7 +94,7 @@
                                  class="h-[400px] w-full object-cover rounded-md transition-all duration-300 transform group-hover:scale-110" />
                             <div class="mt-3">
                             <h2 class="my-[16px] text-center text-xl font-bold">@Html.DisplayFor(modelItem => item.Ten)</h2>
-                            <p class="text-center text-sm mt-2">@Html.DisplayFor(modelItem => item.MaCvNavigation.TenCv)</p>
+                           @*   <p class="text-center text-sm mt-2">@Html.DisplayFor(modelItem => item.MaCvNavigation.TenCv)</p> *@
                             </div>
                             <div class="flex justify-center gap-4 mt-5">
                                 <a asp-action="Delete" asp-controller="NhanViens" asp-route-id="@item.MaNv" class="flex items-center justify-center w-24 h-14 bg-red-500 rounded-md text-[20px] text-center">

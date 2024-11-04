@@ -11,13 +11,13 @@ namespace WebQuanLyNhaKhoa.Data
         public int IddieuTri { get; set; }
 
 		[ForeignKey("DichVu")]
-		public string IddichVu { get; set; } = null!;
+		public int IddichVu { get; set; }
 
 		[ForeignKey("DanhSachKham")]
-		public string Idkham { get; set; } = null!;
+		public int Idkham { get; set; }
 
 		[ForeignKey("Kho")]
-		public string IddungCu { get; set; } = null!;
+		public int IddungCu { get; set; } 
 
 		public int SoLuong { get; set; }
 

@@ -16,8 +16,8 @@ namespace WebQuanLyNhaKhoa.Data
         public int? CustomerID { get; set; }
         public int? StaffId { get; set; }
         public string ChucVu { get; set; }
-        public BenhNhan? Customer { get; set; }
-        public NhanVien? Staff { get; set; }
+        public virtual BenhNhan? Customer { get; set; }
+        public virtual NhanVien? Staff { get; set; }
         public Boolean IsLocked { get; set; }
     }
 }
