@@ -9,7 +9,7 @@ namespace WebQuanLyNhaKhoa.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
 		[Column("IdChanDoan")]
-		public string IdchanDoan { get; set; } = null!;
+		public int IdchanDoan { get; set; }
 
 		[Required]
 		[StringLength(100)]

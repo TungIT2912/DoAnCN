@@ -84,7 +84,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
             }
             return View();
         }
-        public async Task<IActionResult> Move(string id)
+        public async Task<IActionResult> Move(int id)
         {
             if (id == null)
             {
@@ -102,7 +102,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
             {
                 IdbenhNhan = bn.IdbenhNhan,
                 NgayKham = DateTime.Now,
-                Idkham = randomNumber.ToString()
+                Idkham = randomNumber
             };
             await _context.DanhSachKhams.AddAsync(ds);
             _context.SaveChanges();
@@ -110,7 +110,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
         }
 
         // GET: BenhNhan/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
@@ -171,7 +171,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("IdbenhNhan,HoTen,Gioi,NamSinh,Sdt,DiaChi,NgayKhamDau")] BenhNhan benhNhan)
+        public async Task<IActionResult> Edit(int id, [Bind("IdbenhNhan,HoTen,Gioi,NamSinh,Sdt,DiaChi,NgayKhamDau")] BenhNhan benhNhan)
         {
             if (id != benhNhan.IdbenhNhan)
             {
@@ -202,7 +202,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
         }
 
         // GET: BenhNhan/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -234,7 +234,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BenhNhanExists(string id)
+        private bool BenhNhanExists(int id)
         {
             return _context.BenhNhans.Any(e => e.IdbenhNhan == id);
         }

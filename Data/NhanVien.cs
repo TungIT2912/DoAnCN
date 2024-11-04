@@ -12,11 +12,6 @@ namespace WebQuanLyNhaKhoa.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MaNv { get; set; }
 
-		//[ForeignKey("TaiKhoan")]
-		//[Required]
-		//[StringLength(50)]
-		//public string TenDangNhap { get; set; } = null!;
-
 		[Required]
 		[StringLength(100)]
 		public string Ten { get; set; } = null!;
@@ -26,12 +21,13 @@ namespace WebQuanLyNhaKhoa.Data
 
 		[ForeignKey("ChucVu")]
 		[Required]
-		public string MaCv { get; set; } = null!;
+		public int MaCv { get; set; }
 
-        [ForeignKey("UserId")]
-        public string UserId { get; set; }
+        [ForeignKey("TaiKhoan")]
+        public int  UserId { get; set; } 
         [StringLength(200)]
 		public string? KinhNghiem { get; set; }
+        public bool? Gioi { get; set; }
         [StringLength(200)]
         public string? Diachi { get; set; }
         [StringLength(200)]
@@ -41,7 +37,7 @@ namespace WebQuanLyNhaKhoa.Data
 		public string? Hinh { get; set; }
 
 		public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
-
-		public virtual ChucVu MaCvNavigation { get; set; } = null!;
+        public virtual TaiKhoan TaiKhoan { get; set; } = null!;
+        public virtual ChucVu ChucVu { get; set; } = null!;
     }
 }

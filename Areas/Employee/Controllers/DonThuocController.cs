@@ -64,7 +64,7 @@ namespace WebQuanLyNhaKhoa.Areas.Employee.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IddonThuoc,Idkham,IddungCu,SoLuong,ThanhGia,TongTien,NgayLapDt")] DonThuoc donThuoc, string id)
+        public async Task<IActionResult> Create([Bind("IddonThuoc,Idkham,IddungCu,SoLuong,ThanhGia,TongTien,NgayLapDt")] DonThuoc donThuoc, int id)
         {
             if (donThuoc.NgayLapDt < DateTime.Today)
             {
