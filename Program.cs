@@ -54,6 +54,10 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("StaffPolicy", policy => policy.RequireRole("Staff"));
 });
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddRazorPages();
 
 // Dependency Injection setup
