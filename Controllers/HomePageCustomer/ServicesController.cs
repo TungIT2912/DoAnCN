@@ -24,5 +24,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             var qlnhaKhoaContext = _context.DichVus.Include(d => d.IdchanDoanNavigation);
             return View(await qlnhaKhoaContext.ToListAsync());
         }
+		public IActionResult Pricing()
+		{
+			return View();
+		}
     }
 }
