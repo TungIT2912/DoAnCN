@@ -17,26 +17,85 @@ builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-var app = builder.Build();
-app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
+var app = builder.Build();
+
+// Middleware ordering
+app.UseRouting();  // Ensures routes are prepared
+
+app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
+
+app.UseStaticFiles(); // Allows serving static files after checking routes
+
+// Error handling in non-development environments
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
+// HTTPS redirection
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 
-app.UseRouting();
-
+// Authorization
 app.UseAuthorization();
 
+// Mapping controller routes
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
 
 app.Run();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var app = builder.Build();
+// app.UseStaticFiles();
+
+// // Configure the HTTP request pipeline.
+// if (!app.Environment.IsDevelopment())
+// {
+//     app.UseExceptionHandler("/Home/Error");
+//     app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
+//     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//     app.UseHsts();
+// }
+
+//     // if (app.IsDevelopment())
+//     // {
+//     //     app.UseDeveloperExceptionPage();
+//     // }
+//     // else
+//     // {
+//     //     app.UseExceptionHandler("/Home/Error");
+//     //     app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
+//     // }
+
+// app.UseHttpsRedirection();
+// app.UseStaticFiles();
+
+// app.UseRouting();
+
+// app.UseAuthorization();
+
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Home}/{action=Index}");
+
+// app.Run();

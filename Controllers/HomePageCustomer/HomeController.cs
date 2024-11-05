@@ -53,5 +53,14 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             }
             return View(benhNhan);
         }
+            public IActionResult HandleError(int statusCode)
+        {
+            if (statusCode == 404)
+            {
+                return View("404"); 
+            }
+
+            return View("Error"); 
+        }
     }
 }
