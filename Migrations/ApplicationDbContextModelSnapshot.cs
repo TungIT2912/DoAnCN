@@ -115,13 +115,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("IdbenhNhan")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdbenhNhanNavigationIdbenhNhan")
-                        .HasColumnType("int");
-
                     b.Property<int?>("MaNv")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MaNvNavigationMaNv")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("NgayKham")
@@ -129,9 +123,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("Idkham");
 
-                    b.HasIndex("IdbenhNhanNavigationIdbenhNhan");
+                    b.HasIndex("IdbenhNhan");
 
-                    b.HasIndex("MaNvNavigationMaNv");
+                    b.HasIndex("MaNv");
 
                     b.ToTable("DanhSachKhams");
                 });
@@ -156,9 +150,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("IdchanDoan")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdchanDoanNavigationIdchanDoan")
-                        .HasColumnType("int");
-
                     b.Property<string>("TenDichVu")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -166,7 +157,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("IddichVu");
 
-                    b.HasIndex("IdchanDoanNavigationIdchanDoan");
+                    b.HasIndex("IdchanDoan");
 
                     b.ToTable("DichVus");
                 });
@@ -182,19 +173,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("IddichVu")
                         .HasColumnType("int");
 
-                    b.Property<int>("IddichVuNavigationIddichVu")
-                        .HasColumnType("int");
-
                     b.Property<int>("IddungCu")
                         .HasColumnType("int");
 
-                    b.Property<int>("IddungCuNavigationIdsanPham")
-                        .HasColumnType("int");
-
                     b.Property<int>("Idkham")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdkhamNavigationIdkham")
                         .HasColumnType("int");
 
                     b.Property<int>("SoLuong")
@@ -205,11 +187,11 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("IddieuTri");
 
-                    b.HasIndex("IddichVuNavigationIddichVu");
+                    b.HasIndex("IddichVu");
 
-                    b.HasIndex("IddungCuNavigationIdsanPham");
+                    b.HasIndex("IddungCu");
 
-                    b.HasIndex("IdkhamNavigationIdkham");
+                    b.HasIndex("Idkham");
 
                     b.ToTable("DieuTris");
                 });
@@ -225,13 +207,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("IddungCu")
                         .HasColumnType("int");
 
-                    b.Property<int>("IddungCuNavigationIdsanPham")
-                        .HasColumnType("int");
-
                     b.Property<int>("Idkham")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdkhamNavigationIdkham")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("NgayLapDt")
@@ -248,9 +224,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("IddonThuoc");
 
-                    b.HasIndex("IddungCuNavigationIdsanPham");
+                    b.HasIndex("IddungCu");
 
-                    b.HasIndex("IdkhamNavigationIdkham");
+                    b.HasIndex("Idkham");
 
                     b.ToTable("DonThuocs");
                 });
@@ -340,7 +316,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaLs"));
 
-                    b.Property<decimal>("Don")
+                    b.Property<decimal?>("Don")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DonViTinh")
@@ -356,7 +332,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("NgayNhap")
+                    b.Property<DateTime?>("NgayNhap")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NoiDung")
@@ -504,102 +480,102 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DanhSachKham", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.BenhNhan", "IdbenhNhanNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.BenhNhan", "BenhNhan")
                         .WithMany("DanhSachKhams")
-                        .HasForeignKey("IdbenhNhanNavigationIdbenhNhan")
+                        .HasForeignKey("IdbenhNhan")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "MaNvNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "NhanVien")
                         .WithMany("DanhSachKhams")
-                        .HasForeignKey("MaNvNavigationMaNv");
+                        .HasForeignKey("MaNv");
 
-                    b.Navigation("IdbenhNhanNavigation");
+                    b.Navigation("BenhNhan");
 
-                    b.Navigation("MaNvNavigation");
+                    b.Navigation("NhanVien");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DichVu", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "IdchanDoanNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "ChanDoan")
                         .WithMany("DichVus")
-                        .HasForeignKey("IdchanDoanNavigationIdchanDoan")
+                        .HasForeignKey("IdchanDoan")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IdchanDoanNavigation");
+                    b.Navigation("ChanDoan");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DieuTri", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.DichVu", "IddichVuNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DichVu", "DichVu")
                         .WithMany("DieuTris")
-                        .HasForeignKey("IddichVuNavigationIddichVu")
+                        .HasForeignKey("IddichVu")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "IddungCuNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "Kho")
                         .WithMany("DieuTris")
-                        .HasForeignKey("IddungCuNavigationIdsanPham")
+                        .HasForeignKey("IddungCu")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "IdkhamNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
                         .WithMany("DieuTris")
-                        .HasForeignKey("IdkhamNavigationIdkham")
+                        .HasForeignKey("Idkham")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IddichVuNavigation");
+                    b.Navigation("DanhSachKham");
 
-                    b.Navigation("IddungCuNavigation");
+                    b.Navigation("DichVu");
 
-                    b.Navigation("IdkhamNavigation");
+                    b.Navigation("Kho");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DonThuoc", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "IddungCuNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "Kho")
                         .WithMany("DonThuocs")
-                        .HasForeignKey("IddungCuNavigationIdsanPham")
+                        .HasForeignKey("IddungCu")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "IdkhamNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
                         .WithMany("DonThuocs")
-                        .HasForeignKey("IdkhamNavigationIdkham")
+                        .HasForeignKey("Idkham")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IddungCuNavigation");
+                    b.Navigation("DanhSachKham");
 
-                    b.Navigation("IdkhamNavigation");
+                    b.Navigation("Kho");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.HoaDon", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.DieuTri", "IddieuTriNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DieuTri", "DieuTri")
                         .WithMany("HoaDons")
                         .HasForeignKey("IddieuTri")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.DonThuoc", "IddonThuocNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DonThuoc", "DonThuoc")
                         .WithMany("HoaDons")
                         .HasForeignKey("IddonThuoc")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "IdkhamNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
                         .WithMany("HoaDons")
                         .HasForeignKey("Idkham")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("IddieuTriNavigation");
+                    b.Navigation("DanhSachKham");
 
-                    b.Navigation("IddonThuocNavigation");
+                    b.Navigation("DieuTri");
 
-                    b.Navigation("IdkhamNavigation");
+                    b.Navigation("DonThuoc");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Kho", b =>
