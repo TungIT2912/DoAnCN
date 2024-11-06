@@ -31,11 +31,10 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         public async Task<ActionResult<IEnumerable<KhoDTO>>> GetKhoes()
         {
             var khoes = await _context.Khos
-                .Include(nv => nv.IdsanPhamNavigation).ToListAsync();
+        .Include(nv => nv.ThiTruong).ToListAsync();
             var khoDTOs = khoes.Select(nv => new KhoDTO
             {
-                IddungCu = nv.IddungCu,
-                TenDungCu = nv.IdsanPhamNavigation.TenSanPham,
+                TenDungCu = nv.ThiTruong.TenSanPham, // Match the correct property name here
                 Loai = nv.Loai,
                 DonViTinh = nv.DonViTinh,
                 SoLuong = nv.SoLuong

@@ -29,12 +29,12 @@ namespace WebQuanLyNhaKhoa.Data
 		public int SoLuongNhapXuat { get; set; }
 
 		[Range(0, double.MaxValue)]
-		public decimal Don { get; set; }
+		public decimal? Don { get; set; }
 
 		[Range(0, double.MaxValue)]
 		public decimal ThanhTien { get; set; }
 
-		public DateTime NgayNhap { get; set; }
+		public DateTime? NgayNhap { get; set; }
 
 		public virtual ThiTruong ThiTruong { get; set; } = null!;
 	}

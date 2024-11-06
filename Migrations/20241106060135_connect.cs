@@ -159,15 +159,14 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IddungCu = table.Column<int>(type: "int", nullable: false),
                     Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: true),
-                    IdsanPhamNavigationIdsanPham = table.Column<int>(type: "int", nullable: false)
+                    SoLuong = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Khos", x => x.IdsanPham);
                     table.ForeignKey(
-                        name: "FK_Khos_ThiTruongs_IdsanPhamNavigationIdsanPham",
-                        column: x => x.IdsanPhamNavigationIdsanPham,
+                        name: "FK_Khos_ThiTruongs_IddungCu",
+                        column: x => x.IddungCu,
                         principalTable: "ThiTruongs",
                         principalColumn: "IdsanPham",
                         onDelete: ReferentialAction.Cascade);
@@ -399,9 +398,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "Idkham");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Khos_IdsanPhamNavigationIdsanPham",
+                name: "IX_Khos_IddungCu",
                 table: "Khos",
-                column: "IdsanPhamNavigationIdsanPham");
+                column: "IddungCu");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LichSuNhapXuats_IdsanPham",
