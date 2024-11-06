@@ -59,6 +59,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             }
 
             var token = GenerateJwtToken(user);
+            Response.Cookies.Append("jwt_token", token, new CookieOptions { HttpOnly = true, Secure = true, Expires = DateTimeOffset.Now.AddMinutes(1) });
             return Ok(new { Token = token });
         }
 
@@ -115,7 +116,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
 
             // Set JWT token as a cookie (optional)
             var token = GenerateJwtToken(user);
-            Response.Cookies.Append("jwt_token", token, new CookieOptions { HttpOnly = true, Secure = true });
+            Response.Cookies.Append("jwt_token", token, new CookieOptions { HttpOnly = true, Secure = true, Expires = DateTimeOffset.Now.AddMinutes(1) });
 
             ViewBag.Message = "Đăng nhập thành công!";
             return RedirectToAction("Index", "Home");
@@ -139,13 +140,16 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
     }
+
 }
 
 //using Microsoft.AspNetCore.Mvc;
