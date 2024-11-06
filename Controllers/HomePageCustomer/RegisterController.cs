@@ -7,10 +7,10 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
 	public class RegisterController : Controller
 	{
-		private readonly QlnhaKhoaContext _context;
+		private readonly ApplicationDbContext _context;
 
 		private readonly IMapper _mapper;
-		public RegisterController(QlnhaKhoaContext context, IMapper mapper)
+		public RegisterController(ApplicationDbContext context, IMapper mapper)
 		{
 			_context = context;
 			_mapper = mapper;
@@ -26,8 +26,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 		{
 			if (ModelState.IsValid)
 			{
-				var taiKhoan = _mapper.Map<TaiKhoan>(model);
-				_context.Add(taiKhoan);
+				//var taiKhoan = _mapper.Map<TaiKhoan>(model);
+				//_context.Add(taiKhoan);
 				_context.SaveChanges();
 				return RedirectToAction("/Home/Index");
 			}

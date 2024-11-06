@@ -2,123 +2,198 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.DTO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
+    [Route("Admin/[controller]")]
     public class LichSuNhapXuatsController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LichSuNhapXuatsController(QlnhaKhoaContext context)
+        public LichSuNhapXuatsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: LichSuNhapXuats
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            var qlnhaKhoaContext = _context.LichSuNhapXuats.Include(l => l.IddungCuNavigation);
-            return View(await qlnhaKhoaContext.ToListAsync());
+
+            return View();
+        }
+        [HttpGet("api/LichSuNhapXuats")]
+        public async Task<ActionResult<IEnumerable<LichSuNhapXuatDTO>>> GetLichSuNhapXuats()
+        {
+            var ls = await _context.LichSuNhapXuats
+        .Include(nv => nv.ThiTruong).ToListAsync();
+            var lsDTOs = ls.Select(nv => new LichSuNhapXuatDTO
+            {
+                NoiDung = nv.NoiDung,
+                TenDungCu = nv.ThiTruong.TenSanPham, // Match the correct property name here
+                Loai = nv.Loai,
+                DonViTinh = nv.DonViTinh,
+                SoLuongNhapXuat = nv.SoLuongNhapXuat,
+                NgayNhap= nv.NgayNhap,
+            }).ToList();
+
+            return Ok(lsDTOs);
         }
 
-        // GET: LichSuNhapXuats/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var lichSuNhapXuat = await _context.LichSuNhapXuats
-                .Include(l => l.IddungCuNavigation)
-                .FirstOrDefaultAsync(m => m.MaLs == id);
-            if (lichSuNhapXuat == null)
-            {
-                return NotFound();
-            }
-
-            return View(lichSuNhapXuat);
-        }
-
-        // GET: LichSuNhapXuats/Create
+        [HttpGet("api/LichSuNhapXuats/Create")]
         public IActionResult Create()
         {
             string[] Contents = { "Nhập", "Xuất" };
             ViewBag.Contents = new SelectList(Contents);
-
-            ViewData["IddungCu"] = new SelectList(_context.Khos, "IddungCu", "TenDungCu");
+            ViewBag.SanPhams = new SelectList(_context.ThiTruongs, "IdsanPham", "TenSanPham"); ;
 
             return View();
         }
 
-        // POST: LichSuNhapXuats/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaLs,NoiDung,IddungCu,TenDungCu,Loai,DonViTinh,SoLuongNhapXuat,Don,ThanhTien,NgayNhap")] LichSuNhapXuat lichSuNhapXuat)
+        [HttpPost("api/LichSuNhapXuats")]
+        public async Task<IActionResult> Create([FromBody] LichSuNhapXuatDTO dto)
         {
-            var khoExists = await _context.Khos.AnyAsync(k => k.IddungCu == lichSuNhapXuat.IddungCu);
-            if (khoExists)
+            if (!ModelState.IsValid)
             {
-                if (lichSuNhapXuat.SoLuongNhapXuat <= 0)
+                return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+            }
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return BadRequest(new { success = false, errors });
+            }
+          
+
+            var existingItem = await _context.ThiTruongs
+                .FirstOrDefaultAsync(x => x.IdsanPham == dto.IdsanPham);
+
+            if (existingItem != null)
+            {
+                if (dto.SoLuongNhapXuat <= 0)
                 {
                     ModelState.AddModelError("SoLuongNhapXuat", "Số lượng phải lớn hơn 0.");
                     string[] Contents = { "Nhập", "Xuất" };
                     ViewBag.Contents = new SelectList(Contents);
-                    ViewData["IddungCu"] = new SelectList(_context.Khos, "IddungCu", "TenDungCu", lichSuNhapXuat.IddungCu);
-                    return View(lichSuNhapXuat);
+                    ViewData["IdsanPham"] = new SelectList(_context.Khos, "IdsanPham", "TenSanPham", dto.IdsanPham);
+                    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                    return BadRequest(new { success = false, errors });
+                }
+                var ls = new LichSuNhapXuat
+                {
+                    NoiDung = dto.NoiDung,
+                    IdsanPham = dto.IdsanPham,
+                    Loai = existingItem.Loai,
+                    DonViTinh = existingItem.DonViTinh,
+                    SoLuongNhapXuat = dto.SoLuongNhapXuat,
+                    Don = existingItem.DonGia,
+                    ThanhTien = existingItem.DonGia * dto.SoLuongNhapXuat,
+                    NgayNhap  = DateTime.Now
+                };
+                var existingStore = await _context.Khos
+                .FirstOrDefaultAsync(x => x.IddungCu == dto.IdsanPham);
+                if (existingStore != null)
+                {
+                    if (dto.NoiDung == "Nhập")
+                    {
+                        // Tăng số lượng sản phẩm trong kho
+                        existingStore.SoLuong += dto.SoLuongNhapXuat;
+                        _context.Update(existingStore);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        // Giảm số lượng sản phẩm trong kho
+                        existingStore.SoLuong -= dto.SoLuongNhapXuat;
+                        _context.Update(existingStore);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 else
                 {
-                    var tenDungCu = await _context.Khos.Where(k => k.IddungCu == lichSuNhapXuat.IddungCu).Select(k => k.TenDungCu).FirstOrDefaultAsync();
-                    lichSuNhapXuat.TenDungCu = tenDungCu;
-                    var Loai = await _context.Khos.Where(k => k.IddungCu == lichSuNhapXuat.IddungCu).Select(k => k.Loai).FirstOrDefaultAsync();
-                    lichSuNhapXuat.Loai = Loai;
-                    var DVT = await _context.Khos.Where(k => k.IddungCu == lichSuNhapXuat.IddungCu).Select(k => k.DonViTinh).FirstOrDefaultAsync();
-                    lichSuNhapXuat.DonViTinh = DVT;
-                    var Don = await _context.Khos.Where(k => k.IddungCu == lichSuNhapXuat.IddungCu).Select(k => k.IdsanPhamNavigation.DonGia).FirstOrDefaultAsync();
-                    lichSuNhapXuat.Don = Don;
-                    lichSuNhapXuat.ThanhTien = (decimal)lichSuNhapXuat.SoLuongNhapXuat * Don;
-                    var productInKho = await _context.Khos.FirstOrDefaultAsync(k => k.IddungCu == lichSuNhapXuat.IddungCu);
-                    if (productInKho != null)
+                    if (dto.NoiDung == "Nhập")
                     {
-                        if (lichSuNhapXuat.NoiDung == "Nhập")
+                        var khoDTO = new Kho
                         {
-                            // Tăng số lượng sản phẩm trong kho
-                            productInKho.SoLuong += lichSuNhapXuat.SoLuongNhapXuat;
-                            _context.Update(productInKho);
+                            IddungCu = dto.IdsanPham,
+                            Loai = existingItem.Loai,
+                            DonViTinh = existingItem.DonViTinh,
+                            SoLuong = dto.SoLuongNhapXuat
+                        };
+                        try
+                        {
+                            // Attempt to add user to context and save changes
+                            await _context.Khos.AddAsync(khoDTO);
                             await _context.SaveChangesAsync();
                         }
-                        else
+                        catch (DbUpdateException dbEx)
                         {
-                            // Giảm số lượng sản phẩm trong kho
-                            productInKho.SoLuong -= lichSuNhapXuat.SoLuongNhapXuat;
-                            _context.Update(productInKho);
-                            await _context.SaveChangesAsync();
+                            return BadRequest(new { success = false, message = "Failed to create.", details = dbEx.InnerException?.Message });
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Không tìm thấy sản phẩm trong kho.");
-                        string[] Contents = { "Nhập", "Xuất" };
-                        ViewBag.Contents = new SelectList(Contents);
-                        ViewData["IddungCu"] = new SelectList(_context.Khos, "IddungCu", "TenDungCu", lichSuNhapXuat.IddungCu);
-                        return View(lichSuNhapXuat);
+                        ModelState.AddModelError("NoiDung", "Trong kho không tồn tại mặt hàng này để xuất.");
                     }
-                    _context.LichSuNhapXuats.Add(lichSuNhapXuat);
-
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
                 }
+                _context.LichSuNhapXuats.Add(ls);
+                var historySaveResult = await _context.SaveChangesAsync();
 
+                if (historySaveResult > 0)
+                {
+                    var createdLSunDTO = new LichSuNhapXuatDTO
+                    {
+                        NoiDung = dto.NoiDung,
+                        IdsanPham = dto.IdsanPham,
+                        TenDungCu = ls.ThiTruong.TenSanPham,
+                        Loai = ls.Loai,
+                        DonViTinh = ls.DonViTinh,
+                        SoLuongNhapXuat = ls.SoLuongNhapXuat,
+                        Don = ls.Don,
+                        ThanhTien = existingItem.DonGia * ls.SoLuongNhapXuat,
+                        NgayNhap = ls.NgayNhap
+                    };
+
+                    return CreatedAtAction(nameof(GetLichhSuById), new { id = ls.IdsanPham }, createdLSunDTO);
+                }
+            }
+            // If any save operation fails, return a BadRequest with an error message
+            return BadRequest(new { success = false, message = "Thêm lịch sử thất bại." });
+        }
+
+        [HttpGet("api/LichSuNhapXuats/{id}")]
+        public async Task<ActionResult<LichSuNhapXuatDTO>> GetLichhSuById(int id)
+        {
+            var lichsu = await _context.LichSuNhapXuats
+                        .Include(n => n.ThiTruong)
+                        .FirstOrDefaultAsync(n => n.IdsanPham == id);
+            if (lichsu == null)
+            {
+                Console.WriteLine($"Không có lịch sử khớp vơi bạn vừa tìm.");
+                return NotFound();
             }
 
-            return View(lichSuNhapXuat);
+            var lichsuDTO = new LichSuNhapXuatDTO
+            {
+                NoiDung = lichsu.NoiDung,
+                IdsanPham = lichsu.IdsanPham,
+                TenDungCu = lichsu.ThiTruong.TenSanPham,
+                Loai = lichsu.Loai,
+                DonViTinh = lichsu.DonViTinh,
+                SoLuongNhapXuat = lichsu.SoLuongNhapXuat,
+                Don = lichsu.Don,
+                ThanhTien = lichsu.ThanhTien,
+                NgayNhap = lichsu.NgayNhap
+            };
+
+            return Ok(lichsuDTO);
         }
     }
 }

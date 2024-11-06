@@ -11,18 +11,18 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
     public class OurDoctorsController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public OurDoctorsController(QlnhaKhoaContext context)
+        public OurDoctorsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: OurDoctors
-        public async Task<IActionResult> Index()
-        {
-            var qlnhaKhoaContext = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation);
-            return View(await qlnhaKhoaContext.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    var qlnhaKhoaContext = _context.NhanViens.Include(n => n.MaCvNavigation).Include(n => n.TenDangNhapNavigation);
+        //    return View(await qlnhaKhoaContext.ToListAsync());
+        //}
     }
 }

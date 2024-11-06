@@ -1,0 +1,116 @@
+﻿
+
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Basic Page Info -->
+	<meta charset="utf-8">
+	<title>Trang Admin</title>
+
+	<!-- Site favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="~/layout/vendors/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="~/layout/vendors/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="~/layout/vendors/images/favicon-16x16.png">
+
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="~/layout/vendors/styles/core.css">
+	<link rel="stylesheet" type="text/css" href="~/layout/vendors/styles/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="~/layout/src/plugins/datatables/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="~/layout/src/plugins/datatables/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="~/layout/vendors/styles/style.css">
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-119386393-1');
+	</script>
+	<style>
+		.form-group {
+			display: flex;
+			align-items: center;
+			gap: 10px; /* Khoảng cách giữa các phần tử */
+		}
+
+		.search-input {
+			flex-grow: 1; /* Để input chiếm toàn bộ không gian còn lại */
+		}
+
+		.ml-auto {
+			margin-left: auto; /* Đẩy nút tìm kiếm về phía bên phải */
+		}
+
+	</style>
+</head>
+<body>
+	 @* <div class="pre-loader">
+	 	<div class="pre-loader-box">
+	 		<div class="loader-logo"><img src="~/Test/vendors/images/deskapp-logo.svg" alt=""></div>
+	 		<div class='loader-progress' id="progress_div">
+	 			<div class='bar' id='bar1'></div>
+	 		</div>
+	 		<div class='percent' id='percent1'>0%</div>
+	 		<div class="loading-text">
+	 			Đang tải...
+	 		</div>
+	 	</div>
+	 </div> *@
+
+	<div class="header">
+		<div class="header-left">
+			<div class="menu-icon dw dw-menu"></div>
+			<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
+			<div class="header-search">
+				<form>
+					<div class="form-group mb-0 d-flex align-items-center">
+						<i class="dw dw-search2 search-icon"></i>
+						<input type="text" class="form-control search-input" name="searchString" placeholder="Tìm kiếm" value="@ViewData["CurrentFilter"]">
+						<input class="btn btn-primary text-white button ml-auto" type="submit" value="Tìm kiếm" />
+					</div>
+
+				</form>
+			</div>
+		</div>
+		<div class="header-right">
+
+			<div class="user-info-dropdown">
+				<div class="dropdown">
+					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+						<span class="user-icon">
+							<img src="~/layout/vendors/images/login-img.png" alt="">
+						</span>
+					</a>
+					<partial name="_LoginPartial" />
+				</div>
+			</div>
+		</div>
+
+	@RenderBody()
+	<!-- js -->
+	<script src="~/layout/vendors/scripts/core.js"></script>
+	<script src="~/layout/vendors/scripts/script.min.js"></script>
+	<script src="~/layout/vendors/scripts/process.js"></script>
+	<script src="~/layout/vendors/scripts/layout-settings.js"></script>
+	<script src="~/layout/src/plugins/apexcharts/apexcharts.min.js"></script>
+	<script src="~/layout/src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+	<script src="~/layout/src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+	<script src="~/layout/src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+	<script src="~/layout/src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+	<script src="~/layout/vendors/scripts/dashboard.js"></script>
+	<script src="~/layout/gulpfile.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
