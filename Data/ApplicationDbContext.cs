@@ -44,19 +44,19 @@ namespace WebQuanLyNhaKhoa.Data
 			base.OnModelCreating(modelBuilder);
            
             modelBuilder.Entity<HoaDon>()
-				.HasOne(h => h.IddieuTriNavigation)
+				.HasOne(h => h.DieuTri)
 				.WithMany(d => d.HoaDons)
 				.HasForeignKey(h => h.IddieuTri)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<HoaDon>()
-				.HasOne(h => h.IddonThuocNavigation)
+				.HasOne(h => h.DonThuoc)
 				.WithMany(d => d.HoaDons)
 				.HasForeignKey(h => h.IddonThuoc)
 				.OnDelete(DeleteBehavior.Restrict); // Change cascade to restrict or set null
 
 			modelBuilder.Entity<HoaDon>()
-				.HasOne(h => h.IdkhamNavigation)
+				.HasOne(h => h.DanhSachKham)
 				.WithMany(d => d.HoaDons)
 				.HasForeignKey(h => h.Idkham)
 				.OnDelete(DeleteBehavior.Restrict); // Change cascade to restrict or set null

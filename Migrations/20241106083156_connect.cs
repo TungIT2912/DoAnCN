@@ -79,15 +79,14 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IdchanDoan = table.Column<int>(type: "int", nullable: false),
                     TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IdchanDoanNavigationIdchanDoan = table.Column<int>(type: "int", nullable: false)
+                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DichVus", x => x.IdDichVu);
                     table.ForeignKey(
-                        name: "FK_DichVus_ChanDoans_IdchanDoanNavigationIdchanDoan",
-                        column: x => x.IdchanDoanNavigationIdchanDoan,
+                        name: "FK_DichVus_ChanDoans_IdchanDoan",
+                        column: x => x.IdchanDoan,
                         principalTable: "ChanDoans",
                         principalColumn: "IdChanDoan",
                         onDelete: ReferentialAction.Cascade);
@@ -183,9 +182,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SoLuongNhapXuat = table.Column<int>(type: "int", nullable: false),
-                    Don = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Don = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,22 +205,20 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdbenhNhan = table.Column<int>(type: "int", nullable: false),
                     MaNv = table.Column<int>(type: "int", nullable: true),
-                    NgayKham = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdbenhNhanNavigationIdbenhNhan = table.Column<int>(type: "int", nullable: false),
-                    MaNvNavigationMaNv = table.Column<int>(type: "int", nullable: true)
+                    NgayKham = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DanhSachKhams", x => x.IdKham);
                     table.ForeignKey(
-                        name: "FK_DanhSachKhams_BenhNhans_IdbenhNhanNavigationIdbenhNhan",
-                        column: x => x.IdbenhNhanNavigationIdbenhNhan,
+                        name: "FK_DanhSachKhams_BenhNhans_IdbenhNhan",
+                        column: x => x.IdbenhNhan,
                         principalTable: "BenhNhans",
                         principalColumn: "IdBenhNhan",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DanhSachKhams_NhanViens_MaNvNavigationMaNv",
-                        column: x => x.MaNvNavigationMaNv,
+                        name: "FK_DanhSachKhams_NhanViens_MaNv",
+                        column: x => x.MaNv,
                         principalTable: "NhanViens",
                         principalColumn: "MaNv");
                 });
@@ -236,29 +233,26 @@ namespace WebQuanLyNhaKhoa.Migrations
                     Idkham = table.Column<int>(type: "int", nullable: false),
                     IddungCu = table.Column<int>(type: "int", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IddichVuNavigationIddichVu = table.Column<int>(type: "int", nullable: false),
-                    IddungCuNavigationIdsanPham = table.Column<int>(type: "int", nullable: false),
-                    IdkhamNavigationIdkham = table.Column<int>(type: "int", nullable: false)
+                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DieuTris", x => x.IddieuTri);
                     table.ForeignKey(
-                        name: "FK_DieuTris_DanhSachKhams_IdkhamNavigationIdkham",
-                        column: x => x.IdkhamNavigationIdkham,
+                        name: "FK_DieuTris_DanhSachKhams_Idkham",
+                        column: x => x.Idkham,
                         principalTable: "DanhSachKhams",
                         principalColumn: "IdKham",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DieuTris_DichVus_IddichVuNavigationIddichVu",
-                        column: x => x.IddichVuNavigationIddichVu,
+                        name: "FK_DieuTris_DichVus_IddichVu",
+                        column: x => x.IddichVu,
                         principalTable: "DichVus",
                         principalColumn: "IdDichVu",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DieuTris_Khos_IddungCuNavigationIdsanPham",
-                        column: x => x.IddungCuNavigationIdsanPham,
+                        name: "FK_DieuTris_Khos_IddungCu",
+                        column: x => x.IddungCu,
                         principalTable: "Khos",
                         principalColumn: "IdsanPham",
                         onDelete: ReferentialAction.Cascade);
@@ -275,22 +269,20 @@ namespace WebQuanLyNhaKhoa.Migrations
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     ThanhGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayLapDt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IddungCuNavigationIdsanPham = table.Column<int>(type: "int", nullable: false),
-                    IdkhamNavigationIdkham = table.Column<int>(type: "int", nullable: false)
+                    NgayLapDt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DonThuocs", x => x.IddonThuoc);
                     table.ForeignKey(
-                        name: "FK_DonThuocs_DanhSachKhams_IdkhamNavigationIdkham",
-                        column: x => x.IdkhamNavigationIdkham,
+                        name: "FK_DonThuocs_DanhSachKhams_Idkham",
+                        column: x => x.Idkham,
                         principalTable: "DanhSachKhams",
                         principalColumn: "IdKham",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DonThuocs_Khos_IddungCuNavigationIdsanPham",
-                        column: x => x.IddungCuNavigationIdsanPham,
+                        name: "FK_DonThuocs_Khos_IddungCu",
+                        column: x => x.IddungCu,
                         principalTable: "Khos",
                         principalColumn: "IdsanPham",
                         onDelete: ReferentialAction.Cascade);
@@ -343,44 +335,44 @@ namespace WebQuanLyNhaKhoa.Migrations
                 filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DanhSachKhams_IdbenhNhanNavigationIdbenhNhan",
+                name: "IX_DanhSachKhams_IdbenhNhan",
                 table: "DanhSachKhams",
-                column: "IdbenhNhanNavigationIdbenhNhan");
+                column: "IdbenhNhan");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DanhSachKhams_MaNvNavigationMaNv",
+                name: "IX_DanhSachKhams_MaNv",
                 table: "DanhSachKhams",
-                column: "MaNvNavigationMaNv");
+                column: "MaNv");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DichVus_IdchanDoanNavigationIdchanDoan",
+                name: "IX_DichVus_IdchanDoan",
                 table: "DichVus",
-                column: "IdchanDoanNavigationIdchanDoan");
+                column: "IdchanDoan");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DieuTris_IddichVuNavigationIddichVu",
+                name: "IX_DieuTris_IddichVu",
                 table: "DieuTris",
-                column: "IddichVuNavigationIddichVu");
+                column: "IddichVu");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DieuTris_IddungCuNavigationIdsanPham",
+                name: "IX_DieuTris_IddungCu",
                 table: "DieuTris",
-                column: "IddungCuNavigationIdsanPham");
+                column: "IddungCu");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DieuTris_IdkhamNavigationIdkham",
+                name: "IX_DieuTris_Idkham",
                 table: "DieuTris",
-                column: "IdkhamNavigationIdkham");
+                column: "Idkham");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DonThuocs_IddungCuNavigationIdsanPham",
+                name: "IX_DonThuocs_IddungCu",
                 table: "DonThuocs",
-                column: "IddungCuNavigationIdsanPham");
+                column: "IddungCu");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DonThuocs_IdkhamNavigationIdkham",
+                name: "IX_DonThuocs_Idkham",
                 table: "DonThuocs",
-                column: "IdkhamNavigationIdkham");
+                column: "Idkham");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HoaDons_IddieuTri",
