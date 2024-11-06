@@ -54,14 +54,30 @@
             @* <a href="/Login" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">
                 <partial name="_LoginPartial"></partial>
             </a> *@
-            <ul class="navbar-nav ml-auto">
+            @* <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="btn btn-primary mx-1" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-secondary mx-1" asp-controller="Auth" asp-action="Register">Đăng ký</a>
                 </li>
-            </ul>
+            </ul> *@
+            @if (ViewBag.UserName != null)
+            {
+                <p>Xin chào, @ViewBag.Username!</p>
+                <form asp-controller="Auth" asp-action="Logout" method="post">
+                    <button class="btn btn-secondary mx-1" type="submit">Đăng xuất</button>
+                </form>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="btn btn-primary mx-1" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-secondary mx-1" asp-controller="Auth" asp-action="Register">Đăng ký</a>
+                </li>
+            }
 
         </div>
     </nav>

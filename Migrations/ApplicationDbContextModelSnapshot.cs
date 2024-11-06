@@ -340,7 +340,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaLs"));
 
-                    b.Property<decimal>("Don")
+                    b.Property<decimal?>("Don")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DonViTinh")
@@ -356,7 +356,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("NgayNhap")
+                    b.Property<DateTime?>("NgayNhap")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NoiDung")

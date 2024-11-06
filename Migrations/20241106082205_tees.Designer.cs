@@ -12,13 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Migrations/20241104104551_tesst.Designer.cs
-    [Migration("20241104104551_tesst")]
-    partial class tesst
-========
-    [Migration("20241106060135_connect")]
-    partial class connect
->>>>>>>> origin/TTung:Migrations/20241106060135_connect.Designer.cs
+    [Migration("20241106082205_tees")]
+    partial class tees
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -348,7 +343,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaLs"));
 
-                    b.Property<decimal>("Don")
+                    b.Property<decimal?>("Don")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DonViTinh")
@@ -364,7 +359,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("NgayNhap")
+                    b.Property<DateTime?>("NgayNhap")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NoiDung")

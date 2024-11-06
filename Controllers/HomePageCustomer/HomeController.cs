@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +24,33 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         // GET: Home
         public async Task<IActionResult> Index()
         {
+            var username = GetLoggedInUsername();
+            ViewBag.Username = username;
             int Experienced = 10;
             //var qlnhaKhoaContext = _context.NhanViens.Where(n => Convert.ToInt16(n.KinhNghiem) > Experienced).Take(4);
             var qlnhaKhoaContext = _context.NhanViens.Where(n => n.Ten != null);
             return View(await qlnhaKhoaContext.ToListAsync());
+        }
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            // Remove the JWT token from cookies
+            
+            Response.Cookies.Delete("jwt_token");
+            ViewBag.Message = "Đã đăng xuất thành công!";
+            return RedirectToAction("Login");
+        }
+        private string GetLoggedInUsername()
+        {
+            if (Request.Cookies.TryGetValue("jwt_token", out string token))
+            {
+                var jwtHandler = new JwtSecurityTokenHandler();
+                var jwtToken = jwtHandler.ReadToken(token) as JwtSecurityToken;
+
+                var usernameClaim = jwtToken?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+                return usernameClaim?.Value;
+            }
+            return null;
         }
         private async Task<string> SaveImage(IFormFile image)
         {
