@@ -13,8 +13,9 @@ namespace WebQuanLyNhaKhoa.Data
 
 
         [ForeignKey("BenhNhan")]
-        public int IdbenhNhan { get; set; } 
+        public int IdbenhNhan { get; set; }
 
+        [ForeignKey("NhanVien")]
         public int? MaNv { get; set; }
 
 
@@ -25,7 +26,7 @@ namespace WebQuanLyNhaKhoa.Data
         public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
         public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
-        public virtual BenhNhan IdbenhNhanNavigation { get; set; } = null!;
-        public virtual NhanVien? MaNvNavigation { get; set; }
+        public virtual BenhNhan BenhNhan { get; set; } = null!;
+        public virtual NhanVien? NhanVien { get; set; }
     }
 }

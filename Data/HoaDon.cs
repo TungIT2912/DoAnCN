@@ -9,11 +9,14 @@ namespace WebQuanLyNhaKhoa.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdhoaDon { get; set; }
 
-		public int IddonThuoc { get; set; }
+        [ForeignKey("DonThuoc")]
+        public int IddonThuoc { get; set; }
 
-		public int IddieuTri { get; set; }
+        [ForeignKey("DieuTri")]
+        public int IddieuTri { get; set; }
 
-		public int? Idkham { get; set; }
+        [ForeignKey("DanhSachKham")]
+        public int? Idkham { get; set; }
 
 		public string? PhuongThucThanhToan { get; set; }
 
@@ -31,8 +34,8 @@ namespace WebQuanLyNhaKhoa.Data
 		[EmailAddress]
 		public string? EmailBn { get; set; }
 
-		public virtual DieuTri IddieuTriNavigation { get; set; } = null!;
-		public virtual DonThuoc IddonThuocNavigation { get; set; } = null!;
-		public virtual DanhSachKham? IdkhamNavigation { get; set; }
+		public virtual DieuTri DieuTri { get; set; } = null!;
+		public virtual DonThuoc DonThuoc { get; set; } = null!;
+		public virtual DanhSachKham? DanhSachKham { get; set; }
 	}
 }

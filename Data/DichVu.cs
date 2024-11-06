@@ -28,6 +28,6 @@ namespace WebQuanLyNhaKhoa.Data
 		// Quan hệ 1-n với DieuTri
 		public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
 
-		public virtual ChanDoan IdchanDoanNavigation { get; set; } = null!;
+		public virtual ChanDoan ChanDoan { get; set; } = null!;
 	}
 }
