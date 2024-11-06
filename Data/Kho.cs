@@ -13,9 +13,6 @@ namespace WebQuanLyNhaKhoa.Data
 		[ForeignKey("ThiTruong")]
 		public int IddungCu { get; set; } 
 
-		[Required]
-		[StringLength(100)]
-		public string TenDungCu { get; set; } = null!;
 
 		[Required]
 		[StringLength(50)]
@@ -30,6 +27,6 @@ namespace WebQuanLyNhaKhoa.Data
 		public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
 		public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
 
-		public virtual ThiTruong IdsanPhamNavigation { get; set; } = null!;
+		public virtual ThiTruong ThiTruong { get; set; } = null!;
 	}
 }
