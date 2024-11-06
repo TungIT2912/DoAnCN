@@ -13,9 +13,6 @@ namespace WebQuanLyNhaKhoa.Data
 		[ForeignKey("ThiTruong")]
 		public int IddungCu { get; set; } 
 
-		[Required]
-		[StringLength(100)]
-		public string TenDungCu { get; set; } = null!;
 
 		[Required]
 		[StringLength(50)]

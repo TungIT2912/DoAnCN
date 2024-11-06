@@ -62,17 +62,29 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Quản lý nhân viên</a>
-                    <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Quản lý bệnh nhân</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Kho</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a asp-action="Index" asp-controller="LichSuNhapXuats" class="dropdown-item">Xem lịch sử nhập xuất</a>
-                            <a asp-action="Index" asp-controller="Khoes" class="dropdown-item">Xem kho</a>
-                        </div>
-                    </div>
-                    <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Thống kê</a>
+                    <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link active"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
+                    <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
+                        <i class="micon fa fa-dashboard"></i>Thống kê
+                    </a>
+                    <a href="/Admin/UserModel" class="nav-item nav-link ">
+                        <i class="micon fa fa-users"></i>Quản lí tài khoản
+                    </a>
+                    <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
+                        <i class="micon fa fa-users"></i>Khách hàng
+                    </a>
+                    <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
+                        <i class="micon fa fa-th me-2"></i>Danh mục
+                    </a>
+                    <a asp-action="Index" asp-controller="Khoes" class="nav-item nav-link ">
+                        <i class="micon fa fa-cubes"></i>Kho
+                    </a>
+                    <a asp-action="Create" asp-controller="LichSuNhapXuats" class="nav-item nav-link ">
+                        <i class="micon fa fa-cubes"></i>Nhập hàng
+                    </a>
 
+                    <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link ">
+                        <i class="micon dw dw-invoice"></i>Hóa đơn
+                    </a>
                 </div>
             </nav>
         </div>

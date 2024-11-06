@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.DTO;
 
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
+    [Route("Admin/[controller]")]
     public class KhoesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,11 +21,27 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         }
 
         // GET: Khoes
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            var qlnhaKhoaContext = _context.Khos.Include(k => k.IdsanPhamNavigation);
-            return View(await qlnhaKhoaContext.ToListAsync());
-        }
 
+            return View();
+        }
+        [HttpGet("api/Khoes")]
+        public async Task<ActionResult<IEnumerable<KhoDTO>>> GetKhoes()
+        {
+            var khoes = await _context.Khos
+                .Include(nv => nv.IdsanPhamNavigation).ToListAsync();
+            var khoDTOs = khoes.Select(nv => new KhoDTO
+            {
+                IddungCu = nv.IddungCu,
+                TenDungCu = nv.IdsanPhamNavigation.TenSanPham,
+                Loai = nv.Loai,
+                DonViTinh = nv.DonViTinh,
+                SoLuong = nv.SoLuong
+            }).ToList();
+
+            return Ok(khoDTOs);
+        }
     }
 }

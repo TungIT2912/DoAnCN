@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241104071117_connect")]
+    [Migration("20241106045234_connect")]
     partial class connect
     {
         /// <inheritdoc />
@@ -331,11 +331,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int?>("SoLuong")
                         .HasColumnType("int");
 
-                    b.Property<string>("TenDungCu")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.HasKey("IdsanPham");
 
                     b.HasIndex("IdsanPhamNavigationIdsanPham");
@@ -359,10 +354,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("IddungCu")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IddungCuNavigationIdsanPham")
+                    b.Property<int>("IdsanPham")
                         .HasColumnType("int");
 
                     b.Property<string>("Loai")
@@ -378,20 +370,15 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("SoLuongNhapXuat")
+                    b.Property<int>("SoLuongNhapXuat")
                         .HasColumnType("int");
-
-                    b.Property<string>("TenDungCu")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("ThanhTien")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("MaLs");
 
-                    b.HasIndex("IddungCuNavigationIdsanPham");
+                    b.HasIndex("IdsanPham");
 
                     b.ToTable("LichSuNhapXuats");
                 });
@@ -634,13 +621,13 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.LichSuNhapXuat", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "IddungCuNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ThiTruong", "ThiTruong")
                         .WithMany()
-                        .HasForeignKey("IddungCuNavigationIdsanPham")
+                        .HasForeignKey("IdsanPham")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IddungCuNavigation");
+                    b.Navigation("ThiTruong");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.NhanVien", b =>

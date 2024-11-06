@@ -14,12 +14,9 @@ namespace WebQuanLyNhaKhoa.Data
 		[StringLength(500)]
 		public string NoiDung { get; set; } = null!;
 
-		[ForeignKey("Kho")]
+		[ForeignKey("ThiTruong")]
 		[Required]
-		public int IddungCu { get; set; } 
-		[Required]
-		[StringLength(100)]
-		public string TenDungCu { get; set; } = null!;
+		public int IdsanPham { get; set; } 
 
 		[Required]
 		[StringLength(50)]
@@ -29,7 +26,7 @@ namespace WebQuanLyNhaKhoa.Data
 		[StringLength(50)]
 		public string DonViTinh { get; set; } = null!;
 
-		public int? SoLuongNhapXuat { get; set; }
+		public int SoLuongNhapXuat { get; set; }
 
 		[Range(0, double.MaxValue)]
 		public decimal Don { get; set; }
@@ -39,6 +36,6 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public DateTime NgayNhap { get; set; }
 
-		public virtual Kho IddungCuNavigation { get; set; } = null!;
+		public virtual ThiTruong ThiTruong { get; set; } = null!;
 	}
 }

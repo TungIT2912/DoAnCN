@@ -9,10 +9,12 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public partial class NhanVienDTO
 	{
-		public string Ten { get; set; }
+        public int? MaNv { get; set; }
+        public string Ten { get; set; }
 		public string? Sdt { get; set; }
 		public int MaCv { get; set; }
-		public string? KinhNghiem { get; set; }
+        public string? TenCv { get; set; }
+        public string? KinhNghiem { get; set; }
         public string? Diachi { get; set; }
         public bool? Gioi { get; set; }
         public string? Hinh { get; set; } = "/images/anonymous.png";
