@@ -6,24 +6,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.DTO;
 
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
+    [Route("Admin/[controller]")]
     public class KhoesController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public KhoesController(QlnhaKhoaContext context)
+        public KhoesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: Khoes
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            var qlnhaKhoaContext = _context.Khos.Include(k => k.IdsanPhamNavigation);
-            return View(await qlnhaKhoaContext.ToListAsync());
-        }
 
+            return View();
+        }
+        [HttpGet("api/Khoes")]
+        public async Task<ActionResult<IEnumerable<KhoDTO>>> GetKhoes()
+        {
+            var khoes = await _context.Khos
+        .Include(nv => nv.ThiTruong).ToListAsync();
+            var khoDTOs = khoes.Select(nv => new KhoDTO
+            {
+                TenDungCu = nv.ThiTruong.TenSanPham, // Match the correct property name here
+                Loai = nv.Loai,
+                DonViTinh = nv.DonViTinh,
+                SoLuong = nv.SoLuong
+            }).ToList();
+
+            return Ok(khoDTOs);
+        }
     }
 }

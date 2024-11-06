@@ -13,9 +13,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
     public class HomeController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(QlnhaKhoaContext context)
+        public HomeController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         public async Task<IActionResult> Index()
         {
             int Experienced = 10;
-            var qlnhaKhoaContext = _context.NhanViens.Where(n => Convert.ToInt16(n.KinhNghiem) > Experienced).Take(4);
+            //var qlnhaKhoaContext = _context.NhanViens.Where(n => Convert.ToInt16(n.KinhNghiem) > Experienced).Take(4);
+            var qlnhaKhoaContext = _context.NhanViens.Where(n => n.Ten != null);
             return View(await qlnhaKhoaContext.ToListAsync());
         }
         private async Task<string> SaveImage(IFormFile image)

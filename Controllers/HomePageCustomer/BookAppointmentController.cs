@@ -6,9 +6,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
     public class BookAppointmentController : Controller
     {
-        private readonly QlnhaKhoaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BookAppointmentController(QlnhaKhoaContext context)
+        public BookAppointmentController(ApplicationDbContext context)
         {
             _context = context;
         }

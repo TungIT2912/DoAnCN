@@ -1,25 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using WebQuanLyNhaKhoa.Data;
 
-namespace WebQuanLyNhaKhoa.Data;
-
-public partial class DanhSachKham
+namespace WebQuanLyNhaKhoa.Data
 {
-    public string Idkham { get; set; } = null!;
+    public class DanhSachKham
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("IdKham")]
+        public int Idkham { get; set; } 
 
-    public string IdbenhNhan { get; set; } = null!;
 
-    public int? MaNv { get; set; }
+        [ForeignKey("BenhNhan")]
+        public int IdbenhNhan { get; set; }
 
-    public DateTime NgayKham { get; set; }
+        [ForeignKey("NhanVien")]
+        public int? MaNv { get; set; }
 
-    public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
 
-    public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
+        public DateTime NgayKham { get; set; }
 
-    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+        // Quan hệ 1-n với DieuTri, DonThuoc, HoaDon
+        public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
+        public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
+        public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
-    public virtual BenhNhan IdbenhNhanNavigation { get; set; } = null!;
-
-    public virtual NhanVien? MaNvNavigation { get; set; }
+        public virtual BenhNhan BenhNhan { get; set; } = null!;
+        public virtual NhanVien? NhanVien { get; set; }
+    }
 }
