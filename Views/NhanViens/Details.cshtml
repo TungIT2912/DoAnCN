@@ -1,10 +1,11 @@
 ﻿@model WebQuanLyNhaKhoa.DTO.NhanVienDTO
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+ 
 <style>
     body {
         color: #566787;
@@ -266,62 +267,58 @@
                 <div class="flex justify-center items-center h-screen ">
                     <div class="container p-[20px] max-w-[700px] max-h-[500px] bg-white rounded-xl">
                         <div class="relative">
-                            <h1 class="text-[32px] font-bold">Cập nhật nhân viên</h1>
+                            <h1 class="text-[32px] font-bold">Chi tiết nhân viên</h1>
                             <span class="absolute inline-block w-[70px] h-[4px] bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-xl"></span>
                         </div>
                         <div class="flex justify-center gap-10 mt-[10px]">
                             <form id="createNhanVienForm" class="flex-wrap flex justify-around items-center" enctype="multipart/form-data">
                                 <input name="MaNv" id="MaNv" type="hidden" asp-for="MaNv" />
                                 <div class="form-group col-md-6">
-                                    <label asp-for="Ten" class="control-label">Tên</label>
-                                    <input asp-for="Ten" name="Ten" id="Ten" class="form-control" required />
-                                    <span asp-validation-for="Ten" class="text-danger"></span>
+                                   <label asp-for="Ten" class="control-label">Tên</label>
+                                        @Html.DisplayFor(model => model.Ten)
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="Email" class="control-label">Email</label>
-                                    <input asp-for="Email" name="Email" id="Email" class="form-control" required />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                        @Html.DisplayFor(model => model.Email)
                                 </div>
-
                                 <div class="form-group col-md-6">
                                     <label asp-for="Sdt" class="control-label">Số điện thoại</label>
-                                    <input asp-for="Sdt" name="Sdt" id="Sdt" class="form-control" required />
-                                    <span asp-validation-for="Sdt" class="text-danger"></span>
+                                         @Html.DisplayFor(model => model.Sdt)
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="MaCv" class="control-label">Chức vụ</label>
-                                    <select asp-for="MaCv" name="MaCv" id="MaCv" class="form-control" asp-items="ViewBag.ChucVuList" required>
-                                        <option value="">Chọn chức vụ</option>
-                                    </select>
-                                    <span asp-validation-for="MaCv" class="text-danger"></span>
+                                            @Html.DisplayFor(model => model.TenCv)
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="KinhNghiem" class="control-label">Kinh nghiệm</label>
-                                    <input asp-for="KinhNghiem" name="KinhNghiem" id="KinhNghiem" class="form-control" required />
-                                    <span asp-validation-for="KinhNghiem" class="text-danger"></span>
+                                         @Html.DisplayFor(model => model.KinhNghiem)
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="Diachi" class="control-label">Địa chỉ</label>
-                                    <input asp-for="Diachi" name="Diachi" id="Diachi" class="form-control" required />
-                                    <span asp-validation-for="Diachi" class="text-danger"></span>
+                                            @Html.DisplayFor(model => model.Diachi)
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label class="control-label">Giới tính</label>
-                                    <div>
-                                        <input type="radio" name="Gioi" value="true" id="GioiFemale" required
-                                        @(Model.Gioi == true ? "checked" : "") />
-                                        <label for="GioiFemale">Nữ</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="Gioi" value="false" id="GioiMale" required
-                                        @(Model.Gioi == false ? "checked" : "") />
-                                        <label for="GioiMale">Nam</label>
-                                    </div>
+                                     @if (Model.Gioi == true)
+                                    {
+                                        <div class="form-check custom mb-2">
+                                            <input type="radio" id="formValidationGender" name="formValidationGender" class="form-check-input" checked />
+                                            <label class="form-check-label" for="formValidationGender">Nữ</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-check custom mb-2">
+                                            <input type="radio" id="formValidationGender" name="formValidationGender" class="form-check-input" checked />
+                                            <label class="form-check-label" for="formValidationGender">Nam</label>
+                                        </div>
+                                    }
+
                                     <span asp-validation-for="Gioi" class="text-danger"></span>
                                 </div>
 
@@ -329,28 +326,25 @@
                                 <div class="form-group col-md-6">
                                     <label for="hinh">Ảnh đại diện (tuỳ chọn)</label>
                                     <img src="@Model.Hinh" alt="Avata Image" id="previewImage" style="width: 100px; height: auto;" />
-                                    <input type="file" name="hinh" id="hinh" class="form-control" />
+                                   
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label asp-for="MatKhau" class="control-label">Mật khẩu</label>
-                                    <input asp-for="MatKhau" name="MatKhau" id="MatKhau" type="password" class="form-control" />
+                                    @Html.DisplayFor(model => model.MatKhau)
                                     <span asp-validation-for="MatKhau" class="text-danger"></span>
                                 </div>
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label asp-for="Role" class="control-label">Vai trò</label>
-                                    <select asp-for="Role" name="Role" id="Role" class="form-control" asp-items="ViewBag.Roles" required>
-                                        <option value="">Chọn vai trò</option>
-                                    </select>
-
+                                        @Html.DisplayFor(model => model.Role)
                                     <span asp-validation-for="Role" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
-                                    <a asp-action="Index" class="btn btn-secondary">Trở về danh sách</a>
+                                     <a href="/Admin/NhanViens/api/NhanViens/Edit/${@Html.DisplayFor(model => model.MaNv)}" class="btn btn-primary" type="button"><i class="dw dw-edit2"></i> Cập nhật</a>
+                                   
                                 </div>
                             </form>
 
@@ -363,77 +357,3 @@
 
     </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-
-        document.getElementById('createNhanVienForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData();
-
-            formData.append('MaNv', document.getElementById('MaNv').value);
-            formData.append('Ten', document.getElementById('Ten').value);
-            formData.append('Sdt', document.getElementById('Sdt').value);
-            formData.append('MaCv', document.getElementById('MaCv').value);
-            formData.append('KinhNghiem', document.getElementById('KinhNghiem').value);
-            formData.append('Diachi', document.getElementById('Diachi').value);
-            formData.append('Gioi', document.querySelector('input[name="Gioi"]:checked').value === 'true');
-            formData.append('Email', document.getElementById('Email').value);
-            formData.append('MatKhau', document.getElementById('MatKhau').value);
-            formData.append('Role', document.getElementById('Role').value);
-
-            const avatar = document.querySelector('input[name="hinh"]').files[0];
-            if (avatar) {
-                formData.append('hinh', avatar);
-            }
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
-            const maNv = formData.get('MaNv'); // Get MaNv value
-            console.log("Updating NhanVien with MaNv:", maNv); // Log the MaNv being used
-
-            try {
-                const response = await fetch(`/Admin/NhanViens/api/NhanViens/Update/${maNv}`, {
-                    method: 'PUT',
-                    body: formData // This should work since we changed the server method to accept FromForm
-                });
-
-
-                console.log('Response Status:', response.status);
-                const responseText = await response.text();
-
-                if (response.ok) {
-                    alert("Cập nhật nhân viên thành công!");
-                    window.location.href = '@Url.Action("Index", "NhanViens")'; // Ensure this redirects correctly
-                } else {
-                    let errorMessage = "Đã xảy ra lỗi không xác định.";
-                    try {
-                        const error = JSON.parse(responseText);
-                        errorMessage = error.message;
-                    } catch {
-                        errorMessage = responseText;
-                    }
-                    alert("Lỗi khi cập nhật nhân viên: " + errorMessage);
-                }
-            } catch (error) {
-                alert("Đã xảy ra lỗi: " + error.message);
-            }
-        });
-        document.querySelector('input[name="hinh"]').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const img = document.getElementById('previewImage');
-                    img.src = e.target.result; // Set the source of the preview image
-                };
-                reader.readAsDataURL(file); // Read the file as a data URL
-            }
-        });
-    </script>
-}

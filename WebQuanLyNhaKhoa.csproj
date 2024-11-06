@@ -51,4 +51,11 @@
     <None Include="wwwroot\AdminDashboard\lib\waypoints\waypoints.min.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\NhanViens\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
