@@ -54,9 +54,6 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("StaffPolicy", policy => policy.RequireRole("Staff"));
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddRazorPages();
 
@@ -88,7 +85,7 @@ app.UseCors("AllowAllOrigins");
 app.MapAreaControllerRoute(
     name: "Admin",
     areaName: "Admin",
-    pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+    pattern: "Admin/{controller=NhanViens}/{action=Index}/{id?}"
 );
 app.MapControllerRoute(
     name: "default",

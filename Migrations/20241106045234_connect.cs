@@ -157,7 +157,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IdsanPham = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IddungCu = table.Column<int>(type: "int", nullable: false),
-                    TenDungCu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: true),
@@ -169,6 +168,32 @@ namespace WebQuanLyNhaKhoa.Migrations
                     table.ForeignKey(
                         name: "FK_Khos_ThiTruongs_IdsanPhamNavigationIdsanPham",
                         column: x => x.IdsanPhamNavigationIdsanPham,
+                        principalTable: "ThiTruongs",
+                        principalColumn: "IdsanPham",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LichSuNhapXuats",
+                columns: table => new
+                {
+                    MaLs = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoiDung = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IdsanPham = table.Column<int>(type: "int", nullable: false),
+                    Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SoLuongNhapXuat = table.Column<int>(type: "int", nullable: false),
+                    Don = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LichSuNhapXuats", x => x.MaLs);
+                    table.ForeignKey(
+                        name: "FK_LichSuNhapXuats_ThiTruongs_IdsanPham",
+                        column: x => x.IdsanPham,
                         principalTable: "ThiTruongs",
                         principalColumn: "IdsanPham",
                         onDelete: ReferentialAction.Cascade);
@@ -200,34 +225,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                         column: x => x.MaNvNavigationMaNv,
                         principalTable: "NhanViens",
                         principalColumn: "MaNv");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LichSuNhapXuats",
-                columns: table => new
-                {
-                    MaLs = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NoiDung = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IddungCu = table.Column<int>(type: "int", nullable: false),
-                    TenDungCu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SoLuongNhapXuat = table.Column<int>(type: "int", nullable: true),
-                    Don = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayNhap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IddungCuNavigationIdsanPham = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LichSuNhapXuats", x => x.MaLs);
-                    table.ForeignKey(
-                        name: "FK_LichSuNhapXuats_Khos_IddungCuNavigationIdsanPham",
-                        column: x => x.IddungCuNavigationIdsanPham,
-                        principalTable: "Khos",
-                        principalColumn: "IdsanPham",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -407,9 +404,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "IdsanPhamNavigationIdsanPham");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LichSuNhapXuats_IddungCuNavigationIdsanPham",
+                name: "IX_LichSuNhapXuats_IdsanPham",
                 table: "LichSuNhapXuats",
-                column: "IddungCuNavigationIdsanPham");
+                column: "IdsanPham");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NhanViens_MaCv",
