@@ -23,39 +23,41 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             _context = context;
         }
 
-      
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpGet]
+        public IActionResult Index()
+        {
 
-        //    var lichSuNhapXuat = await _context.LichSuNhapXuats
-        //        .Include(l => l.IddungCuNavigation)
-        //        .FirstOrDefaultAsync(m => m.MaLs == id);
-        //    if (lichSuNhapXuat == null)
-        //    {
-        //        return NotFound();
-        //    }
+            return View();
+        }
+        [HttpGet("api/LichSuNhapXuats")]
+        public async Task<ActionResult<IEnumerable<LichSuNhapXuatDTO>>> GetLichSuNhapXuats()
+        {
+            var ls = await _context.LichSuNhapXuats
+        .Include(nv => nv.ThiTruong).ToListAsync();
+            var lsDTOs = ls.Select(nv => new LichSuNhapXuatDTO
+            {
+                NoiDung = nv.NoiDung,
+                TenDungCu = nv.ThiTruong.TenSanPham, // Match the correct property name here
+                Loai = nv.Loai,
+                DonViTinh = nv.DonViTinh,
+                SoLuongNhapXuat = nv.SoLuongNhapXuat,
+                NgayNhap= nv.NgayNhap,
+            }).ToList();
 
-        //    return View(lichSuNhapXuat);
-        //}
+            return Ok(lsDTOs);
+        }
 
-        // GET: LichSuNhapXuats/Create
+
+        [HttpGet("api/LichSuNhapXuats/Create")]
         public IActionResult Create()
         {
             string[] Contents = { "Nhập", "Xuất" };
             ViewBag.Contents = new SelectList(Contents);
-
-            ViewData["IdsanPham"] = new SelectList(_context.ThiTruongs, "IdsanPham", "TenSanPham");
+            ViewBag.SanPhams = new SelectList(_context.ThiTruongs, "IdsanPham", "TenSanPham"); ;
 
             return View();
         }
 
-        // POST: LichSuNhapXuats/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("api/LichSuNhapXuats")]
         public async Task<IActionResult> Create([FromBody] LichSuNhapXuatDTO dto)
         {
@@ -88,12 +90,12 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 {
                     NoiDung = dto.NoiDung,
                     IdsanPham = dto.IdsanPham,
-                    Loai = dto.Loai,
-                    DonViTinh = dto.DonViTinh,
+                    Loai = existingItem.Loai,
+                    DonViTinh = existingItem.DonViTinh,
                     SoLuongNhapXuat = dto.SoLuongNhapXuat,
-                    Don = dto.Don,
-                    ThanhTien = dto.ThanhTien,
-                    NgayNhap  = dto.NgayNhap
+                    Don = existingItem.DonGia,
+                    ThanhTien = existingItem.DonGia * dto.SoLuongNhapXuat,
+                    NgayNhap  = DateTime.Now
                 };
                 var existingStore = await _context.Khos
                 .FirstOrDefaultAsync(x => x.IddungCu == dto.IdsanPham);
@@ -121,8 +123,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                         var khoDTO = new Kho
                         {
                             IddungCu = dto.IdsanPham,
-                            Loai = dto.Loai,
-                            DonViTinh = dto.DonViTinh,
+                            Loai = existingItem.Loai,
+                            DonViTinh = existingItem.DonViTinh,
                             SoLuong = dto.SoLuongNhapXuat
                         };
                         try
@@ -155,7 +157,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                         DonViTinh = ls.DonViTinh,
                         SoLuongNhapXuat = ls.SoLuongNhapXuat,
                         Don = ls.Don,
-                        ThanhTien = ls.ThanhTien,
+                        ThanhTien = existingItem.DonGia * ls.SoLuongNhapXuat,
                         NgayNhap = ls.NgayNhap
                     };
 

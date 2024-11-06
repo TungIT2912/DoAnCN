@@ -232,15 +232,17 @@
                 <i class="micon fa fa-users"></i>Khách hàng
             </a>
             <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
-                <i class="micon fa fa-th me-2"></i>Danh mục
+                <i class="micon fa fa-th me-2"></i>Thị trường
             </a>
             <a asp-action="Index" asp-controller="Khoes" class="nav-item nav-link ">
                 <i class="micon fa fa-cubes"></i>Kho
             </a>
-            <a asp-action="Create" asp-controller="LichSuNhapXuats" class="nav-item nav-link ">
+            <a href="/Admin/LichSuNhapXuats/api/LichSuNhapXuats/Create" class="nav-item nav-link ">
                 <i class="micon fa fa-cubes"></i>Nhập hàng
             </a>
-
+            <a asp-action="Index" asp-controller="LichSuNhapXuats" class="nav-item nav-link ">
+                <i class="micon fa fa-cubes"></i>Lịch sử nhập hàng
+            </a>
             <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link ">
                 <i class="micon dw dw-invoice"></i>Hóa đơn
             </a>

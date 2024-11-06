@@ -12,18 +12,18 @@ namespace WebQuanLyNhaKhoa.DTO
 
 		public string? TenDungCu { get; set; } 
 
-		public string Loai { get; set; } = null!;
+		public string? Loai { get; set; } = null!;
 
-		public string DonViTinh { get; set; } = null!;
+		public string? DonViTinh { get; set; } = null!;
 
 		public int SoLuongNhapXuat { get; set; }
 
 		[Range(0, double.MaxValue)]
-		public decimal Don { get; set; }
+		public decimal? Don { get; set; }
 
 		[Range(0, double.MaxValue)]
 		public decimal ThanhTien { get; set; }
 
-		public DateTime NgayNhap { get; set; }
+		public DateTime? NgayNhap { get; set; }
 	}
 }

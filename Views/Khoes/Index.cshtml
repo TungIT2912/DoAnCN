@@ -205,52 +205,13 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
- @* <div class="sidebar pe-4 pb-3">
-     <nav class="navbar bg-light navbar-light">
-         <a href="index.html" class="navbar-brand mx-4 mb-3">
-             <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Dental</h3>
-         </a>
-         <div class="d-flex align-items-center ms-4 mb-4">
-             <div class="position-relative">
-                 <img class="rounded-circle" src="~/images/customer-3.jpg" alt="" style="width: 40px; height: 40px;">
-                 <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-             </div>
-             <div class="ms-3 text-center">
-                 <h6 class="mb-0">Thanh Tùng</h6>
-                 <span>Admin</span>
-             </div>
-         </div>
-         <div class="navbar-nav w-100">
-             <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link active"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
-             <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
-                 <i class="micon fa fa-dashboard"></i>Thống kê
-             </a>
-             <a href="/Admin/UserModel" class="nav-item nav-link ">
-                 <i class="micon fa fa-users"></i>Quản lí tài khoản
-             </a>
-             <a asp-action="Index" asp-controller="Customer" class="nav-item nav-link ">
-                 <i class="micon fa fa-users"></i>Khách hàng
-             </a>
-             <a asp-action="Index" asp-controller="Category" class="nav-item nav-link ">
-                 <i class="micon fa fa-th me-2"></i>Danh mục
-             </a>
-
-             <a asp-action="Add" asp-controller="Product" class="nav-item nav-link ">
-                 <i class="micon fa fa-cubes"></i>Nhập hàng
-             </a>
-             <a asp-action="Index" asp-controller="Order" class="nav-item nav-link ">
-                 <i class="micon dw dw-invoice"></i>Hóa đơn
-             </a>
-
-         </div>
-     </nav>
- </div> *@
+ 
 <div class="mobile-menu-overlay"></div>
 
 <div class="main-container">
     <div class="xs-pd-20-10 pd-ltr-20">
         <p>
-            <a asp-action="Create" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="bi bi-plus-square-fill"></i> Nhập thêm hàng</a>
+            <a asp-controller="LichSuNhapXuats" asp-action="Create" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="bi bi-plus-square-fill"></i> Nhập thêm hàng</a>
         </p>
         <div class="row clearfix progress-box">
             <div class="col-lg-12">
@@ -261,10 +222,10 @@
                     </div>
                     <div class="pb-20">
                       
-                        <table class="table project-list-table table-nowrap align-middle table-borderless" id="khoTable">
+                        <table class="table project-list-table table-nowrap align-middle table-borderless" class="table" id="khoTable">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tên dụng cụ</th>
+                                    <th scope="col" style="width: 200px;">Tên dụng cụ</th>
                                     <th scope="col">Loại</th>
                                     <th scope="col">Đơn vị tính</th>
                                     <th scope="col">Số lượng</th>
@@ -294,16 +255,15 @@
             const khoes = await response.json();
 
             const tableBody = document.getElementById('khoTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = ''; // Clear previous rows
+            tableBody.innerHTML = '';
             khoes.forEach(nv => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                       <td>${nv.tendungcu}</td>
-                       <td>${nv.loai}</td>
-                       <td>${nv.donvitinh}</td>
-                       <td>${nv.soluong}</td>
-                           
-                   `;
+                    <td>${nv.tenDungCu}</td>  
+                    <td>${nv.loai}</td>
+                    <td>${nv.donViTinh}</td>
+                    <td>${nv.soLuong}</td>
+                `;
                 tableBody.appendChild(row);
             });
         } catch (error) {
@@ -313,5 +273,5 @@
     }
 
     // Call the function on page load
-    document.addEventListener('DOMContentLoaded', fetchNhanViens);
+    document.addEventListener('DOMContentLoaded', fetchKhoes);
 </script>

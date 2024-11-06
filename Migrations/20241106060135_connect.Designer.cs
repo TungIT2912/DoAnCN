@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241106045234_connect")]
+    [Migration("20241106060135_connect")]
     partial class connect
     {
         /// <inheritdoc />
@@ -320,9 +320,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("IddungCu")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdsanPhamNavigationIdsanPham")
-                        .HasColumnType("int");
-
                     b.Property<string>("Loai")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -333,7 +330,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("IdsanPham");
 
-                    b.HasIndex("IdsanPhamNavigationIdsanPham");
+                    b.HasIndex("IddungCu");
 
                     b.ToTable("Khos");
                 });
@@ -610,13 +607,13 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Kho", b =>
                 {
-                    b.HasOne("WebQuanLyNhaKhoa.Data.ThiTruong", "IdsanPhamNavigation")
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ThiTruong", "ThiTruong")
                         .WithMany("Khos")
-                        .HasForeignKey("IdsanPhamNavigationIdsanPham")
+                        .HasForeignKey("IddungCu")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IdsanPhamNavigation");
+                    b.Navigation("ThiTruong");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.LichSuNhapXuat", b =>
