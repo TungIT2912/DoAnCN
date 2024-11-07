@@ -1,369 +1,838 @@
 ﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.NhanVien>
+
+
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-<!-- Header Start -->
-<div class="container-fluid header bg-primary p-0 mb-5">
-    <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
-        <div class="col-lg-6 p-5 wow fadeIn" data-wow-delay="0.1s">
-            <h1 class="display-4 text-white mb-5 text-center">Good Health Is The Root Of All Heppiness</h1>
-            <div class="row g-4">
-                <div class="col-sm-4">
-                    <div class="border-start border-light ps-4">
-                        <h2 class="text-white mb-1" data-toggle="counter-up">100</h2>
-                        <p class="text-light mb-0">Expert Doctors</p>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="border-start border-light ps-4">
-                        <h2 class="text-white mb-1" data-toggle="counter-up">2638</h2>
-                        <p class="text-light mb-0">Medical Stuff</p> 
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="border-start border-light ps-4">
-                        <h2 class="text-white mb-1" data-toggle="counter-up">5000</h2>
-                        <p class="text-light mb-0">Total Patients</p>
+
+<!DOCTYPE html>
+<html lang="vn">
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:35:40 GMT -->
+<head>
+<meta charset="utf-8">
+
+<!-- Stylesheets -->
+<link href="~/css/bootstrap.css" rel="stylesheet">
+<link href="~/css/style.css" rel="stylesheet">
+<link href="~/css/responsive.css" rel="stylesheet">
+
+<!--Color Themes-->
+<link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
+
+<!--Color Switcher Mockup-->
+<link href="~/css/color-switcher-design.css" rel="stylesheet">
+
+<link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+<link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+
+<!-- Responsive -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+ 
+
+    <!-- Bnner Section Two -->
+    <section class="banner-section-two">
+        <div class="banner-carousel owl-carousel owl-theme default-arrows dark">
+            <!-- Slide Item -->
+            <div class="slide-item" style="background-image: url(images/main-slider/3-1.jpg);">
+                <div class="auto-container">
+                    <div class="content-outer">
+                        <div class="content-box">
+                            <div class="icon-box"><span class="icon flaticon-dental-insurance"></span></div>
+                            <h1>Medicoz</h1>
+                            <h3>Dental Center in Londan</h3>
+                            <div class="text">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </div>
+                            <div class="btn-box"><a href="#" class="theme-btn btn-style-one bg-scarlet"><span class="btn-title">Take Service</span></a></div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Slide Item -->
+            <div class="slide-item" style="background-image: url(images/main-slider/3-2.jpg);">
+                <div class="auto-container">
+                    <div class="content-outer">
+                        <div class="content-box">
+                            <div class="icon-box"><span class="icon flaticon-dental-insurance"></span></div>
+                            <h1>Medicoz</h1>
+                            <h3>Dental Center in Londan</h3>
+                            <div class="text">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </div>
+                            <div class="btn-box"><a href="#" class="theme-btn btn-style-one bg-scarlet"><span class="btn-title">Take Service</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-            <div class="owl-carousel header-carousel">
-                <div class="owl-carousel-item position-relative">
-                    <img class="img-fluid" src="~/images/header_imgae-1.jpg" alt="">
-                    <div class="owl-carousel-text">
-                        <h1 class="display-1 text-white mb-0">Chắc Khỏe</h1>
+    </section>
+    <!-- End Bnner Section -->
+
+    <!-- About Section Three -->
+    <section class="about-section-three">
+        <div class="auto-container">
+            <div class="row">
+                <!-- Content Column -->
+                <div class="content-column col-lg-5 col-md-12 col-sm-12 order-2">
+                    <div class="inner-column">
+                        <div class="sec-title">
+                            <span class="sub-title">How We Get to This Point</span>
+                            <h2>Story About Our Hospital.</h2>
+                            <span class="divider"></span>
+                            <p>One of the first major discoveries relevant to the field of pulmonology was the discovery of pulmonary circulation. Originally, it was thought that blood reaching the right side of the heart passed through small ‘pores’ in the septum.</p>
+                        </div>
+                        <div class="about-owner">
+                            <img src="images/icons/sign.png" alt="" class="sign-img">
+                            <h4 class="name">Victoria Fernandez</h4>
+                            <span class="designation">Founder of Mediz Hospital</span>
+                        </div>
                     </div>
                 </div>
-                <div class="owl-carousel-item position-relative">
-                    <img class="img-fluid" src="~/images/header-image-2.jpg" alt="">
-                    <div class="owl-carousel-text">
-                        <h1 class="display-1 text-white mb-0">Trắng sáng</h1>
+
+                <!-- Images Column -->
+                <div class="image-column col-lg-7 col-md-12 col-sm-12">
+                    <div class="image-box">
+                        <figure class="image"><img src="images/resource/image-6.jpg" alt=""></figure>
                     </div>
                 </div>
-                <div class="owl-carousel-item position-relative">
-                    <img class="img-fluid" src="~/images/header-image-3.jpg" alt="">
-                    <div class="owl-carousel-text">
-                        <h1 class="display-1 text-white mb-0">Thơm Tho</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Header End -->
-<!-- About Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                <div class="d-flex flex-column">
-                    <img class="img-fluid rounded w-75 align-self-end" src="~/images/about-01.jpg" alt="">
-                    <img class="img-fluid rounded w-50 h-50 bg-white pt-3 pe-3" src="~/images/about-02.jpg" alt="" style="margin-top: -25%;">
-                </div>
-            </div>
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                <p class="d-inline-block border rounded-pill py-1 px-4">About Us</p>
-                <h1 class="mb-4">Why You Should Trust Us? Get Know About Us!</h1>
-                <p>
-                    "Chào mừng bạn đến với nha khoa của chúng tôi! Chúng tôi tự hào là trung tâm nha khoa chuyên nghiệp và cam kết cung cấp cho bạn dịch vụ chất lượng cao và sự chăm sóc tận tình"".
-                </p>
-                <p class="mb-4">
-                    Chúng tôi có đội ngũ bác sĩ nha khoa giàu kinh nghiệm và được đào tạo chuyên sâu ở nhiều lĩnh vực nha khoa khác nhau. Chúng tôi luôn đi đầu trong các xu hướng mới nhất và áp dụng công nghệ tiên tiến để đảm bảo rằng bạn nhận được sự chăm sóc tốt nhất cho nụ cười của mình. Sự thoải mái và an toàn của bạn là ưu tiên hàng đầu của chúng tôi. Chúng tôi sử dụng trang thiết bị và vật tư y tế chất lượng cao, tuân thủ nghiêm ngặt quy trình vệ sinh và tiêu chuẩn an toàn. Bạn có thể yên tâm rằng mình sẽ được đặt trong tình trạng tốt nhất để được điều trị hiệu quả và suôn sẻ.
-                </p>
-                <p><i class="far fa-check-circle text-primary me-3"></i>Quality health care</p>
-                <p><i class="far fa-check-circle text-primary me-3"></i>Only Qualified Doctors</p>
-                <p><i class="far fa-check-circle text-primary me-3"></i>Medical Research Professionals</p>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- About End -->
-<!-- Service Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-            <p class="d-inline-block border rounded-pill py-1 px-4">Services</p>
-            <h1>Health Care Solutions</h1>
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="service-item bg-light rounded h-100 p-5">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                        <i class="fa fa-heartbeat text-primary fs-4"></i>
-                    </div>
-                    <h4 class="mb-3">Tim Mạch</h4>
-                    <p class="mb-4">Hạn chế tiêu thụ thực phẩm giàu chất béo, cholesterol và muối. Tăng cường ăn rau, ngũ cốc nguyên hạt, cá, thịt gia cầm, các loại hạt và nguồn protein từ thực vật. Hạn chế đồ ngọt và đồ uống có cồn. Đảm bảo cân bằng lượng calo và duy trì cân nặng khỏe mạnh.</p>
-                    <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="service-item bg-light rounded h-100 p-5">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                        <i class="fa fa-x-ray text-primary fs-4"></i>
-                    </div>
-                    <h4 class="mb-3">Phổi</h4>
-                    <p class="mb-4">Cố gắng tránh tiếp xúc với khói thuốc lá, khói công nghiệp, hóa chất độc hại và không khí ô nhiễm. Khi làm việc trong môi trường bị ô nhiễm, hãy sử dụng đồ bảo hộ hoặc thiết bị bảo hộ để bảo vệ phổi của bạn.</p>
-                    <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="service-item bg-light rounded h-100 p-5">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                        <i class="fa fa-brain text-primary fs-4"></i>
-                    </div>
-                    <h4 class="mb-3">Thần kinh</h4>
-                    <p class="mb-4">Ăn một chế độ ăn giàu chất dinh dưỡng tốt cho não. Tăng cường tiêu thụ rau, các loại hạt, ngũ cốc nguyên hạt và các nguồn protein lành mạnh như cá, thịt gia cầm và đậu. Sản phẩm có nhiều chất béo bão hòa và đường.</p>
-                    <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="service-item bg-light rounded h-100 p-5">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                        <i class="fa fa-wheelchair text-primary fs-4"></i>
-                    </div>
-                    <h4 class="mb-3">Tiêu hóa</h4>
-                    <p class="mb-4">Tập trung vào chế độ ăn giàu chất xơ, trái cây và rau quả tươi, ngũ cốc nguyên hạt và thực phẩm giàu protein như thịt, cá, đậu và sữa chua. Hạn chế tiêu thụ đồ ăn nhanh, thực phẩm chế biến sẵn và thực phẩm chứa nhiều chất bảo quản. Uống đủ nước để duy trì độ ẩm trong hệ tiêu hóa và giúp quá trình tiêu hóa diễn ra hiệu quả.</p>
-                    <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="service-item bg-light rounded h-100 p-5">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                        <i class="fa fa-tooth text-primary fs-4"></i>
-                    </div>
-                    <h4 class="mb-3">Phẩu thuật nha khoa</h4>
-                    <p class="mb-4">Sau khi phẫu thuật nha khoa, việc tuân theo chỉ dẫn và yêu cầu của bác sĩ là rất quan trọng. Điều này bao gồm dùng thuốc với số lượng và đúng thời điểm được chỉ định, duy trì chế độ ăn uống lành mạnh và hạn chế hoạt động thể chất vất vả trong thời gian hồi phục.</p>
-                    <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="service-item bg-light rounded h-100 p-5">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle mb-4" style="width: 65px; height: 65px;">
-                        <i class="fa fa-vials text-primary fs-4"></i>
-                    </div>
-                    <h4 class="mb-3">
-                        Hệ thống xương và cơ bắp
-                    </h4>
-                    <p class="mb-4">Thực hiện các bài tập tác động đến hệ thống xương và cơ bắp, bao gồm rèn luyện sức mạnh, tim mạch như chạy bộ, bơi lội và các bài tập chức năng. Tập thể dục thường xuyên giúp tăng sức mạnh và tính linh hoạt của cơ bắp, cải thiện sức mạnh của xương và duy trì cân nặng khỏe mạnh.</p>
-                    <a class="btn" href=""><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Service End -->
-<!-- Feature Start -->
-<div class="container-fluid bg-primary overflow-hidden my-5 px-lg-0">
-    <div class="container feature px-lg-0">
-        <div class="row g-0 mx-lg-0">
-            <div class="col-lg-6 feature-text py-5 wow fadeIn" data-wow-delay="0.1s">
-                <div class="p-lg-5 ps-lg-0">
-                    <p class="d-inline-block border rounded-pill text-light py-1 px-4">Features</p>
-                    <h1 class="text-white mb-4">Why Choose Us</h1>
-                    <p class="text-white mb-4 pb-2">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo erat amet</p>
-                    <div class="row g-4">
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
-                                    <i class="fa fa-user-md text-primary"></i>
-                                </div>
-                                <div class="ms-4">
-                                    <p class="text-white mb-2">Experience</p>
-                                    <h5 class="text-white mb-0">Doctors</h5>
-                                </div>
+
+
+                <div class="blocks-column col-lg-12 order-3">
+                    <div class="row">
+                        <!-- Feature BLock -->
+                        <div class="feature-block-three col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <span class="icon flaticon-dentist"></span>
+                                <h4>Best Dental Suargeons</h4>
+                                <p>Dentistry, also known as Dental and Oral Medicine, is a branch of medicine that consists.</p>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
-                                    <i class="fa fa-check text-primary"></i>
-                                </div>
-                                <div class="ms-4">
-                                    <p class="text-white mb-2">Quality</p>
-                                    <h5 class="text-white mb-0">Services</h5>
-                                </div>
+
+                        <!-- Feature BLock -->
+                        <div class="feature-block-three col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <span class="icon flaticon-toothbrush"></span>
+                                <h4>Quick Examination</h4>
+                                <p>Dentistry, also known as Dental and Oral Medicine, is a branch of medicine that consists.</p>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
-                                    <i class="fa fa-comment-medical text-primary"></i>
-                                </div>
-                                <div class="ms-4">
-                                    <p class="text-white mb-2">Positive</p>
-                                    <h5 class="text-white mb-0">Consultation</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-light" style="width: 55px; height: 55px;">
-                                    <i class="fa fa-headphones text-primary"></i>
-                                </div>
-                                <div class="ms-4">
-                                    <p class="text-white mb-2">24 Hours</p>
-                                    <h5 class="text-white mb-0">Support</h5>
-                                </div>
+
+                        <!-- Feature BLock -->
+                        <div class="feature-block-three col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <span class="icon flaticon-drilling"></span>
+                                <h4>Painless procedures</h4>
+                                <p>Dentistry, also known as Dental and Oral Medicine, is a branch of medicine that consists.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 pe-lg-0 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
-                <div class="position-relative h-100">
-                    <img class="position-absolute img-fluid w-100 h-100" src="~/images/feature-01.jpg" style="object-fit: cover;" alt="">
+        </div>
+    </section>
+    <!-- End About Section Three -->
+
+    <!-- Fun Fact Section Three-->
+    <section class="fun-fact-section-three">
+        <div class="auto-container">
+            <div class="background-layer"></div>
+            <div class="row">
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-user-experience"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="25">0</span>
+                        <h4 class="counter-title">Years of Experience</h4>
+                    </div>
+                </div>
+
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="400ms">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-team"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="470">0</span>
+                        <h4 class="counter-title">Medical Spesialities</h4>
+                    </div>
+                </div>
+
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="800ms">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-hospital"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="689">0</span>
+                        <h4 class="counter-title">Medical Spesialities</h4>
+                    </div>
+                </div>
+
+                <!--Column-->
+                <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="1200ms">
+                    <div class="count-box">
+                        <div class="icon-box"><span class="icon flaticon-add-friend"></span></div>
+                        <span class="count-text" data-speed="3000" data-stop="9036">0</span>
+                        <h4 class="counter-title">Happy Patients</h4>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- Feature End -->
-<!-- Team Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-            <p class="d-inline-block border rounded-pill py-1 px-4">Doctors</p>
-            <h1>Our Experience Doctors</h1>
-        </div>
-        <div class="row g-4">
-            @foreach (var item in Model)
-            {
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item position-relative rounded overflow-hidden">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="/@item.Hinh" alt="">
+    </section>
+    <!-- Fun Fact Section Three -->
+
+    <!-- Team Section Two -->
+    <section class="team-section-two">
+        <div class="auto-container">
+            <div class="sec-title text-center">
+                <span class="sub-title">MEET OUR EXPERIENCED TEAM</span>
+                <h2>Our Dedicated Doctors Team.</h2>
+                <span class="divider"></span>
+            </div>
+
+            <div class="row">
+                <!-- Team Block -->
+                <div class="team-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <figure class="image"><a href="doctor-detail.html"><img src="images/resource/team-5.jpg" alt=""></a></figure>
+                            <ul class="social-links">
+                                <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                            </ul>
                         </div>
-                        <div class="team-text bg-light text-center p-4">
-                            <h5>@item.Ten</h5>
-                            <p class="text-primary">@item.KinhNghiem Năm(KN)</p>
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
+                        <div class="info-box">
+                            <h5 class="name"><a href="doctor-detail.html">Emily Haden</a></h5>
+                            <span class="designation">Dental Surgeon</span>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
-    </div>
-</div>
-<!-- Team End -->
-<!-- Appointment Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                <p class="d-inline-block border rounded-pill py-1 px-4">Appointment</p>
-                <h1 class="mb-4">Make An Appointment To Visit Our Doctor</h1>
-                <p class="mb-4">Hãy đăng kí lịch khám để gặp gỡ các nha sĩ có nhiều năm kinh nghiệm của chúng tôi. Chúng tôi xin hứa sẽ giúp cho hàm răng của bạn trắng sáng và ngày càng mạnh khỏe hơn</p>
-                <div class="bg-light rounded d-flex align-items-center p-5 mb-4">
-                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                        <i class="fa fa-phone-alt text-primary"></i>
-                    </div>
-                    <div class="ms-4">
-                        <p class="mb-2">Call Us Now</p>
-                        <h5 class="mb-0">+0348859428</h5>
+
+                <!-- Team Block -->
+                <div class="team-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="400ms">
+                    <div class="inner-box">
+                        <div class="image-box">
+                           <figure class="image"><a href="doctor-detail.html"><img src="images/resource/team-6.jpg" alt=""></a></figure>
+                            <ul class="social-links">
+                                <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="info-box">
+                            <h5 class="name"><a href="doctor-detail.html">Hellen Hill</a></h5>
+                            <span class="designation">Dental Surgeon</span>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-light rounded d-flex align-items-center p-5">
-                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
-                        <i class="fa fa-envelope-open text-primary"></i>
-                    </div>
-                    <div class="ms-4">
-                        <p class="mb-2">Mail Us Now</p>
-                        <h5 class="mb-0">nhakhoahoanmy@gmail.com</h5>
+
+                <!-- Team Block -->
+                <div class="team-block-two col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="800ms">
+                    <div class="inner-box">
+                        <div class="image-box">
+                           <figure class="image"><a href="doctor-detail.html"><img src="images/resource/team-7.jpg" alt=""></a></figure>
+                            <ul class="social-links">
+                                <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                            </ul>
+                        </div>
+                        <div class="info-box">
+                            <h5 class="name"><a href="doctor-detail.html">Audrey Button</a></h5>
+                            <span class="designation">Dental Surgeon</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="bg-light rounded h-100 d-flex align-items-center p-5 ">
-                    <form >
-                        <div class="row g-3">
-                            <div class="col-12 col-sm-6">
-                                <label>Mã bệnh nhân</label>
-                                <input type="text" readonly p class="form-control border-0 mt-1 text-black" name="benhNhan" placeholder="For example:thanhlong03" style="height: 55px;">
+
+            <div class="sec-bottom-text">Don’t hesitate, contact us for better help and services. <a href="#">Explore all Dr. Team</a></div>
+        </div>
+    </section>
+    <!--End Team Section -->
+
+    <!-- Skill Section -->
+    <section class="skill-section">
+        <div class="outer-container clearfix">
+            <div class="skill-column">
+                <div class="inner-column">
+                    <div class="sec-title">
+                        <span class="sub-title">BEST OF THE BEST</span>
+                        <h2>High End Equipments.</h2>
+                        <span class="divider"></span>
+                        <div class="text">Surgery of the respiratory tract is generally performed by specialists in cardiothoracic surgery (or thoracic surgery) though minor procedures may be performed by pulmonologists. Pulmonology is closely.</div>
+                    </div>
+
+                    <!--Skills-->
+                    <div class="skills">
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">CARDIO-ONCOLOGY</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="55">0</span>%</div></div>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <span>Giới tính</span> <br />
-                                <input type="radio" readonly name="benhNhan" value="true">
-                                <labe style="padding: 15px">Nam</labe>
-                                <input type="radio" readonly name="benhNhan" value="false">
-                                <label style="padding: 15px">Nữ</label>
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="55"></div></div>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <label>Số điện thoại</label>
-                                <input type="text" readonly p class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
+                        </div>
+
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">HEART ASSESSMENT</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="72">0</span>%</div></div>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <span>Tên bệnh nhân</span> <br />
-                                <input type="text" readonly class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="72"></div></div>
+                            </div>
+                        </div>
+
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">Dental SURGERY</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="88">0</span>%</div></div>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="88"></div></div>
+                            </div>
+                        </div>
+
+                        <!--Skill Item-->
+                        <div class="skill-item">
+                            <div class="skill-header clearfix">
+                                <div class="skill-title">HEART ASSESSMENT</div>
+                                <div class="skill-percentage"><div class="count-box"><span class="count-text" data-speed="3000" data-stop="78">0</span>%</div></div>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="bar-inner"><div class="bar progress-line" data-width="78"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-box"><a href="#" class="theme-btn btn-style-three"><span class="btn-title">Learn More</span></a></div>
+                </div>
+            </div>
+
+            <div class="image-column" style="background-image: url(images/resource/image-7.jpg);">
+                <div class="image-box">
+                    <figure class="image"><img src="images/resource/image-7.jpg" alt=""></figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End Skill Section -->
+
+    <!-- Services Section Three-->
+    <section class="services-section-three">
+        <div class="auto-container">
+            <div class="sec-title text-center">
+                <span class="sub-title">OUR SERVICES</span>
+                <h2>We Care Our Patients.</h2>
+                <span class="divider"></span>
+            </div>
+
+            <div class="row">
+                <!-- Service Block -->
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
+                    <div class="inner-box">
+                        <span class="icon flaticon-dentist"></span>
+                        <h5><a href="#">General Dentistry</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-dentist"></span>
+                    </div>
+                </div>
+
+                <!-- Service Block -->
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
+                    <div class="inner-box">
+                        <span class="icon flaticon-braces"></span>
+                        <h5><a href="#">Orthodontics</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-braces"></span>
+                    </div>
+                </div>
+
+                <!-- Service Block -->
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
+                    <div class="inner-box">
+                        <span class="icon flaticon-implant"></span>
+                        <h5><a href="#">Dental Implants</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-implant"></span>
+                    </div>
+                </div>
+
+                <!-- Service Block -->
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
+                    <div class="inner-box">
+                        <span class="icon flaticon-teeth"></span>
+                        <h5><a href="#">Teeth Whitening</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-teeth"></span>
+                    </div>
+                </div>
+
+                <!-- Service Block -->
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
+                    <div class="inner-box">
+                        <span class="icon flaticon-dental-insurance"></span>
+                        <h5><a href="#">Cosmetic Dentistry</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-dental-insurance"></span>
+                    </div>
+                </div>
+
+                <!-- Service Block -->
+                <div class="service-block-three col-lg-6 col-md-6 col-sm-12">
+                    <div class="inner-box">
+                        <span class="icon flaticon-tooth"></span>
+                        <h5><a href="#">Gum Treatment</a></h5>
+                        <div class="text">Dentistry, also known as dental medicine and ‘oral medicine, is a branch of medicine that consists of the study, diagnosis, prevention, and treatment.</div>
+                        <span class="icon-float flaticon-tooth"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End Services Section -->
+
+        <!-- Testimonial Section -->
+    <section class="testimonial-section-two">
+        <div class="auto-container">
+            <!-- Sec Title -->
+            <div class="sec-title text-center">
+                <span class="title">HAPPY Patient</span>
+                <h2>What Says Our Patients</h2>
+                <span class="divider"></span>
+            </div>
+            
+            <div class="testimonial-outer">
+                <!-- Product Thumbs Carousel -->
+                <div class="client-thumb-outer">
+                    <div class="client-thumbs-carousel owl-carousel owl-theme">
+                        <div class="thumb-item">
+                            <figure class="thumb-box"><img src="images/resource/testi-thumb-1.jpg" alt=""></figure>
+                            <div class="author-info">
+                                <span class="icon fa fa-quote-left"></span>
+                                <div class="author-name">Lara Croft</div>
+                                <div class="designation">Restaurant Owner</div>
+                            </div>
+                        </div>
+                        <div class="thumb-item">
+                            <figure class="thumb-box"><img src="images/resource/testi-thumb-2.jpg" alt=""></figure>
+                            <div class="author-info">
+                                <span class="icon fa fa-quote-left"></span>
+                                <div class="author-name">Lara Croft</div>
+                                <div class="designation">Restaurant Owner</div>
+                            </div>
+                        </div>
+                        <div class="thumb-item">
+                            <figure class="thumb-box"><img src="images/resource/testi-thumb-3.jpg" alt=""></figure>
+                            <div class="author-info">
+                                <span class="icon fa fa-quote-left"></span>
+                                <div class="author-name">Lara Croft</div>
+                                <div class="designation">Restaurant Owner</div>
+                            </div>
+                        </div>
+                        <div class="thumb-item">
+                            <figure class="thumb-box"><img src="images/resource/testi-thumb-2.jpg" alt=""></figure>
+                            <div class="author-info">
+                                <span class="icon fa fa-quote-left"></span>
+                                <div class="author-name">Lara Croft</div>
+                                <div class="designation">Restaurant Owner</div>
+                            </div>
+                        </div>
+                        <div class="thumb-item">
+                            <figure class="thumb-box"><img src="images/resource/testi-thumb-3.jpg" alt=""></figure>
+                            <div class="author-info">
+                                <span class="icon fa fa-quote-left"></span>
+                                <div class="author-name">Lara Croft</div>
+                                <div class="designation">Restaurant Owner</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Testimonial Carousel -->
+                <div class="client-testimonial-carousel default-dots owl-carousel owl-theme">
+                
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
+                        </div>
+                    </div>
+                    
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
+                        </div>
+                    </div>
+                    
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
+                        </div>
+                    </div>
+
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
+                        </div>
+                    </div>
+                    
+                    <!--Testimonial Block -->
+                    <div class="testimonial-block">
+                        <div class="inner-box">
+                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call To Action -->
+            <div class="call-to-action">
+                <div class="inner-container">
+                    <div class="content-column">
+                        <h4>We Employ The Latest Technology</h4>
+                        <h2>We Ensure Safe Dental Sergery </h2>
+                        <a href="#" class="theme-btn btn-style-three"><span class="btn-title">Take Appointment</span></a>
+                    </div>
+
+                    <div class="video-column">
+                        <div class="btn-box">
+                            <a href="https://www.youtube.com/watch?v=Fvae8nxzVz4" class="play-now" data-fancybox="gallery" data-caption=""><i class="icon flaticon-play-button" aria-hidden="true"></i><span class="ripple"></span></a>
+                            <span class="title">Watch now</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Testimonial Section -->
+
+    <!-- News Section Two -->
+    <section class="news-section-two">
+        <div class="auto-container">
+            <!-- Sec Title -->
+            <div class="sec-title">
+                <span class="title">OUR latest BLOG</span>
+                <h2>Articles and News</h2>
+                <span class="divider"></span>
+            </div>
+
+            <div class="row">
+                <!-- News Block -->
+                <div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <figure class="image"><a href="blog-post-image.html"><img src="images/resource/news-1.jpg" alt=""></a></figure>
+                        </div>
+                        <div class="lower-content">
+                            <h4><a href="blog-post-image.html">What is The Success rate<br> of a root canel?</a></h4>
+                            <div class="post-info">
+                                <div class="post-author">By<a href="#">Admin Rose</a></div>
+                                <ul class="post-option">
+                                    <li><a href="#">0 <i class="far fa-comments"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Block -->
+                <div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <figure class="image"><a href="blog-post-image.html"><img src="images/resource/news-2.jpg" alt=""></a></figure>
+                        </div>
+                        <div class="lower-content">
+                            <h4><a href="blog-post-image.html">How to handle your kids’ <Br>mystery ailments?</a></h4>
+                            <div class="post-info">
+                                <div class="post-author">By<a href="#">Admin Rose</a></div>
+                                <ul class="post-option">
+                                    <li><a href="#">0 <i class="far fa-comments"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Block -->
+                <div class="news-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <figure class="image"><a href="blog-post-image.html"><img src="images/resource/news-3.jpg" alt=""></a></figure>
+                        </div>
+                        <div class="lower-content">
+                            <h4><a href="blog-post-image.html">How to help the cardiology <br>department</a></h4>
+                            <div class="post-info">
+                                <div class="post-author">By<a href="#">Admin Rose</a></div>
+                                <ul class="post-option">
+                                    <li><a href="#">0 <i class="far fa-comments"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!--End News Section Two -->
+
+    <!-- Clients Section -->
+    <section class="clients-section">
+        <div class="auto-container">
+
+            <!-- Sponsors Outer -->
+            <div class="sponsors-outer">
+                <!--clients carousel-->
+                <ul class="clients-carousel owl-carousel owl-theme">
+                    <li class="slide-item"> <a href="#"><img src="images/clients/1.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="images/clients/2.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="images/clients/3.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="images/clients/4.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="images/clients/5.png" alt=""></a> </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!--End Clients Section -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer style-three">
+        <!--Widgets Section-->
+        <div class="widgets-section" style="background-image: url(images/background/7.jpg);">
+            <div class="auto-container">
+                <div class="row">
+                    <!--Big Column-->
+                    <div class="big-column col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                        <div class="row">
+                            <!--Footer Column-->
+                            <div class="footer-column col-xl-7 col-lg-6 col-md-6 col-sm-12">
+                                <div class="footer-widget about-widget">
+                                    <div class="logo">
+                                        <a href="index.html"><img src="images/logo-5.png" alt="" /></a>
+                                    </div>
+                                    <div class="text">
+                                        <p>Our Clinic has grown to provide a world class facility for the clinic advanced restorative. </p>
+                                        <p>We are among the most qualified implant providers in the AUS with over 30 years of quality training and experience.</p>
+                                    </div>
+                                    <ul class="social-icon-three">
+                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-skype"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                    </ul>
+                                </div>
                             </div>
 
-                            <div class="col-12 col-sm-6">
-                                <label>Năm sinh</label>
-                                <input type="text" readonly class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <label>Nơi sinh sống</label>
-                                <input type="text" readonly class="form-control border-0 mt-1 text-black" name="benhNhan" style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6" style="width: 100%">
-                                <div class="date" id="date" data-target-input="nearest">
-                                    <label>Đặt lịch khám</label>
-                                    <input type="text" readonly name="benhNhan"
-                                           class="form-control border-0 mt-1 text-black datetimepicker-input"
-                                           placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px; width: 100%">
+                            <!--Footer Column-->
+                            <div class="footer-column col-xl-5 col-lg-6 col-md-6 col-sm-12">
+                                <div class="footer-widget">
+                                    <h2 class="widget-title">Departments</h2>
+                                    <ul class="user-links">
+                                        <li><a href="#">Surgery & Radiology</a></li>
+                                        <li><a href="#">Family Medicine</a></li>
+                                        <li><a href="#">Women’s Health</a></li>
+                                        <li><a href="#">Optician</a></li>
+                                        <li><a href="#">Pediatrics</a></li>
+                                        <li><a href="#">Dermatology</a></li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <textarea class="form-control border-0 mt-1 text-black" rows="5" readonly placeholder="Describe your problem"></textarea>
+                        </div>
+                    </div>
+
+                    <!--Big Column-->
+                    <div class="big-column col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                        <div class="row">
+                            <!--Footer Column-->
+                            <div class="footer-column col-lg-6 col-md-6 col-sm-12">
+                                <!--Footer Column-->
+                                <div class="footer-widget recent-posts">
+                                    <h2 class="widget-title">Latest News</h2>
+                                     <!--Footer Column-->
+                                    <div class="widget-content">
+                                        <div class="post">
+                                            <div class="thumb"><a href="blog-post-image.html"><img src="images/resource/post-thumb-1.jpg" alt=""></a></div>
+                                            <h4><a href="blog-post-image.html">Integrative Medicine <Br>& Cancer Treatment.</a></h4>
+                                            <span class="date">July 11, 2020</span>
+                                        </div>
+
+                                        <div class="post">
+                                            <div class="thumb"><a href="blog-post-image.html"><img src="images/resource/post-thumb-2.jpg" alt=""></a></div>
+                                            <h4><a href="blog-post-image.html">Achieving Better <br>Health Care Time.</a></h4>
+                                            <span class="date">August 1, 2020</span>
+                                        </div>
+
+                                        <div class="post">
+                                            <div class="thumb"><a href="blog-post-image.html"><img src="images/resource/post-thumb-3.jpg" alt=""></a></div>
+                                            <h4><a href="blog-post-image.html">Great Health Care <br>For Patients.</a></h4>
+                                            <span class="date">August 1, 2020</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit" asp-action="Add" asp-controller="BookAppointment">Move Book Appointment</button>
+
+                            <!--Footer Column-->
+                            <div class="footer-column col-lg-6 col-md-6 col-sm-12">
+                                <!--Footer Column-->
+                                <div class="footer-widget contact-widget">
+                                    <h2 class="widget-title">Contact Us</h2>
+                                     <!--Footer Column-->
+                                    <div class="widget-content">
+                                        <ul class="contact-list">
+                                            <li>
+                                                <span class="icon flaticon-placeholder"></span>
+                                                <div class="text">2130 Fulton Street San Diego <Br>CA 94117-1080 USA</div>
+                                            </li>
+
+                                            <li>
+                                                <span class="icon flaticon-call-1"></span>
+                                                <div class="text">Mon to Fri : 08:30 - 18:00</div>
+                                                <a href="tel:+89868679575"><strong>+898 68679 575</strong></a>
+                                            </li>
+
+                                            <li>
+                                                <span class="icon flaticon-email"></span>
+                                                <div class="text">Do you have a Question?<br>
+                                                <a href="mailto:info@gmail.com"><strong>info@gmail.com</strong></a></div>
+                                            </li>
+                                            
+                                            <li>
+                                                <span class="icon flaticon-back-in-time"></span>
+                                                <div class="text">Mon - Sat 8.00 - 18.00<br>
+                                                <strong>Sunday CLOSED</strong></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!--Footer Bottom-->
+        <div class="footer-bottom">
+            <!-- Scroll To Top -->
+            <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+            
+            <div class="auto-container">
+                <div class="inner-container clearfix">
+                    <div class="footer-nav">
+                        <ul class="clearfix">
+                           <li><a href="index.html">Privacy Policy</a></li> 
+                           <li><a href="about-us.html">Contact</a></li> 
+                           <li><a href="services.html">Supplier</a></li>  
+                        </ul>
+                    </div>
+                    
+                    <div class="copyright-text">
+                        <p>Copyright © 2020 <a href="#">Bold Touch</a>All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--End Main Footer -->
+
+</div><!-- End Page Wrapper -->
+
+
+<!-- Color Palate / Color Switcher -->
+<div class="color-palate">
+    <div class="inner-palate">
+        <div class="color-trigger"><i class="fa fa-cog"></i></div>
+        <div class="color-palate-head"><h5>GET AN AWESOME START!</h5></div>
+        <div class="demos-box">
+            <h6>Choose your demo</h6>
+            <ul class="single-item-carousel owl-carousel owl-theme demos-list">
+                <li data-text="Home Medical"><a href="index.html"><img src="images/background/demos/1.png" alt=""></a></li>
+                <li data-text="Home Clanic"><a href="index-2.html"><img src="images/background/demos/2.png" alt=""></a></li>
+                <li data-text="Home Dental Care"><a href="index-3.html"><img src="images/background/demos/3.png" alt=""></a></li>
+                <li data-text="Home Eye Care"><a href="index-4.html"><img src="images/background/demos/4.png" alt=""></a></li>
+                <li data-text="Home Prenatal care"><a href="index-5.html"><img src="images/background/demos/5.png" alt=""></a></li>
+            </ul>
+        </div>
+        <div class="various-color clearfix">
+            <div class="colors-list">
+                <h6>Choose Your Color</h6>
+                <span class="palate default-color" data-theme-file="~/css/color-themes/default-theme.css"></span>
+                <span class="palate tealblue-color" data-theme-file="~/css/color-themes/tealblue.css"></span>
+                <span class="palate scarlet-color active" data-theme-file="~/css/color-themes/scarlet.css"></span>
+                <span class="palate kellygreen-color" data-theme-file="~/css/color-themes/kellygreen.css"></span>
+                <span class="palate dodgerblue-color" data-theme-file="~/css/color-themes/dodgerblue.css"></span>
+                <span class="palate red-color" data-theme-file="~/css/color-themes/red.css"></span>
+                <span class="palate selectiveyellow-color" data-theme-file="~/css/color-themes/selectiveyellow.css"></span>
+                <span class="palate maroon-color" data-theme-file="~/css/color-themes/maroon.css"></span>
+                <span class="palate brown-color" data-theme-file="~/css/color-themes/brown.css"></span>
+                <span class="palate green-color" data-theme-file="~/css/color-themes/green.css"></span>
+                <span class="palate duchessblue-color" data-theme-file="~/css/color-themes/duchessblue.css"></span>
+                <span class="palate lightblue-color" data-theme-file="~/css/color-themes/lightblue.css"></span>
+                <span class="palate frenchgray-color" data-theme-file="~/css/color-themes/frenchgray.css"></span>
+                <span class="palate telemagenta-color" data-theme-file="~/css/color-themes/telemagenta.css"></span>
+                <span class="palate signalviolet-color" data-theme-file="~/css/color-themes/signalviolet.css"></span>
+            </div>
+        </div>
+        <div class="lower-options">
+            <h6>RTL Supported</h6>
+            <ul class="rtl-version option-box"> <li class="active">LTR</li> <li class="rtl">RTL</li> </ul>
+            <h6>Box &amp; Wide layout</h6>
+            <ul class="box-version option-box"> <li class="active">Wide</li> <li class="box">Boxed</li> </ul>
+            <div class="box-mode-bg">
+                <h6>Boxed Mode Backgrounds</h6>
+                <ul class="clearfix"> 
+                    <li class="active" style="background-image: url(images/background/boxed-bg/1.png);"></li>
+                    <li style="background-image: url(images/background/boxed-bg/2.png);"></li>
+                    <li style="background-image: url(images/background/boxed-bg/3.png);"></li>
+                    <li style="background-image: url(images/background/boxed-bg/4.png);"></li>
+                    <li style="background-image: url(images/background/boxed-bg/5.png);"></li>
+                    <li style="background-image: url(images/background/boxed-bg/6.png);"></li>
+                    <li style="background-image: url(images/background/boxed-bg/7.png);"></li>
+                    <li style="background-image: url(images/background/boxed-bg/8.png);"></li>
+                </ul>
+            </div>
+            <div class="palate-foo">
+                <span>You will find much more options for colors and styling in admin panel. This color picker is used only for demonstation purposes.</span>
+            </div>
+            <a href="https://themeforest.net/item/medicoz-clinic-hospital-html-template/28397578?ref=bold_touch" class="purchase-btn">Purchase now $12</a>
         </div>
     </div>
-</div>
-<!-- Appointment End -->
-<!-- Testimonial Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-            <p class="d-inline-block border rounded-pill py-1 px-4">Testimonial</p>
-            <h1>What Say Our Patients!</h1>
-        </div>
-        <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
-            <div class="testimonial-item text-center">
-                <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="~/images/customer-1.jpg" style="width: 100px; height: 100px;">
-                <div class="testimonial-text rounded text-center p-4">
-                    <p>Tôi rất hài lòng với dịch vụ nha khoa tại ngôi nhà nha khoa này. Từ lúc tôi đến đăng ký cho đến khi hoàn thành quá trình điều trị, tôi nhận thấy sự chuyên nghiệp và tận tâm của toàn bộ nhân viên. Bác sĩ rất thông thái và am hiểu về các vấn đề nha khoa. Họ đã dành thời gian để lắng nghe và hiểu rõ tình trạng của tôi trước khi đưa ra phương pháp điều trị phù hợp.</p>
-                    <h5 class="mb-1">Bệnh nhân Thuận Phát</h5>
-                    <span class="fst-italic">Profession</span>
-                </div>
-            </div>
-            <div class="testimonial-item text-center">
-                <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="~/images/customer-2.jpg" style="width: 100px; height: 100px;">
-                <div class="testimonial-text rounded text-center p-4">
-                    <p>Trải qua trải nghiệm dịch vụ nha khoa tại đây, tôi cảm thấy hài lòng nhưng cũng có một số điểm cần cải thiện. Các bác sĩ và nhân viên đều rất thân thiện và chu đáo. Họ giải thích quy trình điều trị một cách rõ ràng và tận tâm. Tuy nhiên, tôi nghĩ rằng thời gian chờ đợi có thể được cải thiện.</p>
-                    <h5 class="mb-1">Bệnh nhân Văn Toàn</h5>
-                    <span class="fst-italic">Profession</span>
-                </div>
-            </div>
-            <div class="testimonial-item text-center">
-                <img class="img-fluid bg-light rounded-circle p-2 mx-auto mb-4" src="~/images//customer-3.jpg" style="width: 100px; height: 100px;">
-                <div class="testimonial-text rounded text-center p-4">
-                    <p>Tôi rất thất vọng với dịch vụ nha khoa tại nơi này. Các bác sĩ và nhân viên không thân thiện và thiếu chuyên nghiệp. Tôi cảm thấy họ không quan tâm đến tình trạng nha khoa của tôi và chỉ đơn giản là hoàn thành công việc. </p>
-                    <h5 class="mb-1">Bệnh nhân Uyên Phương</h5>
-                    <span class="fst-italic">Profession</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+</div><!-- End Color Switcher -->
+
+<script src="~/js/jquery.js"></script>  
+<script src="~/js/popper.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/jquery.fancybox.js"></script>
+<script src="~/js/jquery.modal.min.js"></script>
+<script src="~/js/mmenu.polyfills.js"></script>
+<script src="~/js/mmenu.js"></script>
+<script src="~/js/appear.js"></script>
+<script src="~/js/mixitup.js"></script>
+<script src="~/js/owl.js"></script>
+<script src="~/js/wow.js"></script>
+<script src="~/js/script.js"></script>
+<!-- Color Setting -->
+<script src="~/js/color-settings.js"></script>
+</body>
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:35:56 GMT -->
+</html>
+
+
