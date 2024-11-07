@@ -27,11 +27,15 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual DbSet<HoaDon> HoaDons { get; set; }
 
+		public virtual DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+
 		public virtual DbSet<Kho> Khos { get; set; }
 
 		public virtual DbSet<LichSuNhapXuat> LichSuNhapXuats { get; set; }
 
 		public virtual DbSet<NhanVien> NhanViens { get; set; }
+
+
 
 		//public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
 
@@ -60,6 +64,19 @@ namespace WebQuanLyNhaKhoa.Data
 				.WithMany(d => d.HoaDons)
 				.HasForeignKey(h => h.Idkham)
 				.OnDelete(DeleteBehavior.Restrict); // Change cascade to restrict or set null
+
+			modelBuilder.Entity<ChiTietHoaDon>()
+				.HasOne(ct => ct.DonThuoc)
+				.WithMany()
+				.HasForeignKey(ct => ct.IddonThuoc)
+				.OnDelete(DeleteBehavior.Restrict); // Sử dụng Restrict hoặc NoAction
+
+			modelBuilder.Entity<ChiTietHoaDon>()
+				.HasOne(ct => ct.DieuTri)
+				.WithMany()
+				.HasForeignKey(ct => ct.IddieuTri)
+				.OnDelete(DeleteBehavior.Restrict); // Sử dụng Restrict hoặc NoAction
+
 		}
 	}
 }
