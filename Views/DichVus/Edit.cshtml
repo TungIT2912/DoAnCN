@@ -1,11 +1,10 @@
-﻿@model WebQuanLyNhaKhoa.DTO.NhanVienDTO
+﻿@model WebQuanLyNhaKhoa.DTO.DichVuDTO
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
- 
 <style>
     body {
         color: #566787;
@@ -222,7 +221,7 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link active"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
+            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link "><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
             <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
                 <i class="micon fa fa-dashboard"></i>Thống kê
             </a>
@@ -247,7 +246,7 @@
             <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link ">
                 <i class=" micon fa fa-cubes"></i>Hóa đơn
             </a>
-            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link ">
+            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link active">
                 <i class=" micon fa fa-cubes"></i>Dịch vụ
             </a>
         </div>
@@ -261,97 +260,47 @@
 
         <div class="row clearfix progress-box">
             <div class="col-lg-12">
-                <a asp-action="Index">
-                    <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
-                        ← Quay về lại danh sách
-                    </button>
-                </a>
-
+            
                 <div class="flex justify-center items-center h-screen ">
                     <div class="container p-[20px] max-w-[700px] max-h-[500px] bg-white rounded-xl">
                         <div class="relative">
-                            <h1 class="text-[32px] font-bold">Chi tiết nhân viên</h1>
+                            <h1 class="text-[32px] font-bold">Cập nhật dịch vụ</h1>
                             <span class="absolute inline-block w-[70px] h-[4px] bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-xl"></span>
                         </div>
                         <div class="flex justify-center gap-10 mt-[10px]">
                             <form id="createNhanVienForm" class="flex-wrap flex justify-around items-center" enctype="multipart/form-data">
-                                <input name="MaNv" id="MaNv" type="hidden" asp-for="MaNv" />
-                                <div class="form-group col-md-6">
-                                   <label asp-for="Ten" class="control-label">Tên</label>
-                                    <span class="form-control"> @Html.DisplayFor(model => model.Ten)</span>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Email" class="control-label">Email</label>
-                                    <span class="form=control"> @Html.DisplayFor(model => model.Email)</span>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Sdt" class="control-label">Số điện thoại</label>
-                                    <span class="form=control"> @Html.DisplayFor(model => model.Sdt)</span>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label asp-for="MaCv" class="control-label">Chức vụ</label>
-                                    <span class="form=control">@Html.DisplayFor(model => model.TenCv)</span>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label asp-for="KinhNghiem" class="control-label">Kinh nghiệm</label>
-                                    <span class="form=control">@Html.DisplayFor(model => model.KinhNghiem)</span>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Diachi" class="control-label">Địa chỉ</label>
-                                    <span class="form=control">@Html.DisplayFor(model => model.Diachi)</span>
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label class="control-label">Giới tính</label>
-                                     @if (Model.Gioi == true)
-                                    {
-                                        <div class="form-check custom mb-2">
-                                            <input type="radio" id="formValidationGender" name="formValidationGender" class="form-check-input" checked />
-                                            <label class="form-check-label" for="formValidationGender">Nữ</label>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="form-check custom mb-2">
-                                            <input type="radio" id="formValidationGender" name="formValidationGender" class="form-check-input" checked />
-                                            <label class="form-check-label" for="formValidationGender">Nam</label>
-                                        </div>
-                                    }
-
-                                    <span asp-validation-for="Gioi" class="text-danger"></span>
-                                </div>
-
-
-                                <div class="form-group col-md-6">
-                                    <label for="hinh">Ảnh đại diện (tuỳ chọn)</label>
-                                    <img src="@Model.Hinh" alt="Avata Image" id="previewImage" style="width: 100px; height: auto;" />
-                                   
+                                <input name="IddichVu" id="IddichVu" type="hidden" asp-for="IddichVu" />
+                                <div class="form-group col-md-12">
+                                    <label asp-for="IdchanDoan" class="control-label">Dạng chuẩn đoán</label>
+                                    <select asp-for="IdchanDoan" name="IdchanDoan" id="IdchanDoan" class="form-control" asp-items="ViewBag.SanPhams" required>
+                                        <option value="">Chọn nội dung</option>
+                                    </select>
+                                    <span asp-validation-for="IdchanDoan" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label asp-for="MatKhau" class="control-label">Mật khẩu</label>
-                                    <span class="form=control">
-                                        @Html.DisplayFor(model => model.MatKhau)
-                                    </span>
-                                    <span asp-validation-for="MatKhau" class="text-danger"></span>
+                                    <label asp-for="TenDichVu" class="control-label">Tên dịch vụ</label>
+                                    <input asp-for="TenDichVu" name="TenDichVu" id="TenDichVu" class="form-control" required />
+                                    <span asp-validation-for="TenDichVu" class="text-danger"></span>
                                 </div>
-
-
                                 <div class="form-group col-md-12">
-                                    <label asp-for="Role" class="control-label">Vai trò</label>
-                                    <span class="form=control">
-                                        @Html.DisplayFor(model => model.Role)
-                                    </span>
-                                    <span asp-validation-for="Role" class="text-danger"></span>
+                                    <label asp-for="DonViTinh" class="control-label">Đơn vị tính</label>
+                                    <select asp-for="DonViTinh" name="DonViTinh" id="DonViTinh" class="form-control" asp-items="ViewBag.DVT" required>
+                                        <option value="">Chọn nội dung</option>
+                                    </select>
+                                    <span asp-validation-for="DonViTinh" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label asp-for="DonGia" class="control-label">Giá tiền</label>
+                                    <input asp-for="DonGia" name="DonGia" id="DonGia" class="form-control" required oninput="formatMoney(this)" />
+                                    <span asp-validation-for="DonGia" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                     <a href="/Admin/NhanViens/api/NhanViens/Edit/${@Html.DisplayFor(model => model.MaNv)}" class="btn btn-primary" type="button"><i class="dw dw-edit2"></i> Cập nhật</a>
-                                   
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <a asp-action="Index" class="btn btn-secondary">Trở về danh sách</a>
                                 </div>
                             </form>
 
@@ -364,3 +313,82 @@
 
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        document.getElementById('createNhanVienForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Prepare data as a JSON object
+            const data = {
+                IddichVu: document.getElementById('IddichVu').value,
+                IdchanDoan: document.getElementById('IdchanDoan').value,
+                TenDichVu: document.getElementById('TenDichVu').value,
+                DonViTinh: document.getElementById('DonViTinh').value,
+                DonGia: document.getElementById('DonGia').value
+            };
+
+            const id = data.IddichVu;
+            console.log("Updating DichVu with id:", id);
+
+            try {
+                const response = await fetch(`/Admin/DichVus/api/DichVus/Update/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json' // Set Content-Type to JSON
+                    },
+                    body: JSON.stringify(data) // Send data as JSON string
+                });
+
+                console.log('Response Status:', response.status);
+                const responseText = await response.text();
+
+                if (response.ok) {
+                    alert("Cập nhật dịch vụ thành công!");
+                    window.location.href = '@Url.Action("Index", "DichVus")'; // Adjust URL as needed
+                } else {
+                    let errorMessage = "Đã xảy ra lỗi không xác định.";
+                    try {
+                        const error = JSON.parse(responseText);
+                        errorMessage = error.message;
+                    } catch {
+                        errorMessage = responseText;
+                    }
+                    alert("Lỗi khi cập nhật dịch vụ: " + errorMessage);
+                }
+            } catch (error) {
+                alert("Đã xảy ra lỗi: " + error.message);
+            }
+        });
+
+        document.querySelector('input[name="DonGia"]').addEventListener('input', function (event) {
+            let value = event.target.value.replace(/[^0-9.]/g, ''); // Remove non-numeric characters except dot
+            const dotCount = (value.match(/\./g) || []).length;
+
+            if (dotCount > 1) {
+                value = value.substring(0, value.lastIndexOf('.')); // Allow only one dot
+            }
+
+            if (value) {
+                // Split into whole number and decimal parts
+                const [whole, decimal] = value.split('.');
+                // Add commas to the whole number part for thousand separation
+                let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                // Ensure two decimal places, if necessary
+                let formattedValue = formattedWhole + (decimal ? '.' + decimal.substring(0, 2) : '.00');
+
+                // Set the value of the input with the formatted value and append " VND"
+              
+            } else {
+                event.target.value = '';
+            }
+        });
+
+
+    </script>
+}

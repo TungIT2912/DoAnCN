@@ -1,16 +1,11 @@
-﻿@model WebQuanLyNhaKhoa.Data.NhanVien
+﻿@model WebQuanLyNhaKhoa.DTO.DichVuDTO
 
 @{
-    ViewData["Title"] = "Index";
- Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
-
-    .detail {
-        color: rgb(255, 220, 0);
-    }
-
     body {
         color: #566787;
         background: #f5f5f5;
@@ -33,7 +28,7 @@
     .table-title {
         padding-bottom: 15px;
         background: #299be4;
-        color: black;
+        color: #fff;
         padding: 16px 30px;
         margin: -20px -25px 10px;
         border-radius: 3px 3px 0 0;
@@ -204,49 +199,6 @@
         margin-top: 10px;
         font-size: 13px;
     }
-
-    .button {
-        color: #03A9F4;
-    }
-
-        .button:hover {
-            color: #0275a8;
-        }
-
-    .search {
-        border: 1.5px solid black;
-        text-align: center;
-        border-radius: 10px;
-        margin-bottom: 7px;
-        margin-right: 15px;
-        margin-left: 0px;
-    }
-
-    tbody {
-        color: black;
-    }
-
-    .page {
-        color: #007bff;
-        text-decoration: none;
-        padding: 5px 10px;
-        border-radius: 3px;
-        margin: 0 2px;
-        display: flex;
-        justify-content: center;
-    }
-
-        .page li {
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid #007bff;
-            border-radius: 3px;
-            margin: 0 2px;
-            display: flex;
-            justify-content: center;
-        }
 </style>
 <script>
     $(document).ready(function () {
@@ -269,7 +221,7 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link active"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
+            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
             <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
                 <i class="micon fa fa-dashboard"></i>Thống kê
             </a>
@@ -277,7 +229,7 @@
                 <i class="micon fa fa-users"></i>Quản lí tài khoản
             </a>
             <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
-                <i class="micon fa fa-users"></i>Bệnh nhân
+                <i class="micon fa fa-users"></i>Khách hàng
             </a>
             <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
                 <i class="micon fa fa-th me-2"></i>Thị trường
@@ -288,13 +240,10 @@
             <a href="/Admin/LichSuNhapXuats/api/LichSuNhapXuats/Create" class="nav-item nav-link ">
                 <i class="micon fa fa-cubes"></i>Nhập hàng
             </a>
-            <a asp-action="Index" asp-controller="LichSuNhapXuats" class="nav-item nav-link ">
-                <i class="micon fa fa-cubes"></i>Lịch sử nhập hàng
-            </a>
             <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link ">
                 <i class=" micon fa fa-cubes"></i>Hóa đơn
             </a>
-            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link ">
+            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link active">
                 <i class=" micon fa fa-cubes"></i>Dịch vụ
             </a>
         </div>
@@ -302,44 +251,50 @@
 </div>
 <div class="mobile-menu-overlay"></div>
 
+
 <div class="main-container">
     <div class="xs-pd-20-10 pd-ltr-20">
-        <p>
-            <a asp-controller="NhanViens" asp-action="Create" class="btn border border-secondary rounded-pill px-3 text-white">
-                <i class="bi bi-plus-square-fill"></i> Thêm mới
-            </a>
-        </p>
 
         <div class="row clearfix progress-box">
             <div class="col-lg-12">
-                <div class="card-box mb-30">
-                    
-                    <div class="pd-20">
-                        <h4 class="text-blue h4">Thông tin các nhân viên</h4>
+                <div class="flex justify-center items-center h-screen ">
+                    <div class="container p-[20px] max-w-[700px] max-h-[500px] bg-white rounded-xl">
+                        <div class="relative">
+                            <h1 class="text-[32px] font-bold">Thêm mới dịch vụ</h1>
+                            <span class="absolute inline-block w-[70px] h-[4px] bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-xl"></span>
+                        </div>
+                        <div class="flex justify-center gap-10 mt-[10px]">
+                            <form id="createDichVuForm" class="flex-wrap flex justify-around items-center">
+                                <div class="form-group col-md-12">
+                                    <label asp-for="IdchanDoan" class="control-label">Dạng chuẩn đoán</label>
+                                    <select asp-for="IdchanDoan" name="IdchanDoan" id="IdchanDoan" class="form-control" asp-items="ViewBag.SanPhams" required>
+                                        <option value="">Chọn nội dung</option>
+                                    </select>
+                                    <span asp-validation-for="IdchanDoan" class="text-danger"></span>
+                                </div>
 
-                    </div>
-                    <div class="pb-20">
-                       
-                        <table class="data-table table stripe hover nowrap" class="table" id="nhanVienTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col" style="width: 200px;">Tên nhân viên</th>
-                                    <th scope="col">Số Điện Thoại</th>
-                                    @* <th scope="col">Giới tính</th> *@
-                                    <th scope="col">Chức vụ</th>
-                                     <th scope="col">Kinh nghiệm</th>
-                                    <th scope="col">Địa Chỉ</th>
-                                    <th scope="col">Ảnh đại diện</th>
-                                    <th scope="col">Email</th>
-                                     <th scope="col">Role</th>
-                                    <th scope="col" style="width: 200px;height:100px">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-
-                           
-                        </table>
+                                <div class="form-group col-md-12">
+                                    <label asp-for="TenDichVu" class="control-label">Tên dịch vụ</label>
+                                    <input asp-for="TenDichVu" name="TenDichVu" id="TenDichVu" class="form-control" required />
+                                    <span asp-validation-for="TenDichVu" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label asp-for="DonViTinh" class="control-label">Đơn vị tính</label>
+                                    <select asp-for="DonViTinh" name="DonViTinh" id="DonViTinh" class="form-control" asp-items="ViewBag.DVT" required>
+                                        <option value="">Chọn nội dung</option>
+                                    </select>
+                                    <span asp-validation-for="DonViTinh" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label asp-for="DonGia" class="control-label">Giá tiền</label>
+                                    <input asp-for="DonGia" name="DonGia" id="DonGia" class="form-control" required oninput="formatMoney(this)" />
+                                    <span asp-validation-for="DonGia" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-primary">Tạo mới</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -347,44 +302,52 @@
 
     </div>
 </div>
-<script>
-   async function fetchNhanViens() {
-       try {
-            const response = await fetch('NhanViens/api/NhanViens');
-           if (!response.ok) {
-               console.error('Response status:', response.status); // Log status
-               throw new Error('Network response was not ok');
-           }
-           const nhanViens = await response.json();
 
-           const tableBody = document.getElementById('nhanVienTable').getElementsByTagName('tbody')[0];
-           tableBody.innerHTML = ''; // Clear previous rows
-           nhanViens.forEach(nv => {
-               const row = document.createElement('tr');
-               row.innerHTML = `
-                   <td>${nv.ten}</td>
-                   <td>${nv.sdt}</td>
-                   <td>${nv.tenCv}</td>
-                   <td>${nv.kinhNghiem}</td>
-                   <td>${nv.diachi}</td>
-                   <td><img src="${nv.hinh}" alt="Hình" width="40px" class="avatar-sm rounded-circle me-2"" /></td>
-                   <td>${nv.email}</td>
-                   <td>${nv.role}</td>
-                         <td>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
 
-                                    <a href="/Admin/NhanViens/api/NhanViens/Edit/${nv.maNv}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
-                                    <a href="/Admin/NhanViens/api/NhanViens/Detail/${nv.maNv}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
-                              
-                        </td>
-               `;
-               tableBody.appendChild(row);
-           });
-       } catch (error) {
-           console.error('Fetch error:', error);
-           alert('Không thể tải dữ liệu. Vui lòng thử lại.');
-       }
-   }
+        document.getElementById('createDichVuForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-   // Call the function on page load
-   document.addEventListener('DOMContentLoaded', fetchNhanViens);
-</script>
+
+            const data = {
+                IdchanDoan: document.getElementById('IdchanDoan').value,
+                TenDichVu: document.getElementById('TenDichVu').value,
+                DonViTinh: document.getElementById('DonViTinh').value,
+                DonGia: document.getElementById('DonGia').value
+            };
+
+            console.log('Data to send:', data);
+
+            try {
+                const response = await fetch('/Admin/DichVus/api/DichVus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                console.log('Response Status:', response.status);
+                const responseText = await response.text();
+
+                if (response.ok) {
+                    alert("Tạo dịch vụ thành công!");
+                    window.location.href = '@Url.Action("Index", "DichVus")'; // Ensure this redirects correctly
+                } else {
+                    let errorMessage = "Đã xảy ra lỗi không xác định.";
+                    try {
+                        const error = JSON.parse(responseText);
+                        errorMessage = error.message;
+                    } catch {
+                        errorMessage = responseText;
+                    }
+                    alert("Lỗi khi tạo dịch vụ: " + errorMessage);
+                }
+            } catch (error) {
+                alert("Đã xảy ra lỗi: " + error.message);
+            }
+        });
+
+    </script>
+}

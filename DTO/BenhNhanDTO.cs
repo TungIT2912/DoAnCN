@@ -6,6 +6,7 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class BenhNhanDTO
 	{
+        public int? IdbenhNhan { get; set; }
         public string HoTen { get; set; } 
 
         public bool? Gioi { get; set; }
