@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241106083156_connect")]
+    [Migration("20241107055920_connect")]
     partial class connect
     {
         /// <inheritdoc />
@@ -434,6 +434,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool?>("isLoocked")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

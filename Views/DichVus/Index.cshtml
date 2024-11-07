@@ -225,7 +225,7 @@
             <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
                 <i class="micon fa fa-dashboard"></i>Thống kê
             </a>
-            <a href="/Admin/UserModel" class="nav-item nav-link ">
+            <a asp-action="Index" asp-controller="TaiKhoans" class="nav-item nav-link ">
                 <i class="micon fa fa-users"></i>Quản lí tài khoản
             </a>
             <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
@@ -291,7 +291,7 @@
 </div>
 <script>
      
-    async function fetchKhoes() {
+     async function fetchKhoes() {
         try {
             const response = await fetch('DichVus/api/DichVus');
             if (!response.ok) {
@@ -304,23 +304,52 @@
             tableBody.innerHTML = '';
             khoes.forEach(nv => {
                 const formattedDonGia = parseFloat(nv.donGia).toLocaleString('vi-VN', {
-                style: 'currency',
-                currency: 'VND'
-            });
+                    style: 'currency',
+                    currency: 'VND'
+                });
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${nv.tenDichVu}</td>
                     <td>${nv.donViTinh}</td>
                     <td>${formattedDonGia}</td>
                     <td>
-
-                            <a href="/Admin/DichVus/api/DichVus/Edit/${nv.iddichVu}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
-                            <a href="/Admin/DichVus/api/DichVus/Detail/${nv.iddichVu}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
-
+                        <a href="/Admin/DichVus/api/DichVus/Edit/${nv.iddichVu}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
+                        <a href="/Admin/DichVus/api/DichVus/Detail/${nv.iddichVu}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
+                        <a href="#" class="dropdown-item delete-item" data-id="${nv.iddichVu}"><i class="dw dw-delete"></i> Xóa</a>
                     </td>
                 `;
                 tableBody.appendChild(row);
             });
+
+            // Add delete functionality
+            const deleteLinks = document.querySelectorAll('.delete-item');
+            deleteLinks.forEach(link => {
+                link.addEventListener('click', async function(e) {
+                    e.preventDefault();  
+                    const id = this.getAttribute('data-id');
+
+                    const confirmDelete = confirm('Bạn có chắc chắn muốn xóa dịch vụ này?');
+                    if (confirmDelete) {
+                        try {
+                            const deleteResponse = await fetch(`DichVus/api/DichVus/Delete/${id}`, {
+                                method: 'DELETE'
+                            });
+
+                            if (deleteResponse.ok) {
+                                alert('Dịch vụ đã được xóa thành công!');
+                                this.closest('tr').remove();
+                            } else {
+                                console.error('Failed to delete the item:', deleteResponse.status);
+                                alert('Không thể xóa dịch vụ. Vui lòng thử lại.');
+                            }
+                        } catch (error) {
+                            console.error('Delete error:', error);
+                            alert('Đã xảy ra lỗi khi xóa dịch vụ. Vui lòng thử lại.');
+                        }
+                    }
+                });
+            });
+
         } catch (error) {
             console.error('Fetch error:', error);
             alert('Không thể tải dữ liệu. Vui lòng thử lại.');

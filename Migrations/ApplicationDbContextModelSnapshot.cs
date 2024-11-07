@@ -432,6 +432,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool?>("isLoocked")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("TaiKhoans");

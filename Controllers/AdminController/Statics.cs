@@ -6,6 +6,7 @@ using System.Globalization;
 
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
+    [Route("Admin/[controller]")]
     public class Statics : Controller
     {
         ApplicationDbContext _context;
@@ -17,38 +18,37 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         [HttpGet]
         public IActionResult Index()
         {
-            // Hành động này để tạo view
+            var totalRevenue1 =  _context.HoaDons 
+                .SumAsync(o => o.TongTien);
+            var userCount =  _context.BenhNhans.CountAsync();
+            ViewData["TotalRevenue1"] = totalRevenue1;
+            ViewData["UserCount"] = userCount;
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Index(int year)
+        [HttpGet("api/Statics/{year}")]
+        public async Task<IActionResult> GetRevenue(int year)
         {
-            // Hành động này để xử lý dữ liệu
-            DateTime startDate;
-            DateTime endDate;
-            DateTime selectedYear;
             if (year < 1900 || year > 2100)
             {
-                ViewBag.ErrorMessage = "Năm không hợp lệ.";
-                return View();
+                return BadRequest("Năm không hợp lệ.");
             }
-           
-            startDate = new DateTime(year, 1, 1);
-            endDate = startDate.AddYears(1).AddDays(-1); // Kết thúc vào cuối năm đã chọn
-          
-            var invoices = _context.HoaDons
+
+            DateTime startDate = new DateTime(year, 1, 1);
+            DateTime endDate = startDate.AddYears(1).AddDays(-1); // End of the selected year
+
+            var invoices = await _context.HoaDons
                 .Where(h => h.NgayLap >= startDate && h.NgayLap <= endDate)
-                .ToList();
+                .ToListAsync();
 
-            // Tạo mảng để lưu trữ tổng tiền của từng tháng
             decimal[] revenuePerMonth = new decimal[12];
+            decimal totalRevenue = 0;
 
-            // Tính toán tổng tiền của các hóa đơn trong từng tháng
             foreach (var invoice in invoices)
             {
-                int monthIndex = invoice.NgayLap.Month - 1; // Chỉ số tháng trong mảng (từ 0 đến 11)
-                revenuePerMonth[monthIndex] += invoice.TongTien; // Cộng tổng tiền của hóa đơn vào tháng tương ứng
+                int monthIndex = invoice.NgayLap.Month - 1;
+                revenuePerMonth[monthIndex] += invoice.TongTien;
+                totalRevenue += invoice.TongTien;
             }
 
             var revenueData = revenuePerMonth.Select((value, index) =>
@@ -58,22 +58,34 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
                 if (value < 1000000)
                 {
-                    formattedValue = value / 1000; // Chuyển đổi sang ngàn
+                    formattedValue = value / 1000; // Convert to thousands
                     label = $"Tháng {index + 1} ngàn";
                 }
                 else
                 {
-                    formattedValue = value / 1000000; // Chuyển đổi sang triệu
+                    formattedValue = value / 1000000; // Convert to millions
                     label = $"Tháng {index + 1} triệu";
                 }
 
                 return new { Value = formattedValue, Label = label };
             }).ToArray();
 
-            ViewBag.RevenueData = revenueData;
 
-            // Hiển thị biểu đồ
-            return View();
+            // Log the response to verify its structure
+            Console.WriteLine("Returning data:", new
+            {
+                Year = year,
+                RevenueData = revenueData,
+                TotalRevenue = totalRevenue
+            });
+
+            return Ok(new
+            {
+                Year = year,
+                RevenueData = revenueData,
+                TotalRevenue = totalRevenue
+            });
         }
+
     }
 }
