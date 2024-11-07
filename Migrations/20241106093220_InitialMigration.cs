@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class connect : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -289,6 +289,50 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChiTietHoaDons",
+                columns: table => new
+                {
+                    IdchiTiet = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IddonThuoc = table.Column<int>(type: "int", nullable: false),
+                    IdhoaDon = table.Column<int>(type: "int", nullable: false),
+                    IddieuTri = table.Column<int>(type: "int", nullable: false),
+                    Idkham = table.Column<int>(type: "int", nullable: true),
+                    PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenDon = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DanhSachDonThuoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DanhSachDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChiTietHoaDons", x => x.IdchiTiet);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDons_DanhSachKhams_Idkham",
+                        column: x => x.Idkham,
+                        principalTable: "DanhSachKhams",
+                        principalColumn: "IdKham");
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDons_DieuTris_IddieuTri",
+                        column: x => x.IddieuTri,
+                        principalTable: "DieuTris",
+                        principalColumn: "IddieuTri",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDons_DonThuocs_IddonThuoc",
+                        column: x => x.IddonThuoc,
+                        principalTable: "DonThuocs",
+                        principalColumn: "IddonThuoc",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HoaDons",
                 columns: table => new
                 {
@@ -333,6 +377,21 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "UserId",
                 unique: true,
                 filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDons_IddieuTri",
+                table: "ChiTietHoaDons",
+                column: "IddieuTri");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDons_IddonThuoc",
+                table: "ChiTietHoaDons",
+                column: "IddonThuoc");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDons_Idkham",
+                table: "ChiTietHoaDons",
+                column: "Idkham");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DanhSachKhams_IdbenhNhan",
@@ -414,6 +473,9 @@ namespace WebQuanLyNhaKhoa.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ChiTietHoaDons");
+
             migrationBuilder.DropTable(
                 name: "HoaDons");
 

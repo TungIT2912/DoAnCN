@@ -12,8 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241106083156_connect")]
-    partial class connect
+    [Migration("20241106093220_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,75 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.HasKey("IdchanDoan");
 
                     b.ToTable("ChanDoans");
+                });
+
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChiTietHoaDon", b =>
+                {
+                    b.Property<int>("IdchiTiet")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchiTiet"));
+
+                    b.Property<string>("DanhSachDieuTri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DanhSachDonThuoc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailBn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IddieuTri")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IddonThuoc")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdhoaDon")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Idkham")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayLap")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PhuongThucThanhToan")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenDieuTri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenDon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TienDieuTri")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TienThuoc")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TongTien")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("IdchiTiet");
+
+                    b.HasIndex("IddieuTri");
+
+                    b.HasIndex("IddonThuoc");
+
+                    b.HasIndex("Idkham");
+
+                    b.ToTable("ChiTietHoaDons");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChucVu", b =>
@@ -479,6 +548,31 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasForeignKey("WebQuanLyNhaKhoa.Data.BenhNhan", "UserId");
 
                     b.Navigation("TaiKhoan");
+                });
+
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChiTietHoaDon", b =>
+                {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DieuTri", "DieuTri")
+                        .WithMany()
+                        .HasForeignKey("IddieuTri")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DonThuoc", "DonThuoc")
+                        .WithMany()
+                        .HasForeignKey("IddonThuoc")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
+                        .WithMany()
+                        .HasForeignKey("Idkham");
+
+                    b.Navigation("DanhSachKham");
+
+                    b.Navigation("DieuTri");
+
+                    b.Navigation("DonThuoc");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DanhSachKham", b =>
