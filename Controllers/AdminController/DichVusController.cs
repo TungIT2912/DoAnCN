@@ -28,7 +28,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         }
 
         [HttpGet("api/DichVus")]
-        public async Task<ActionResult<IEnumerable<KhoDTO>>> GetDichVus()
+        public async Task<ActionResult<IEnumerable<DichVuDTO>>> GetDichVus()
         {
             var dichVus = await _context.DichVus
         .Include(nv => nv.ChanDoan).ToListAsync();
@@ -219,39 +219,27 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         }
 
         // GET: DichVus/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpDelete("api/DichVus/Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            // Find the item with the specified id
+            var dichVu = await _context.DichVus.FindAsync(id);
 
-            var dichVu = await _context.DichVus
-                .Include(d => d.ChanDoan)
-                .FirstOrDefaultAsync(m => m.IddichVu == id);
+            // If the item doesn't exist, return NotFound
             if (dichVu == null)
             {
                 return NotFound();
             }
 
-            return View(dichVu);
-        }
+            // Remove the item from the DbContext
+            _context.DichVus.Remove(dichVu);
 
-        // POST: DichVus/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var dichVu = await _context.DichVus.FindAsync(id);
-            if (dichVu != null)
-            {
-                _context.DichVus.Remove(dichVu);
-            }
-
+            // Save the changes to the database
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
+            // Return Ok status to indicate success
+            return Ok();
+        }
         private bool DichVuExists(int id)
         {
             return _context.DichVus.Any(e => e.IddichVu == id);

@@ -39,6 +39,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             }
 
             user.MatKhau = BCrypt.Net.BCrypt.HashPassword(user.MatKhau);
+            user.isLoocked = false;
             _context.TaiKhoans.Add(user);
             await _context.SaveChangesAsync();
 
@@ -53,9 +54,9 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             var user = await _context.TaiKhoans.SingleOrDefaultAsync(u => u.TenDangNhap == loginRequest.TenDangNhap);
 
             // Check username and password
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.MatKhau, user.MatKhau))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.MatKhau, user.MatKhau)   ||  user.isLoocked == true)
             {
-                return Unauthorized("Sai tên đăng nhập hoặc mật khẩu.");
+                return Unauthorized("Sai tên đăng nhập hoặc mật khẩu. Hoặc tài khoản đã bị vô hiệu hóa");
             }
 
             var token = GenerateJwtToken(user);
@@ -107,9 +108,9 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         {
             var user = await _context.TaiKhoans.SingleOrDefaultAsync(u => u.TenDangNhap == loginRequest.TenDangNhap);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.MatKhau, user.MatKhau))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.MatKhau, user.MatKhau) || user.isLoocked == true)
             {
-                ModelState.AddModelError("", "Sai tên đăng nhập hoặc mật khẩu.");
+                ModelState.AddModelError("", "Sai tên đăng nhập hoặc mật khẩu. Hoặc tài khoản đã bị vô hiệu hóa");
                 return View(loginRequest);
             }
 

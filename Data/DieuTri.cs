@@ -9,7 +9,7 @@ namespace WebQuanLyNhaKhoa.Data
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IddieuTri { get; set; }
-
+			
 		[ForeignKey("DichVu")]
 		public int IddichVu { get; set; }
 
