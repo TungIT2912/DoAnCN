@@ -8,5 +8,11 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         {
             return View();
         }
+    
+    
+        public IActionResult Aboutus()
+        {
+            return View();
+        }
     }
 }

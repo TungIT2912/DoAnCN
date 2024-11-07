@@ -1,62 +1,276 @@
-﻿
+﻿    @* <!-- Preloader -->
+    <div class="preloader"></div> *@
+    
+    <!-- Main Header-->
+    <header class="main-header header-style-three">
 
-<header>
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-light p-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="row gx-0 d-none d-lg-flex">
-            <div class="col-lg-7 px-5 text-start">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-                    <small class="fa fa-map-marker-alt text-primary me-2"></small>
-                    <a class="small"  href="https://www.google.com/maps/place/%C4%90%E1%BA%A1i+H%E1%BB%8Dc+Hutech+Khu+E/10.8550427,106.7827981,17z/data=!3m1!4b1!4m6!3m5!1s0x317527c3debb5aad:0x5fb58956eb4194d0!8m2!3d10.8550427!4d106.785373!16s%2Fg%2F11h2qmtmp7?hl=vi-VN&entry=ttu" target="_blank">Phường Tân Phú, Quận 9, Thành phố Hồ Chí Minh, Việt Nam</a>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center py-3">
-                    <small class="far fa-clock text-primary me-2"></small>
-                    <small>Mon - Fri : 09.00 AM - 09.00 PM</small>
-                </div>
-            </div>
-            <div class="col-lg-5 px-5 text-end">
-                <div class="h-100 d-inline-flex align-items-center py-3 me-4">
-                    <small class="fa fa-phone-alt text-primary me-2"></small>
-                    <small>+0348859428</small>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center">
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href="https://www.facebook.com/Luuzeaaa2OO3" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-1" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-sm-square rounded-circle bg-white text-primary me-0" href="https://www.instagram.com/l_u_zea.12/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <i class="fa-solid fa-lightbulb" style="margin-left: 10px"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h1 class="m-0 text-primary"><i class="fa-solid fa-tooth"></i>Dentist Hoàn Mỹ</h1>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a class="nav-item nav-link active" asp-action="Index" asp-controller="Home">Home</a>
-                <a class="nav-item nav-link" asp-action="Index" asp-controller="Services">Service</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                    <div class="dropdown-menu rounded-0 rounded-bottom m-0">
-                        <a class="dropdown-item" asp-controller="OurDoctors" asp-action="Index">Our Doctor</a>
-                        <a class="dropdown-item" asp-controller="BookAppointment" asp-action="Add">Book Appointment</a>
+        <!-- Header top -->
+        <div class="header-top-three">
+            <div class="auto-container">
+                <div class="inner-container">
+                    <div class="top-left">
+                        <ul class="contact-list clearfix">
+                            <li><i class="flaticon-hospital-1"></i>234 Triumph, Los Angeles, California, US </li>
+                            <li><i class="flaticon-back-in-time"></i>Mon - Sat 8.00 - 18.00. Sunday CLOSED</li>
+                        </ul>
                     </div>
-                </div> 
-                <a class="nav-item nav-link" asp-controller="Contact" asp-action="Index">Contact</a>
+                    <div class="top-right">
+                        <ul class="social-icon-one light">
+                            <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                            <li><a href="#"><span class="fab fa-skype"></span></a></li>
+                            <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <a href="/Login" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">
-                <partial name="_LoginPartial"></partial>
-            </a>
         </div>
-    </nav>
-    <!-- Navbar End -->
-</header>
+        <!-- End Header Top -->
+        
+        <!-- Header Lower -->
+        <div class="header-lower">
+            <div class="auto-container">    
+                <!-- Main box -->
+                <div class="main-box">
 
- 
+                    <div class="logo-box">
+                        <div class="logo"><a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a></div>
+                    </div>
+
+                    <!--Nav Box-->
+                    <div class="nav-outer">
+                        <nav class="nav main-menu">
+                            <ul class="navigation" id="navbar">
+                                <li class="current dropdown">
+                                    <span>Trang chủ</span>
+                                    <ul>
+                                       
+                                        <li class="current"><a href="~/Home/Index">Trang chính</a></li>
+                                        <li><a href="~/Contact/Index">Liên hệ</a></li>
+                                        <li><a href="~/Contact/AboutUs">Về Chúng Tôi</a></li>
+
+
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown">
+                                    <span>Dịch vụ</span>
+                                    <ul>
+                                        <li><a href="~/Services/Index">Dịch vụ</a></li>
+                                        <li><a href="~/Services/Pricing">Bảng Giá</a></li>
+
+                                        <li><a href="gallery.html">Gallery</a></li>
+                                        <li><a href="elements.html">UI Elements</a></li>
+                                        <li><a href="coming-soon.html">Coming Soon</a></li>
+                                        <li><a href="error-page.html">Error 404</a></li>
+                                        <li><a href="terms-and-condition.html">Terms and Condition</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <span>Bác sĩ</span>
+                                    <ul>
+                                        <li><a href="~/Doctor/Doctors">Bác sĩ</a></li>
+                                        <li><a href="~/Doctor/DoctorDetails">Chi tiết các bác sĩ</a></li>
+                                    </ul>
+                                </li>
+                                @* <li class="dropdown">
+                                    <span>Departments</span>
+                                    <ul>
+                                        <li><a href="departments.html">Departments</a></li>
+                                        <li><a href="department-detail.html">Cardiology</a></li>
+                                        <li><a href="department-detail.html">Neurology</a></li>
+                                        <li><a href="department-detail.html">Urology</a></li>
+                                        <li><a href="department-detail.html">Gynecological</a></li>
+                                        <li><a href="department-detail.html">Pediatrical</a></li>
+                                        <li><a href="department-detail.html">Laboratory</a></li>
+                                        <li><a href="department-detail.html">Department Detail</a></li>
+                                    </ul>
+                                </li> *@
+
+                                <li class="dropdown">
+                                    <span>Blog</span>
+                                    <ul>
+                                        <li><a href="blog-standard.html">Standard</a></li>
+                                        <li><a href="blog-checkboard.html">Checkerboard</a></li>
+                                        <li><a href="blog-masonry.html">Masonry</a></li>
+                                        <li><a href="blog-two-col.html">Two Columns</a></li>
+                                        <li><a href="blog-three-col.html">Three Colums</a></li>
+                                        <li><a href="blog-four-col-wide.html">Four Colums</a></li>
+                                        <li class="dropdown">
+                                            <span>Post Types</span>
+                                            <ul>
+                                                <li><a href="blog-post-image.html">Image Post</a></li>
+                                                <li><a href="blog-post-gallery.html">Gallery Post</a></li>
+                                                <li><a href="blog-post-link.html">Link Post</a></li>
+                                                <li><a href="blog-post-audio.html">Audio Post</a></li>
+                                                <li><a href="blog-post-quote.html">Quote Post</a></li>
+                                                <li><a href="blog-post-video.html">Video Post</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <span>Shop</span>
+                                    <ul>
+                                        <li><a href="shop.html">Shop</a></li>
+                                        <li><a href="shop-single.html">Shop Single</a></li>
+                                        <li><a href="shopping-cart.html">Shopping Cart</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="login.html">Login</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </nav>
+                        <!-- Main Menu End-->
+
+                        <div class="outer-box">
+                            <!-- Search Btn -->
+                            <button class="search-btn"><span class="fa fa-search"></span></button>
+
+                            <!-- Appointment Btn -->
+<!-- HTML -->
+<button class="button-86" role="button" onclick="location.href='@Url.Action("Add", "BookAppointment")'">Đăng ký khám</button>
+
+<!-- CSS -->
+<style>
+    .outer-box {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center items vertically */
+}
+
+.search-btn {
+    margin-right: 20px; /* Adjust space as needed */
+}
+
+/* Or you can apply margin to the appointment button */
+.button-86 {
+    margin-left: 20px; /* Adjust space as needed */
+}
+
+.button-86 {
+    all: unset;
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    background: transparent;
+    border: none;
+    position: relative;
+    color: #f0f0f0;
+    cursor: pointer;
+    z-index: 1;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-86::after,
+.button-86::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: -99999;
+    transition: all .4s;
+}
+
+.button-86::before {
+    transform: translate(0%, 0%);
+    width: 100%;
+    height: 100%;
+    background: #28282d;
+    border-radius: 10px;
+}
+
+.button-86::after {
+    transform: translate(10px, 10px);
+    width: 35px;
+    height: 35px;
+    background: #ffffff15;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 50px;
+}
+
+.button-86:hover::before {
+    transform: translate(5%, 20%);
+    width: 110%;
+    height: 110%;
+}
+
+.button-86:hover::after {
+    border-radius: 10px;
+    transform: translate(0, 0);
+    width: 100%;
+    height: 100%;
+}
+
+.button-86:active::after {
+    transition: 0s;
+    transform: translate(0, 5%);
+}
+</style>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky Header  -->
+        <div class="sticky-header">
+            <div class="auto-container">            
+                <div class="main-box">
+                  <div class="logo-box">
+                        <div class="logo"><a href="index.html"><img src="~/images/logo-6.png" alt="" title=""></a></div>
+                    </div>
+                </div>
+</div>
+
+
+                    <!--Keep This Empty / Menu will come through Javascript-->
+                </div>
+            </div>
+        </div><!-- End Sticky Menu -->
+
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div class="logo"><a href="index.html"><img src="~/images/logo-6.png" alt="" title=""></a></div>
+
+            <!--Nav Box-->
+            <div class="nav-outer clearfix">
+
+                <div class="outer-box">
+                    <!-- Search Btn -->
+                    <div class="search-box">
+                        <button class="search-btn mobile-search-btn"><i class="flaticon-magnifying-glass"></i></button>
+                    </div>
+
+                    <a href="#nav-mobile" class="mobile-nav-toggler navbar-trigger"><span class="fa fa-bars"></span></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav -->
+        <div id="nav-mobile"></div>
+
+        <!-- Header Search -->
+        <div class="search-popup">
+            <span class="search-back-drop"></span>
+            <button class="close-search"><span class="fa fa-times"></span></button>
+            
+            <div class="search-inner">
+                <form method="post" action="https://skyethemes.com/html/2022/medicoz/blog-showcase.html">
+                    <div class="form-group">
+                        <input type="search" name="search-field" value="" placeholder="Search..." required="">
+                        <button type="submit"><i class="flaticon-magnifying-glass"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- End Header Search -->
+    </header>
+    <!--End Main Header -->
