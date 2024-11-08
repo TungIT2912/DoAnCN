@@ -76,7 +76,7 @@
 
             const response = await fetch(`/BenhNhan/api/GetBenhNhan?query=${query}&filter=${filter}`);
             const patients = await response.json();
-
+            
             const tableBody = document.getElementById("table-body");
             tableBody.innerHTML = "";
 
@@ -91,7 +91,7 @@
                             <td class="border border-gray-300 p-2">${patient.diaChi}</td>
                             <td class="border border-gray-300 p-2">${patient.ngayKhamDau ? new Date(patient.ngayKhamDau).toLocaleDateString() : '-'}</td>
                             <td class="border border-gray-300 p-2">
-                                <a href="/BenhNhan/Edit/${patient.IdbenhNhan}" class="text-red-600">Edit</a>
+                                                        <a href="/BenhNhan/Edit/${patient.IdbenhNhan}" class="text-red-600">Edit</a>
                     </td>
                 `;
 
