@@ -26,8 +26,8 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
-		public virtual DichVu IddichVuNavigation { get; set; } = null!;
-		public virtual Kho IddungCuNavigation { get; set; } = null!;
-		public virtual DanhSachKham IdkhamNavigation { get; set; } = null!;
+		public virtual DichVu DichVu { get; set; } = null!;
+		public virtual Kho Kho { get; set; } = null!;
+		public virtual DanhSachKham DanhSachKham { get; set; } = null!;
 	}
 }
