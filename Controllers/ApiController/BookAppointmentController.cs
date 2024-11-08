@@ -23,7 +23,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("api/GetBenhNhan")]
         public async Task<ActionResult<IEnumerable<BenhNhanDTO>>> GetBenhhNhans()
         {
@@ -53,17 +53,42 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         // POST: api/BenhNhan
         //[Authorize(Roles = "Admin,Staff")]
         [HttpPost("api/PostBenhNhan")]
-        public async Task<ActionResult<BenhNhan>> PostBenhNhan([FromBody] BenhNhan benhNhan)
+        public async Task<ActionResult<BenhNhan>> PostBenhNhan([FromBody] BenhNhanDTO benhNhan)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            var test = new BenhNhan
+            {
+                HoTen = benhNhan.HoTen,
+                Gioi = benhNhan.Gioi,
+                NamSinh = benhNhan.NamSinh,
+                Sdt = benhNhan.Sdt,
+                DiaChi = benhNhan.DiaChi,
+                NgayKhamDau  = benhNhan.NgayKhamDau
+            };
+            _context.BenhNhans.Add(test);
+            var nhanVienSaveResult= await _context.SaveChangesAsync();
+            if (nhanVienSaveResult > 0)
+            {
+                var createdNhanVienDTO = new BenhNhanDTO
+                {
+                   HoTen = test.HoTen,
+                   Gioi = test.Gioi,
+                   NamSinh = test.NamSinh,
+                   Sdt= test.Sdt,
+                   DiaChi   = test.DiaChi,
+                   NgayKhamDau = test.NgayKhamDau,
+                };
 
-            _context.BenhNhans.Add(benhNhan);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBenhhNhans), new { id = benhNhan.IdbenhNhan }, benhNhan);
+                return CreatedAtAction(nameof(GetBenhhNhans), new { id = benhNhan.IdbenhNhan }, createdNhanVienDTO);
+            }
+
+            // If any save operation fails, return a BadRequest with an error message
+            return BadRequest(new { success = false, message = "Failed to create NhanVien." });
+
         }
     }
 }
