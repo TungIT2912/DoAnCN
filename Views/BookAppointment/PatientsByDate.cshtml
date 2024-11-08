@@ -1,0 +1,53 @@
+﻿@model WebQuanLyNhaKhoa.DTO.BenhNhanDTO
+@{
+    ViewData["Title"] = "Appointments By Date";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+
+<h1>View Patients By Date</h1>
+
+<form id="searchForm">
+    <label for="dateInput">Select Date:</label>
+    <input type="date" id="dateInput" name="dateInput" />
+    <button type="button" id="searchButton">Search</button>
+</form>
+
+<div id="patientsList"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('searchButton').addEventListener('click', async function () {
+                const date = document.getElementById('dateInput').value;
+                if (!date) {
+                    alert("Please select a date.");
+                    return;
+                }
+
+                try {
+                    // Fetch data from API
+                    const response = await fetch(`/BookAppointment/api/GetBenhNhanByDate?date=${encodeURIComponent(date)}`);
+                    const data = await response.json();
+
+                    let listContainer = document.getElementById('patientsList');
+                    listContainer.innerHTML = '';
+
+                    if (response.ok && Array.isArray(data) && data.length > 0) {
+                        let html = '<ul>';
+                        data.forEach(patient => {
+                            html += `<li><strong>Name:</strong> ${patient.hoTen}, <strong>Phone:</strong> ${patient.sdt}, <strong>Address:</strong> ${patient.diaChi}, <strong>Appointment Date:</strong> ${new Date(patient.ngayKhamDau).toLocaleDateString()}</li>`;
+                        });
+                        html += '</ul>';
+                        listContainer.innerHTML = html;
+                    } else {
+                        listContainer.innerHTML = `<p>${data.message || 'No patients found for the specified date.'}</p>`;
+                    }
+                } catch (error) {
+                    console.error('Error fetching patient data:', error);
+                    document.getElementById('patientsList').innerHTML = '<p>Error loading data. Please try again later.</p>';
+                }
+            });
+        });
+    </script>
+}

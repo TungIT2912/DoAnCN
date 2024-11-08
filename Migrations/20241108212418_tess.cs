@@ -105,11 +105,20 @@ namespace WebQuanLyNhaKhoa.Migrations
                     NamSinh = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
                     Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiaChi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    TrieuChung = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdChanDoan = table.Column<int>(type: "int", nullable: true),
+                    ChanDoanIdchanDoan = table.Column<int>(type: "int", nullable: true),
                     NgayKhamDau = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BenhNhans", x => x.IdBenhNhan);
+                    table.ForeignKey(
+                        name: "FK_BenhNhans_ChanDoans_ChanDoanIdchanDoan",
+                        column: x => x.ChanDoanIdchanDoan,
+                        principalTable: "ChanDoans",
+                        principalColumn: "IdChanDoan");
                     table.ForeignKey(
                         name: "FK_BenhNhans_TaiKhoans_UserId",
                         column: x => x.UserId,
@@ -371,6 +380,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BenhNhans_ChanDoanIdchanDoan",
+                table: "BenhNhans",
+                column: "ChanDoanIdchanDoan");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BenhNhans_UserId",
                 table: "BenhNhans",
                 column: "UserId",
@@ -486,6 +500,14 @@ namespace WebQuanLyNhaKhoa.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_BenhNhans_ChanDoans_ChanDoanIdchanDoan",
+                table: "BenhNhans");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_DichVus_ChanDoans_IdchanDoan",
+                table: "DichVus");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_BenhNhans_TaiKhoans_UserId",
                 table: "BenhNhans");
 
@@ -515,6 +537,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             migrationBuilder.DropTable(
                 name: "LichSuNhapXuats");
+
+            migrationBuilder.DropTable(
+                name: "ChanDoans");
 
             migrationBuilder.DropTable(
                 name: "TaiKhoans");
@@ -548,9 +573,6 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             migrationBuilder.DropTable(
                 name: "Khos");
-
-            migrationBuilder.DropTable(
-                name: "ChanDoans");
 
             migrationBuilder.DropTable(
                 name: "ThiTruongs");
