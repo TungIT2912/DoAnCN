@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                <p class="d-inline-block border rounded-pill py-1 px-4">Appointment</p>
+                <p class="d-inline-block border rounded-pill py-1 px-4">Đăng ký khám</p>
                 <h1 class="mb-4">Make An Appointment To Visit Our Doctor</h1>
                 <p class="mb-4">Hãy đăng kí lịch khám để gặp gỡ các nha sĩ có nhiều năm kinh nghiệm của chúng tôi. Chúng tôi xin hứa sẽ giúp cho hàm răng của bạn trắng sáng và ngày càng mạnh khỏe hơn</p>
                 <div class="bg-light rounded d-flex align-items-center p-5 mb-4">
@@ -42,7 +42,7 @@
                         <form class="row g-3" style="align-items:center" asp-action="Add" id="form" method="post" enctype="multipart/form-data">
                             <div class="col-12 col-sm-6">
                                 <label asp-for="IdbenhNhan" class="control-label">Mã bệnh nhân</label>
-                                <input type="text" asp-for="IdbenhNhan" required class="form-control border-0" placeholder="Sample: ntl" style="height: 55px;">
+                                <input type="text" asp-for="IdbenhNhan" required class="form-control border-0" placeholder="Vd: Nguyễn Văn A" style="height: 55px;">
                                 <span asp-validation-for="IdbenhNhan" class="text-danger"></span>
                             </div>
                             <div class="col-12 col-sm-6">
@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <label asp-for="HoTen" class="control-label">Họ tên</label>
-                                <input asp-for="HoTen" required type="text" class="form-control border-0" placeholder="Your Email" style="height: 55px;">
+                                <input asp-for="HoTen" required type="text" class="form-control border-0" placeholder="Email của bạn" style="height: 55px;">
                             </div>
 
                             <div class="col-12 col-sm-6">

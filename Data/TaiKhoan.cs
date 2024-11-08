@@ -16,6 +16,7 @@ namespace WebQuanLyNhaKhoa.Data
 		[Required]
 		[StringLength(100)]
 		public string MatKhau { get; set; } = null!;
+        public bool? isLoocked { get; set; }
 
         public string Role { get; set; }
         public string? MaBN { get; set; } // Change this to string to match IdbenhNhan
