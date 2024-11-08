@@ -25,7 +25,6 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             ViewData["UserCount"] = userCount;
             return View();
         }
-
         [HttpGet("api/Statics/{year}")]
         public async Task<IActionResult> GetRevenue(int year)
         {
@@ -35,7 +34,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             }
 
             DateTime startDate = new DateTime(year, 1, 1);
-            DateTime endDate = startDate.AddYears(1).AddDays(-1); // End of the selected year
+            DateTime endDate = startDate.AddYears(1).AddDays(-1);
 
             var invoices = await _context.HoaDons
                 .Where(h => h.NgayLap >= startDate && h.NgayLap <= endDate)
@@ -70,20 +69,12 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 return new { Value = formattedValue, Label = label };
             }).ToArray();
 
-
-            // Log the response to verify its structure
-            Console.WriteLine("Returning data:", new
-            {
-                Year = year,
-                RevenueData = revenueData,
-                TotalRevenue = totalRevenue
-            });
-
             return Ok(new
             {
                 Year = year,
                 RevenueData = revenueData,
-                TotalRevenue = totalRevenue
+                TotalRevenue = totalRevenue,
+                UserCount = _context.BenhNhans.Count()
             });
         }
 

@@ -1,89 +1,9 @@
-﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.HoaDonDTO>
+﻿@model WebQuanLyNhaKhoa.DTO.ChiTietHoaDonDTO
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@* 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PhuongThucThanhToan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TienThuoc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TienDieuTri)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TongTien)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayLap)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmailBn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DieuTri)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DonThuoc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DanhSachKham)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhuongThucThanhToan)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TienThuoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TienDieuTri)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TongTien)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayLap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailBn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DieuTri.IddieuTri)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DonThuoc.IddonThuoc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DanhSachKham.Idkham)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdhoaDon">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdhoaDon">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdhoaDon">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@
-
 <style>
     body {
         color: #566787;
@@ -300,7 +220,7 @@
             </div>
         </div>
         <div class="navbar-nav w-100">
-            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
+            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link "><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
             <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
                 <i class="micon fa fa-dashboard"></i>Thống kê
             </a>
@@ -334,33 +254,77 @@
 <div class="mobile-menu-overlay"></div>
 
 <div class="main-container">
-    <div class="xs-pd-20-10 pd-ltr-20">
+    <div class="xs-pd-5-1 pd-ltr-5">
+        <!-- Reduced padding -->
+
         <div class="row clearfix progress-box">
             <div class="col-lg-12">
-                <div class="card-box mb-30">
-                    <div class="pd-20">
-                        <h4 class="text-blue h4">Thông tin các hóa đơn</h4>
+                <a asp-action="Index" asp-controller="HoaDons">
+                    <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
+                        ← Quay về lại danh sách
+                    </button>
+                </a>
 
-                    </div>
-                    <div class="pb-20">
+                <div class="flex justify-center items-center h-screen">
+                    <div class="container p-4 max-w-[9000px] max-h-[700px] bg-white rounded-xl">
+                        <!-- Reduced padding -->
+                        <div class="relative">
+                            <h1 class="text-[32px] font-bold">Chi tiết hóa đơn</h1>
+                            <span class="absolute inline-block w-[70px] h-[4px] bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-xl"></span>
+                        </div>
+                        <div class="flex justify-center gap-4 mt-[10px]">
+                            <!-- Reduced gap -->
+                            <form id="createNhanVienForm" class="flex-wrap flex justify-around items-center" enctype="multipart/form-data">
 
-                        <table class="table project-list-table table-nowrap align-middle table-borderless" class="table" id="khoTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col" style="width: 200px;">Tên bệnh nhân</th>
-                                    <th scope="col">Phương thức thanh toán</th>
-                                    <th scope="col">Tiền thuốc</th>
-                                    <th scope="col">Tiền điều trị</th>
-                                    <th scope="col">Tổng tiền</th>
-                                    <th scope="col">Ngày lập</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="tenBn" class="control-label">Tên bệnh nhân</label>
+                                    <span class="form-control"> @Html.DisplayFor(model => model.tenBn)</span>
+                                </div>
 
-                        </table>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="TienThuoc" class="control-label">Tiền thuốc</label>
+                                    <span class="form-control"> @Html.DisplayFor(model => model.TienThuoc)</span>
+                                </div>
 
+                                <div class="form-group col-md-6">
+                                    <label asp-for="TienDieuTri" class="control-label">Tiền điều trị</label>
+                                    <span class="form-control"> @Html.DisplayFor(model => model.TienDieuTri)</span>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label asp-for="TongTien" class="control-label">Tổng tiền</label>
+                                    <span class="form-control">@Html.DisplayFor(model => model.TongTien)</span>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <label asp-for="NgayLap" class="control-label">Ngày lập</label>
+                                    <span class="form-control">@String.Format("{0:dd/MM/yyyy}", Model.NgayLap)</span>
+                                </div>
+
+                                <div class="form-group col-md-12"> <label class="control-label font-weight-bold">Chi tiết đơn thuốc</label> @if (Model.DonThuocs.Any())
+                                    {
+                                        <div class="table-responsive"> <table class="table table-bordered table-striped"> <thead class="thead-dark"> <tr> <th>Tên thuốc</th> <th>Thành giá</th> <th>Tổng tiền</th> <th>Ngày lập</th> </tr> </thead> <tbody> @foreach (var donThuoc in Model.DonThuocs)
+                                                    {
+                                                        <tr> <td>@donThuoc.tenThuoc</td> <td>@donThuoc.ThanhGia</td> <td>@donThuoc.TongTien</td> <td>@donThuoc.NgayLapDt?.ToString("dd/MM/yyyy")</td> </tr>
+                                                    } </tbody> </table> </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted">Không có thông tin về đơn thuốc.</p>
+                                    } </div> <div class="form-group col-md-12"> <label class="control-label font-weight-bold">Chi tiết điều trị</label> @if (Model.DieuTris.Any())
+                                    {
+                                        <div class="table-responsive"> <table class="table table-bordered table-striped"> <thead class="thead-dark"> <tr> <th>Tên điều trị</th> <th>ThanhTien</th> </tr> </thead> <tbody> @foreach (var dieuTri in Model.DieuTris)
+                                                    {
+                                                        <tr> <td>@dieuTri.tenDieuTri</td> <td>@dieuTri.ThanhTien</td> </tr>
+                                                    } </tbody> </table> </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted">Không có thông tin về điều trị.</p>
+                                    } </div>
+
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -368,43 +332,3 @@
 
     </div>
 </div>
-<script>
-    async function fetchKhoes() {
-        try {
-            const response = await fetch('HoaDons/api/HoaDons');
-            if (!response.ok) {
-                console.error('Response status:', response.status); // Log status
-                throw new Error('Network response was not ok');
-            }
-            const khoes = await response.json();
-            console.log("API response data:", khoes);
-            const tableBody = document.getElementById('khoTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = '';
-            khoes.forEach(nv => {
-                const row = document.createElement('tr');
-                console.log("ngayLap value:", nv.ngayLap);
-
-                const date = new Date(nv.ngayLap);
-                const formattedDate = date.toLocaleDateString('en-GB');
-                row.innerHTML = `
-                    <td>${nv.tenBn}</td>
-                    <td>${nv.phuongThucThanhToan}</td>
-                    <td>${nv.tienThuoc}</td>
-                    <td>${nv.tienDieuTri}</td>
-                    <td>${nv.tongTien}</td>
-                    <td>${formattedDate}</td>
-                    <td>
-                        <a href="/Admin/ChiTietHoaDons/api/ChiTietHoaDons/Detail/${nv.idkham}""><i class="dw dw-delete"></i> Chi tiết</a>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert('Không thể tải dữ liệu. Vui lòng thử lại.');
-        }
-    }
-
-    // Call the function on page load
-    document.addEventListener('DOMContentLoaded', fetchKhoes);
-</script>
