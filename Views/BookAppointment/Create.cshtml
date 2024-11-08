@@ -1,0 +1,186 @@
+﻿@model WebQuanLyNhaKhoa.DTO.BenhNhanDTO
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+<style>
+    header {
+        position: relative;
+    }
+
+</style>
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <p class="d-inline-block border rounded-pill py-1 px-4">Đăng ký khám</p>
+                <h1 class="mb-4">Make An Appointment To Visit Our Doctor</h1>
+                <p class="mb-4">Hãy đăng kí lịch khám để gặp gỡ các nha sĩ có nhiều năm kinh nghiệm của chúng tôi. Chúng tôi xin hứa sẽ giúp cho hàm răng của bạn trắng sáng và ngày càng mạnh khỏe hơn</p>
+                <div class="bg-light rounded d-flex align-items-center p-5 mb-4">
+                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                        <i class="fa fa-phone-alt text-primary"></i>
+                    </div>
+                    <div class="ms-4">
+                        <p class="mb-2">Call Us Now</p>
+                        <h5 class="mb-0">+0348859428</h5>
+                    </div>
+                </div>
+                <div class="bg-light rounded d-flex align-items-center p-5">
+                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+                        <i class="fa fa-envelope-open text-primary"></i>
+                    </div>
+                    <div class="ms-4">
+                        <p class="mb-2">Mail Us Now</p>
+                        <h5 class="mb-0">nhakhoahoanmy@gmail.com</h5>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="bg-light rounded h-100 d-flex align-items-center p-5">
+
+                    <form id="createBenhNhan" class="row g-3" style="align-items:center" class="p-[20px]" method="post" enctype="multipart/form-data">
+                        @* <div class="col-12 col-sm-6">
+                            <label asp-for="HoTen" class="control-label">Họ tên</label>
+                            <input asp-for="HoTen" required type="text" class="form-control border-0" placeholder="Email của bạn" style="height: 55px;">
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div>
+                                <input asp-for="Gioi" type="radio" name="gender" value="True" />
+                                <span>Nữ</span>
+
+                            </div>
+                            <div>
+                                <input asp-for="Gioi" type="radio" name="gender" value="False" />
+                                <span>Nam</span>
+                            </div>
+                            <span asp-validation-for="Gioi" class="text-danger"></span>
+                        </div>
+                        
+
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="NamSinh" class="control-label">Năm sinh</label>
+                            <input asp-for="NamSinh" type="text" placeholder="Enter your age" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="NamSinh" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="Sdt" class="control-label">Số điện thoại</label>
+                            <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="Sdt" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                            <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                            <div class="date" id="date" data-target-input="nearest">
+                                <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                <input asp-for="NgayKhamDau" type="datetime-local"
+                                       class="form-control border-0 datetimepicker-input"
+                                       placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
+                                <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+                            </div>
+                        </div> *@
+                        <div class="my-5 mx-3">
+                            <label asp-for="HoTen" class="mb-3 block text-sm font-medium text-black">
+                                Name
+                            </label>
+                            <input asp-for="HoTen" type="text" placeholder="Enter your full name" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-black dark:focus:border-primary">
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
+                        </div>
+                        <!--Name Patient End-->
+                        <div class="my-5 mx-3">
+                            <div>
+                                <input asp-for="Gioi" type="radio" name="gender" value="True" />
+                                <span>Nữ</span>
+
+                            </div>
+                            <div>
+                                <input asp-for="Gioi" type="radio" name="gender" value="False" />
+                                <span>Nam</span>
+                            </div>
+                        </div>
+                        <!--Age Patient Start-->
+                        <div class="my-5 mx-3">
+                            <label asp-for="NamSinh" class="mb-3 block text-sm font-medium text-black">
+                                Age:
+                            </label>
+                            <input asp-for="NamSinh" type="text" placeholder="Enter your age" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary">
+                        </div>
+                        <!--Age Patient End-->
+                        <!--Tel Patient Start-->
+                        <div class="my-5 mx-3">
+                            <label asp-for="Sdt" class="mb-3 block text-sm font-medium text-black">
+                                Telephone:
+                            </label>
+                            <input asp-for="Sdt" type="tel" placeholder="Enter your telephone" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary">
+                        </div>
+                        <!--Tel Patient End-->
+                        <!--Address  Patient Start-->
+                        <div class="my-5 mx-3">
+                            <label asp-for="DiaChi" class="mb-3 block text-sm font-medium text-black">
+                                Address:
+                            </label>
+                            <input asp-for="DiaChi" type="text" placeholder="Enter your address" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        </div>
+                        <!--Address Patient End-->
+                        <div class="my-5 mx-3">
+                            <label asp-for="NgayKhamDau" class="mb-3 block text-sm font-medium text-black">
+                                Registration Day:
+                            </label>
+                            <input asp-for="NgayKhamDau" type="datetime-local" placeholder="Enter your Registration Day" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        </div>
+                        @* <div class="col-12">
+                            <textarea class="form-control border-0" rows="5" placeholder="Describe your problem"></textarea>
+                        </div> *@
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Book Appointment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.getElementById('createBenhNhan').addEventListener("submit", async (event) {
+            event.preventDefault(); // Ngăn form gửi dữ liệu theo cách thông thường
+                    
+            const benhNhanData = {
+                HoTen: document.querySelector("[name='HoTen']").value,
+                Gioi: document.querySelector("[name='gender']:checked").value === "True",
+                NamSinh: parseInt(document.querySelector("[name='NamSinh']").value),
+                Sdt: document.querySelector("[name='Sdt']").value,
+                DiaChi: document.querySelector("[name='DiaChi']").value,
+                NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
+            };
+                            console.log('benhnhan', benhNhanData);
+            try {
+                const response = await fetch('BookAppointment/api/PostBenhNhan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(benhNhanData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert("Patient created successfully!");
+                    window.location.href = "/BookAppointment"; // Điều hướng về trang danh sách bệnh nhân
+                } else {
+                    alert("Failed to create patient.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while creating the patient.");
+            }
+        });
+    </script>
+}
+
+
+
