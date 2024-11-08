@@ -26,8 +26,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 		{
 			if (ModelState.IsValid)
 			{
-				//var taiKhoan = _mapper.Map<TaiKhoan>(model);
-				//_context.Add(taiKhoan);
+				var taiKhoan = _mapper.Map<TaiKhoan>(model);
+				_context.Add(taiKhoan);
 				_context.SaveChanges();
 				return RedirectToAction("/Home/Index");
 			}
