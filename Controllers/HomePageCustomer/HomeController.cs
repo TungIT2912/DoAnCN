@@ -31,15 +31,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             var qlnhaKhoaContext = _context.NhanViens.Where(n => n.Ten != null);
             return View(await qlnhaKhoaContext.ToListAsync());
         }
-        [HttpPost("logout")]
-        public IActionResult Logout()
-        {
-            // Remove the JWT token from cookies
-            
-            Response.Cookies.Delete("jwt_token");
-            ViewBag.Message = "Đã đăng xuất thành công!";
-            return RedirectToAction("Login");
-        }
+        
         private string GetLoggedInUsername()
         {
             if (Request.Cookies.TryGetValue("jwt_token", out string token))

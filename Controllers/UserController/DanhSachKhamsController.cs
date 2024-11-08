@@ -22,7 +22,7 @@ namespace WebQuanLyNhaKhoa.Controllers.UserController
         // GET: DanhSachKhams
         public async Task<IActionResult> Index()
         {
-            var qlnhaKhoaContext = _context.DanhSachKhams.Include(d => d.IdbenhNhanNavigation).Include(d => d.MaNvNavigation);
+            var qlnhaKhoaContext = _context.DanhSachKhams.Include(d => d.IdbenhNhan).Include(d => d.MaNv);
             return View(await qlnhaKhoaContext.ToListAsync());
         }
 
