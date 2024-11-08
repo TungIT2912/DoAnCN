@@ -225,6 +225,36 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChiTietHoaDons",
+                columns: table => new
+                {
+                    IdchiTiet = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IddonThuoc = table.Column<int>(type: "int", nullable: false),
+                    IdhoaDon = table.Column<int>(type: "int", nullable: false),
+                    IddieuTri = table.Column<int>(type: "int", nullable: false),
+                    Idkham = table.Column<int>(type: "int", nullable: true),
+                    PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenDon = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChiTietHoaDons", x => x.IdchiTiet);
+                    table.ForeignKey(
+                        name: "FK_ChiTietHoaDons_DanhSachKhams_Idkham",
+                        column: x => x.Idkham,
+                        principalTable: "DanhSachKhams",
+                        principalColumn: "IdKham");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DieuTris",
                 columns: table => new
                 {
@@ -234,11 +264,17 @@ namespace WebQuanLyNhaKhoa.Migrations
                     Idkham = table.Column<int>(type: "int", nullable: false),
                     IddungCu = table.Column<int>(type: "int", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ThanhTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ChiTietHoaDonId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DieuTris", x => x.IddieuTri);
+                    table.ForeignKey(
+                        name: "FK_DieuTris_ChiTietHoaDons_ChiTietHoaDonId",
+                        column: x => x.ChiTietHoaDonId,
+                        principalTable: "ChiTietHoaDons",
+                        principalColumn: "IdchiTiet");
                     table.ForeignKey(
                         name: "FK_DieuTris_DanhSachKhams_Idkham",
                         column: x => x.Idkham,
@@ -270,11 +306,17 @@ namespace WebQuanLyNhaKhoa.Migrations
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     ThanhGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayLapDt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    NgayLapDt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ChiTietHoaDonId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DonThuocs", x => x.IddonThuoc);
+                    table.ForeignKey(
+                        name: "FK_DonThuocs_ChiTietHoaDons_ChiTietHoaDonId",
+                        column: x => x.ChiTietHoaDonId,
+                        principalTable: "ChiTietHoaDons",
+                        principalColumn: "IdchiTiet");
                     table.ForeignKey(
                         name: "FK_DonThuocs_DanhSachKhams_Idkham",
                         column: x => x.Idkham,
@@ -336,6 +378,16 @@ namespace WebQuanLyNhaKhoa.Migrations
                 filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDons_IdhoaDon",
+                table: "ChiTietHoaDons",
+                column: "IdhoaDon");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChiTietHoaDons_Idkham",
+                table: "ChiTietHoaDons",
+                column: "Idkham");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DanhSachKhams_IdbenhNhan",
                 table: "DanhSachKhams",
                 column: "IdbenhNhan");
@@ -351,6 +403,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "IdchanDoan");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DieuTris_ChiTietHoaDonId",
+                table: "DieuTris",
+                column: "ChiTietHoaDonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DieuTris_IddichVu",
                 table: "DieuTris",
                 column: "IddichVu");
@@ -364,6 +421,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 name: "IX_DieuTris_Idkham",
                 table: "DieuTris",
                 column: "Idkham");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DonThuocs_ChiTietHoaDonId",
+                table: "DonThuocs",
+                column: "ChiTietHoaDonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DonThuocs_IddungCu",
@@ -410,16 +472,67 @@ namespace WebQuanLyNhaKhoa.Migrations
                 table: "NhanViens",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ChiTietHoaDons_HoaDons_IdhoaDon",
+                table: "ChiTietHoaDons",
+                column: "IdhoaDon",
+                principalTable: "HoaDons",
+                principalColumn: "IdhoaDon",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "HoaDons");
+            migrationBuilder.DropForeignKey(
+                name: "FK_BenhNhans_TaiKhoans_UserId",
+                table: "BenhNhans");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_NhanViens_TaiKhoans_UserId",
+                table: "NhanViens");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ChiTietHoaDons_DanhSachKhams_Idkham",
+                table: "ChiTietHoaDons");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_DieuTris_DanhSachKhams_Idkham",
+                table: "DieuTris");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_DonThuocs_DanhSachKhams_Idkham",
+                table: "DonThuocs");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_HoaDons_DanhSachKhams_Idkham",
+                table: "HoaDons");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ChiTietHoaDons_HoaDons_IdhoaDon",
+                table: "ChiTietHoaDons");
 
             migrationBuilder.DropTable(
                 name: "LichSuNhapXuats");
+
+            migrationBuilder.DropTable(
+                name: "TaiKhoans");
+
+            migrationBuilder.DropTable(
+                name: "DanhSachKhams");
+
+            migrationBuilder.DropTable(
+                name: "BenhNhans");
+
+            migrationBuilder.DropTable(
+                name: "NhanViens");
+
+            migrationBuilder.DropTable(
+                name: "ChucVus");
+
+            migrationBuilder.DropTable(
+                name: "HoaDons");
 
             migrationBuilder.DropTable(
                 name: "DieuTris");
@@ -431,7 +544,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 name: "DichVus");
 
             migrationBuilder.DropTable(
-                name: "DanhSachKhams");
+                name: "ChiTietHoaDons");
 
             migrationBuilder.DropTable(
                 name: "Khos");
@@ -440,19 +553,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 name: "ChanDoans");
 
             migrationBuilder.DropTable(
-                name: "BenhNhans");
-
-            migrationBuilder.DropTable(
-                name: "NhanViens");
-
-            migrationBuilder.DropTable(
                 name: "ThiTruongs");
-
-            migrationBuilder.DropTable(
-                name: "ChucVus");
-
-            migrationBuilder.DropTable(
-                name: "TaiKhoans");
         }
     }
 }

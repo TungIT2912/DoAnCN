@@ -9,6 +9,7 @@ namespace WebQuanLyNhaKhoa.DTO
 		public int Idkham { get; set; }
 		public int IddungCu { get; set; }
 
+		public string? tenThuoc { get; set; }
 		public int SoLuong { get; set; }
 		public decimal ThanhGia { get; set; }
 		public decimal TongTien { get; set; }

@@ -5,12 +5,9 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class HoaDonDTO
 	{
-
-		public int IddonThuoc { get; set; }
-
-		public int IddieuTri { get; set; }
-
 		public int? Idkham { get; set; }
+
+		public string tenBn { get; set; }
 
 		public string? PhuongThucThanhToan { get; set; }
 		public decimal TienThuoc { get; set; }

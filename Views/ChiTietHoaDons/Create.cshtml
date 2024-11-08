@@ -1,4 +1,4 @@
-﻿@model WebQuanLyNhaKhoa.Data.HoaDon
+﻿@model WebQuanLyNhaKhoa.Data.ChiTietHoaDon
 
 @{
     ViewData["Title"] = "Create";
@@ -7,7 +7,7 @@
 
 <h1>Create</h1>
 
-<h4>HoaDon</h4>
+<h4>ChiTietHoaDon</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,11 +15,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IddonThuoc" class="control-label"></label>
-                <select asp-for="IddonThuoc" class ="form-control" asp-items="ViewBag.IddonThuoc"></select>
+                <input asp-for="IddonThuoc" class="form-control" />
+                <span asp-validation-for="IddonThuoc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdhoaDon" class="control-label"></label>
+                <select asp-for="IdhoaDon" class ="form-control" asp-items="ViewBag.IdhoaDon"></select>
             </div>
             <div class="form-group">
                 <label asp-for="IddieuTri" class="control-label"></label>
-                <select asp-for="IddieuTri" class ="form-control" asp-items="ViewBag.IddieuTri"></select>
+                <input asp-for="IddieuTri" class="form-control" />
+                <span asp-validation-for="IddieuTri" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Idkham" class="control-label"></label>
@@ -29,6 +35,21 @@
                 <label asp-for="PhuongThucThanhToan" class="control-label"></label>
                 <input asp-for="PhuongThucThanhToan" class="form-control" />
                 <span asp-validation-for="PhuongThucThanhToan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TenDon" class="control-label"></label>
+                <input asp-for="TenDon" class="form-control" />
+                <span asp-validation-for="TenDon" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TenDieuTri" class="control-label"></label>
+                <input asp-for="TenDieuTri" class="form-control" />
+                <span asp-validation-for="TenDieuTri" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TienThuoc" class="control-label"></label>

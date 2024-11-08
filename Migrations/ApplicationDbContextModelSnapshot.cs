@@ -84,6 +84,65 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.ToTable("ChanDoans");
                 });
 
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChiTietHoaDon", b =>
+                {
+                    b.Property<int>("IdchiTiet")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchiTiet"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailBn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IddieuTri")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IddonThuoc")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdhoaDon")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Idkham")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayLap")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PhuongThucThanhToan")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenDieuTri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenDon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TienDieuTri")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TienThuoc")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TongTien")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("IdchiTiet");
+
+                    b.HasIndex("IdhoaDon");
+
+                    b.HasIndex("Idkham");
+
+                    b.ToTable("ChiTietHoaDons");
+                });
+
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChucVu", b =>
                 {
                     b.Property<int>("MaCv")
@@ -170,6 +229,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddieuTri"));
 
+                    b.Property<int?>("ChiTietHoaDonId")
+                        .HasColumnType("int");
+
                     b.Property<int>("IddichVu")
                         .HasColumnType("int");
 
@@ -187,6 +249,8 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("IddieuTri");
 
+                    b.HasIndex("ChiTietHoaDonId");
+
                     b.HasIndex("IddichVu");
 
                     b.HasIndex("IddungCu");
@@ -203,6 +267,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddonThuoc"));
+
+                    b.Property<int?>("ChiTietHoaDonId")
+                        .HasColumnType("int");
 
                     b.Property<int>("IddungCu")
                         .HasColumnType("int");
@@ -223,6 +290,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IddonThuoc");
+
+                    b.HasIndex("ChiTietHoaDonId");
 
                     b.HasIndex("IddungCu");
 
@@ -481,6 +550,23 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChiTietHoaDon", b =>
+                {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.HoaDon", "HoaDon")
+                        .WithMany()
+                        .HasForeignKey("IdhoaDon")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
+                        .WithMany()
+                        .HasForeignKey("Idkham");
+
+                    b.Navigation("DanhSachKham");
+
+                    b.Navigation("HoaDon");
+                });
+
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DanhSachKham", b =>
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.BenhNhan", "BenhNhan")
@@ -511,6 +597,10 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DieuTri", b =>
                 {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ChiTietHoaDon", "ChiTietHoaDon")
+                        .WithMany("DieuTris")
+                        .HasForeignKey("ChiTietHoaDonId");
+
                     b.HasOne("WebQuanLyNhaKhoa.Data.DichVu", "DichVu")
                         .WithMany("DieuTris")
                         .HasForeignKey("IddichVu")
@@ -529,6 +619,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("ChiTietHoaDon");
+
                     b.Navigation("DanhSachKham");
 
                     b.Navigation("DichVu");
@@ -538,6 +630,10 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DonThuoc", b =>
                 {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ChiTietHoaDon", "ChiTietHoaDon")
+                        .WithMany("DonThuocs")
+                        .HasForeignKey("ChiTietHoaDonId");
+
                     b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "Kho")
                         .WithMany("DonThuocs")
                         .HasForeignKey("IddungCu")
@@ -549,6 +645,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasForeignKey("Idkham")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ChiTietHoaDon");
 
                     b.Navigation("DanhSachKham");
 
@@ -630,6 +728,13 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChanDoan", b =>
                 {
                     b.Navigation("DichVus");
+                });
+
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChiTietHoaDon", b =>
+                {
+                    b.Navigation("DieuTris");
+
+                    b.Navigation("DonThuocs");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.ChucVu", b =>

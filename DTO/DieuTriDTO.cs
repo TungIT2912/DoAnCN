@@ -7,6 +7,7 @@ namespace WebQuanLyNhaKhoa.DTO
 	public class DieuTriDTO
 	{
 		public int IddichVu { get; set; } 
+		public string? tenDieuTri { get; set; }
 		public int Idkham { get; set; }
 		public int IddungCu { get; set; }
 

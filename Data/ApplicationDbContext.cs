@@ -65,17 +65,17 @@ namespace WebQuanLyNhaKhoa.Data
 				.HasForeignKey(h => h.Idkham)
 				.OnDelete(DeleteBehavior.Restrict); // Change cascade to restrict or set null
 
-			modelBuilder.Entity<ChiTietHoaDon>()
-				.HasOne(ct => ct.DonThuoc)
-				.WithMany()
-				.HasForeignKey(ct => ct.IddonThuoc)
-				.OnDelete(DeleteBehavior.Restrict); // Sử dụng Restrict hoặc NoAction
+			//modelBuilder.Entity<ChiTietHoaDon>()
+			//	.HasOne(ct => ct.DonThuoc)
+			//	.WithMany()
+			//	.HasForeignKey(ct => ct.IddonThuoc)
+			//	.OnDelete(DeleteBehavior.Restrict); // Sử dụng Restrict hoặc NoAction
 
-			modelBuilder.Entity<ChiTietHoaDon>()
-				.HasOne(ct => ct.DieuTri)
-				.WithMany()
-				.HasForeignKey(ct => ct.IddieuTri)
-				.OnDelete(DeleteBehavior.Restrict); // Sử dụng Restrict hoặc NoAction
+			//modelBuilder.Entity<ChiTietHoaDon>()
+			//	.HasOne(ct => ct.DieuTri)
+			//	.WithMany()
+			//	.HasForeignKey(ct => ct.IddieuTri)
+			//	.OnDelete(DeleteBehavior.Restrict); // Sử dụng Restrict hoặc NoAction
 
 		}
 	}
