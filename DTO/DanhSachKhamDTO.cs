@@ -6,9 +6,15 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class DanhSachKhamDTO
 	{
-		public int IdbenhNhan { get; set; } 
+        public int Idkham { get; set; }
+        public int IdbenhNhan { get; set; }
+        public string hoTenBenhNhan { get; set; }
+        public string sdtBenhnhan { get; set; }
+        public string diaChiBenhnhan { get; set; }
 
-		public int? MaNv { get; set; }
+
+
+        public int? MaNv { get; set; }
 
 
 		public DateTime NgayKham { get; set; }

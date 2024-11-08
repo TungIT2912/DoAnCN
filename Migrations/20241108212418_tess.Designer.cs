@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241108101809_tess")]
+    [Migration("20241108212418_tess")]
     partial class tess
     {
         /// <inheritdoc />
@@ -34,9 +34,15 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdbenhNhan"));
 
+                    b.Property<int?>("ChanDoanIdchanDoan")
+                        .HasColumnType("int");
+
                     b.Property<string>("DiaChi")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("Gioi")
                         .HasColumnType("bit");
@@ -45,6 +51,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("IdChanDoan")
+                        .HasColumnType("int");
 
                     b.Property<string>("NamSinh")
                         .HasMaxLength(4)
@@ -56,10 +65,15 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("Sdt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TrieuChung")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("IdbenhNhan");
+
+                    b.HasIndex("ChanDoanIdchanDoan");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -546,9 +560,15 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>
                 {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "ChanDoan")
+                        .WithMany()
+                        .HasForeignKey("ChanDoanIdchanDoan");
+
                     b.HasOne("WebQuanLyNhaKhoa.Data.TaiKhoan", "TaiKhoan")
                         .WithOne("BenhNhan")
                         .HasForeignKey("WebQuanLyNhaKhoa.Data.BenhNhan", "UserId");
+
+                    b.Navigation("ChanDoan");
 
                     b.Navigation("TaiKhoan");
                 });
