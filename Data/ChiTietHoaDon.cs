@@ -11,31 +11,31 @@ namespace WebQuanLyNhaKhoa.Data
         public int IdchiTiet { get; set; }
 
         [ForeignKey("DonThuoc")]
-        public int IddonThuoc { get; set; }
+        public int? IddonThuoc { get; set; }
 
         [ForeignKey("HoaDon")]
-        public int IdhoaDon { get; set; }
+        public int? IdhoaDon { get; set; }
         
         [ForeignKey("DieuTri")]
-        public int IddieuTri { get; set; }
+        public int? IddieuTri { get; set; }
 
         [ForeignKey("DanhSachKham")]
         public int? Idkham { get; set; }
 
         public string? PhuongThucThanhToan { get; set; }
 
-        public string TenDon { get; set; }
-        public string TenDieuTri { get; set; }
-        public string Description { get; set; }
+        public string? TenDon { get; set; }
+        public string? TenDieuTri { get; set; }
+        public string? Description { get; set; }
 
         [Range(0, double.MaxValue)]
-        public decimal TienThuoc { get; set; }
+        public decimal? TienThuoc { get; set; }
 
         [Range(0, double.MaxValue)]
-        public decimal TienDieuTri { get; set; }
+        public decimal? TienDieuTri { get; set; }
 
         [Range(0, double.MaxValue)]
-        public decimal TongTien { get; set; }
+        public decimal? TongTien { get; set; }
 
         public DateTime NgayLap { get; set; }
 
