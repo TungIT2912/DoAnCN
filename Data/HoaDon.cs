@@ -10,7 +10,7 @@ namespace WebQuanLyNhaKhoa.Data
         public int IdhoaDon { get; set; }
 
         [ForeignKey("DonThuoc")]
-        public int IddonThuoc { get; set; }
+        public int? IddonThuoc { get; set; }
 
         [ForeignKey("DieuTri")]
         public int IddieuTri { get; set; }
@@ -35,7 +35,7 @@ namespace WebQuanLyNhaKhoa.Data
 		public string? EmailBn { get; set; }
 
 		public virtual DieuTri DieuTri { get; set; } = null!;
-		public virtual DonThuoc DonThuoc { get; set; } = null!;
+		public virtual DonThuoc? DonThuoc { get; set; } = null!;
 		public virtual DanhSachKham? DanhSachKham { get; set; }
 	}
 }

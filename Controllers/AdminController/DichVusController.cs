@@ -49,7 +49,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         {
             string[] DVT = { "Lần", "Cái" };
             ViewBag.DVT = new SelectList(DVT);
-            ViewBag.SanPhams = new SelectList(_context.ChanDoans, "IdchanDoan", "TenChanDoan"); ;
+            ViewBag.SanPhams = new SelectList(_context.ChanDoans, "IdchanDoan", "TenChanDoan");
             return View();
         }
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class tess : Migration
+    public partial class tes : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -163,22 +163,28 @@ namespace WebQuanLyNhaKhoa.Migrations
                 name: "Khos",
                 columns: table => new
                 {
-                    IdsanPham = table.Column<int>(type: "int", nullable: false)
+                    IddungCu = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IddungCu = table.Column<int>(type: "int", nullable: false),
+                    IdsanPham = table.Column<int>(type: "int", nullable: false),
                     Loai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SoLuong = table.Column<int>(type: "int", nullable: true)
+                    SoLuong = table.Column<int>(type: "int", nullable: true),
+                    ThiTruongIdsanPham = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Khos", x => x.IdsanPham);
+                    table.PrimaryKey("PK_Khos", x => x.IddungCu);
                     table.ForeignKey(
-                        name: "FK_Khos_ThiTruongs_IddungCu",
-                        column: x => x.IddungCu,
+                        name: "FK_Khos_ThiTruongs_IdsanPham",
+                        column: x => x.IdsanPham,
                         principalTable: "ThiTruongs",
                         principalColumn: "IdsanPham",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Khos_ThiTruongs_ThiTruongIdsanPham",
+                        column: x => x.ThiTruongIdsanPham,
+                        principalTable: "ThiTruongs",
+                        principalColumn: "IdsanPham");
                 });
 
             migrationBuilder.CreateTable(
@@ -300,7 +306,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                         name: "FK_DieuTris_Khos_IddungCu",
                         column: x => x.IddungCu,
                         principalTable: "Khos",
-                        principalColumn: "IdsanPham",
+                        principalColumn: "IddungCu",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -336,7 +342,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                         name: "FK_DonThuocs_Khos_IddungCu",
                         column: x => x.IddungCu,
                         principalTable: "Khos",
-                        principalColumn: "IdsanPham",
+                        principalColumn: "IddungCu",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -346,7 +352,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     IdhoaDon = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IddonThuoc = table.Column<int>(type: "int", nullable: false),
+                    IddonThuoc = table.Column<int>(type: "int", nullable: true),
                     IddieuTri = table.Column<int>(type: "int", nullable: false),
                     Idkham = table.Column<int>(type: "int", nullable: true),
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -467,9 +473,14 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "Idkham");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Khos_IddungCu",
+                name: "IX_Khos_IdsanPham",
                 table: "Khos",
-                column: "IddungCu");
+                column: "IdsanPham");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Khos_ThiTruongIdsanPham",
+                table: "Khos",
+                column: "ThiTruongIdsanPham");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LichSuNhapXuats_IdsanPham",
