@@ -40,8 +40,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 .Where(h => h.NgayLap >= startDate && h.NgayLap <= endDate)
                 .ToListAsync();
 
-            decimal[] revenuePerMonth = new decimal[12];
-            decimal totalRevenue = 0;
+            decimal?[] revenuePerMonth = new decimal?[12];
+            decimal? totalRevenue = 0;
 
             foreach (var invoice in invoices)
             {
@@ -53,7 +53,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             var revenueData = revenuePerMonth.Select((value, index) =>
             {
                 string label;
-                decimal formattedValue;
+                decimal? formattedValue;
 
                 if (value < 1000000)
                 {

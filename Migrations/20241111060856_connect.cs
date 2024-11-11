@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class tess : Migration
+    public partial class connect : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -230,17 +230,17 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     IdchiTiet = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IddonThuoc = table.Column<int>(type: "int", nullable: false),
-                    IdhoaDon = table.Column<int>(type: "int", nullable: false),
-                    IddieuTri = table.Column<int>(type: "int", nullable: false),
+                    IddonThuoc = table.Column<int>(type: "int", nullable: true),
+                    IdhoaDon = table.Column<int>(type: "int", nullable: true),
+                    IddieuTri = table.Column<int>(type: "int", nullable: true),
                     Idkham = table.Column<int>(type: "int", nullable: true),
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TenDon = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TenDon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -337,13 +337,13 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     IdhoaDon = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IddonThuoc = table.Column<int>(type: "int", nullable: false),
-                    IddieuTri = table.Column<int>(type: "int", nullable: false),
+                    IddonThuoc = table.Column<int>(type: "int", nullable: true),
+                    IddieuTri = table.Column<int>(type: "int", nullable: true),
                     Idkham = table.Column<int>(type: "int", nullable: true),
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -478,8 +478,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 table: "ChiTietHoaDons",
                 column: "IdhoaDon",
                 principalTable: "HoaDons",
-                principalColumn: "IdhoaDon",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "IdhoaDon");
         }
 
         /// <inheritdoc />

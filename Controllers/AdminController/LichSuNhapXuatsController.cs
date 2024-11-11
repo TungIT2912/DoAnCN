@@ -30,10 +30,13 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View();
         }
         [HttpGet("api/LichSuNhapXuats")]
-        public async Task<ActionResult<IEnumerable<LichSuNhapXuatDTO>>> GetLichSuNhapXuats()
+        public async Task<ActionResult<IEnumerable<LichSuNhapXuatDTO>>> GetLichSuNhapXuats(int pageNumber = 1, int pageSize = 10)
         {
+            var totalItems = await _context.LichSuNhapXuats.CountAsync();
             var ls = await _context.LichSuNhapXuats
-        .Include(nv => nv.ThiTruong).ToListAsync();
+                            .Include(nv => nv.ThiTruong)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize).ToListAsync();
             var lsDTOs = ls.Select(nv => new LichSuNhapXuatDTO
             {
                 NoiDung = nv.NoiDung,
@@ -44,7 +47,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 NgayNhap= nv.NgayNhap,
             }).ToList();
 
-            return Ok(lsDTOs);
+            return Ok(new { data = lsDTOs, totalItems });
         }
 
 

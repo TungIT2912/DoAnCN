@@ -8,7 +8,7 @@ namespace WebQuanLyNhaKhoa.DTO
 
         public string? tenBn { get; set; }
         public int? Idkham { get; set; }
-        public int IdhoaDon { get; set; }
+        public int? IdhoaDon { get; set; }
 
         public string? PhuongThucThanhToan { get; set; }
 
