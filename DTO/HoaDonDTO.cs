@@ -10,11 +10,11 @@ namespace WebQuanLyNhaKhoa.DTO
 		public string tenBn { get; set; }
 
 		public string? PhuongThucThanhToan { get; set; }
-		public decimal TienThuoc { get; set; }
-		public decimal TienDieuTri { get; set; }
-		public decimal TongTien { get; set; }
+		public decimal? TienThuoc { get; set; }
+		public decimal? TienDieuTri { get; set; }
+		public decimal? TongTien { get; set; }
 
-		public DateTime NgayLap { get; set; }
+		public DateTime? NgayLap { get; set; }
 		public string? EmailBn { get; set; }
 	}
 }

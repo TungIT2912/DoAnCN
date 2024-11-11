@@ -32,12 +32,17 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View();
         }
         [HttpGet("api/NhanViens")]
-        public async Task<ActionResult<IEnumerable<NhanVienDTO>>> GetNhanViens()
+        public async Task<ActionResult> GetNhanViens(int pageNumber = 1, int pageSize = 10)
         {
+            var totalItems = await _context.NhanViens.CountAsync();
+
             var nhanViens = await _context.NhanViens
                 .Include(nv => nv.ChucVu)
-       .Include(nv => nv.TaiKhoan) // Ensure ApplicationUser is loaded
-       .ToListAsync();
+                .Include(nv => nv.TaiKhoan)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
             var nhanVienDTOs = nhanViens.Select(nv => new NhanVienDTO
             {
                 MaNv = nv.MaNv,
@@ -54,10 +59,11 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Role = nv.TaiKhoan.Role
             }).ToList();
 
-            return Ok(nhanVienDTOs);
+            // Return the paginated data with total items
+            return Ok(new { data = nhanVienDTOs, totalItems });
         }
         // GET: NhanViens/Details/5
-       
+
         [HttpGet("nhanviens")]
         public IActionResult Create()
         {

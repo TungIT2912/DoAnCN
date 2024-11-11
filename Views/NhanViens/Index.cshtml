@@ -226,27 +226,44 @@
         color: black;
     }
 
-    .page {
-        color: #007bff;
-        text-decoration: none;
-        padding: 5px 10px;
-        border-radius: 3px;
-        margin: 0 2px;
+    .pagination-controls {
         display: flex;
         justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
     }
 
-        .page li {
-            background-color: #007bff;
+        /* Page Button Styling */
+        .pagination-controls button {
+            background-color: #007bff; /* Primary color */
             color: white;
-            text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid #007bff;
-            border-radius: 3px;
-            margin: 0 2px;
-            display: flex;
-            justify-content: center;
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
+
+            /* Hover Effect for Page Buttons */
+            .pagination-controls button:hover {
+                background-color: #0056b3;
+            }
+
+            /* Active Page Button Styling */
+            .pagination-controls button.active {
+                background-color: #003a75;
+                font-weight: bold;
+            }
+
+            /* Disabled Button Styling */
+            .pagination-controls button:disabled {
+                background-color: #cccccc;
+                cursor: not-allowed;
+            }
+
 </style>
 <script>
     $(document).ready(function () {
@@ -305,7 +322,7 @@
 <div class="main-container">
     <div class="xs-pd-20-10 pd-ltr-20">
         <p>
-            <a asp-controller="NhanViens" asp-action="Create" class="btn border border-secondary rounded-pill px-3 text-white">
+            <a asp-controller="NhanViens" asp-action="Create" class="btn border border-secondary rounded-pill px-3 text-black">
                 <i class="bi bi-plus-square-fill"></i> Thêm mới
             </a>
         </p>
@@ -340,6 +357,8 @@
 
                            
                         </table>
+                      
+                        <div id="paginationContainer" class="pagination-controls"></div>
                     </div>
                 </div>
             </div>
@@ -348,43 +367,72 @@
     </div>
 </div>
 <script>
-   async function fetchNhanViens() {
-       try {
-            const response = await fetch('NhanViens/api/NhanViens');
-           if (!response.ok) {
-               console.error('Response status:', response.status); // Log status
-               throw new Error('Network response was not ok');
-           }
-           const nhanViens = await response.json();
+    let currentPage = 1;
+    const pageSize = 10;
 
-           const tableBody = document.getElementById('nhanVienTable').getElementsByTagName('tbody')[0];
-           tableBody.innerHTML = ''; // Clear previous rows
-           nhanViens.forEach(nv => {
-               const row = document.createElement('tr');
-               row.innerHTML = `
-                   <td>${nv.ten}</td>
-                   <td>${nv.sdt}</td>
-                   <td>${nv.tenCv}</td>
-                   <td>${nv.kinhNghiem}</td>
-                   <td>${nv.diachi}</td>
-                   <td><img src="${nv.hinh}" alt="Hình" width="40px" class="avatar-sm rounded-circle me-2"" /></td>
-                   <td>${nv.email}</td>
-                   <td>${nv.role}</td>
-                         <td>
+    async function fetchNhanViens(page) {
+        try {
+            const response = await fetch(`NhanViens/api/NhanViens?pageNumber=${page}&pageSize=${pageSize}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-                                    <a href="/Admin/NhanViens/api/NhanViens/Edit/${nv.maNv}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
-                                    <a href="/Admin/NhanViens/api/NhanViens/Detail/${nv.maNv}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
-                              
-                        </td>
-               `;
-               tableBody.appendChild(row);
-           });
-       } catch (error) {
-           console.error('Fetch error:', error);
-           alert('Không thể tải dữ liệu. Vui lòng thử lại.');
-       }
-   }
+            const result = await response.json();
+            const nhanViens = result.data;
+            totalItems = result.totalItems; // Set totalItems from API response
 
-   // Call the function on page load
-   document.addEventListener('DOMContentLoaded', fetchNhanViens);
+            displayData(nhanViens);  // Function to display data in the table
+            setupPaginationControls(totalItems);  // Function to set up pagination controls
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('Không thể tải dữ liệu. Vui lòng thử lại.');
+        }
+    }
+
+    function displayData(nhanViens) {
+        const tableBody = document.getElementById('nhanVienTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = ''; // Clear previous rows
+
+        nhanViens.forEach(nv => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${nv.ten}</td>
+                <td>${nv.sdt}</td>
+                <td>${nv.tenCv}</td>
+                <td>${nv.kinhNghiem}</td>
+                <td>${nv.diachi}</td>
+                <td><img src="${nv.hinh}" alt="Hình" width="40px" class="avatar-sm rounded-circle me-2" /></td>
+                <td>${nv.email}</td>
+                <td>${nv.role}</td>
+                <td>
+                    <a href="/Admin/NhanViens/api/NhanViens/Edit/${nv.maNv}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
+                    <a href="/Admin/NhanViens/api/NhanViens/Detail/${nv.maNv}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function setupPaginationControls(totalItems) {
+        const totalPages = Math.ceil(totalItems / pageSize);
+        const paginationContainer = document.getElementById('paginationContainer');
+        paginationContainer.innerHTML = ''; // Clear existing buttons
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.onclick = () => changePage(i);
+            paginationContainer.appendChild(button);
+        }
+    }
+
+    function changePage(pageNumber) {
+        fetchNhanViens(pageNumber); // Fetch data for the selected page
+    }
+
+    // Initial data fetch on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchNhanViens(currentPage);
+    });
+
 </script>

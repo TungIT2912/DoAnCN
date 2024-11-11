@@ -12,8 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241108101809_tess")]
-    partial class tess
+    [Migration("20241111060856_connect")]
+    partial class connect
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,19 +96,18 @@ namespace WebQuanLyNhaKhoa.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchiTiet"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailBn")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IddieuTri")
+                    b.Property<int?>("IddieuTri")
                         .HasColumnType("int");
 
-                    b.Property<int>("IddonThuoc")
+                    b.Property<int?>("IddonThuoc")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdhoaDon")
+                    b.Property<int?>("IdhoaDon")
                         .HasColumnType("int");
 
                     b.Property<int?>("Idkham")
@@ -121,20 +120,18 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenDieuTri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenDon")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TienDieuTri")
+                    b.Property<decimal?>("TienDieuTri")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TienThuoc")
+                    b.Property<decimal?>("TienThuoc")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TongTien")
+                    b.Property<decimal?>("TongTien")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdchiTiet");
@@ -314,10 +311,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("EmailBn")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IddieuTri")
+                    b.Property<int?>("IddieuTri")
                         .HasColumnType("int");
 
-                    b.Property<int>("IddonThuoc")
+                    b.Property<int?>("IddonThuoc")
                         .HasColumnType("int");
 
                     b.Property<int?>("Idkham")
@@ -329,13 +326,13 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("PhuongThucThanhToan")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TienDieuTri")
+                    b.Property<decimal?>("TienDieuTri")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TienThuoc")
+                    b.Property<decimal?>("TienThuoc")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TongTien")
+                    b.Property<decimal?>("TongTien")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdhoaDon");
@@ -557,9 +554,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.HoaDon", "HoaDon")
                         .WithMany()
-                        .HasForeignKey("IdhoaDon")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdhoaDon");
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
                         .WithMany()
@@ -661,14 +656,12 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.HasOne("WebQuanLyNhaKhoa.Data.DieuTri", "DieuTri")
                         .WithMany("HoaDons")
                         .HasForeignKey("IddieuTri")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.DonThuoc", "DonThuoc")
                         .WithMany("HoaDons")
                         .HasForeignKey("IddonThuoc")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
                         .WithMany("HoaDons")

@@ -155,44 +155,44 @@
         color: #ff5b5b;
     }
 
-    .pagination {
-        float: right;
-        margin: 0 0 5px;
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
     }
 
-        .pagination li a {
+        /* Page Button Styling */
+        .pagination-controls button {
+            background-color: #007bff; /* Primary color */
+            color: white;
             border: none;
-            font-size: 13px;
-            min-width: 30px;
-            min-height: 30px;
-            color: #999;
-            margin: 0 2px;
-            line-height: 30px;
-            border-radius: 2px !important;
-            text-align: center;
-            padding: 0 6px;
+            padding: 10px 15px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
-            .pagination li a:hover {
-                color: #666;
+            /* Hover Effect for Page Buttons */
+            .pagination-controls button:hover {
+                background-color: #0056b3;
             }
 
-        .pagination li.active a, .pagination li.active a.page-link {
-            background: #03A9F4;
-        }
-
-            .pagination li.active a:hover {
-                background: #0397d6;
+            /* Active Page Button Styling */
+            .pagination-controls button.active {
+                background-color: #003a75;
+                font-weight: bold;
             }
 
-        .pagination li.disabled i {
-            color: #ccc;
-        }
+            /* Disabled Button Styling */
+            .pagination-controls button:disabled {
+                background-color: #cccccc;
+                cursor: not-allowed;
+            }
 
-        .pagination li i {
-            font-size: 16px;
-            padding-top: 6px
-        }
 
     .hint-text {
         float: left;
@@ -284,7 +284,7 @@
                             </tbody>
 
                         </table>
-
+                        <div id="paginationContainer" class="pagination-controls"></div>
                     </div>
                 </div>
             </div>
@@ -293,40 +293,66 @@
     </div>
 </div>
 <script>
-    async function fetchKhoes() {
+    let currentPage = 1;
+    const pageSize = 10;
+    async function fetchKhoes(page) {
         try {
-            const response = await fetch('LichSuNhapXuats/api/LichSuNhapXuats');
+            const response = await fetch(`LichSuNhapXuats/api/LichSuNhapXuats?pageNumber=${page}&pageSize=${pageSize}`);
             if (!response.ok) {
                 console.error('Response status:', response.status); // Log status
                 throw new Error('Network response was not ok');
             }
-            const khoes = await response.json();
+            const result = await response.json();
+            const khoes = result.data;
+            totalItems = result.totalItems;
 
-            const tableBody = document.getElementById('lsTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = '';
-            khoes.forEach(nv => {
-                const row = document.createElement('tr');
-
-                // Convert nv.ngayNhap to Date format dd/MM/yyyy
-                const date = new Date(nv.ngayNhap);
-                const formattedDate = date.toLocaleDateString('en-GB'); // Formats as dd/MM/yyyy
-
-                row.innerHTML = `
-            <td>${nv.noiDung}</td>
-            <td>${nv.tenDungCu}</td>
-            <td>${nv.loai}</td>
-            <td>${nv.donViTinh}</td>
-            <td>${nv.soLuongNhapXuat}</td>
-            <td>${formattedDate}</td>
-        `;
-                tableBody.appendChild(row);
-            });
+            displayData(khoes);
+            setupPaginationControls(totalItems);
+          
         } catch (error) {
             console.error('Fetch error:', error);
             alert('Không thể tải dữ liệu. Vui lòng thử lại.');
         }
     }
+    function displayData(khoes) {
+        const tableBody = document.getElementById('lsTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+        khoes.forEach(nv => {
+            const row = document.createElement('tr');
 
-    // Call the function on page load
-    document.addEventListener('DOMContentLoaded', fetchKhoes);
+            // Convert nv.ngayNhap to Date format dd/MM/yyyy
+            const date = new Date(nv.ngayNhap);
+            const formattedDate = date.toLocaleDateString('en-GB'); // Formats as dd/MM/yyyy
+
+            row.innerHTML = `
+                <td>${nv.noiDung}</td>
+                <td>${nv.tenDungCu}</td>
+                <td>${nv.loai}</td>
+                <td>${nv.donViTinh}</td>
+                <td>${nv.soLuongNhapXuat}</td>
+                <td>${formattedDate}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function setupPaginationControls(totalItems) {
+        const totalPages = Math.ceil(totalItems / pageSize);
+        const paginationContainer = document.getElementById('paginationContainer');
+        paginationContainer.innerHTML = '';
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.onclick = () => changePage(i);
+            paginationContainer.appendChild(button);
+        }
+    }
+
+    function changePage(pageNumber) {
+        fetchKhoes(pageNumber);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchKhoes(currentPage);
+    });
 </script>
