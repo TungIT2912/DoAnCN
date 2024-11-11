@@ -78,7 +78,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
 app.UseCors("AllowAllOrigins");
 
 // Area and Controller Routing
