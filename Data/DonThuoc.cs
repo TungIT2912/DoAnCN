@@ -14,9 +14,8 @@ namespace WebQuanLyNhaKhoa.Data
 		public int Idkham { get; set; } 
 
 		[ForeignKey("Kho")]
-		public int IddungCu { get; set; } 
-
-		public int SoLuong { get; set; }
+		public int IddungCu { get; set; }
+        public int SoLuong { get; set; }
 
 		[Range(0, double.MaxValue)]
 		public decimal ThanhGia { get; set; }

@@ -1,0 +1,150 @@
+﻿@* @{
+    ViewData["Title"] = "Create Treatment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Treatment</h2>
+<form id="createForm">
+    <label>Service ID:</label>
+    <input type="number" id="serviceId" required><br>
+
+    <label>Diagnosis ID:</label>
+    <input type="number" id="diagnosisId" required><br>
+
+    <label>dụng cụ ID:</label>
+    <input type="number" id="dungCuId" required><br>
+
+    <label>Quantity:</label>
+    <input type="number" id="quantity" required><br>
+
+    <button type="submit">Create</button>
+</form>
+
+<script>
+    document.getElementById('createForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const newTreatment = {
+            iddichVu: document.getElementById('serviceId').value,
+            idkham: document.getElementById('diagnosisId').value,
+            iddungCu: document.getElementById('dungCuId').value,
+            soLuong: document.getElementById('quantity').value
+        };
+
+        const response = await fetch('/DieuTri/api/PostDieuTri', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTreatment)
+        });
+
+        if (response.ok) {
+            alert("Treatment created successfully");
+            window.location.href = '/DieuTri/Index';
+        } else {
+            alert("Failed to create treatment");
+        }
+    });
+</script>
+ *@
+ @model IEnumerable<WebQuanLyNhaKhoa.DTO.DieuTriDTO>
+@{
+    ViewData["Title"] = "Create Treatment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create New Treatment</h2>
+
+<form id="createTreatmentForm">
+    <div>
+        <label for="iddichVu">Service:</label>
+        <select id="iddichVu" name="IddichVu" required>
+            <option value="">Select Service</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="idkham">Patient:</label>
+        <select id="idkham" name="Idkham" required>
+            <option value="">Select Patient</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="iddungCu">Tool:</label>
+        <select id="iddungCu" name="IddungCu" required>
+            <option value="">Select Tool</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="soLuong">Quantity:</label>
+        <input type="number" id="soLuong" name="SoLuong" required />
+    </div>
+
+    <button type="button" onclick="createTreatment()">Create Treatment</button>
+</form>
+
+<p id="message"></p>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+           loadOptions();
+        });
+
+        async function loadOptions() {
+        await loadDropdown('/DieuTri/api/GetDichVuOptions', 'iddichVu');
+        await loadDropdown('/DieuTri/api/GetDanhSachKhamOptions', 'idkham');
+        await loadDropdown('/DieuTri/api/GetDungCuOptions', 'iddungCu');
+        }
+
+        async function loadDropdown(apiUrl, selectId) {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                const select = document.getElementById(selectId);
+                data.forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.id;
+                    option.textContent = item.name;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error(`Error loading ${selectId} options:`, error);
+                document.getElementById("message").textContent = `Error loading options for ${selectId}.`;
+            }
+        }
+
+        async function createTreatment() {
+            const formData = {
+                IddichVu: document.getElementById('iddichVu').value,
+                Idkham: document.getElementById('idkham').value,
+                IddungCu: document.getElementById('iddungCu').value,
+                SoLuong: document.getElementById('soLuong').value
+            };
+
+            try {
+                const response = await fetch('/DieuTri/api/PostDieuTri', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const message = document.getElementById('message');
+                if (response.ok) {
+                     alert("Tạo Điều trị thành công!");
+                    window.location.href = '@Url.Action("Index", "DieuTri")';
+                } else {
+                    const errorText = await response.text();
+                    message.textContent = `Error: ${errorText}`;
+                }
+            } catch (error) {
+                console.error("Error creating treatment:", error);
+                document.getElementById("message").textContent = "An error occurred while creating the treatment.";
+            }
+        }
+
+    </script>
+}
