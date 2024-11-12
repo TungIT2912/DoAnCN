@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class tes : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -252,7 +252,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TenDon = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -360,7 +360,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DaThanhToan = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -259,6 +259,7 @@ namespace WebQuanLyNhaKhoa.Controllers
 
                 var newDieuTri = new DieuTri
                 {
+                    
                     IddichVu = newDieuTriDto.IddichVu,
                     Idkham = newDieuTriDto.Idkham,
                     IddungCu = newDieuTriDto.IddungCu,
@@ -276,14 +277,33 @@ namespace WebQuanLyNhaKhoa.Controllers
                 {
                     Idkham = newDieuTri.Idkham,
                     IddieuTri = newDieuTri.IddieuTri,
-                    PhuongThucThanhToan = "Cash",  // Or assign as needed
+                    PhuongThucThanhToan = "Chưa có", 
                     TienDieuTri = treatmentCost,
-                    TienThuoc = 0,  // Initially no medication cost
+                    TienThuoc = 0,  
                     TongTien = treatmentCost,
                     NgayLap = DateTime.Now,
                    
                 };
                 _context.HoaDons.Add(newHoaDon);
+                await _context.SaveChangesAsync();
+
+              
+                var newChiTietHoaDon = new ChiTietHoaDon
+                {
+                    IdhoaDon = newHoaDon.IdhoaDon,
+                    IddieuTri = newDieuTri.IddieuTri,
+                    Idkham = newDieuTri.Idkham,
+                    PhuongThucThanhToan = newHoaDon.PhuongThucThanhToan,
+                    TenDon = "N/A",  // Assign as necessary, or fetch dynamically
+                    TenDieuTri = dichVu.TenDichVu, // Assuming this is the name you want
+                    Description = "Description here", // Assign based on your needs
+                    TienThuoc = newHoaDon.TienThuoc,
+                    TienDieuTri = newHoaDon.TienDieuTri,
+                    TongTien = newHoaDon.TongTien,
+                    NgayLap = newHoaDon.NgayLap,
+                    EmailBn = null // Assign as necessary, or leave null if not needed
+                };
+                _context.ChiTietHoaDons.Add(newChiTietHoaDon);
                 await _context.SaveChangesAsync();
                 // Commit transaction
                 await transaction.CommitAsync();
@@ -291,8 +311,10 @@ namespace WebQuanLyNhaKhoa.Controllers
                 // Update the DTO with the new treatment ID and return it
                 newDieuTriDto.IddieuTri = newDieuTri.IddieuTri;
                 newDieuTriDto.ThanhTien = treatmentCost;
-
-                return CreatedAtAction(nameof(CreateDieuTriWithInvoices), new { id = newDieuTriDto.IddieuTri }, newDieuTriDto);
+                newDieuTriDto.hoaDonId = newHoaDon.IdhoaDon;
+                
+                Console.WriteLine($"HoaDon ID: {newHoaDon.IdhoaDon}");
+                return CreatedAtAction(nameof(CreateDieuTriWithInvoices), new { id= newDieuTriDto.Idkham }, newDieuTriDto);
             }
             catch
             {

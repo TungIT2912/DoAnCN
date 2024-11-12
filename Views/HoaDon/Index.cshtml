@@ -1,0 +1,55 @@
+﻿@using WebQuanLyNhaKhoa.Data
+@model HoaDon
+@{
+    ViewData["Title"] = "Create Treatment";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+<h2>Invoice Details</h2>
+<div>
+    <p><strong>Patient:</strong> @Model.DanhSachKham?.BenhNhan?.HoTen</p>
+    <p><strong>Service:</strong> @Model.DieuTri?.DichVu?.TenDichVu</p>
+    <p><strong>Treatment Amount:</strong> @Model.TienDieuTri</p>
+    <p><strong>Medication Amount:</strong> @Model.TienThuoc</p>
+    <p><strong>Total Amount:</strong> @Model.TongTien</p>
+
+    @if (Model.DaThanhToan)
+    {
+        <p><strong>Status:</strong> Paid</p>
+    }
+    else
+    {
+        <p><strong>Status:</strong> Unpaid</p>
+    }
+</div>
+
+<h3>Choose Payment Method</h3>
+<form id="paymentForm">
+    <button type="button" onclick="payByCOD()">Pay by Cash (COD)</button>
+</form>
+
+<p id="message"></p>
+
+@section Scripts {
+    <script>
+        async function payByCOD() {
+            const hoaDonId = @Model.IdhoaDon; // Lấy ID hóa đơn từ model
+
+            try {
+                const response = await fetch(`/HoaDon/api/PostThanhToan?hoaDonId=${hoaDonId}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    alert('Payment successful! Your invoice is processed.');
+                    window.location.href = '@Url.Action("Index", "Home")'; // Redirect to invoice list or payment success page
+                } else {
+                    const errorText = await response.text();
+                    document.getElementById('message').textContent = `Error: ${errorText}`;
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                document.getElementById('message').textContent = 'An error occurred during payment.';
+            }
+        }
+    </script>
+}
