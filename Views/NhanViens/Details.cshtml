@@ -226,11 +226,11 @@
             <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
                 <i class="micon fa fa-dashboard"></i>Thống kê
             </a>
-            <a href="/Admin/UserModel" class="nav-item nav-link ">
+            <a asp-action="Index" asp-controller="TaiKhoans" class="nav-item nav-link ">
                 <i class="micon fa fa-users"></i>Quản lí tài khoản
             </a>
             <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
-                <i class="micon fa fa-users"></i>Khách hàng
+                <i class="micon fa fa-users"></i>Bệnh nhân
             </a>
             <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
                 <i class="micon fa fa-th me-2"></i>Thị trường
@@ -245,7 +245,10 @@
                 <i class="micon fa fa-cubes"></i>Lịch sử nhập hàng
             </a>
             <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link ">
-                <i class="micon dw dw-invoice"></i>Hóa đơn
+                <i class=" micon fa fa-cubes"></i>Hóa đơn
+            </a>
+            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link ">
+                <i class=" micon fa fa-cubes"></i>Dịch vụ
             </a>
         </div>
     </nav>
@@ -275,31 +278,31 @@
                                 <input name="MaNv" id="MaNv" type="hidden" asp-for="MaNv" />
                                 <div class="form-group col-md-6">
                                    <label asp-for="Ten" class="control-label">Tên</label>
-                                        @Html.DisplayFor(model => model.Ten)
+                                    <span class="form-control"> @Html.DisplayFor(model => model.Ten)</span>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="Email" class="control-label">Email</label>
-                                        @Html.DisplayFor(model => model.Email)
+                                    <span class="form=control"> @Html.DisplayFor(model => model.Email)</span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label asp-for="Sdt" class="control-label">Số điện thoại</label>
-                                         @Html.DisplayFor(model => model.Sdt)
+                                    <span class="form=control"> @Html.DisplayFor(model => model.Sdt)</span>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="MaCv" class="control-label">Chức vụ</label>
-                                            @Html.DisplayFor(model => model.TenCv)
+                                    <span class="form=control">@Html.DisplayFor(model => model.TenCv)</span>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="KinhNghiem" class="control-label">Kinh nghiệm</label>
-                                         @Html.DisplayFor(model => model.KinhNghiem)
+                                    <span class="form=control">@Html.DisplayFor(model => model.KinhNghiem)</span>
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label asp-for="Diachi" class="control-label">Địa chỉ</label>
-                                            @Html.DisplayFor(model => model.Diachi)
+                                    <span class="form=control">@Html.DisplayFor(model => model.Diachi)</span>
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -331,14 +334,18 @@
 
                                 <div class="form-group col-md-12">
                                     <label asp-for="MatKhau" class="control-label">Mật khẩu</label>
-                                    @Html.DisplayFor(model => model.MatKhau)
+                                    <span class="form=control">
+                                        @Html.DisplayFor(model => model.MatKhau)
+                                    </span>
                                     <span asp-validation-for="MatKhau" class="text-danger"></span>
                                 </div>
 
 
                                 <div class="form-group col-md-12">
                                     <label asp-for="Role" class="control-label">Vai trò</label>
+                                    <span class="form=control">
                                         @Html.DisplayFor(model => model.Role)
+                                    </span>
                                     <span asp-validation-for="Role" class="text-danger"></span>
                                 </div>
 

@@ -62,7 +62,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         public IActionResult Create()
         {
             ViewBag.ChucVuList = new SelectList(_context.ChucVus, "MaCv", "TenCv");
-            ViewBag.Roles = new SelectList(new[] { "Admin", "Customer" });
+            ViewBag.Roles = new SelectList(new[] { "Admin", "Staff" });
             return View();
         }
         [HttpPost("api/NhanViens")]
@@ -125,6 +125,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 TenDangNhap = dto.Email,
                 MatKhau = BCrypt.Net.BCrypt.HashPassword(dto.MatKhau),
                 Role = dto.Role,
+                isLoocked = false,
             };
 
             try

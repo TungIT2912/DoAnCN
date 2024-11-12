@@ -1,107 +1,16 @@
-﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.HoaDon>
+﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.HoaDonDTO>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<main class="px-5 py-5">
-<h1 class="uppercase text-4xl font-semibold tracking-[.4rem] text-center">Thông tin danh sách hóa đơn</h1>
-<div class="my-5">
-    <a asp-action="Index" asp-controller="DanhSachKhams">
-        <button class="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300"><i class="fa-solid fa-arrow-left"></i>  Quay về danh sách điều trị</button>
-    </a>
- </div>
-    <div class="flex flex-col gap-10">
-        <!-- ====== Table Four Start -->
-        <div class="overflow-hidden rounded-[10px]">
-            <div class="max-w-full overflow-x-auto">
-                <div class="max-w-[1170px]">
-                    <!-- table header start -->
-                    <div class="grid text-white grid-cols-12 bg-[#F9FAFB] px-5 py-4 dark:bg-meta-4 lg:px-7.5 2xl:px-11 justify-items-center text-[15px]" style="background-color: rgb(60 80 224); color:white !important">
-                        <div class="col-span-2">
-                            <h5 class="font-medium" style="color: inherit">
-                                Phương thức thanh toán
-                            </h5>
-                        </div>
+@* 
+<h1>Index</h1>
 
-                        <div class="col-span-2">
-                            <h5 class="font-medium" style="color: inherit">
-                                Tiền thuốc
-                            </h5>
-                        </div>
-
-                        <div class="col-span-2">
-                            <h5 class="font-medium" style="color: inherit">
-                                Tiền điều trị
-                            </h5>
-                        </div>
-
-                        <div class="col-span-2">
-                            <h5 class="font-medium" style="color: inherit">
-                                Tổng tiền
-                            </h5>
-                        </div>
-                        <div class="col-span-2">
-                            <h5 class="font-medium" style="color: inherit">
-                                Ngày lập
-                            </h5>
-                        </div>
-                        <div class="col-span-2">
-                            <h5 class="font-medium" style="color: inherit">
-                               Action
-                            </h5>
-                        </div>
-                    </div>
-                    <!-- table header end -->
-                    <!-- table body start -->
-                    <div class="bg-white dark:bg-boxdark">
-                        <!-- table row item -->
-                        @foreach (var item in Model)
-                        {
-                            <div class="grid grid-cols-12 border-t border-[#EEEEEE] text-[12px] px-5 py-4 dark:border-strokedark lg:px-7.5 2xl:px-11 justify-items-center align-items-center">
-                                <div class="col-span-2">
-                                    <p class="text-[#637381] dark:text-bodydark">
-                                        @Html.DisplayFor(modelItem => item.PhuongThucThanhToan)
-                                    </p>
-                                </div>
-
-                                <div class="col-span-2">
-                                    <p class="text-[#637381] dark:text-bodydark">
-                                        @Html.DisplayFor(modelItem => item.TienThuoc)
-                                    </p>
-                                </div>
-
-                                <div class="col-span-2">
-                                    <p class="text-[#637381] dark:text-bodydark">
-                                        @Html.DisplayFor(modelItem => item.TienDieuTri)
-                                    </p>
-                                </div>
-
-                                <div class="col-span-2">
-                                    <p class="text-[#637381] dark:text-bodydark">
-                                        @Html.DisplayFor(modelItem => item.TongTien)
-                                    </p>
-                                </div>
-                                <div class="col-span-2">
-                                    <p class="text-[#637381] dark:text-bodydark">
-                                        @Html.DisplayFor(modelItem => item.NgayLap)
-                                    </p>
-                                </div>
-                                <div class="col-span-2">
-                                    <a asp-action="Edit" asp-route-id="@item.IdhoaDon" class="rounded-lg px-4 py-2 bg-green-300 hover:bg-green-400 duration-300">
-                                        Thanh toán
-                                    </a>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <!-- table body end -->
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-@* <table class="table">
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -118,6 +27,18 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NgayLap)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailBn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DieuTri)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DonThuoc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DanhSachKham)
             </th>
             <th></th>
         </tr>
@@ -141,10 +62,349 @@
                 @Html.DisplayFor(modelItem => item.NgayLap)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdhoaDon">Thanh toán</a> 
-                <a asp-action="Details" asp-route-id="@item.IdhoaDon">Details</a>
+                @Html.DisplayFor(modelItem => item.EmailBn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DieuTri.IddieuTri)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DonThuoc.IddonThuoc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DanhSachKham.Idkham)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdhoaDon">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdhoaDon">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdhoaDon">Delete</a>
             </td>
         </tr>
 }
     </tbody>
-</table> *@
+</table>
+ *@
+
+<style>
+    body {
+        color: #566787;
+        background: #f5f5f5;
+        font-family: 'Varela Round', sans-serif;
+        font-size: 13px;
+    }
+
+    .table-responsive {
+        margin: 30px 0;
+    }
+
+    .table-wrapper {
+        min-width: 1000px;
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+
+    .table-title {
+        padding-bottom: 15px;
+        background: #299be4;
+        color: #fff;
+        padding: 16px 30px;
+        margin: -20px -25px 10px;
+        border-radius: 3px 3px 0 0;
+    }
+
+        .table-title h2 {
+            margin: 5px 0 0;
+            font-size: 24px;
+        }
+
+        .table-title .btn {
+            color: #566787;
+            float: right;
+            font-size: 13px;
+            background: #fff;
+            border: none;
+            min-width: 50px;
+            border-radius: 2px;
+            border: none;
+            outline: none !important;
+            margin-left: 10px;
+        }
+
+            .table-title .btn:hover, .table-title .btn:focus {
+                color: #566787;
+                background: #f2f2f2;
+            }
+
+            .table-title .btn i {
+                float: left;
+                font-size: 21px;
+                margin-right: 5px;
+            }
+
+            .table-title .btn span {
+                float: left;
+                margin-top: 2px;
+            }
+
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+        padding: 12px 15px;
+        vertical-align: middle;
+    }
+
+        table.table tr th:first-child {
+            width: 60px;
+        }
+
+        table.table tr th:last-child {
+            width: 100px;
+        }
+
+    table.table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fcfcfc;
+    }
+
+    table.table-striped.table-hover tbody tr:hover {
+        background: #f5f5f5;
+    }
+
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+
+    table.table td:last-child i {
+        opacity: 0.9;
+        font-size: 22px;
+        margin: 0 5px;
+    }
+
+    table.table td a {
+        font-weight: bold;
+        color: #566787;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+        table.table td a:hover {
+            color: #2196F3;
+        }
+
+        table.table td a.settings {
+            color: #2196F3;
+        }
+
+        table.table td a.delete {
+            color: #F44336;
+        }
+
+    table.table td i {
+        font-size: 19px;
+    }
+
+    table.table .avatar {
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    .status {
+        font-size: 30px;
+        margin: 2px 2px 0 0;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 10px;
+    }
+
+    .text-success {
+        color: #10c469;
+    }
+
+    .text-info {
+        color: #62c9e8;
+    }
+
+    .text-warning {
+        color: #FFC107;
+    }
+
+    .text-danger {
+        color: #ff5b5b;
+    }
+
+    .pagination {
+        float: right;
+        margin: 0 0 5px;
+    }
+
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 2px !important;
+            text-align: center;
+            padding: 0 6px;
+        }
+
+            .pagination li a:hover {
+                color: #666;
+            }
+
+        .pagination li.active a, .pagination li.active a.page-link {
+            background: #03A9F4;
+        }
+
+            .pagination li.active a:hover {
+                background: #0397d6;
+            }
+
+        .pagination li.disabled i {
+            color: #ccc;
+        }
+
+        .pagination li i {
+            font-size: 16px;
+            padding-top: 6px
+        }
+
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<div class="sidebar pe-4 pb-3">
+    <nav class="navbar bg-light navbar-light">
+        <a href="index.html" class="navbar-brand mx-4 mb-3">
+            <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Dental</h3>
+        </a>
+        <div class="d-flex align-items-center ms-4 mb-4">
+            <div class="position-relative">
+                <img class="rounded-circle" src="~/images/customer-3.jpg" alt="" style="width: 40px; height: 40px;">
+                <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+            </div>
+            <div class="ms-3 text-center">
+                <h6 class="mb-0">Thanh Tùng</h6>
+                <span>Admin</span>
+            </div>
+        </div>
+        <div class="navbar-nav w-100">
+            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
+            <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
+                <i class="micon fa fa-dashboard"></i>Thống kê
+            </a>
+            <a asp-action="Index" asp-controller="TaiKhoans" class="nav-item nav-link ">
+                <i class="micon fa fa-users"></i>Quản lí tài khoản
+            </a>
+            <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
+                <i class="micon fa fa-users"></i>Bệnh nhân
+            </a>
+            <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
+                <i class="micon fa fa-th me-2"></i>Thị trường
+            </a>
+            <a asp-action="Index" asp-controller="Khoes" class="nav-item nav-link ">
+                <i class="micon fa fa-cubes"></i>Kho
+            </a>
+            <a href="/Admin/LichSuNhapXuats/api/LichSuNhapXuats/Create" class="nav-item nav-link ">
+                <i class="micon fa fa-cubes"></i>Nhập hàng
+            </a>
+            <a asp-action="Index" asp-controller="LichSuNhapXuats" class="nav-item nav-link ">
+                <i class="micon fa fa-cubes"></i>Lịch sử nhập hàng
+            </a>
+            <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link active">
+                <i class=" micon fa fa-cubes"></i>Hóa đơn
+            </a>
+            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link ">
+                <i class=" micon fa fa-cubes"></i>Dịch vụ
+            </a>
+        </div>
+    </nav>
+</div>
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="xs-pd-20-10 pd-ltr-20">
+        <div class="row clearfix progress-box">
+            <div class="col-lg-12">
+                <div class="card-box mb-30">
+                    <div class="pd-20">
+                        <h4 class="text-blue h4">Thông tin các hóa đơn</h4>
+
+                    </div>
+                    <div class="pb-20">
+
+                        <table class="table project-list-table table-nowrap align-middle table-borderless" class="table" id="khoTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 200px;">Tên bệnh nhân</th>
+                                    <th scope="col">Phương thức thanh toán</th>
+                                    <th scope="col">Tiền thuốc</th>
+                                    <th scope="col">Tiền điều trị</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col">Ngày lập</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    async function fetchKhoes() {
+        try {
+            const response = await fetch('HoaDons/api/HoaDons');
+            if (!response.ok) {
+                console.error('Response status:', response.status); // Log status
+                throw new Error('Network response was not ok');
+            }
+            const khoes = await response.json();
+            console.log("API response data:", khoes);
+            const tableBody = document.getElementById('khoTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+            khoes.forEach(nv => {
+                const row = document.createElement('tr');
+                console.log("ngayLap value:", nv.ngayLap);
+
+                const date = new Date(nv.ngayLap);
+                const formattedDate = date.toLocaleDateString('en-GB');
+                row.innerHTML = `
+                    <td>${nv.tenBn}</td>
+                    <td>${nv.phuongThucThanhToan}</td>
+                    <td>${nv.tienThuoc}</td>
+                    <td>${nv.tienDieuTri}</td>
+                    <td>${nv.tongTien}</td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        <a href="/Admin/ChiTietHoaDons/api/ChiTietHoaDons/Detail/${nv.idkham}""><i class="dw dw-delete"></i> Chi tiết</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('Không thể tải dữ liệu. Vui lòng thử lại.');
+        }
+    }
+
+    // Call the function on page load
+    document.addEventListener('DOMContentLoaded', fetchKhoes);
+</script>

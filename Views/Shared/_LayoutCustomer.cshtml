@@ -26,6 +26,8 @@
     <link href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
     <link href="~/css/site.css" rel="stylesheet">
 </head>
+ @RenderSection("Scripts", required: false)
+
 <body>
     <!-- Header, Main Content, and Footer -->
     @await Html.PartialAsync("_HeaderCustomer")

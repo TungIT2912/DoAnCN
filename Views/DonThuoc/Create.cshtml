@@ -1,0 +1,250 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.DonThuocDTO>
+@{
+    ViewData["Title"] = "Create Prescription";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form id="donThuocForm">
+    <div class="form-group">
+        <label for="Idkham">Chọn Bệnh Nhân</label>
+        <select id="Idkham" class="form-control" name="Idkham">
+            <!-- Các option bệnh nhân sẽ được load vào đây -->
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="IddungCu">Chọn Dụng Cụ</label>
+        <select id="IddungCu" class="form-control" name="IddungCu" multiple="multiple">
+            <!-- Các option dụng cụ sẽ được load vào đây -->
+        </select>
+    </div>
+
+    <div class="form-group" id="soLuongContainer">
+        <label for="SoLuong">Số Lượng</label>
+        <!-- Các input số lượng sẽ được thêm vào từ JavaScript -->
+    </div>
+
+    <button type="submit" class="btn btn-primary">Tạo Đơn Thuốc</button>
+</form>
+<script>
+    // Fetch patients options from API
+    fetch('/DonThuoc/api/GetDanhSachKhamOptions')
+        .then(response => response.json())
+        .then(data => {
+            const patientSelect = document.getElementById('Idkham');
+            data.forEach(patient => {
+                const option = document.createElement('option');
+                option.value = patient.id;
+                option.textContent = patient.name;
+                patientSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching patients:', error);
+        });
+
+    // Fetch tools options from API
+    fetch('/DonThuoc/api/GetDungCuOptions')
+        .then(response => response.json())
+        .then(data => {
+            const toolSelect = document.getElementById('IddungCu');
+            data.forEach(tool => {
+                const option = document.createElement('option');
+                option.value = tool.id;
+                option.textContent = tool.name;
+                toolSelect.appendChild(option);
+            });
+
+            // Add event listener to dynamically create quantity inputs for selected tools
+            toolSelect.addEventListener('change', function() {
+                const selectedOptions = Array.from(toolSelect.selectedOptions);
+                const soLuongContainer = document.getElementById('soLuongContainer');
+                soLuongContainer.innerHTML = ''; // Clear previous quantity inputs
+
+                selectedOptions.forEach(option => {
+                    const label = document.createElement('label');
+                    label.setAttribute('for', `SoLuong-${option.value}`);
+                    label.textContent = `Số lượng cho dụng cụ ${option.textContent}:`;
+
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.id = `SoLuong-${option.value}`;
+                    input.name = `SoLuong-${option.value}`; // Unique name for each input
+                    input.classList.add('form-control');
+                    input.required = true;
+
+                    soLuongContainer.appendChild(label);
+                    soLuongContainer.appendChild(input);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching tools:', error);
+        });
+
+    // Listen for form submit event
+    document.getElementById('donThuocForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const idkham = document.getElementById('Idkham').value;
+        const iddungCu = Array.from(document.getElementById('IddungCu').selectedOptions).map(option => option.value);
+
+        // Collect quantities for each selected tool
+        const soLuong = iddungCu.map(id => {
+            const input = document.getElementById(`SoLuong-${id}`);
+            return input ? parseInt(input.value) : 0;
+        });
+
+        if (!idkham || iddungCu.length === 0 || soLuong.some(s => s <= 0)) {
+            alert('Vui lòng điền đủ thông tin!');
+            return;
+        }
+
+        // Log data before sending
+        console.log("Data being sent:", {
+            Idkham: parseInt(idkham),
+            IddungCu: iddungCu.map(id => parseInt(id)), // Array of tool IDs
+            SoLuong: soLuong // Array of quantities for each tool
+        });
+
+        // Send request to API
+        fetch('/DonThuoc/api/PostDonThuoc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Idkham: parseInt(idkham),
+                IddungCu: iddungCu.map(id => parseInt(id)), // Array of tool IDs
+                SoLuong: soLuong, // Array of quantities for each tool
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                
+                const hoaDonId = data.hoaDonId;
+                console.log("Response id:", hoaDonId);
+                console.log("Response data:", data);
+                if (data && data.success) { // Giả định rằng API trả về một thuộc tính `success: true` khi thành công
+                    alert('Đơn thuốc đã được tạo thành công!');
+                } else {
+                    alert('Đơn thuốc đã được tạo thành công!');
+                    window.location.href = `/HoaDon/ThanhToan?hoaDonId=${data.hoaDonId}`;
+                }
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại!');
+            });
+    });
+</script>
+
+
+
+
+@* <script>
+    // Fetch patients options from API
+    fetch('/DonThuoc/api/GetDanhSachKhamOptions')
+        .then(response => response.json())
+        .then(data => {
+            const patientSelect = document.getElementById('Idkham');
+            data.forEach(patient => {
+                const option = document.createElement('option');
+                option.value = patient.id;
+                option.textContent = patient.name;
+                patientSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching patients:', error);
+        });
+
+    // Fetch tools options from API
+    fetch('/DonThuoc/api/GetDungCuOptions')
+        .then(response => response.json())
+        .then(data => {
+            const toolSelect = document.getElementById('IddungCu');
+            data.forEach(tool => {
+                const option = document.createElement('option');
+                option.value = tool.id;
+                option.textContent = tool.name;
+                toolSelect.appendChild(option);
+            });
+
+            // Lắng nghe sự kiện thay đổi lựa chọn dụng cụ để tạo input số lượng
+            toolSelect.addEventListener('change', function() {
+                const selectedOptions = Array.from(toolSelect.selectedOptions);
+                const soLuongContainer = document.getElementById('soLuongContainer');
+                soLuongContainer.innerHTML = ''; // Xóa các input số lượng cũ
+
+                selectedOptions.forEach((option, index) => {
+                    // Tạo một label và input số lượng cho mỗi dụng cụ được chọn
+                    const label = document.createElement('label');
+                    label.setAttribute('for', `SoLuong-${option.value}`);
+                    label.textContent = `Số lượng cho dụng cụ ${option.textContent}:`;
+
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.id = `SoLuong-${option.value}`;
+                    input.name = 'SoLuong';
+                    input.classList.add('form-control');
+                    input.required = true;
+
+                    soLuongContainer.appendChild(label);
+                    soLuongContainer.appendChild(input);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching tools:', error);
+        });
+
+    // Lắng nghe sự kiện submit form
+    document.getElementById('donThuocForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Ngừng submit mặc định
+
+        const idkham = document.getElementById('Idkham').value;
+        const iddungCu = Array.from(document.getElementById('IddungCu').selectedOptions).map(option => option.value);
+
+        // Lấy số lượng cho mỗi dụng cụ đã chọn
+        const soLuong = iddungCu.map(id => {
+            const input = document.getElementById(`SoLuong-${id}`);
+            return input ? parseInt(input.value) : 0;
+        });
+
+        if (!idkham || iddungCu.length === 0 || soLuong.some(s => s <= 0)) {
+            alert('Vui lòng điền đủ thông tin!');
+            return;
+        }
+
+        // Gửi request đến API
+        fetch('/DonThuoc/api/PostDonThuoc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Idkham: parseInt(idkham),
+                IddungCu: iddungCu.map(id => parseInt(id)), // Mảng các ID dụng cụ
+                SoLuong: soLuong // Mảng số lượng cho mỗi dụng cụ
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.Idkham) {
+                    alert('Đơn thuốc đã được tạo thành công!');
+                    // Bạn có thể thực hiện hành động khác sau khi tạo đơn thuốc thành công.
+                } else {
+                    alert('Có lỗi xảy ra, vui lòng thử lại!');
+                }
+            })
+            .catch(error => {
+                console.error('Có lỗi xảy ra:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại!');
+            });
+    });
+</script> *@
+
+
