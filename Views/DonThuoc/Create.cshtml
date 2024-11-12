@@ -123,12 +123,15 @@
         })
             .then(response => response.json())
             .then(data => {
-
+                
+                const hoaDonId = data.hoaDonId;
+                console.log("Response id:", hoaDonId);
                 console.log("Response data:", data);
                 if (data && data.success) { // Giả định rằng API trả về một thuộc tính `success: true` khi thành công
                     alert('Đơn thuốc đã được tạo thành công!');
                 } else {
                     alert('Đơn thuốc đã được tạo thành công!');
+                    window.location.href = `/HoaDon/ThanhToan?hoaDonId=${data.hoaDonId}`;
                 }
             })
             .catch(error => {

@@ -12,6 +12,7 @@ namespace WebQuanLyNhaKhoa.DTO
 		public int Idkham { get; set; }
 		public int IddungCu { get; set; }
 		public int IddonThuoc { get; set; }
+        public int hoaDonId { get; set; }
 
         public int SoLuong { get; set; }
 

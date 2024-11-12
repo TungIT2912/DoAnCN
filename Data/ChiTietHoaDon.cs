@@ -26,7 +26,7 @@ namespace WebQuanLyNhaKhoa.Data
 
         public string TenDon { get; set; }
         public string TenDieuTri { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Range(0, double.MaxValue)]
         public decimal TienThuoc { get; set; }

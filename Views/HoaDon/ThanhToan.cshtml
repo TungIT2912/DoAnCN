@@ -1,0 +1,57 @@
+﻿
+
+@model WebQuanLyNhaKhoa.Data.HoaDon
+
+@{
+    ViewData["Title"] = "Thanh Toán Hóa Đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thanh Toán Hóa Đơn</h2>
+
+@if (Model != null)
+{
+    <p><strong>Mã hóa đơn:</strong> @Model.IdhoaDon</p>
+    <p><strong>Tên bệnh nhân:</strong> @ViewBag.TenBenhNhan</p>
+    <p><strong>Số điện thoại bệnh nhân:</strong> @ViewBag.SoDienThoaiBenhNhan</p>
+    <p><strong>Tên Dịch Vụ:</strong> @ViewBag.TenDichVu</p>
+    <p><strong>Tiền điều trị:</strong> @Model.TienDieuTri</p>
+    <p><strong>Tiền thuốc:</strong> @Model.TienThuoc</p>
+    <p><strong>Tổng tiền:</strong> @Model.TongTien</p>
+    <p><strong>Tổng tiền:</strong> @Model.NgayLap</p>
+    <p><strong>Phương thức thanh toán:</strong> @Model.PhuongThucThanhToan</p>
+
+    <button id="payButton">Thanh Toán</button>
+    <p id="message"></p>
+}
+else
+{
+    <p>Hóa đơn không tồn tại.</p>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('payButton').addEventListener('click', async function () {
+            const hoaDonId = @Model.IdhoaDon;
+            try {
+                const response = await fetch(`/HoaDon/ThanhToanApi?hoaDonId=${hoaDonId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    alert("Thanh Toán Thành Công");
+                    window.location.href = '@Url.Action("Index", "Home")';
+                } else {
+                    const errorText = await response.text();
+                    document.getElementById('message').textContent = `Lỗi: ${errorText}`;
+                }
+            } catch (error) {
+                document.getElementById('message').textContent = 'Có lỗi xảy ra khi thanh toán.';
+                console.error('Payment error:', error);
+            }
+        });
+    </script>
+}

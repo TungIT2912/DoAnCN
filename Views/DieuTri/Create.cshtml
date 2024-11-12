@@ -134,8 +134,17 @@
 
                 const message = document.getElementById('message');
                 if (response.ok) {
-                     alert("Tạo Điều trị thành công!");
-                    window.location.href = '@Url.Action("Index", "DieuTri")';
+                    const data = await response.json();
+                    const hoaDonId = data.hoaDonId;
+                    console.log("API response data:", data);
+                     // alert("Tạo Điều trị thành công!");
+                    const createPrescription = confirm("Treatment created successfully! Do you want to create a prescription?");
+                    if (createPrescription) {
+                        window.location.href = '@Url.Action("Create", "DonThuoc")'; 
+                    } else {
+                        window.location.href = `@Url.Action("ThanhToan", "HoaDon")?hoaDonId=${hoaDonId}`;
+
+                    }
                 } else {
                     const errorText = await response.text();
                     message.textContent = `Error: ${errorText}`;

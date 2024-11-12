@@ -76,6 +76,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         [HttpPost("api/PostDonThuoc")]
         public async Task<ActionResult<DonThuocDTO>> CreateDonThuocAndUpdateInvoice([FromBody] DonThuocDTO newDonThuocDto)
         {
+            var existingHoaDon = await _context.HoaDons
+                    .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
@@ -87,7 +89,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 }
 
                 decimal totalMedicationCost = 0;  // Tổng chi phí thuốc
-
+                                                  // Kiểm tra hoặc cập nhật ChiTietHoaDon
+                
                 // Duyệt qua từng dụng cụ và xử lý
                 for (int i = 0; i < newDonThuocDto.IddungCu.Count; i++)
                 {
@@ -130,8 +133,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                     _context.Khos.Update(dungCu);
                     await _context.SaveChangesAsync();
                     
-                    var existingHoaDon = await _context.HoaDons
-                    .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
+                    
 
                     if (existingHoaDon != null)
                     {
@@ -141,6 +143,20 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         _context.HoaDons.Update(existingHoaDon);
                         await _context.SaveChangesAsync();
                     }
+
+
+                    var existingChiTietHoaDon = await _context.ChiTietHoaDons
+                    .FirstOrDefaultAsync(c => c.Idkham == newDonThuocDto.Idkham);
+                    if (existingChiTietHoaDon != null)
+                    {
+                        // Cập nhật ChiTietHoaDon hiện có
+                        existingChiTietHoaDon.TienThuoc += totalMedicationCost;
+                        existingChiTietHoaDon.TongTien += totalMedicationCost;
+                        existingChiTietHoaDon.NgayLap = DateTime.Now;
+                        _context.ChiTietHoaDons.Update(existingChiTietHoaDon);
+                        await _context.SaveChangesAsync();
+                    }
+                    
                     totalMedicationCost = 0;
                 }
 
@@ -150,6 +166,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 // Commit transaction
                 await transaction.CommitAsync();
 
+                newDonThuocDto.hoaDonId = existingHoaDon.IdhoaDon;
+                Console.WriteLine($"HoaDon ID: {existingHoaDon.IdhoaDon}");
                 return CreatedAtAction(nameof(CreateDonThuocAndUpdateInvoice), new { id = newDonThuocDto.Idkham }, newDonThuocDto);
             }
             catch (Exception ex)

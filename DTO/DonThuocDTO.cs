@@ -9,8 +9,8 @@ namespace WebQuanLyNhaKhoa.DTO
 		public int Idkham { get; set; }
 		
         public string? tenThuoc { get; set; }
-		
-		public decimal ThanhGia { get; set; }
+        public int hoaDonId { get; set; }
+        public decimal ThanhGia { get; set; }
 		public decimal TongTien { get; set; }
         public List<int> IddungCu { get; set; } // Mảng chứa các ID dụng cụ
         public List<int> SoLuong { get; set; }
