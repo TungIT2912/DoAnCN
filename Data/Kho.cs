@@ -8,10 +8,10 @@ namespace WebQuanLyNhaKhoa.Data
 	{
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdsanPham { get; set; } 
+        public int IddungCu { get; set; } 
 
 		[ForeignKey("ThiTruong")]
-		public int IddungCu { get; set; } 
+		public int IdsanPham { get; set; } 
 
 
 		[Required]
@@ -27,6 +27,6 @@ namespace WebQuanLyNhaKhoa.Data
 		public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
 		public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
 
-		public virtual ThiTruong ThiTruong { get; set; } = null!;
+		public virtual ThiTruong ThiTruong { get; set; }
 	}
 }

@@ -1,0 +1,39 @@
+﻿@model WebQuanLyNhaKhoa.DTO.ChanDoanDTO
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Chẩn Đoán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chỉnh sửa Chẩn Đoán</h2>
+
+<form id="editForm">
+    <input type="hidden" id="idchanDoan" value="@Model.IdchanDoan" />
+    <div class="form-group">
+        <label for="tenChanDoan">Tên Chẩn Đoán</label>
+        <input type="text" id="tenChanDoan" class="form-control" value="@Model.TenChanDoan" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <button type="button" onclick="window.location.href='/ChanDoan/Index'" class="btn btn-secondary">Hủy</button>
+</form>
+
+<script>
+    document.getElementById("editForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const id = document.getElementById("idchanDoan").value;
+        const tenChanDoan = document.getElementById("tenChanDoan").value;
+
+        const response = await fetch(`/api/PutChanDoan/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idchanDoan: id, tenChanDoan })
+        });
+
+        if (response.ok) {
+            window.location.href = "/ChanDoan/Index"; // Chuyển hướng về danh sách sau khi cập nhật thành công
+        } else {
+            alert("Không thể cập nhật chẩn đoán. Vui lòng thử lại.");
+        }
+    });
+</script>

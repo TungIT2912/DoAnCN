@@ -6,6 +6,7 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class BenhNhanDTO
 	{
+        public int? IdbenhNhan { get; set; }
         public string HoTen { get; set; } 
 
         public bool? Gioi { get; set; }
@@ -16,6 +17,7 @@ namespace WebQuanLyNhaKhoa.DTO
 
         [StringLength(200)]
         public string? DiaChi { get; set; }
+        public string? TrieuChung { get; set; }
 
         public DateTime? NgayKhamDau { get; set; }
         public string? TenDangNhap { get; set; }

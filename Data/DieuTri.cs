@@ -9,7 +9,7 @@ namespace WebQuanLyNhaKhoa.Data
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IddieuTri { get; set; }
-
+			
 		[ForeignKey("DichVu")]
 		public int IddichVu { get; set; }
 
@@ -23,8 +23,12 @@ namespace WebQuanLyNhaKhoa.Data
 
 		[Range(0, double.MaxValue)]
 		public decimal ThanhTien { get; set; }
+        [ForeignKey("ChiTietHoaDon")]
+        public int? ChiTietHoaDonId { get; set; }
 
-		public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+        public virtual ChiTietHoaDon ChiTietHoaDon { get; set; }
+
+        public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
 		public virtual DichVu DichVu { get; set; } = null!;
 		public virtual Kho Kho { get; set; } = null!;

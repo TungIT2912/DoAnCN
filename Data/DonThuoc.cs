@@ -14,9 +14,8 @@ namespace WebQuanLyNhaKhoa.Data
 		public int Idkham { get; set; } 
 
 		[ForeignKey("Kho")]
-		public int IddungCu { get; set; } 
-
-		public int SoLuong { get; set; }
+		public int IddungCu { get; set; }
+        public int SoLuong { get; set; }
 
 		[Range(0, double.MaxValue)]
 		public decimal ThanhGia { get; set; }
@@ -25,8 +24,12 @@ namespace WebQuanLyNhaKhoa.Data
 		public decimal TongTien { get; set; }
 
 		public DateTime? NgayLapDt { get; set; }
+        [ForeignKey("ChiTietHoaDon")]
+        public int? ChiTietHoaDonId { get; set; } 
 
-		public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+        public virtual ChiTietHoaDon ChiTietHoaDon { get; set; }
+
+        public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
 		public virtual Kho Kho { get; set; } = null!;
 		public virtual DanhSachKham DanhSachKham { get; set; } = null!;

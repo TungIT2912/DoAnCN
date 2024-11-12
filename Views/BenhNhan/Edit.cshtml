@@ -1,0 +1,152 @@
+﻿@model WebQuanLyNhaKhoa.DTO.BenhNhanDTO
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="p-4 sm:p-6 xl:p-10">
+        <div class="rounded-md border border-stroke bg-whiter p-4 py-3 dark:border-strokedark dark:bg-meta-4 sm:px-6 sm:py-5.5 xl:px-7.5">
+            <nav>
+                <ol class="flex flex-wrap items-center gap-3">
+                    <li>
+                        <a asp-action="Index" class="flex items-center gap-3.5 font-medium hover:text-primary">
+                            Home
+                        </a>
+                    </li>
+                    <li class="flex items-center gap-3 font-medium text-black ">
+                        <svg class="fill-current" width="6" height="15" viewBox="0 0 6 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.80682 0.818303L2.05682 14.7501H0.255682L4.00568 0.818303H5.80682Z" fill=""></path>
+                        </svg>
+                        Edit
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+        <!-- Breadcrumb Start -->
+        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="font-bold text-black text-2xl">
+                Edit Patient Form
+            </h2>
+
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li>
+                        <a class="font-medium" href="index.html">Dashboard /</a>
+                    </li>
+                    <li class="font-medium text-primary text-black">Edit Patient Form</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- Breadcrumb End -->
+        <!-- Form Layout Section Start -->
+        <div class="grid grid-cols-1 gap-9 sm:grid-cols-2">
+            <div class="flex flex-col gap-9">
+                <!-- Patient Form -->
+                <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+                    <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                        <h3 class="font-medium text-black text-center">
+                            Edit Patient Form
+                        </h3>
+                    </div>
+                    <form id="editBenhNhanForm" class="p-[20px]">
+                        <div class="p-6.5">
+                            <!-- Name Patient Start -->
+                            <div class="my-5 mx-3">
+                                <label asp-for="HoTen" class="mb-3 block text-sm font-medium text-black">
+                                    Name
+                                </label>
+                                <input asp-for="HoTen" id="name" type="text" placeholder="Enter your full name" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-black dark:focus:border-primary">
+                                <span asp-validation-for="HoTen" class="text-danger"></span>
+                            </div>
+                            <!-- Gender -->
+                            <div class="my-5 mx-3">
+                                <div>
+                                    <input asp-for="Gioi"  type="radio" name="gender" value="True" />
+                                    <span>Nữ</span>
+                                </div>
+                                <div>
+                                    <input asp-for="Gioi"  type="radio" name="gender" value="False" />
+                                    <span>Nam</span>
+                                </div>
+                            </div>
+                            <!-- Age -->
+                            <div class="my-5 mx-3">
+                                <label asp-for="NamSinh" id="namsinh" class="mb-3 block text-sm font-medium text-black">
+                                    Age:
+                                </label>
+                                <input asp-for="NamSinh" type="text" placeholder="Enter your age" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                            </div>
+                            <!-- Phone -->
+                            <div class="my-5 mx-3">
+                                <label asp-for="Sdt" class="mb-3 block text-sm font-medium text-black">
+                                    Telephone:
+                                </label>
+                                <input asp-for="Sdt" id="sdt" type="tel" placeholder="Enter your telephone" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                            </div>
+                            <!-- Address -->
+                            <div class="my-5 mx-3">
+                                <label asp-for="DiaChi" class="mb-3 block text-sm font-medium text-black">
+                                    Address:
+                                </label>
+                                <input asp-for="DiaChi" id="diachi" type="text" placeholder="Enter your address" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                            </div>
+                            <!-- Registration Day -->
+                            <div class="my-5 mx-3">
+                                <label asp-for="NgayKhamDau" class="mb-3 block text-sm font-medium text-black">
+                                    Registration Day:
+                                </label>
+                                <input asp-for="NgayKhamDau" id="ngaykham" type="datetime-local" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                            </div>
+
+                            <button type="submit" class="w-full rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <script>
+        document.getElementById("editBenhNhanForm").addEventListener("submit", async function (e) {
+            e.preventDefault(); 
+
+            const patientId = "@Model.IdbenhNhan";
+            console.log("id:", patientId);
+            const benhNhanData = {
+                
+                HoTen: document.querySelector("[name='HoTen']").value,
+                Gioi: document.querySelector("[name='gender']:checked").value === "True",
+                NamSinh: parseInt(document.querySelector("[name='NamSinh']").value),
+                Sdt: document.querySelector("[name='Sdt']").value,
+                DiaChi: document.querySelector("[name='DiaChi']").value,
+                NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
+            };
+
+            try {
+                const response = await fetch(`/BenhNhan/api/PutBenhNhan/${patientId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(benhNhanData)
+                });
+
+                if (response.ok) {
+                    alert("Patient updated successfully!");
+                    window.location.href = "/BenhNhan/Index"; // Redirect to the list page
+                } else {
+                    alert("Failed to update patient.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while updating the patient.");
+            }
+        });
+    </script>
+}

@@ -26,7 +26,7 @@ namespace WebQuanLyNhaKhoa.Data
 
         public string TenDon { get; set; }
         public string TenDieuTri { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Range(0, double.MaxValue)]
         public decimal TienThuoc { get; set; }
@@ -42,12 +42,11 @@ namespace WebQuanLyNhaKhoa.Data
         [EmailAddress]
         public string? EmailBn { get; set; }
 
-        public virtual DieuTri DieuTri { get; set; } = null!;
-        public virtual DonThuoc DonThuoc { get; set; } = null!;
+        public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
+        public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
         public virtual DanhSachKham? DanhSachKham { get; set; }
+        public virtual HoaDon? HoaDon { get; set; }
 
-        // Thêm các trường mới để lưu danh sách các đơn thuốc và điều trị
-        public ICollection<string> DanhSachDonThuoc { get; set; } = new List<string>();
-        public ICollection<string> DanhSachDieuTri { get; set; } = new List<string>();
+        
     }
 }

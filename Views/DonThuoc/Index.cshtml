@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "Danh sách Đơn Thuốc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <h1>@ViewData["Title"]</h1>
+    <div id="donThuocContainer">
+        <!-- Data fetched from the API will be displayed here -->
+        <p>Loading...</p>
+    </div>
+
+<script>
+    // Function to fetch data from 'api/GetDonThuoc'
+    async function fetchDonThuocData() {
+        try {
+            // Fetch data from the API endpoint
+            const response = await fetch('/DonThuoc/api/GetDonThuoc');
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Parse JSON response
+            const donThuocs = await response.json();
+
+            // Find container to display data
+            const container = document.getElementById('donThuocContainer');
+
+            // If no data is found, show a message and return
+            if (!Array.isArray(donThuocs) || donThuocs.length === 0) {
+                container.innerHTML = '<p>No data found.</p>';
+                return;
+            }
+
+            // Build HTML table structure
+            let htmlContent = `
+                    <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 8px;">Id Kham</th>
+                                <th style="padding: 8px;">Tên Thuốc</th>
+                                <th style="padding: 8px;">Thành Giá</th>
+                                <th style="padding: 8px;">Tổng Tiền</th>
+                                <th style="padding: 8px;">Id Dụng Cụ</th>
+                                <th style="padding: 8px;">Số Lượng</th>
+                                <th style="padding: 8px;">Ngày Lập Đơn Thuốc</th>
+                                <th style="padding: 8px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+            // Loop through each DonThuoc object to populate table rows with a Delete button
+            donThuocs.forEach(donThuoc => {
+                htmlContent += `
+                        <tr id="row-${donThuoc.idkham}">
+                            <td style="padding: 8px;">${donThuoc.idkham}</td>
+                            <td style="padding: 8px;">${donThuoc.tenThuoc}</td>
+                            <td style="padding: 8px;">${donThuoc.thanhGia}</td>
+                            <td style="padding: 8px;">${donThuoc.tongTien}</td>
+                            <td style="padding: 8px;">${donThuoc.iddungCu}</td>
+                            <td style="padding: 8px;">${donThuoc.soLuong}</td>
+                            <td style="padding: 8px;">${new Date(donThuoc.ngayLapDt).toLocaleDateString()}</td>
+                            <td style="padding: 8px;">
+                                    <button onclick="deleteDonThuoc(${donThuoc.IdhoaDon})" style="background-color: red; color: white; padding: 5px; border: none; cursor: pointer;">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+            });
+
+            htmlContent += `
+                        </tbody>
+                    </table>
+                `;
+
+            // Insert generated HTML content into the container
+            container.innerHTML = htmlContent;
+
+        } catch (error) {
+            // Display error message if the fetch request fails
+            console.error('Error fetching Don Thuoc data:', error);
+            const container = document.getElementById('donThuocContainer');
+            container.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
+        }
+    }
+
+    // Function to delete a Don Thuoc
+    async function deleteDonThuoc(id) {
+        if (!confirm('Are you sure you want to delete this prescription?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/DonThuoc/api/DeleteDonThuoc/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                alert(`Failed to delete prescription: ${errorMessage}`);
+                return;
+            }
+
+            // Remove the deleted row from the table
+            const row = document.getElementById(`row-${id}`);
+            if (row) {
+                row.remove();
+            }
+
+            alert('Prescription deleted successfully.');
+        } catch (error) {
+            console.error('Error deleting Don Thuoc:', error);
+            alert(`Error deleting prescription: ${error.message}`);
+        }
+    }
+
+    // Fetch data when the page loads
+    document.addEventListener('DOMContentLoaded', fetchDonThuocData);
+</script>
+

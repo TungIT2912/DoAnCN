@@ -62,15 +62,15 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link active"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
+                    <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
                     <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
                         <i class="micon fa fa-dashboard"></i>Thống kê
                     </a>
-                    <a href="/Admin/UserModel" class="nav-item nav-link ">
+                    <a asp-action="Index" asp-controller="TaiKhoans" class="nav-item nav-link ">
                         <i class="micon fa fa-users"></i>Quản lí tài khoản
                     </a>
                     <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
-                        <i class="micon fa fa-users"></i>Khách hàng
+                        <i class="micon fa fa-users"></i>Bệnh nhân
                     </a>
                     <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
                         <i class="micon fa fa-th me-2"></i>Thị trường
@@ -85,7 +85,10 @@
                         <i class="micon fa fa-cubes"></i>Lịch sử nhập hàng
                     </a>
                     <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link ">
-                        <i class="micon dw dw-invoice"></i>Hóa đơn
+                        <i class=" micon fa fa-cubes"></i>Hóa đơn
+                    </a>
+                    <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link ">
+                        <i class=" micon fa fa-cubes"></i>Dịch vụ
                     </a>
                 </div>
             </nav>
@@ -114,7 +117,7 @@
                     </div>
                 </div>
             </nav>
-            <main style="background-color:#0000ff66; padding:5px 10px">
+            <main>
                 @RenderBody()
             </main>
         </div>
@@ -131,7 +134,7 @@
     <script src="~/AdminDashboard/lib/tempusdominus/js/moment.min.js"></script>
     <script src="~/AdminDashboard/lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script src="~/AdminDashboard/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"></script>
     <!-- Template Javascript -->
     <!-- new template -->

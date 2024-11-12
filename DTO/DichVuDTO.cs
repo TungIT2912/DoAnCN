@@ -6,9 +6,12 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class DichVuDTO
 	{
-		public int IdchanDoan { get; set; } 
-		public string TenDichVu { get; set; } 
-		public string DonViTinh { get; set; } 
+
+        public int? IddichVu { get; set; }
+        public int IdchanDoan { get; set; }
+        public string? TenChuanDoan { get; set; }
+        public string TenDichVu { get; set; }
+        public string DonViTinh { get; set; } 
 		public decimal DonGia { get; set; }
 	}
 }
