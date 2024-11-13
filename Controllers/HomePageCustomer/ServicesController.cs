@@ -21,8 +21,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
        // GET: Services
        public async Task<IActionResult> Index()
        {
-           var qlnhaKhoaContext = _context.DichVus.Include(d => d.IddichVu);
-           return View(await qlnhaKhoaContext.ToListAsync());
+             var qlnhaKhoaContext = _context.DichVus;
+            return View(await qlnhaKhoaContext.ToListAsync());
        }
 
        	public IActionResult Pricing()
