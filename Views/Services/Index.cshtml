@@ -15,10 +15,12 @@
 <link href="~/css/bootstrap.css" rel="stylesheet">
 <link href="~/css/style.css" rel="stylesheet">
 <link href="~/css/responsive.css" rel="stylesheet">
+<link href="~/css/table.css" rel="stylesheet">
 
     <!--Color Themes-->
     <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
 
+    <script src="~/js/table.js"></script>
 
 <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
 <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
@@ -128,7 +130,7 @@
                     </div>
                 </div>
                 <div class="image-column col-lg-6 col-md-12 col-sm-12">
-                    <figure class="image"><img src="images/resource/image-4.png" alt=""></figure>
+                    <figure class="image"><img src="~/images/resource/image-4.png" alt=""></figure>
                 </div>
             </div>
 
@@ -176,9 +178,53 @@
     <!-- End Appointment Section -->
 
 
+<br>
+
+<div class="container my-5">
+    <!-- Service Pricing Section -->
+    <h2 class="text-center mb-4">Bảng giá dịch vụ</h2>
+    <span class="d-block text-center mb-4">(Áp dụng cho ngày @DateTime.Now.ToString("dd/MM/yy"))</span>
+    
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-responsive-stack" id="tableOne">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th>STT</th>
+                    <th>Tên dịch vụ</th>
+                    <th>Đơn vị</th>
+                    <th>Giá tham khảo</th>
+                </tr>
+            </thead>
+            <tbody class="text-center text-black">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IddichVu</td>
+                        <td>@item.TenDichVu</td>
+                        <td>@item.DonViTinh</td>
+                        <td>@item.DonGia VND</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+   
+   
+   
+   
+
+
+</div>
+<!-- /.container -->
+
+
+
+
 <!-- Page Header End -->
-<div class="Services">  
-    @* <img src="~/images/poster__services.jpg" class="services__image" /> *@
+@* <div class="Services">  
     <div class="services__container">
         <!-- Service Header Start-->
         <div class="services__row">
@@ -192,30 +238,31 @@
         </div>
         <!-- Service Header End-->
 
-        <!-- Service Body Start-->
-        <div class="services__body">
-            <table class="w-100" >
-                <tbody class="border-2 border-cyan-400 border-solid text-center text-black">
-                    <tr >
-                        <th class="p-3 border-3">STT</th>
-                        <th class="p-3 border-3 ">Tên dịch vụ</th>
-                        <th class="p-3 border-3">Đơn vị</th>
-                        <th class="p-3 border-3">Giá tham khảo</th>
-                    </tr>
-                    @foreach(var item in Model)
-                    {
-                        <tr>
-                            <th class="p-3 border-3">@item.IddichVu</th>
-                            <th class="p-3 border-3 ">@item.TenDichVu</th>
-                            <th class="p-3 border-3">@item.DonViTinh</th>
-                            <th class="p-3 border-3">@item.DonGia VND</th>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+     <!-- Service Body Start-->
+<div class="services__body">
+    <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
+        <thead class="bg-cyan-500 text-white text-lg">
+            <tr>
+                <th class="p-4 border">STT</th>
+                <th class="p-4 border">Tên dịch vụ</th>
+                <th class="p-4 border">Đơn vị</th>
+                <th class="p-4 border">Giá tham khảo</th>
+            </tr>
+        </thead>
+        <tbody class="text-center text-black bg-white">
+            @foreach (var item in Model)
+            {
+                <tr class="hover:bg-gray-100 transition duration-300">
+                    <td class="p-3 border">@item.IddichVu</td>
+                    <td class="p-3 border">@item.TenDichVu</td>
+                    <td class="p-3 border">@item.DonViTinh</td>
+                    <td class="p-3 border">@item.DonGia VND</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>  *@
+
 
 
 

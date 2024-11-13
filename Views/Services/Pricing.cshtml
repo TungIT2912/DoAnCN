@@ -1,11 +1,9 @@
+@using X.PagedList 
+
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-<!DOCTYPE html>
-<html lang="en">
-
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/pricing-table.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
-
+@model IPagedList<WebQuanLyNhaKhoa.Data.DichVu>  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,19 +20,13 @@
     <!--Color Themes-->
     <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
 
-    <!--Color Switcher Mockup-->
-    @* <link href="/css/color-switcher-design.css" rel="stylesheet"> *@
-
     <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
     <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
 
     <!-- Responsive -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
-    <!--[if lt IE 9]><script src="/js/respond.js"></script><![endif]-->
 </head>
-
 
 <body>
 
@@ -42,201 +34,51 @@
 
     <!-- Preloader -->
     <div class="preloader"></div>
-    
 
-
-        <!-- Pricing Section -->
+    <!-- Pricing Section -->
     <section class="pricing-section">
         <div class="auto-container">
-            <div class="tabs-box outer-box">
-                <!--Tabs Box-->
-                <ul class="tab-buttons clearfix">
-                    <li class="tab-btn active-btn" data-tab="#tab1">Monthly</li>
-                    <li class="tab-btn" data-tab="#tab2">Yearly</li>
-                </ul>
-
-                <div class="tabs-content">
-                    <!--Tab-->
-                    <div class="tab active-tab" id="tab1">
-                        <div class="row">
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$299</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Cardiology</h3>
-                                    <ul class="features">
-                                        <li>Functional Diagnotics</li>
-                                        <li>Allergens Drugs</li>
-                                        <li>Pollen Allergens</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
+                        <div class="inner-box">
+                            <div class="price-box">
+                                <h4 class="price">@item.DonGia.ToString("0")</h4>
+                                <div class="validaty">VNĐ</div>
                             </div>
-
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$120</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Detal Care</h3>
-                                    <ul class="features">
-                                        <li>Tooth implantation</li>
-                                        <li>Lase Dentistry</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Medical Consultation</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$150</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Body Checkup</h3>
-                                    <ul class="features">
-                                        <li>Tests and Treatment</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Laboratory Services</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$100</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Blood Test</h3>
-                                    <ul class="features">
-                                        <li>Blood Test Service</li>
-                                        <li>Safety Training Tips</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
+                            <h3 class="title">@item.TenDichVu</h3>
+                            <ul class="features">
+                                <li>@item.IddichVu</li>
+                            </ul>
+                            <div class="btn-box">
+                                <a href="#" class="theme-btn">Get Offer</a>
                             </div>
                         </div>
                     </div>
-
-                    <!--Tab-->
-                    <div class="tab" id="tab2">
-                        <div class="row">
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$999</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Cardiology</h3>
-                                    <ul class="features">
-                                        <li>Functional Diagnotics</li>
-                                        <li>Allergens Drugs</li>
-                                        <li>Pollen Allergens</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$520</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Detal Care</h3>
-                                    <ul class="features">
-                                        <li>Tooth implantation</li>
-                                        <li>Lase Dentistry</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Medical Consultation</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$450</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Body Checkup</h3>
-                                    <ul class="features">
-                                        <li>Tests and Treatment</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Laboratory Services</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$669</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Blood Test</h3>
-                                    <ul class="features">
-                                        <li>Blood Test Service</li>
-                                        <li>Safety Training Tips</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
 
-            <div class="sec-bottom-text">Don’t hesitate, contact us for better help and services <a href="#">Explore all Dr. Team</a></div>
+            <!-- Pagination Controls -->
+            <div class="pagination-container">
+                @if (Model.HasPreviousPage)
+                {
+                    <a href="@Url.Action("Pricing", new { page = Model.PageNumber - 1 })" class="prev">Previous</a>
+                }
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <a href="@Url.Action("Pricing", new { page = i })" class="page-number @if (i == Model.PageNumber) { <text>active</text> }">@i</a>
+                }
+                @if (Model.HasNextPage)
+                {
+                    <a href="@Url.Action("Pricing", new { page = Model.PageNumber + 1 })" class="next">Next</a>
+                }
+            </div>
         </div>
     </section>
     <!--End Pricing Section -->
 
- 
+</div>
+
 </body>
-
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/pricing-table.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
 </html>
-
-
