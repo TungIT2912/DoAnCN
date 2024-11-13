@@ -26,14 +26,16 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
            return View();
         }
         [HttpGet("api/HoaDons")]
-        public async Task<ActionResult<IEnumerable<HoaDonDTO>>> GetHoaDon()
+        public async Task<ActionResult<IEnumerable<HoaDonDTO>>> GetHoaDon(int pageNumber = 1, int pageSize = 10)
         {
+            var totalItems = await _context.HoaDons.CountAsync();
             var ls = await _context.HoaDons
                     .Include(nv => nv.DanhSachKham)
                     .Include(nv => nv.DanhSachKham.BenhNhan)
                     .Include(nv => nv.DieuTri)
                     .Include(nv => nv.DonThuoc)
-                    .ToListAsync();
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize).ToListAsync();
             var hdDTOs = ls.Select(nv => new HoaDonDTO
             {
                Idkham = nv.Idkham,
@@ -45,7 +47,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                NgayLap =   nv.NgayLap,
             }).ToList();
 
-            return Ok(hdDTOs);
+            return Ok(new { data = hdDTOs, totalItems });
         }
 
         private bool HoaDonExists(int id)

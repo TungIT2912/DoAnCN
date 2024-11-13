@@ -26,11 +26,15 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View();
         }
         [HttpGet("api/TaiKhoans")]
-        public async Task<ActionResult<IEnumerable<TaiKhoanDTO>>> GetTaiKhoans()
+        public async Task<ActionResult<IEnumerable<TaiKhoanDTO>>> GetTaiKhoans(int pageNumber = 1, int pageSize = 10)
         {
+            var totalItems = await _context.TaiKhoans.CountAsync();
             var taikhoans = await _context.TaiKhoans
                             .Include(nv => nv.NhanVien)
-                            .Include(nv=>nv.NhanVien.ChucVu).ToListAsync();
+                            .Include(nv=>nv.NhanVien.ChucVu)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToListAsync();
             var taikhoanDTOs = taikhoans.Select(nv => new TaiKhoanDTO
             {
                 Id = nv.Id,
@@ -40,7 +44,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 isLoocked = nv.isLoocked,
             }).ToList();
 
-            return Ok(taikhoanDTOs);
+            return Ok(new { data = taikhoanDTOs, totalItems });
         }
         [HttpPut("api/TaiKhoans/Locked/{id}")]
         public async Task<IActionResult> Edit(int id, [FromBody] TaiKhoanDTO dto)

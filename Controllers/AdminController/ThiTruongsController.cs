@@ -27,9 +27,11 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View();
         }
         [HttpGet("api/ThiTruongs")]
-        public async Task<ActionResult<IEnumerable<KhoDTO>>> GetThiTruongs()
+        public async Task<ActionResult<IEnumerable<ThiTruongDTO>>> GetThiTruongs(int pageNumber = 1, int pageSize = 10)
         {
-            var thiTruongs = await _context.ThiTruongs.ToListAsync();
+            var totalItems = await _context.ThiTruongs.CountAsync();
+            var thiTruongs = await _context.ThiTruongs.Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize).ToListAsync();
             var thiTruongsDTOs = thiTruongs.Select(nv => new ThiTruongDTO
             {
                 TenSanPham = nv.TenSanPham, 
@@ -38,7 +40,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 DonGia = nv.DonGia
             }).ToList();
 
-            return Ok(thiTruongsDTOs);
+            return Ok(new { data = thiTruongsDTOs, totalItems });
         }
         private bool ThiTruongExists(int id)
         {
