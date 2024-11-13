@@ -28,10 +28,14 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         }
 
         [HttpGet("api/DichVus")]
-        public async Task<ActionResult<IEnumerable<DichVuDTO>>> GetDichVus()
+        public async Task<ActionResult<IEnumerable<DichVuDTO>>> GetDichVus(int pageNumber = 1, int pageSize = 10)
         {
+            var totalItems = await _context.DichVus.CountAsync();
             var dichVus = await _context.DichVus
-        .Include(nv => nv.ChanDoan).ToListAsync();
+            .Include(nv => nv.ChanDoan)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
             var dichVuDTOs = dichVus.Select(nv => new DichVuDTO
             {
                 IddichVu = nv.IddichVu,
@@ -42,7 +46,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 DonGia = nv.DonGia
             }).ToList();
 
-            return Ok(dichVuDTOs);
+            return Ok(new { data = dichVuDTOs, totalItems });
         }
         [HttpGet("api/DichVus/Create")]
         public IActionResult Create()

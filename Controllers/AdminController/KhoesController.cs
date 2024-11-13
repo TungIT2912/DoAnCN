@@ -28,10 +28,13 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View();
         }
         [HttpGet("api/Khoes")]
-        public async Task<ActionResult<IEnumerable<KhoDTO>>> GetKhoes()
+        public async Task<ActionResult<IEnumerable<KhoDTO>>> GetKhoes(int pageNumber = 1, int pageSize = 10)
         {
+            var totalItems = await _context.Khos.CountAsync();
             var khoes = await _context.Khos
-        .Include(nv => nv.ThiTruong).ToListAsync();
+                            .Include(nv => nv.ThiTruong)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize).ToListAsync();
             var khoDTOs = khoes.Select(nv => new KhoDTO
             {
                 TenDungCu = nv.ThiTruong.TenSanPham, // Match the correct property name here
@@ -40,7 +43,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 SoLuong = nv.SoLuong
             }).ToList();
 
-            return Ok(khoDTOs);
+            return Ok(new { data = khoDTOs, totalItems });
         }
     }
 }

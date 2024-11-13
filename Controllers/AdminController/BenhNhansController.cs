@@ -27,10 +27,13 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         }
 
         [HttpGet("api/BenhNhans")]
-        public async Task<ActionResult<IEnumerable<BenhNhanDTO>>> GetBenhhNhans()
+        public async Task<ActionResult<IEnumerable<BenhNhanDTO>>> GetBenhhNhans(int pageNumber = 1, int pageSize = 10)
         {
+            var totalItems = await _context.BenhNhans.CountAsync();
             var benhNhans = await _context.BenhNhans
-                           .Include(nv => nv.TaiKhoan) 
+                           .Include(nv => nv.TaiKhoan)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
                            .ToListAsync();
             var benhNhanDTOs = benhNhans.Select(nv => new BenhNhanDTO
             {
@@ -43,7 +46,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 NgayKhamDau = nv.NgayKhamDau,
             }).ToList();
 
-            return Ok(benhNhanDTOs);
+            return Ok(new { data = benhNhanDTOs, totalItems });
         }
 
         [HttpGet("api/BenhNhans/Detail/{id}")]
