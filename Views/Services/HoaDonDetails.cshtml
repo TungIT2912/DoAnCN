@@ -1,0 +1,197 @@
+@model IEnumerable<WebQuanLyNhaKhoa.Data.ChiTietHoaDon>
+
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
+<head>
+<meta charset="utf-8">
+<title>Medicoz | Health and Medical HTML Template | Services</title>
+
+<!-- Stylesheets -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<link href="~/css/bootstrap.css" rel="stylesheet">
+<link href="~/css/style.css" rel="stylesheet">
+<link href="~/css/responsive.css" rel="stylesheet">
+<link href="~/css/table.css" rel="stylesheet">
+<link href="~/css/reciept.css" rel="stylesheet">
+
+
+    <!--Color Themes-->
+    <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
+
+    <script src="~/js/table.js"></script>
+
+<link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+<link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+
+<!-- Responsive -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader"></div>
+
+    <!--Page Title-->
+    <section class="page-title" style="background-image: url(images/background/8.jpg);">
+        <div class="auto-container">
+            <div class="title-outer">
+                <h1>Services</h1>
+                <ul class="page-breadcrumb">
+                    <li><a href="~/Home/Index">Home</a></li>
+                    <li>Services</li>
+                </ul> 
+            </div>
+        </div>
+    </section>
+    <!--End Page Title-->
+
+</div>
+
+
+<div class="container bootstrap snippets bootdeys">
+<div class="row">
+  <div class="col-sm-12">
+	  	<div class="panel panel-default invoice" id="invoice">
+		  <div class="panel-body">
+			<div class="invoice-ribbon"><div class="ribbon-inner">PAID</div></div>
+		    <div class="row">
+
+				<div class="col-sm-6 top-left">
+					<i class="fa fa-rocket"></i>
+				</div>
+
+				<div class="col-sm-6 top-right">
+						<h3 class="marginright">INVOICE-1234578</h3>
+						<span class="marginright">14 April 2014</span>
+			    </div>
+
+			</div>
+			<hr>
+			<div class="row">
+
+				<div class="col-xs-4 from">
+					<p class="lead marginbottom">From : Dynofy</p>
+					<p>350 Rhode Island Street</p>
+					<p>Suite 240, San Francisco</p>
+					<p>California, 94103</p>
+					<p>Phone: 415-767-3600</p>
+					<p>Email: contact@dynofy.com</p>
+				</div>
+
+				<div class="col-xs-4 to">
+					<p class="lead marginbottom">To : John Doe</p>
+					<p>425 Market Street</p>
+					<p>Suite 2200, San Francisco</p>
+					<p>California, 94105</p>
+					<p>Phone: 415-676-3600</p>
+					<p>Email: john@doe.com</p>
+
+			    </div>
+
+			    <div class="col-xs-4 text-right payment-details">
+					<p class="lead marginbottom payment-info">Payment details</p>
+					<p>Date: 14 April 2014</p>
+					<p>VAT: DK888-777 </p>
+					<p>Total Amount: $1019</p>
+					<p>Account Name: Flatter</p>
+			    </div>
+
+			</div>
+
+			<div class="row table-row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center" style="width:5%">#</th>
+                <th style="width:30%">Tên Dịch Vụ</th>
+                <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                <th class="text-right" style="width:15%">Tổng Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int index = 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@index</td>
+                        <td>@item.TenDon</td>
+                        <td class="text-right">@item.PhuongThucThanhToan</td>
+                        <td class="text-right">@item.TienThuoc.ToString("C")</td>
+                        <td class="text-right">@item.TienDieuTri.ToString("C")</td>
+                        <td class="text-right">@item.TongTien.ToString("C")</td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">No data available</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+			<div class="row">
+			<div class="col-xs-6 margintop">
+				<p class="lead marginbottom">THANK YOU!</p>
+
+				<button class="btn btn-success" id="invoice-print"><i class="fa fa-print"></i> Print Invoice</button>
+				<button class="btn btn-danger"><i class="fa fa-envelope-o"></i> Mail Invoice</button>
+			</div>
+			<div class="col-xs-6 text-right pull-right invoice-total">
+					  <p>Subtotal : $1019</p>
+			          <p>Discount (10%) : $101 </p>
+			          <p>VAT (8%) : $73 </p>
+			          <p>Total : $991 </p>
+			</div>
+			</div>
+
+		  </div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+   
+   
+
+
+
+
+
+
+</body>
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
+</html>
+
+
+
+
+
+
+
+
+
+
+
