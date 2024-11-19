@@ -19,6 +19,7 @@
 <link href="~/css/responsive.css" rel="stylesheet">
 <link href="~/css/table.css" rel="stylesheet">
 <link href="~/css/reciept.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
     <!--Color Themes-->
@@ -67,10 +68,7 @@
     <div class="row">
         <div class="col-md-12">
             <!-- Search form that submits the query to the server -->
-            <form method="get" action="@Url.Action("HoaDonDetails")">
-                <input type="text" name="searchQuery" id="searchBox" class="form-control" placeholder="Enter Invoice ID" value="@ViewData["SearchQuery"]" />
-                <button type="submit" class="btn btn-primary mt-2">Search</button>
-            </form>
+            <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn bằng ID" />        
         </div>
     </div>
 </div>
@@ -80,7 +78,11 @@
 
 @foreach (var chiTiet in Model) 
 {
-    <div class="container bootstrap snippets bootdeys">
+    <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
+                <div id="no-data-message" style="display: none; text-align: center; color: red;">
+            <h3>Không tìm thấy kết quả</h3>
+        </div>
+
         <!-- The rest of the HTML structure for displaying invoice details -->
         <div class="row">
             <div class="col-sm-12">
@@ -180,6 +182,56 @@
 
 
 </section>
+
+
+<script>
+    $(document).ready(function() {
+        let timeout;
+
+        $('#invoice-search').on('keyup', function() {
+            var searchTerm = $(this).val().toLowerCase();
+
+            // Clear previous timeout to prevent multiple rapid calls
+            clearTimeout(timeout);
+
+            // Show the loading screen when the user starts typing
+            $('#loading').show();
+
+            // Delay the search action by 500ms (or adjust as needed)
+            timeout = setTimeout(function() {
+                let foundAny = false;
+
+                // If the search term is empty, hide all invoices
+                if (searchTerm === '') {
+                    $('[id^="invoice-container-"]').hide(); // Hide all invoices
+                } else {
+                    // Loop through each invoice container and toggle visibility based on search
+                    $('[id^="invoice-container-"]').each(function() {
+                        var invoiceId = $(this).attr('id').split('-').pop(); // Get the IdhoaDon part of the ID
+                        
+                        if (invoiceId.toLowerCase().includes(searchTerm)) {
+                            $(this).show();  // Show matching invoice
+                            foundAny = true;  // Mark that we found a matching invoice
+                        } else {
+                            $(this).hide();  // Hide non-matching invoices
+                        }
+                    });
+                }
+
+                // If no invoices are found, show the "No results found" message
+                if (!foundAny) {
+                    $('#no-data-message').show();  // Show no results message
+                } else {
+                    $('#no-data-message').hide();  // Hide no results message if data is found
+                }
+
+                // Hide the loading screen after the filtering process is complete
+                $('#loading').hide();
+            }, 500); // 500ms cooldown delay
+        });
+    });
+</script>
+
 
 
 
