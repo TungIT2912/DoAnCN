@@ -1,0 +1,27 @@
+@* @model IEnumerable<WebQuanLyNhaKhoa.Data.ChiTietHoaDon>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th>Tên Dịch Vụ</th>
+            <th class="text-right">Phương Thức Thanh Toán</th>
+            <th class="text-right">Tiền Thuốc</th>
+            <th class="text-right">Tiền Điều Trị</th>
+            <th class="text-right">Tổng Tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center">@item.IddieuTri</td>
+                <td>@item.TenDieuTri</td>
+                <td class="text-right">@item.PhuongThucThanhToan</td>
+                <td class="text-right">@item.TienThuoc</td>
+                <td class="text-right">@item.TienDieuTri</td>
+                <td class="text-right">@item.TongTien</td>
+            </tr>
+        }
+    </tbody>
+</table> *@

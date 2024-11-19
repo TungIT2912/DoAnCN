@@ -36,13 +36,19 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             return View(pricingData.ToPagedList(pageNumber, pageSize)); // Use ToPagedList from X.PagedList
         }
 
-public IActionResult HoaDonDetails()
+public IActionResult HoaDonDetails(string searchQuery)
 {
-    // Sample data - replace with your database query.
-    var chiTietHoaDons = _context.ChiTietHoaDons.ToList();
+    var chiTietHoaDons = string.IsNullOrEmpty(searchQuery) 
+        ? _context.ChiTietHoaDons.ToList()
+        : _context.ChiTietHoaDons
+            .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
+            .ToList();
 
+    ViewData["SearchQuery"] = searchQuery; // Pass the search query to the view
     return View(chiTietHoaDons);
 }
+
+
 
 
     }

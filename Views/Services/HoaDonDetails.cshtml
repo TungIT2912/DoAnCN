@@ -44,7 +44,7 @@
     <div class="preloader"></div>
 
      <!--Page Title-->
-    <section class="page-title" style="background-image: url(~/images/background/8.jpg);">
+<section class="page-title" style="background-image: url('@Url.Content("~/images/background/8.jpg")');">
         <div class="auto-container">
             <div class="title-outer">
                 <h1>Hóa đơn</h1>
@@ -60,126 +60,126 @@
 <hr>
 
 <section>
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Search form that submits the query to the server -->
+            <form method="get" action="@Url.Action("HoaDonDetails")">
+                <input type="text" name="searchQuery" id="searchBox" class="form-control" placeholder="Enter Invoice ID" value="@ViewData["SearchQuery"]" />
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 
-<div class="container bootstrap snippets bootdeys">
-<div class="row">
-  <div class="col-sm-12">
-	  	<div class="panel panel-default invoice" id="invoice">
-		  <div class="panel-body">
-			<div class="invoice-ribbon"><div class="ribbon-inner">PAID</div></div>
-		    <div class="row">
-
-				<div class="col-sm-6 top-left">
-					<div class="logo"><a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a></div>
-				</div>
-
-				<div class="col-sm-6 top-right">
-						<h3 class="marginright">INVOICE-1234578</h3>
-						<span class="marginright">14 April 2014</span>
-			    </div>
-
-			</div>
-			<hr>
-			<div class="row">
-
-                <div class="col-xs-4 from">
-                <p class="lead marginbottom">From: Nha khoa Hoàn Mĩ</p>
-                <p>350 Rhode Island Street</p>
-					<p>350 Rhode Island Street</p>
-					<p>Suite 240, San Francisco</p>
-					<p>California, 94103</p>
-					<p>Phone: 415-767-3600</p>
-					<p>Email: contact@dynofy.com</p>
-				</div>
-
-				<div class="col-xs-4 to">
-					<p class="lead marginbottom">To : John Doe</p>
-					<p>425 Market Street</p>
-					<p>Suite 2200, San Francisco</p>
-					<p>California, 94105</p>
-					<p>Phone: 415-676-3600</p>
-					<p>Email: john@doe.com</p>
-
-			    </div>
-
-			    <div class="col-xs-4 text-right payment-details">
-					<p class="lead marginbottom payment-info">Payment details</p>
-					<p>Date: 14 April 2014</p>
-					<p>VAT: DK888-777 </p>
-					<p>Total Amount: $1019</p>
-					<p>Account Name: Flatter</p>
-			    </div>
-
-			</div>
-
-			<div class="row table-row">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="text-center" style="width:5%">#</th>
-                <th style="width:30%">Tên Dịch Vụ</th>
-                <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                <th class="text-right" style="width:15%">Tổng Tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                int index = 1;
-                foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="text-center">@index</td>
-                        <td>@item.TenDon</td>
-                        <td class="text-right">@item.PhuongThucThanhToan</td>
-                        <td class="text-right">@item.TienThuoc.ToString("C")</td>
-                        <td class="text-right">@item.TienDieuTri.ToString("C")</td>
-                        <td class="text-right">@item.TongTien.ToString("C")</td>
-                    </tr>
-                    index++;
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="text-center">No data available</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
 
 
-			<div class="row">
-			<div class="col-xs-6 margintop">
-				<p class="lead marginbottom">THANK YOU!</p>
-<br>
+@foreach (var chiTiet in Model) 
+{
+    <div class="container bootstrap snippets bootdeys">
+        <!-- The rest of the HTML structure for displaying invoice details -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default invoice" id="invoice">
+                    <div class="panel-body">
+                        <div class="invoice-ribbon">
+                            <div class="ribbon-inner">PAID</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 top-left">
+                                <div class="logo">
+                                    <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+                                </div>
+                            </div>
 
-				<button class="btn btn-success" id="invoice-print"><i class="fa fa-print"></i> Print</button>
-				<button class="btn btn-danger"><i class="fa fa-envelope-o"></i> Mail </button>
-			</div>
-			<div class="col-xs-6 text-right pull-right invoice-total">
-					  <p>Subtotal : $1019</p>
-			          <p>Discount (10%) : $101 </p>
-			          <p>VAT (8%) : $73 </p>
-			          <p>Total : $991 </p>
-			</div>
-			</div>
+                            <div class="col-sm-6 top-right">
+                                <h3 class="marginright">INVOICE-@chiTiet.IdhoaDon</h3> 
+                                <span class="marginright">@DateTime.Now.ToString("dd MMMM yyyy")</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-4 from">
+                                <p class="lead marginbottom">From: Nha khoa Hoàn Mĩ</p>
+                                <p>350 Rhode Island Street</p>
+                                <p>Suite 240, San Francisco</p>
+                                <p>California, 94103</p>
+                                <p>SĐT: +(84) 347 123 534</p>
+                                <p>Email: contact@dynofy.com</p>
+                            </div>
 
-		  </div>
-		</div>
-	</div>
-</div>
-</div>
-<br>
-<br>
-<br>
+                            <div class="col-xs-4 to">
+                                <p class="lead marginbottom">To : John Doe</p>
+                                <p>425 Market Street</p>
+                                <p>Suite 2200, San Francisco</p>
+                                <p>California, 94105</p>
+                                <p>Phone: 415-676-3600</p>
+                                <p>Email: john@doe.com</p>
+                            </div>
+
+                            <div class="col-xs-4 text-right payment-details">
+                                <p class="lead marginbottom payment-info">Payment details</p>
+                                <p>Date: 14 April 2014</p>
+                                <p>VAT: DK888-777 </p>
+                                <p>Total Amount: $1019</p>
+                                <p>Account Name: Flatter</p>
+                            </div>
+                        </div>
+
+                        <div class="row table-row">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width:5%">#</th>
+                                        <th style="width:30%">Tên Dịch Vụ</th>
+                                        <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                                        <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                                        <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                                        <th class="text-right" style="width:15%">Tổng Tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        int index = 1;
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@index</td>
+                                                <td>@item.TenDon</td>
+                                                <td class="text-right">@item.PhuongThucThanhToan</td>
+                                                <td class="text-right">@item.TienThuoc.ToString("C")</td>
+                                                <td class="text-right">@item.TienDieuTri.ToString("C")</td>
+                                                <td class="text-right">@item.TongTien.ToString("C")</td>
+                                            </tr>
+                                            index++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center">No data available</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+}
+
+
 </section>
-
 
 
 
