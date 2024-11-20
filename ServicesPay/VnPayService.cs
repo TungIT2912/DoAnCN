@@ -35,9 +35,9 @@ namespace WebQuanLyNhaKhoa.ServicesPay
 
 
             var paymentUrl = vnpay.CreateRequestUrl(_config["VnPay:BaseUrl"], _config["VnPay:HashSecret"]);
-
+             
             return paymentUrl;
-        }
+        } 
 
         public VnPaymentResponseModel PaymentExcute(IQueryCollection collections)
         {
