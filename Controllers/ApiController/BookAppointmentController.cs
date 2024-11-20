@@ -76,12 +76,16 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 EmailBn = benhNhan.EmailBn
             };
 
-           
+            // Thêm bệnh nhân mới vào DbContext
+            _context.BenhNhans.Add(newBenhNhan);
+
             _context.BenhNhans.Add(newBenhNhan); 
             var saveResult = await _context.SaveChangesAsync();
-            
+
+            // Nếu lưu thành công, tiếp tục lưu lịch khám
             if (saveResult > 0)
             {
+                // Tạo một lịch khám cho bệnh nhân
                 var newDanhSachKham = new DanhSachKham
                 {
                     IdbenhNhan = newBenhNhan.IdbenhNhan,
@@ -89,12 +93,15 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                     MaNv = null 
                 };
 
+                // Thêm lịch khám vào bảng DanhSachKham
                 _context.DanhSachKhams.Add(newDanhSachKham);
 
+                // Lưu lịch khám vào cơ sở dữ liệu
                 var saveDanhSachKhamResult = await _context.SaveChangesAsync();
 
                 if (saveDanhSachKhamResult > 0)
                 {
+                    // Trả về thông tin bệnh nhân và lịch khám
                     var createdBenhNhanDTO = new BenhNhanDTO
                     {
                         HoTen = newBenhNhan.HoTen,
