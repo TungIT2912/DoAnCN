@@ -170,228 +170,228 @@
 ////}
 
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebQuanLyNhaKhoa.Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
-using WebQuanLyNhaKhoa.DTO;
-using Microsoft.AspNetCore.Mvc.Rendering;
+//using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using WebQuanLyNhaKhoa.Data;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+//using System;
+//using WebQuanLyNhaKhoa.DTO;
+//using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
-{
-    [Authorize]
-    [Route("[controller]")]
+//namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
+//{
+//    [Authorize]
+//    [Route("[controller]")]
 
-    public class BenhNhanController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+//    public class BenhNhanController : Controller
+//    {
+//        private readonly ApplicationDbContext _context;
 
-        public BenhNhanController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpGet("Index")]
-        public IActionResult Index()
-        {
+//        public BenhNhanController(ApplicationDbContext context)
+//        {
+//            _context = context;
+//        }
+//        [Authorize(Roles = "Admin")]
+//        [HttpGet("Index")]
+//        public IActionResult Index()
+//        {
 
-            return View();
-        }
-        // GET: api/BenhNhan
-        [Authorize(Roles = "Admin")]
-        [HttpGet("api/GetBenhNhan")]
-        public async Task<ActionResult<IEnumerable<BenhNhanDTO>>> GetBenhNhans(string query = "", string filter = "nothing")
-        {
-            var currentDay = DateTime.Now;
-            var queryable = _context.BenhNhans.AsQueryable();
+//            return View();
+//        }
+//        // GET: api/BenhNhan
+//        [Authorize(Roles = "Admin")]
+//        [HttpGet("api/GetBenhNhan")]
+//        public async Task<ActionResult<IEnumerable<BenhNhanDTO>>> GetBenhNhans(string query = "", string filter = "nothing")
+//        {
+//            var currentDay = DateTime.Now;
+//            var queryable = _context.BenhNhans.AsQueryable();
 
-            if (!string.IsNullOrEmpty(query))
-            {
-                queryable = queryable.Where(n => n.HoTen.Contains(query));
-            }
+//            if (!string.IsNullOrEmpty(query))
+//            {
+//                queryable = queryable.Where(n => n.HoTen.Contains(query));
+//            }
 
-            switch (filter)
-            {
-                case "Nam":
-                    queryable = queryable.Where(n => n.Gioi == false);
-                    break;
-                case "Nữ":
-                    queryable = queryable.Where(n => n.Gioi == true);
-                    break;
-                case "today":
-                    queryable = queryable.Where(n => n.NgayKhamDau.HasValue &&
-                        n.NgayKhamDau.Value.Date == currentDay.Date);
-                    break;
-            }
+//            switch (filter)
+//            {
+//                case "Nam":
+//                    queryable = queryable.Where(n => n.Gioi == false);
+//                    break;
+//                case "Nữ":
+//                    queryable = queryable.Where(n => n.Gioi == true);
+//                    break;
+//                case "today":
+//                    queryable = queryable.Where(n => n.NgayKhamDau.HasValue &&
+//                        n.NgayKhamDau.Value.Date == currentDay.Date);
+//                    break;
+//            }
 
-            var result = await queryable
-                .Select(n => new BenhNhanDTO
-                {
-                    IdbenhNhan = n.IdbenhNhan,
-                    HoTen = n.HoTen,
-                    Gioi = n.Gioi,
-                    Sdt = n.Sdt,
-                    NamSinh = n.NamSinh,
-                    DiaChi = n.DiaChi,
-                    NgayKhamDau = n.NgayKhamDau
-                })
-                .ToListAsync();
+//            var result = await queryable
+//                .Select(n => new BenhNhanDTO
+//                {
+//                    IdbenhNhan = n.IdbenhNhan,
+//                    HoTen = n.HoTen,
+//                    Gioi = n.Gioi,
+//                    Sdt = n.Sdt,
+//                    NamSinh = n.NamSinh,
+//                    DiaChi = n.DiaChi,
+//                    NgayKhamDau = n.NgayKhamDau
+//                })
+//                .ToListAsync();
 
-            return Ok(result);
-        }
+//            return Ok(result);
+//        }
 
-        // GET: api/BenhNhan/{id}
-        [Authorize(Roles = "Admin,Staff")]
-        [HttpGet("api/GetBenhNhan/{id}")]
-        public async Task<ActionResult<BenhNhanDTO>> GetBenhNhan(int id)
-        {
-            var benhNhan = await _context.BenhNhans.FindAsync(id);
+//        // GET: api/BenhNhan/{id}
+//        [Authorize(Roles = "Admin,Staff")]
+//        [HttpGet("api/GetBenhNhan/{id}")]
+//        public async Task<ActionResult<BenhNhanDTO>> GetBenhNhan(int id)
+//        {
+//            var benhNhan = await _context.BenhNhans.FindAsync(id);
 
-            if (benhNhan == null)
-            {
-                return NotFound();
-            }
+//            if (benhNhan == null)
+//            {
+//                return NotFound();
+//            }
 
-            return Ok(benhNhan);
-        }
+//            return Ok(benhNhan);
+//        }
 
-        // POST: api/BenhNhan/Move/{id}
-        // Only accessible by Admin and Staff
-        [Authorize(Roles = "Admin,Staff")]
-        [HttpPost("Move/{id}")]
-        public async Task<IActionResult> Move(int id)
-        {
-            var benhnhan = await _context.BenhNhans.FirstOrDefaultAsync(m => m.IdbenhNhan == id);
+//        // POST: api/BenhNhan/Move/{id}
+//        // Only accessible by Admin and Staff
+//        [Authorize(Roles = "Admin,Staff")]
+//        [HttpPost("Move/{id}")]
+//        public async Task<IActionResult> Move(int id)
+//        {
+//            var benhnhan = await _context.BenhNhans.FirstOrDefaultAsync(m => m.IdbenhNhan == id);
 
-            if (benhnhan == null)
-            {
-                return NotFound();
-            }
+//            if (benhnhan == null)
+//            {
+//                return NotFound();
+//            }
 
-            Random random = new Random();
-            int randomNumber = random.Next(100, 999);
+//            Random random = new Random();
+//            int randomNumber = random.Next(100, 999);
 
-            DanhSachKham ds = new DanhSachKham
-            {
-                IdbenhNhan = benhnhan.IdbenhNhan,
-                NgayKham = DateTime.Now,
-                Idkham = randomNumber
-            };
+//            DanhSachKham ds = new DanhSachKham
+//            {
+//                IdbenhNhan = benhnhan.IdbenhNhan,
+//                NgayKham = DateTime.Now,
+//                Idkham = randomNumber
+//            };
 
-            await _context.DanhSachKhams.AddAsync(ds);
-            await _context.SaveChangesAsync();
+//            await _context.DanhSachKhams.AddAsync(ds);
+//            await _context.SaveChangesAsync();
 
-            return Ok();
-        }
+//            return Ok();
+//        }
 
-        [HttpGet("Create")]
-        public IActionResult Create()
-        {
+//        [HttpGet("Create")]
+//        public IActionResult Create()
+//        {
 
-            return View();
-        }
-        // POST: api/BenhNhan
-        [Authorize(Roles = "Admin,Staff")]
-        [HttpPost("api/PostBenhNhan")]
-        public async Task<ActionResult<BenhNhan>> PostBenhNhan([FromBody] BenhNhan benhNhan)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+//            return View();
+//        }
+//        // POST: api/BenhNhan
+//        [Authorize(Roles = "Admin,Staff")]
+//        [HttpPost("api/PostBenhNhan")]
+//        public async Task<ActionResult<BenhNhan>> PostBenhNhan([FromBody] BenhNhan benhNhan)
+//        {
+//            if (!ModelState.IsValid)
+//            {
+//                return BadRequest(ModelState);
+//            }
 
-            _context.BenhNhans.Add(benhNhan);
-            await _context.SaveChangesAsync();
+//            _context.BenhNhans.Add(benhNhan);
+//            await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBenhNhan), new { id = benhNhan.IdbenhNhan }, benhNhan);
-        }
+//            return CreatedAtAction(nameof(GetBenhNhan), new { id = benhNhan.IdbenhNhan }, benhNhan);
+//        }
 
-        [Authorize(Roles = "Admin,Staff")]
-        [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var benhNhan = await _context.BenhNhans.FindAsync(id); // Retrieve BenhNhan by ID
+//        [Authorize(Roles = "Admin,Staff")]
+//        [HttpGet("Edit/{id}")]
+//        public async Task<IActionResult> Edit(int id)
+//        {
+//            var benhNhan = await _context.BenhNhans.FindAsync(id); // Retrieve BenhNhan by ID
 
-            if (benhNhan == null)
-            {
-                return NotFound();
-            }
+//            if (benhNhan == null)
+//            {
+//                return NotFound();
+//            }
 
-            // Map BenhNhan to BenhNhanDTO
-            var benhNhanDto = new BenhNhanDTO
-            {
-                IdbenhNhan = benhNhan.IdbenhNhan,
-                HoTen = benhNhan.HoTen,
-                Gioi = benhNhan.Gioi,
-                NamSinh = benhNhan.NamSinh,
-                Sdt = benhNhan.Sdt,
-                DiaChi = benhNhan.DiaChi,
-                NgayKhamDau = benhNhan.NgayKhamDau
-            };
+//            // Map BenhNhan to BenhNhanDTO
+//            var benhNhanDto = new BenhNhanDTO
+//            {
+//                IdbenhNhan = benhNhan.IdbenhNhan,
+//                HoTen = benhNhan.HoTen,
+//                Gioi = benhNhan.Gioi,
+//                NamSinh = benhNhan.NamSinh,
+//                Sdt = benhNhan.Sdt,
+//                DiaChi = benhNhan.DiaChi,
+//                NgayKhamDau = benhNhan.NgayKhamDau
+//            };
 
-            // Pass BenhNhanDTO to the view
+//            // Pass BenhNhanDTO to the view
 
-            return View(benhNhanDto);
-        }
+//            return View(benhNhanDto);
+//        }
 
-        // PUT: api/BenhNhan/{id}
-        [Authorize(Roles = "Admin,Staff")]
-        [HttpPut("api/PutBenhNhan/{id}")]
-        public async Task<IActionResult> PutBenhNhan(int id, [FromBody] BenhNhanDTO benhNhanDto)
-        {
-            if (id == null)
-            {
-                return BadRequest("The ID in the URL does not match the ID in the payload.");
-            }
+//        // PUT: api/BenhNhan/{id}
+//        [Authorize(Roles = "Admin,Staff")]
+//        [HttpPut("api/PutBenhNhan/{id}")]
+//        public async Task<IActionResult> PutBenhNhan(int id, [FromBody] BenhNhanDTO benhNhanDto)
+//        {
+//            if (id == null)
+//            {
+//                return BadRequest("The ID in the URL does not match the ID in the payload.");
+//            }
 
-            // Find the existing BenhNhan entity
-            var benhNhan = await _context.BenhNhans.FirstOrDefaultAsync(n => n.IdbenhNhan == id);
-            if (benhNhan == null)
-            {
-                return NotFound();
-            }
+//            // Find the existing BenhNhan entity
+//            var benhNhan = await _context.BenhNhans.FirstOrDefaultAsync(n => n.IdbenhNhan == id);
+//            if (benhNhan == null)
+//            {
+//                return NotFound();
+//            }
 
-            // Map fields from BenhNhanDTO to BenhNhan
-            benhNhan.HoTen = benhNhanDto.HoTen;
-            benhNhan.Gioi = benhNhanDto.Gioi;
-            benhNhan.NamSinh = benhNhanDto.NamSinh;
-            benhNhan.Sdt = benhNhanDto.Sdt;
-            benhNhan.DiaChi = benhNhanDto.DiaChi;
-            benhNhan.NgayKhamDau = benhNhanDto.NgayKhamDau;
+//            // Map fields from BenhNhanDTO to BenhNhan
+//            benhNhan.HoTen = benhNhanDto.HoTen;
+//            benhNhan.Gioi = benhNhanDto.Gioi;
+//            benhNhan.NamSinh = benhNhanDto.NamSinh;
+//            benhNhan.Sdt = benhNhanDto.Sdt;
+//            benhNhan.DiaChi = benhNhanDto.DiaChi;
+//            benhNhan.NgayKhamDau = benhNhanDto.NgayKhamDau;
 
-            // Mark entity as modified
-            _context.Entry(benhNhan).State = EntityState.Modified;
+//            // Mark entity as modified
+//            _context.Entry(benhNhan).State = EntityState.Modified;
 
-            try
-            {
-                // Save changes to the database
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BenhNhanExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+//            try
+//            {
+//                // Save changes to the database
+//                await _context.SaveChangesAsync();
+//            }
+//            catch (DbUpdateConcurrencyException)
+//            {
+//                if (!BenhNhanExists(id))
+//                {
+//                    return NotFound();
+//                }
+//                else
+//                {
+//                    throw;
+//                }
+//            }
 
-            return NoContent();
-        }
-        private bool BenhNhanExists(int id)
-        {
-            return _context.BenhNhans.Any(e => e.IdbenhNhan == id);
-        }
-    }
-}
+//            return NoContent();
+//        }
+//        private bool BenhNhanExists(int id)
+//        {
+//            return _context.BenhNhans.Any(e => e.IdbenhNhan == id);
+//        }
+//    }
+//}
 
 //        // DELETE: api/BenhNhan/{id}
 //        [Authorize(Roles = "Admin")]

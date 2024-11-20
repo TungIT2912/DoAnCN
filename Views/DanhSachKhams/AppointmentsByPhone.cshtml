@@ -1,0 +1,63 @@
+﻿@model List<WebQuanLyNhaKhoa.DTO.DanhSachKhamDTO>
+
+@{
+    ViewData["Title"] = "Appointments List by Phone Number";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<h1>Your Appointments</h1>
+
+<!-- Form để nhập số điện thoại -->
+<form id="searchForm">
+    <label for="sdtInput">Số điện thoại:</label>
+    <input type="text" id="sdtInput" name="sdtInput" />
+    <button type="button" id="searchButton">Tìm lịch khám</button>
+</form>
+
+<!-- Display a list of appointments -->
+<div id="appointmentsList"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById('searchButton').addEventListener('click', async function () {
+                const sdt = document.getElementById('sdtInput').value;
+
+                if (!sdt) {
+                    alert("Vui lòng nhập số điện thoại.");
+                    return;
+                }
+
+                try {
+                    // Gửi yêu cầu đến API để lấy danh sách lịch khám
+                    const response = await fetch(`/DanhSachKhams/api/GetAppointmentsByPhone?sdt=${encodeURIComponent(sdt)}`);
+                    const data = await response.json();
+
+                    let listContainer = document.getElementById('appointmentsList');
+                    listContainer.innerHTML = '';
+
+                    if (response.ok && Array.isArray(data) && data.length > 0) {
+                        let html = '<ul>';
+                        data.forEach(appointment => {
+                            html += `<li>
+                                                    <strong>Ngày khám:</strong> ${appointment.hoTenBenhNhan}
+                                                    <strong>Ngày khám:</strong> ${appointment.sdtBenhnhan}
+                                                    <strong>Ngày khám:</strong> ${appointment.diaChiBenhnhan}
+                                    
+                            <strong>Ngày khám:</strong> ${new Date(appointment.ngayKham).toLocaleDateString()}
+
+                            </li>`;
+                        });
+                        html += '</ul>';
+                        listContainer.innerHTML = html;
+                    } else {
+                        listContainer.innerHTML = `<p>${data.message || 'Không tìm thấy lịch khám.'}</p>`;
+                    }
+                } catch (error) {
+                    console.error('Error fetching appointments:', error);
+                    document.getElementById('appointmentsList').innerHTML = '<p>Lỗi tải dữ liệu, vui lòng thử lại sau.</p>';
+                }
+            });
+        });
+    </script>
+}

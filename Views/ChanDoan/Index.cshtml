@@ -1,0 +1,53 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.ChanDoanDTO>
+@{
+    ViewData["Title"] = "Danh sách chẩn đoán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh sách Chẩn Đoán</h2>
+
+<table id="chanDoanTable" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Chẩn Đoán</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Danh sách chẩn đoán sẽ được thêm động tại đây -->
+    </tbody>
+</table>
+
+<button onclick="window.location.href='/ChanDoan/Create'">Thêm mới chẩn đoán</button>
+
+<script>
+    async function loadChanDoans() {
+        const response = await fetch('/ChanDoan/api/GetChanDoan');
+        const data = await response.json();
+        const tbody = document.querySelector("#chanDoanTable tbody");
+        tbody.innerHTML = "";
+
+        data.forEach(chanDoan => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${chanDoan.idchanDoan}</td>
+                <td>${chanDoan.tenChanDoan}</td>
+                <td>
+                    <a href="/ChanDoan/Edit/${chanDoan.idchanDoan}">Sửa</a> |
+                    <a href="#" onclick="deleteChanDoan(${chanDoan.idchanDoan})">Xóa</a>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    async function deleteChanDoan(id) {
+        if (confirm("Bạn có chắc chắn muốn xóa chẩn đoán này không?")) {
+            await fetch(`/ChanDoan/api/DeleteChanDoan/${id}`, { method: "DELETE" });
+            loadChanDoans(); // Tải lại danh sách sau khi xóa
+        }
+    }
+
+    loadChanDoans(); // Tải danh sách chẩn đoán khi tải trang
+</script>
