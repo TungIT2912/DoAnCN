@@ -1,4 +1,4 @@
-﻿@model WebQuanLyNhaKhoa.DTO.BenhNhanDTO
+﻿@model WebQuanLyNhaKhoa.Data.BenhNhan
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
@@ -41,16 +41,12 @@
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5">
 
                     <form id="createBenhNhan" class="row g-3" style="align-items:center" class="p-[20px]" method="post" enctype="multipart/form-data">
-                    
-                        <div class="my-5 mx-3">
-                            <label asp-for="HoTen" class="mb-3 block text-sm font-medium text-black">
-                                Name
-                            </label>
-                            <input asp-for="HoTen" type="text" placeholder="Enter your full name" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-black dark:focus:border-primary">
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="HoTen" class="control-label">Họ tên</label>
+                            <input asp-for="HoTen" required type="text" class="form-control border-0" placeholder="Email của bạn" style="height: 55px;">
                             <span asp-validation-for="HoTen" class="text-danger"></span>
                         </div>
-                        <!--Name Patient End-->
-                        <div class="my-5 mx-3">
+                        <div class="col-12 col-sm-6">
                             <div>
                                 <input asp-for="Gioi" type="radio" name="gender" value="True" />
                                 <span>Nữ</span>
@@ -60,43 +56,44 @@
                                 <input asp-for="Gioi" type="radio" name="gender" value="False" />
                                 <span>Nam</span>
                             </div>
+                            <span asp-validation-for="Gioi" class="text-danger"></span>
                         </div>
-                        <!--Age Patient Start-->
-                        <div class="my-5 mx-3">
-                            <label asp-for="NamSinh" class="mb-3 block text-sm font-medium text-black">
-                                Age:
-                            </label>
-                            <input asp-for="NamSinh" type="text" placeholder="Enter your age" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary">
+
+
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="NamSinh" class="control-label">Năm sinh</label>
+                            <input asp-for="NamSinh" type="text" placeholder="Enter your age" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="NamSinh" class="text-danger"></span>
                         </div>
-                        <!--Age Patient End-->
-                        <!--Tel Patient Start-->
-                        <div class="my-5 mx-3">
-                            <label asp-for="Sdt" class="mb-3 block text-sm font-medium text-black">
-                                Telephone:
-                            </label>
-                            <input asp-for="Sdt" type="tel" placeholder="Enter your telephone" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input  dark:focus:border-primary">
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="Sdt" class="control-label">Số điện thoại</label>
+                            <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="Sdt" class="text-danger"></span>
                         </div>
-                        <!--Tel Patient End-->
-                        <!--Address  Patient Start-->
-                        <div class="my-5 mx-3">
-                            <label asp-for="DiaChi" class="mb-3 block text-sm font-medium text-black">
-                                Address:
-                            </label>
-                            <input asp-for="DiaChi" type="text" placeholder="Enter your address" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                            <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
                         </div>
-                        <!--Address Patient End-->
-                        <div class="my-5 mx-3">
-                            <label asp-for="NgayKhamDau" class="mb-3 block text-sm font-medium text-black">
-                                Registration Day:
-                            </label>
-                            <input asp-for="NgayKhamDau" type="datetime-local" placeholder="Enter your Registration Day" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                            <div class="date" id="date" data-target-input="nearest">
+                                <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                <input asp-for="NgayKhamDau" type="datetime-local"
+                                       class="form-control border-0 datetimepicker-input"
+                                       placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
+                                <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+                            </div>
                         </div>
-                        @* <div class="col-12">
-                            <textarea class="form-control border-0" rows="5" placeholder="Describe your problem"></textarea>
-                        </div> *@
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="TrieuChung" class="control-label">Trieu Chung</label>
+                            <input asp-for="TrieuChung" type="text" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="TrieuChung" class="text-danger"></span>
+                        </div>
+
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary w-100 py-3">Book Appointment</button>
                         </div>
+                        
                     </form>
                 </div>
             </div>
@@ -117,6 +114,7 @@
                         NamSinh: parseInt(document.querySelector("[name='NamSinh']").value),
                         Sdt: document.querySelector("[name='Sdt']").value,
                         DiaChi: document.querySelector("[name='DiaChi']").value,
+                        TrieuChung: document.querySelector("[name='TrieuChung']").value,
                         NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
                     };
 
@@ -135,7 +133,7 @@
                             const result = await response.json();
                             console.log("Patient created successfully:", result);
                             alert("Patient created successfully!");
-                            window.location.href = "/BookAppointment";
+                            window.location.href = "https://localhost:7101/";
                         } else {
                             const errorText = await response.text();
                             console.error("Failed to create patient:", errorText);

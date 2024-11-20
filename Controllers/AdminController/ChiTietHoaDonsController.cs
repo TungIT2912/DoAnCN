@@ -23,7 +23,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         // GET: ChiTietHoaDons
         public async Task<IActionResult> Index()
         {
-           
+
             return View();
         }
 
@@ -71,7 +71,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 TongTien = cthd.TongTien,
                 NgayLap = cthd.NgayLap,
                 EmailBn = cthd.EmailBn,
-                DonThuocs = donThuocs.Select(dt => new DonThuocDTO
+                DonThuocs = donThuocs.Select(dt => new DonThuoc1DTO
                 {
                     Idkham = dt.Idkham,
                     IddungCu = dt.IddungCu,
@@ -95,7 +95,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View(cthdDTO);
         }
 
-        
+
         private bool ChiTietHoaDonExists(int id)
         {
             return _context.ChiTietHoaDons.Any(e => e.IdchiTiet == id);

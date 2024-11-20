@@ -31,9 +31,15 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdbenhNhan"));
 
+                    b.Property<int?>("ChanDoanIdchanDoan")
+                        .HasColumnType("int");
+
                     b.Property<string>("DiaChi")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("Gioi")
                         .HasColumnType("bit");
@@ -42,6 +48,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("IdChanDoan")
+                        .HasColumnType("int");
 
                     b.Property<string>("NamSinh")
                         .HasMaxLength(4)
@@ -53,10 +62,15 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("Sdt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TrieuChung")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("IdbenhNhan");
+
+                    b.HasIndex("ChanDoanIdchanDoan");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -305,6 +319,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdhoaDon"));
 
+                    b.Property<bool>("DaThanhToan")
+                        .HasColumnType("bit");
+
                     b.Property<string>("EmailBn")
                         .HasColumnType("nvarchar(max)");
 
@@ -345,18 +362,18 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Kho", b =>
                 {
-                    b.Property<int>("IdsanPham")
+                    b.Property<int>("IddungCu")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdsanPham"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddungCu"));
 
                     b.Property<string>("DonViTinh")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("IddungCu")
+                    b.Property<int>("IdsanPham")
                         .HasColumnType("int");
 
                     b.Property<string>("Loai")
@@ -367,9 +384,14 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int?>("SoLuong")
                         .HasColumnType("int");
 
-                    b.HasKey("IdsanPham");
+                    b.Property<int?>("ThiTruongIdsanPham")
+                        .HasColumnType("int");
 
-                    b.HasIndex("IddungCu");
+                    b.HasKey("IddungCu");
+
+                    b.HasIndex("IdsanPham");
+
+                    b.HasIndex("ThiTruongIdsanPham");
 
                     b.ToTable("Khos");
                 });
@@ -540,9 +562,15 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>
                 {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "ChanDoan")
+                        .WithMany()
+                        .HasForeignKey("ChanDoanIdchanDoan");
+
                     b.HasOne("WebQuanLyNhaKhoa.Data.TaiKhoan", "TaiKhoan")
                         .WithOne("BenhNhan")
                         .HasForeignKey("WebQuanLyNhaKhoa.Data.BenhNhan", "UserId");
+
+                    b.Navigation("ChanDoan");
 
                     b.Navigation("TaiKhoan");
                 });
@@ -675,10 +703,14 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Kho", b =>
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.ThiTruong", "ThiTruong")
-                        .WithMany("Khos")
-                        .HasForeignKey("IddungCu")
+                        .WithMany()
+                        .HasForeignKey("IdsanPham")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WebQuanLyNhaKhoa.Data.ThiTruong", null)
+                        .WithMany("Khos")
+                        .HasForeignKey("ThiTruongIdsanPham");
 
                     b.Navigation("ThiTruong");
                 });

@@ -6,6 +6,10 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class ChanDoanDTO
 	{
-		public string TenChanDoan { get; set; }
-	}
+		public int IdchanDoan { get; set; }
+
+        public string TenChanDoan { get; set; }
+        public int IdBenhNhan { get; set; }
+        public string GhiChu { get; set; }
+    }
 }
