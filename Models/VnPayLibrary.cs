@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+
 namespace WebQuanLyNhaKhoa.Models
 {
     public class VnPayLibrary
@@ -158,5 +159,4 @@ namespace WebQuanLyNhaKhoa.Models
             return vnpCompare.Compare(x, y, CompareOptions.Ordinal);
         }
     }
-
 }

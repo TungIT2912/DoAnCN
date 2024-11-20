@@ -39,6 +39,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 NamSinh = nv.NamSinh,
                 Sdt = nv.Sdt,
                 DiaChi = nv.DiaChi,
+                EmailBn = nv.EmailBn,
                 NgayKhamDau = nv.NgayKhamDau,
             }).ToList();
 
@@ -61,7 +62,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 return BadRequest(ModelState);
             }
 
-            // Tạo đối tượng bệnh nhân mới
+            
             var newBenhNhan = new BenhNhan
             {
                 HoTen = benhNhan.HoTen,
@@ -69,36 +70,31 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 NamSinh = benhNhan.NamSinh,
                 Sdt = benhNhan.Sdt,
                 DiaChi = benhNhan.DiaChi,
+                
                 TrieuChung = benhNhan.TrieuChung,
-                NgayKhamDau = benhNhan.NgayKhamDau
+                NgayKhamDau = benhNhan.NgayKhamDau,
+                EmailBn = benhNhan.EmailBn
             };
 
-            // Thêm bệnh nhân mới vào DbContext
-            _context.BenhNhans.Add(newBenhNhan);
-
-            // Lưu thông tin bệnh nhân vào cơ sở dữ liệu
+           
+            _context.BenhNhans.Add(newBenhNhan); 
             var saveResult = await _context.SaveChangesAsync();
-
-            // Nếu lưu thành công, tiếp tục lưu lịch khám
+            
             if (saveResult > 0)
             {
-                // Tạo một lịch khám cho bệnh nhân
                 var newDanhSachKham = new DanhSachKham
                 {
                     IdbenhNhan = newBenhNhan.IdbenhNhan,
-                    NgayKham = benhNhan.NgayKhamDau ?? DateTime.Now, // Nếu không có NgayKhamDau, sử dụng ngày hiện tại
-                    MaNv = null // Hoặc bạn có thể điền vào Mã nhân viên nếu cần
+                    NgayKham = benhNhan.NgayKhamDau ?? DateTime.Now, 
+                    MaNv = null 
                 };
 
-                // Thêm lịch khám vào bảng DanhSachKham
                 _context.DanhSachKhams.Add(newDanhSachKham);
 
-                // Lưu lịch khám vào cơ sở dữ liệu
                 var saveDanhSachKhamResult = await _context.SaveChangesAsync();
 
                 if (saveDanhSachKhamResult > 0)
                 {
-                    // Trả về thông tin bệnh nhân và lịch khám
                     var createdBenhNhanDTO = new BenhNhanDTO
                     {
                         HoTen = newBenhNhan.HoTen,
@@ -106,6 +102,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         NamSinh = newBenhNhan.NamSinh,
                         Sdt = newBenhNhan.Sdt,
                         DiaChi = newBenhNhan.DiaChi,
+                        EmailBn = newBenhNhan.EmailBn,
                         TrieuChung = newBenhNhan.TrieuChung,
                         NgayKhamDau = newBenhNhan.NgayKhamDau
                     };
@@ -118,9 +115,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 }
             }
 
-
-            // If any save operation fails, return a BadRequest with an error message
-            return BadRequest(new { success = false, message = "Failed to create NhanVien." });
+            return BadRequest(new { success = false, message = "Failed to create appointment." });
 
         }
 

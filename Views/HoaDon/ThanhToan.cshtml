@@ -1,4 +1,4 @@
-﻿
+﻿@* 
 
 @model WebQuanLyNhaKhoa.Data.HoaDon
 
@@ -55,3 +55,115 @@ else
         });
     </script>
 }
+ *@
+
+ @* @model WebQuanLyNhaKhoa.Data.HoaDon
+
+@{
+    ViewData["Title"] = "Thanh Toán Hóa Đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thanh Toán Hóa Đơn</h2>
+
+@if (Model != null)
+{
+    <p><strong>Mã hóa đơn:</strong> @Model.IdhoaDon</p>
+    <p><strong>Tên bệnh nhân:</strong> @ViewBag.TenBenhNhan</p>
+    <p><strong>Số điện thoại bệnh nhân:</strong> @ViewBag.SoDienThoaiBenhNhan</p>
+    <p><strong>Tên Dịch Vụ:</strong> @ViewBag.TenDichVu</p>
+    <p><strong>Tiền điều trị:</strong> @Model.TienDieuTri</p>
+    <p><strong>Tiền thuốc:</strong> @Model.TienThuoc</p>
+    <p><strong>Tổng tiền:</strong> @Model.TongTien</p>
+    <p><strong>Ngày lập:</strong> @Model.NgayLap</p>
+    <p><strong>Phương thức thanh toán:</strong> @Model.PhuongThucThanhToan</p>
+
+    <!-- Dropdown for selecting payment method -->
+    <label for="paymentMethod">Chọn phương thức thanh toán:</label>
+    <select id="paymentMethod">
+        <option value="COD">COD</option>
+        <option value="VNPay">VNPay</option>
+    </select>
+
+    <button id="payButton">Thanh Toán</button>
+    <p id="message"></p>
+}
+else
+{
+    <p>Hóa đơn không tồn tại.</p>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('payButton').addEventListener('click', async function () {
+            const hoaDonId = @Model.IdhoaDon;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            try {
+                if (paymentMethod === "COD") {
+                    // Gọi API thanh toán COD
+                    const response = await fetch(`/HoaDon/ThanhToanApi?hoaDonId=${hoaDonId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        alert("Thanh Toán Thành Công (COD)");
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    } else {
+                        const errorText = await response.text();
+                        document.getElementById('message').textContent = `Lỗi: ${errorText}`;
+                    }
+                } else if (paymentMethod === "VNPay") {
+                    const form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = `/HoaDon/ThanhToanVnpay?hoaDonId=${hoaDonId}`;
+                    document.body.appendChild(form);
+                    form.submit();
+                
+                }
+            } catch (error) {
+                document.getElementById('message').textContent = 'Có lỗi xảy ra khi thanh toán.';
+                console.error('Payment error:', error);
+            }
+        });
+    </script>
+} *@
+
+  @model WebQuanLyNhaKhoa.Data.HoaDon
+
+@{
+    ViewData["Title"] = "Thanh Toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null)
+{
+    <p><strong>Mã hóa đơn:</strong> @Model.IdhoaDon</p>
+    <p><strong>Tên bệnh nhân:</strong> @ViewBag.TenBenhNhan</p>
+    <p><strong>Số điện thoại bệnh nhân:</strong> @ViewBag.SoDienThoaiBenhNhan</p>
+    <p><strong>Tên Dịch Vụ:</strong> @ViewBag.TenDichVu</p>
+    <p><strong>Tiền điều trị:</strong> @Model.TienDieuTri</p>
+    <p><strong>Tiền thuốc:</strong> @Model.TienThuoc</p>
+    <p><strong>Tổng tiền:</strong> @Model.TongTien</p>
+    <p><strong>Ngày lập:</strong> @Model.NgayLap</p>
+    <p><strong>Phương thức thanh toán:</strong> @Model.PhuongThucThanhToan</p>
+}
+else
+{
+    <p>Hóa đơn không tồn tại.</p>
+}
+<form method="post" action="/HoaDon/ThanhToanApi">
+    <input type="hidden" name="hoaDonId" value="@Model.IdhoaDon" />
+
+    <label>Chọn phương thức thanh toán:</label>
+    <select name="paymentMethod">
+        <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+        <option value="VNPay">Thanh toán qua VNPay</option>
+    </select>
+
+    <button type="submit">Thanh toán</button>
+</form>
+

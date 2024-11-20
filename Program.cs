@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.Hubs;
 using WebQuanLyNhaKhoa.ServicesPay;
 using WebQuanLyNhaKhoa.wwwroot.AutoMapper;
 
@@ -53,7 +54,7 @@ builder.Services.AddAuthentication(options =>
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
-        {
+      {
             context.Token = context.Request.Cookies["jwt_token"];
             return Task.CompletedTask;
         }
@@ -64,10 +65,29 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+//test
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null; // Giữ nguyên tên thuộc tính
+    });
 
 
+
+builder.Services.AddSignalR();
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
@@ -87,6 +107,7 @@ builder.Services.AddRazorPages();
 
 // Dependency Injection setup
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
+
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -98,7 +119,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -126,6 +147,8 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllers();
+    endpoints.MapHub<ChatHub>("/chatHub");
 });
 
 app.MapControllers();
