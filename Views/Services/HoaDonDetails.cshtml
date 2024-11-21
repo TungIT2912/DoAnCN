@@ -71,8 +71,11 @@
             <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn bằng ID" />        
         </div>
     </div>
+    <br>
+
 </div>
 
+<br>
 
 
 
@@ -82,7 +85,8 @@
                 <div id="no-data-message" style="display: none; text-align: center; color: red;">
             <h3>Không tìm thấy kết quả</h3>
         </div>
-
+<br>
+<br>
         <!-- The rest of the HTML structure for displaying invoice details -->
         <div class="row">
             <div class="col-sm-12">
@@ -106,30 +110,36 @@
                         <hr>
                         <div class="row">
                             <div class="col-xs-4 from">
-                                <p class="lead marginbottom">From: Nha khoa Hoàn Mĩ</p>
-                                <p>350 Rhode Island Street</p>
-                                <p>Suite 240, San Francisco</p>
-                                <p>California, 94103</p>
+                                <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
+                                <p>10/80c Song Hành Xa Lộ Hà Nội</p>
+                                <p>Tòa E2, Q.12</p>
+                                <p>Hồ Chí Minh, 700000</p>
                                 <p>SĐT: +(84) 347 123 534</p>
-                                <p>Email: contact@dynofy.com</p>
+                                <p>Email: pquangngo@gmail.com</p>
                             </div>
 
                             <div class="col-xs-4 to">
-                                <p class="lead marginbottom">To : John Doe</p>
+                                <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
                                 <p>425 Market Street</p>
                                 <p>Suite 2200, San Francisco</p>
                                 <p>California, 94105</p>
                                 <p>Phone: 415-676-3600</p>
                                 <p>Email: john@doe.com</p>
                             </div>
+                             @if (Model != null && Model.Any())
+                                    {
 
+                                           var item = Model.First();
+                  
                             <div class="col-xs-4 text-right payment-details">
-                                <p class="lead marginbottom payment-info">Payment details</p>
-                                <p>Date: 14 April 2014</p>
+                                <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
+                                <p>@DateTime.Now.ToString("dd MMMM yyyy")</p>
                                 <p>VAT: DK888-777 </p>
-                                <p>Total Amount: $1019</p>
-                                <p>Account Name: Flatter</p>
+                                <p>Total Amount: @item.TongTien.ToString("C")</p>
+                                <p>Email khách hàng: @item.EmailBn</p>
                             </div>
+                                    
+                                }
                         </div>
 
                         <div class="row table-row">
