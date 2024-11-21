@@ -4,251 +4,13 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    body {
-        color: #566787;
-        background: #f5f5f5;
-        font-family: 'Varela Round', sans-serif;
-        font-size: 13px;
-    }
 
-    .table-responsive {
-        margin: 30px 0;
-    }
-
-    .table-wrapper {
-        min-width: 1000px;
-        background: #fff;
-        padding: 20px 25px;
-        border-radius: 3px;
-        box-shadow: 0 1px 1px rgba(0,0,0,.05);
-    }
-
-    .table-title {
-        padding-bottom: 15px;
-        background: #299be4;
-        color: #fff;
-        padding: 16px 30px;
-        margin: -20px -25px 10px;
-        border-radius: 3px 3px 0 0;
-    }
-
-        .table-title h2 {
-            margin: 5px 0 0;
-            font-size: 24px;
-        }
-
-        .table-title .btn {
-            color: #566787;
-            float: right;
-            font-size: 13px;
-            background: #fff;
-            border: none;
-            min-width: 50px;
-            border-radius: 2px;
-            border: none;
-            outline: none !important;
-            margin-left: 10px;
-        }
-
-            .table-title .btn:hover, .table-title .btn:focus {
-                color: #566787;
-                background: #f2f2f2;
-            }
-
-            .table-title .btn i {
-                float: left;
-                font-size: 21px;
-                margin-right: 5px;
-            }
-
-            .table-title .btn span {
-                float: left;
-                margin-top: 2px;
-            }
-
-    table.table tr th, table.table tr td {
-        border-color: #e9e9e9;
-        padding: 12px 15px;
-        vertical-align: middle;
-    }
-
-        table.table tr th:first-child {
-            width: 60px;
-        }
-
-        table.table tr th:last-child {
-            width: 100px;
-        }
-
-    table.table-striped tbody tr:nth-of-type(odd) {
-        background-color: #fcfcfc;
-    }
-
-    table.table-striped.table-hover tbody tr:hover {
-        background: #f5f5f5;
-    }
-
-    table.table th i {
-        font-size: 13px;
-        margin: 0 5px;
-        cursor: pointer;
-    }
-
-    table.table td:last-child i {
-        opacity: 0.9;
-        font-size: 22px;
-        margin: 0 5px;
-    }
-
-    table.table td a {
-        font-weight: bold;
-        color: #566787;
-        display: inline-block;
-        text-decoration: none;
-    }
-
-        table.table td a:hover {
-            color: #2196F3;
-        }
-
-        table.table td a.settings {
-            color: #2196F3;
-        }
-
-        table.table td a.delete {
-            color: #F44336;
-        }
-
-    table.table td i {
-        font-size: 19px;
-    }
-
-    table.table .avatar {
-        border-radius: 50%;
-        vertical-align: middle;
-        margin-right: 10px;
-    }
-
-    .status {
-        font-size: 30px;
-        margin: 2px 2px 0 0;
-        display: inline-block;
-        vertical-align: middle;
-        line-height: 10px;
-    }
-
-    .text-success {
-        color: #10c469;
-    }
-
-    .text-info {
-        color: #62c9e8;
-    }
-
-    .text-warning {
-        color: #FFC107;
-    }
-
-    .text-danger {
-        color: #ff5b5b;
-    }
-
-    .pagination-controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-        font-family: Arial, sans-serif;
-    }
-
-        /* Page Button Styling */
-        .pagination-controls button {
-            background-color: #007bff; /* Primary color */
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            margin: 0 5px;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-            /* Hover Effect for Page Buttons */
-            .pagination-controls button:hover {
-                background-color: #0056b3;
-            }
-
-            /* Active Page Button Styling */
-            .pagination-controls button.active {
-                background-color: #003a75;
-                font-weight: bold;
-            }
-
-            /* Disabled Button Styling */
-            .pagination-controls button:disabled {
-                background-color: #cccccc;
-                cursor: not-allowed;
-            }
-    .hint-text {
-        float: left;
-        margin-top: 10px;
-        font-size: 13px;
-    }
-</style>
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-<div class="sidebar pe-4 pb-3">
-    <nav class="navbar bg-light navbar-light">
-        <a href="index.html" class="navbar-brand mx-4 mb-3">
-            <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Dental</h3>
-        </a>
-        <div class="d-flex align-items-center ms-4 mb-4">
-            <div class="position-relative">
-                <img class="rounded-circle" src="~/images/customer-3.jpg" alt="" style="width: 40px; height: 40px;">
-                <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-            </div>
-            <div class="ms-3 text-center">
-                <h6 class="mb-0">Thanh Tùng</h6>
-                <span>Admin</span>
-            </div>
-        </div>
-        <div class="navbar-nav w-100">
-            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
-            <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
-                <i class="micon fa fa-dashboard"></i>Thống kê
-            </a>
-            <a asp-action="Index" asp-controller="TaiKhoans" class="nav-item nav-link ">
-                <i class="micon fa fa-users"></i>Quản lí tài khoản
-            </a>
-            <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
-                <i class="micon fa fa-users"></i>Bệnh nhân
-            </a>
-            <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
-                <i class="micon fa fa-th me-2"></i>Thị trường
-            </a>
-            <a asp-action="Index" asp-controller="Khoes" class="nav-item nav-link ">
-                <i class="micon fa fa-cubes"></i>Kho
-            </a>
-            <a href="/Admin/LichSuNhapXuats/api/LichSuNhapXuats/Create" class="nav-item nav-link ">
-                <i class="micon fa fa-cubes"></i>Nhập hàng
-            </a>
-            <a asp-action="Index" asp-controller="LichSuNhapXuats" class="nav-item nav-link ">
-                <i class="micon fa fa-cubes"></i>Lịch sử nhập hàng
-            </a>
-            <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link active">
-                <i class=" micon fa fa-cubes"></i>Hóa đơn
-            </a>
-            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link ">
-                <i class=" micon fa fa-cubes"></i>Dịch vụ
-            </a>
-        </div>
-    </nav>
-</div>
+
 <div class="mobile-menu-overlay"></div>
 
 <div class="main-container">
@@ -257,12 +19,15 @@
             <div class="col-lg-12">
                 <div class="card-box mb-30">
                     <div class="pd-20">
-                        <h4 class="text-blue h4">Thông tin các hóa đơn</h4>
-
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <h2>Thông tin các hóa đơn</h2>
+                            </div>
+                        </div>
                     </div>
                     <div class="pb-20">
 
-                        <table class="table project-list-table table-nowrap align-middle table-borderless" class="table" id="khoTable">
+                        <table class="table table-striped table-hover" id="khoTable">
                             <thead>
                                 <tr>
                                     <th scope="col" style="width: 200px;">Tên bệnh nhân</th>
@@ -276,7 +41,6 @@
                             </thead>
                             <tbody>
                             </tbody>
-
                         </table>
                         <div id="paginationContainer" class="pagination-controls"></div>
                     </div>
@@ -286,9 +50,11 @@
 
     </div>
 </div>
+
 <script>
     let currentPage = 1;
     const pageSize = 10;
+
     async function fetchKhoes(pageNumber = 1) {
         try {
             const response = await fetch(`HoaDons/api/HoaDons?pageNumber=${pageNumber}&pageSize=${pageSize}`);
@@ -307,26 +73,26 @@
             alert('Không thể tải dữ liệu. Vui lòng thử lại.');
         }
     }
+
     function displayData(khoes) {
         const tableBody = document.getElementById('khoTable').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = '';
         khoes.forEach(nv => {
             const row = document.createElement('tr');
-            console.log("ngayLap value:", nv.ngayLap);
-
             const date = new Date(nv.ngayLap);
-            const formattedDate = date.toLocaleDateString('en-GB');
+            const formattedDate = date.toLocaleDateString('en-GB'); // Formats as dd/MM/yyyy
+
             row.innerHTML = `
-                        <td>${nv.tenBn}</td>
-                        <td>${nv.phuongThucThanhToan}</td>
-                        <td>${nv.tienThuoc}</td>
-                        <td>${nv.tienDieuTri}</td>
-                        <td>${nv.tongTien}</td>
-                        <td>${formattedDate}</td>
-                        <td>
-                            <a href="/Admin/ChiTietHoaDons/api/ChiTietHoaDons/Detail/${nv.idkham}""><i class="dw dw-delete"></i> Chi tiết</a>
-                        </td>
-                    `;
+                <td>${nv.tenBn}</td>
+                <td>${nv.phuongThucThanhToan}</td>
+                <td>${nv.tienThuoc}</td>
+                <td>${nv.tienDieuTri}</td>
+                <td>${nv.tongTien}</td>
+                <td>${formattedDate}</td>
+                <td>
+                    <a href="/Admin/ChiTietHoaDons/api/ChiTietHoaDons/Detail/${nv.idkham}"><i class="dw dw-delete"></i> Chi tiết</a>
+                </td>
+            `;
             tableBody.appendChild(row);
         });
     }
@@ -347,6 +113,7 @@
     function changePage(pageNumber) {
         fetchKhoes(pageNumber);
     }
+
     document.addEventListener('DOMContentLoaded', () => {
         fetchKhoes(currentPage);
     });
