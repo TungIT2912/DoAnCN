@@ -1,0 +1,200 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.ChanDoanDTO>
+@{
+    ViewData["Title"] = "Chẩn Đoán Bệnh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chẩn Đoán Bệnh</h2>
+
+<!-- Form chọn ngày để lọc bệnh nhân -->
+<div class="form-group">
+    <label for="ngayKham">Chọn Ngày Khám</label>
+    <input type="date" id="ngayKham" class="form-control" onchange="loadBenhNhansByDate()" />
+</div>
+
+<!-- Bảng danh sách bệnh nhân -->
+<table class="table" id="benhNhanTable">
+    <thead>
+        <tr>
+            <th>Họ Tên</th>
+            <th>Giới</th>
+            <th>Năm Sinh</th>
+            <th>Triệu Chứng</th>
+            <th>Chẩn Đoán</th>
+            <th>Ghi Chú</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Danh sách bệnh nhân sẽ được tải động -->
+    </tbody>
+</table>
+
+<script>
+    // Hàm tải danh sách bệnh nhân theo ngày khám
+    async function loadBenhNhansByDate() {
+        const date = document.getElementById("ngayKham").value;
+        if (!date) return;
+
+        const response = await fetch(`/ChanDoan/api/GetBenhNhanByDate?date=${date}`);
+        const benhNhans = await response.json();
+
+        const tbody = document.getElementById("benhNhanTable").querySelector("tbody");
+        tbody.innerHTML = "";
+
+        if (response.ok) {
+            benhNhans.forEach(async (benhNhan) => {
+                // Tạo các tùy chọn chẩn đoán cho từng bệnh nhân
+                const chanDoanSelect = document.createElement("select");
+                chanDoanSelect.classList.add("form-control");
+                await loadChanDoans(chanDoanSelect);
+
+                const row = `<tr>
+                        <td>${benhNhan.hoTen}</td>
+                        <td>${benhNhan.gioi}</td>
+                        <td>${benhNhan.namSinh}</td>
+                        <td>${benhNhan.trieuChung}</td>
+                        <td>${chanDoanSelect.outerHTML}</td>
+                        <td><input type="text" class="form-control" id="ghiChu-${benhNhan.idbenhNhan}" /></td>
+                        <td><button class="btn btn-primary" onclick="chanDoanBenh(${benhNhan.idbenhNhan})">Lưu</button></td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
+        } else {
+            alert("Không có bệnh nhân nào trong ngày đã chọn.");
+        }
+    }
+
+    // Hàm tải danh sách chẩn đoán
+    async function loadChanDoans(selectElement) {
+        const response = await fetch('/ChanDoan/api/GetChanDoan');
+        const chanDoans = await response.json();
+
+        chanDoans.forEach((chanDoan) => {
+            const option = document.createElement("option");
+            option.value = chanDoan.idchanDoan;
+            option.textContent = chanDoan.tenChanDoan;
+            selectElement.appendChild(option);
+        });
+    }
+
+    // Hàm chẩn đoán bệnh cho bệnh nhân
+    async function chanDoanBenh(idBenhNhan) {
+        const idChanDoan = document.querySelector(`#benhNhanTable tr td select`).value;
+        const ghiChu = document.getElementById(`ghiChu-${idBenhNhan}`).value;
+
+        const response = await fetch(`/ChanDoan/api/ChanDoanBenh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idBenhNhan, idChanDoan, ghiChu })
+        });
+
+        if (response.ok) {
+            alert("Chẩn đoán bệnh thành công!");
+        } else {
+            const result = await response.json();
+            alert(result.message || "Không thể lưu chẩn đoán.");
+        }
+    }
+</script>
+@* <h2>Chẩn Đoán Bệnh</h2>
+
+<!-- Form chọn ngày để lọc bệnh nhân -->
+<div class="form-group">
+    <label for="ngayKham">Chọn Ngày Khám</label>
+    <input type="date" id="ngayKham" class="form-control" onchange="loadBenhNhansByDate()" />
+</div>
+
+<!-- Bảng danh sách bệnh nhân -->
+<table class="table" id="benhNhanTable">
+    <thead>
+        <tr>
+            <th>Họ Tên</th>
+            <th>Giới</th>
+            <th>Năm Sinh</th>
+            <th>Triệu Chứng</th>
+            <th>Chẩn Đoán</th>
+            <th>Ghi Chú</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Danh sách bệnh nhân sẽ được tải động -->
+    </tbody>
+</table>
+
+<script>
+    // Hàm tải danh sách bệnh nhân theo ngày khám
+    async function loadBenhNhansByDate() {
+        const date = document.getElementById("ngayKham").value;
+        if (!date) return;
+
+        const response = await fetch(`/ChanDoan/api/GetBenhNhanByDate?date=${date}`);
+        const benhNhans = await response.json();
+
+        const tbody = document.getElementById("benhNhanTable").querySelector("tbody");
+        tbody.innerHTML = "";
+
+        if (response.ok) {
+            benhNhans.forEach(async (benhNhan) => {
+                // Tạo các tùy chọn chẩn đoán cho từng bệnh nhân
+                const chanDoanSelect = document.createElement("select");
+                chanDoanSelect.classList.add("form-control");
+                await loadChanDoans(chanDoanSelect);
+
+                const row = `<tr>
+                        <td>${benhNhan.hoTen}</td>
+                        <td>${benhNhan.gioi}</td>
+                        <td>${benhNhan.namSinh}</td>
+                        <td>${benhNhan.trieuChung}</td>
+                        <td>${chanDoanSelect.outerHTML}</td>
+                        <td><input type="text" class="form-control" id="ghiChu-${benhNhan.idbenhNhan}" /></td>
+                        <td>
+                            <!-- Thêm hidden input để lưu trữ idBenhNhan -->
+                            <input type="hidden" id="idBenhNhan-${benhNhan.idbenhNhan}" value="${benhNhan.idbenhNhan}" />
+                            <button class="btn btn-primary" onclick="chanDoanBenh(${benhNhan.idbenhNhan})">Lưu</button>
+                        </td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
+        } else {
+            alert("Không có bệnh nhân nào trong ngày đã chọn.");
+        }
+    }
+
+    // Hàm tải danh sách chẩn đoán
+    async function loadChanDoans(selectElement) {
+        const response = await fetch('/ChanDoan/api/GetChanDoan');
+        const chanDoans = await response.json();
+
+        chanDoans.forEach((chanDoan) => {
+            const option = document.createElement("option");
+            option.value = chanDoan.idchanDoan;
+            option.textContent = chanDoan.tenChanDoan;
+            selectElement.appendChild(option);
+        });
+    }
+
+    // Hàm chẩn đoán bệnh cho bệnh nhân
+    async function chanDoanBenh(idBenhNhan) {
+        // Lấy idBenhNhan từ hidden input tương ứng
+        const benhNhanId = document.getElementById(`idBenhNhan-${idBenhNhan}`).value;
+        const idChanDoan = document.querySelector(`#benhNhanTable tr td select`).value;
+        const ghiChu = document.getElementById(`ghiChu-${benhNhanId}`).value;
+
+        const response = await fetch(`/ChanDoan/api/ChanDoanBenh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idBenhNhan: benhNhanId, idChanDoan, ghiChu })
+        });
+
+        if (response.ok) {
+            alert("Chẩn đoán bệnh thành công!");
+        } else {
+            const result = await response.json();
+            alert(result.message || "Không thể lưu chẩn đoán.");
+        }
+    }
+</script> *@
+
+

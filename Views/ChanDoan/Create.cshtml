@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.ChanDoanDTO>
+@{
+    ViewData["Title"] = "Thêm mới chẩn đoán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thêm mới Chẩn Đoán</h2>
+
+<form id="createForm">
+    <div class="form-group">
+        <label for="tenChanDoan">Tên Chẩn Đoán</label>
+        <input type="text" id="tenChanDoan" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm</button>
+    <button type="button" onclick="window.location.href='/ChanDoan/Index'">Hủy</button>
+</form>
+
+<script>
+    document.getElementById("createForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const tenChanDoan = document.getElementById("tenChanDoan").value;
+
+        const response = await fetch("/ChanDoan/api/PostChanDoan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tenChanDoan })
+        });
+
+        if (response.ok) {
+            window.location.href = "/ChanDoan/Index"; // Quay về danh sách sau khi thêm
+        } else {
+            alert("Không thể thêm chẩn đoán. Vui lòng thử lại.");
+        }
+    });
+</script>

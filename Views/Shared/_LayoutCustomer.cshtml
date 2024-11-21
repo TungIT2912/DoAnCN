@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Nha Khoa Hoàn Mỹ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="keywords" content="dentistry, dental services, professional dental care">
+    <meta name="description" content="Professional dental services at Nha Khoa Hoàn Mỹ">
+
+    <!-- Favicon -->
+    <link href="@Url.Content("~/images/favicon.png")" rel="icon" type="image/x-icon">
+
+    <!-- Stylesheets -->
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+    <link href="~/css/color-themes/scarlet.css" rel="stylesheet">
+    <link href="~/css/color-switcher-design.css" rel="stylesheet">
+
+    <!-- Font and Icon Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
+    <link href="~/css/site.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    @await Html.PartialAsync("_HeaderCustomer")
+
+    <!-- Main Content -->
+    @RenderBody()
+
+    <!-- Footer -->
+    @await Html.PartialAsync("_FooterCustomer")
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.appear/0.3.6/jquery.appear.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/wow.js"></script>
+    <script src="~/js/appear.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/color-settings.js"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/js/jquery.modal.min.js"></script>
+    <script src="~/js/mmenu.js"></script>
+    <script src="~/js/mmenu.polyfills.js"></script>
+    <script src="~/js/owl.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/script.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

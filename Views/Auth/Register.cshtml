@@ -1,0 +1,54 @@
+﻿@model WebQuanLyNhaKhoa.Data.TaiKhoan
+@{
+    ViewBag.Title = "Đăng ký";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<h2>Đăng ký</h2>
+
+<form asp-action="Register" method="post">
+    <div class="form-group">
+        <label asp-for="TenDangNhap">Tên Đăng Nhập</label>
+        <input asp-for="TenDangNhap" class="form-control" />
+        <span asp-validation-for="TenDangNhap" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MatKhau">Mật Khẩu</label>
+        <input asp-for="MatKhau" type="password" class="form-control" />
+        <span asp-validation-for="MatKhau" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Role">Vai Trò</label>
+        <select asp-for="Role" class="form-control">
+            <option value="Admin">Admin</option>
+            <option value="Customer">Customer</option>
+            <option value="Staff">Staff</option>
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Đăng ký</button>
+</form>
+
+<div>
+    <a asp-action="Login">Đã có tài khoản? Đăng nhập</a>
+</div>
+
+<script>
+    // Client-side validation
+    document.querySelector('form').addEventListener('submit', function (event) {
+        const username = document.getElementById('TenDangNhap').value;
+        const password = document.getElementById('MatKhau').value;
+
+        if (username.length < 5) {
+            alert("Tên đăng nhập phải có ít nhất 5 ký tự.");
+            event.preventDefault();
+        }
+        if (password.length < 6) {
+            alert("Mật khẩu phải có ít nhất 6 ký tự.");
+            event.preventDefault();
+        }
+    });
+</script>

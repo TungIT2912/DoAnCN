@@ -1,0 +1,84 @@
+@using X.PagedList 
+
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+@model IPagedList<WebQuanLyNhaKhoa.Data.DichVu>  
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Medicoz | Health and Medical HTML Template | About Us</title>
+
+    <!-- Stylesheets -->
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+
+    <!--Color Themes-->
+    <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader"></div>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="auto-container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
+                        <div class="inner-box">
+                            <div class="price-box">
+                                <h4 class="price">@item.DonGia.ToString("0")</h4>
+                                <div class="validaty">VNĐ</div>
+                            </div>
+                            <h3 class="title">@item.TenDichVu</h3>
+                            <ul class="features">
+                                <li>@item.IddichVu</li>
+                            </ul>
+                            <div class="btn-box">
+                                <a href="#" class="theme-btn">Get Offer</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="pagination-container">
+                @if (Model.HasPreviousPage)
+                {
+                    <a href="@Url.Action("Pricing", new { page = Model.PageNumber - 1 })" class="prev">Previous</a>
+                }
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <a href="@Url.Action("Pricing", new { page = i })" class="page-number @if (i == Model.PageNumber) { <text>active</text> }">@i</a>
+                }
+                @if (Model.HasNextPage)
+                {
+                    <a href="@Url.Action("Pricing", new { page = Model.PageNumber + 1 })" class="next">Next</a>
+                }
+            </div>
+        </div>
+    </section>
+    <!--End Pricing Section -->
+
+</div>
+
+</body>
+</html>

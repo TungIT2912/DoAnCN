@@ -1,0 +1,44 @@
+﻿@model WebQuanLyNhaKhoa.DTO.TaiKhoanDTO
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<h2>Đăng nhập</h2>
+
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label asp-for="TenDangNhap">Tên Đăng Nhập</label>
+        <input asp-for="TenDangNhap" class="form-control" />
+        <span asp-validation-for="TenDangNhap" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MatKhau">Mật Khẩu</label>
+        <input asp-for="MatKhau" type="password" class="form-control" />
+        <span asp-validation-for="MatKhau" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+</form>
+
+<div>
+    <a asp-action="Register">Chưa có tài khoản? Đăng ký</a>
+</div>
+
+
+@* <script>
+    document.querySelector('form').addEventListener('submit', function (event) {
+        const username = document.getElementById('TenDangNhap').value;
+        const password = document.getElementById('MatKhau').value;
+
+        if (!username) {
+            alert("Tên đăng nhập không được để trống.");
+            event.preventDefault();
+        }
+        if (!password) {
+            alert("Mật khẩu không được để trống.");
+            event.preventDefault();
+        }
+    });
+</script> *@
