@@ -1,17 +1,22 @@
-﻿using WebQuanLyNhaKhoa.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebQuanLyNhaKhoa.ServicesPay;
+using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.Models;
+
+
 
 namespace WebQuanLyNhaKhoa.ServicesPay
 {
     public class VnPayService : IVnPayService
     {
         public readonly IConfiguration _config;
-        public VnPayService(IConfiguration config) {
+        public VnPayService(IConfiguration config)
+        {
             _config = config;
         }
-        public string CreatePaymentUrl(HttpContext context,VnPaymentRequestModel model)
+        public string CreatePaymentUrl(HttpContext context, VnPaymentRequestModel model)
         {
-            var tick= DateTime.Now.Ticks.ToString();
+            var tick = DateTime.Now.Ticks.ToString();
             var vnpay = new VnPayLibrary();
             vnpay.AddRequestData("vnp_Version", _config["Vnpay:Version"]);
             vnpay.AddRequestData("vnp_Command", _config["Vnpay:Command"]);
@@ -23,10 +28,11 @@ namespace WebQuanLyNhaKhoa.ServicesPay
             vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress(context));
             vnpay.AddRequestData("vnp_Locale", _config["Vnpay:Locale"]);
 
-            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán cho hóa đơn: "+model.OrderId);
+            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán cho hóa đơn: " + model.OrderId);
             vnpay.AddRequestData("vnp_OrderType", "orther");
             vnpay.AddRequestData("vnp_ReturnUrl", _config["Vnpay:PaymentBackReturnUrl"]);
             vnpay.AddRequestData("vnp_TxnRef", tick);
+
 
             var paymentUrl = vnpay.CreateRequestUrl(_config["VnPay:BaseUrl"], _config["VnPay:HashSecret"]);
              
@@ -35,17 +41,17 @@ namespace WebQuanLyNhaKhoa.ServicesPay
 
         public VnPaymentResponseModel PaymentExcute(IQueryCollection collections)
         {
-            var vnpay= new VnPayLibrary();
-            foreach(var (key, value) in collections)
+            var vnpay = new VnPayLibrary();
+            foreach (var (key, value) in collections)
             {
-                if(!string.IsNullOrEmpty(key)   && key.StartsWith("vnp_"))
+                if (!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
                 {
                     vnpay.AddResponseData(key, value.ToString());
                 }
             }
             var vnp_orderId = Convert.ToInt64(vnpay.GetResponseData("vnp_TxnRef"));
             var vnp_TransactionId = Convert.ToInt64(vnpay.GetResponseData("vnp_TransactionNo"));
-            var vnp_SecureHash = collections.FirstOrDefault(p=>p.Key== "vnp_SecureHash").Value;
+            var vnp_SecureHash = collections.FirstOrDefault(p => p.Key == "vnp_SecureHash").Value;
             var vnp_ResponseCode = vnpay.GetResponseData("vnp_ResponseCode");
             var vnp_OrderInfo = vnpay.GetResponseData("vnp_OrderInfo");
 
@@ -62,10 +68,10 @@ namespace WebQuanLyNhaKhoa.ServicesPay
                 Success = true,
                 PaymentMethod = "VnPay",
                 OrderDescription = vnp_OrderInfo,
-                OrderId= vnp_orderId.ToString(),
-                TransactionId= vnp_TransactionId.ToString(),
-                Token= vnp_SecureHash,
-                VnPayResponseCode= vnp_ResponseCode,
+                OrderId = vnp_orderId.ToString(),
+                TransactionId = vnp_TransactionId.ToString(),
+                Token = vnp_SecureHash,
+                VnPayResponseCode = vnp_ResponseCode,
             };
         }
     }

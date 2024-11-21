@@ -35,7 +35,7 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual DbSet<NhanVien> NhanViens { get; set; }
 
-
+        public DbSet<UnansweredQuestion> UnansweredQuestions { get; set; }
 
 		//public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
 

@@ -49,11 +49,11 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Console.WriteLine($"Mã bệnh nhân bạn vừa tìm không tồn tại.");
                 return NotFound();
             }
-            var donThuocs = await _context.DonThuocs
+            var donThuocs = await _context.DonThuocs.Include(n => n.Kho.ThiTruong)
                    .Where(dt => dt.Idkham == id)
                    .ToListAsync();
 
-            var dieuTris = await _context.DieuTris
+            var dieuTris = await _context.DieuTris.Include(n => n.DichVu)
                               .Where(dt => dt.Idkham == id)
                               .ToListAsync();
             var cthdDTO = new ChiTietHoaDonDTO

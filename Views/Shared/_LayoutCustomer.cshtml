@@ -41,19 +41,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.appear/0.3.6/jquery.appear.min.js"></script>
 
-    <!-- Custom Scripts -->
-    <script src="~/js/jquery.js"></script>
-    <script src="~/js/wow.js"></script>
-    <script src="~/js/appear.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-    <script src="~/js/color-settings.js"></script>
-    <script src="~/js/jquery.fancybox.js"></script>
-    <script src="~/js/jquery.modal.min.js"></script>
-    <script src="~/js/mmenu.js"></script>
-    <script src="~/js/mmenu.polyfills.js"></script>
-    <script src="~/js/owl.js"></script>
-    <script src="~/js/popper.min.js"></script>
-    <script src="~/js/script.js"></script>
+<script src="~/js/jquery.js"></script> 
+<script src="~/js/wow.js"></script> 
+
+<script src="~/js/appear.js"></script> 
+<script src="~/js/bootstrap.min.js"></script> 
+<script src="~/js/color-settings.js"></script> 
+<script src="~/js/jquery.fancybox.js"></script> 
+<script src="~/js/jquery.modal.min.js"></script> 
+<script src="~/js/mmenu.js"></script> 
+<script src="~/js/mmenu.polyfills.js"></script> 
+<script src="~/js/owl.js"></script> 
+<script src="~/js/popper.min.js"></script> 
+<script src="~/js/script.js"></script> 
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger intent="WELCOME"
+                  chat-title="ChatBotNhaKhoa"
+                  agent-id="71ef94b8-d40f-4c7b-b7e9-c970d14a81d6"
+                  language-code="vi">
+    </df-messenger>
 
     @RenderSection("Scripts", required: false)
 </body>
