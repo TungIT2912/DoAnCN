@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
+@* <style>
     body {
         color: #566787;
         background: #f5f5f5;
@@ -199,7 +199,12 @@
         margin-top: 10px;
         font-size: 13px;
     }
-</style>
+</style> *@
+
+
+
+
+
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -259,10 +264,13 @@
         <p>
             <a asp-controller="LichSuNhapXuats" asp-action="Create" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="bi bi-plus-square-fill"></i> Nhập thêm hàng</a>
         </p>
+        <br>
+        <hr>
         <div class="row clearfix progress-box">
             <div class="col-lg-12">
                 <div class="card-box mb-30">
                     <div class="pd-20">
+                        <br>
                         <h4 class="text-blue h4">Thông tin tồn kho</h4>
 
                     </div>

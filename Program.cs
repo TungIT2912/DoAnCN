@@ -88,12 +88,12 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
-    options.AddPolicy("StaffPolicy", policy => policy.RequireRole("Staff"));
-});
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+//     options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
+//     options.AddPolicy("StaffPolicy", policy => policy.RequireRole("Staff"));
+// });
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
