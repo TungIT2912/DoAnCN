@@ -10,7 +10,10 @@
     <!-- Favicon -->
     <link href="@Url.Content("~/images/favicon.png")" rel="icon" type="image/x-icon">
 
-    <!-- Stylesheets -->
+    <!-- Stylesheets --> 
+       <link href="~/css/bootstrap.css" rel="stylesheet">
+       <link href="~/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="~/css/style.css" rel="stylesheet">
     <link href="~/css/responsive.css" rel="stylesheet">
     <link href="~/css/color-themes/scarlet.css" rel="stylesheet">
@@ -55,11 +58,11 @@
 <script src="~/js/popper.min.js"></script> 
 <script src="~/js/script.js"></script> 
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-    <df-messenger intent="WELCOME"
+    @* <df-messenger intent="WELCOME"
                   chat-title="ChatBotNhaKhoa"
                   agent-id="71ef94b8-d40f-4c7b-b7e9-c970d14a81d6"
                   language-code="vi">
-    </df-messenger>
+    </df-messenger> *@
 
     @RenderSection("Scripts", required: false)
 </body>
