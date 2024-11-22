@@ -3,12 +3,6 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-<style>
-    header {
-        position: relative;
-    }
-
-</style>
 
 <div class="container-xxl py-5">
     <div class="container">
@@ -22,7 +16,7 @@
                         <i class="fa fa-phone-alt text-primary"></i>
                     </div>
                     <div class="ms-4">
-                        <p class="mb-2">Call Us Now</p>
+                        <p class="mb-2">Hãy gọi chúng tôi</i></p>
                         <h5 class="mb-0">+0348859428</h5>
                     </div>
                 </div>
@@ -35,22 +29,21 @@
                         <h5 class="mb-0">nhakhoahoanmy@gmail.com</h5>
                     </div>
                 </div>
-
             </div>
+
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5">
-
-                    <form id="createBenhNhan" class="row g-3" style="align-items:center" class="p-[20px]" method="post" enctype="multipart/form-data">
+                    <form id="createBenhNhan" class="row g-3 w-100" method="post" enctype="multipart/form-data">
                         <div class="col-12 col-sm-6">
                             <label asp-for="HoTen" class="control-label">Họ tên</label>
-                            <input asp-for="HoTen" required type="text" class="form-control border-0" placeholder="" style="height: 55px;">
+                            <input asp-for="HoTen" required type="text" class="form-control border-0" style="height: 55px;">
                             <span asp-validation-for="HoTen" class="text-danger"></span>
                         </div>
+
                         <div class="col-12 col-sm-6">
                             <div>
                                 <input asp-for="Gioi" type="radio" name="gender" value="True" />
                                 <span>Nữ</span>
-
                             </div>
                             <div>
                                 <input asp-for="Gioi" type="radio" name="gender" value="False" />
@@ -59,28 +52,30 @@
                             <span asp-validation-for="Gioi" class="text-danger"></span>
                         </div>
 
-
                         <div class="col-12 col-sm-6">
                             <label asp-for="NamSinh" class="control-label">Năm sinh</label>
                             <input asp-for="NamSinh" type="text" placeholder="Nhập năm sinh" class="form-control border-0" style="height: 55px;">
                             <span asp-validation-for="NamSinh" class="text-danger"></span>
                         </div>
+
                         <div class="col-12 col-sm-6">
                             <label asp-for="Sdt" class="control-label">Số điện thoại</label>
                             <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
                             <span asp-validation-for="Sdt" class="text-danger"></span>
                         </div>
+
                         <div class="col-12 col-sm-6">
                             <label asp-for="EmailBn" class="control-label">Email</label>
-                            <input asp-for="EmailBn" type="text" class="form-control border-0" style="height: 55px;width: 100%">
+                            <input asp-for="EmailBn" type="email" class="form-control border-0" style="height: 55px;width: 100%">
                             <span asp-validation-for="EmailBn" class="text-danger"></span>
                         </div>
-                        
+
                         <div class="col-12 col-sm-6">
                             <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
                             <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;width: 100%">
                             <span asp-validation-for="DiaChi" class="text-danger"></span>
                         </div>
+
                         <div class="col-12 col-sm-6" style=" width: 100%;">
                             <div class="date" id="date" data-target-input="nearest">
                                 <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
@@ -90,22 +85,24 @@
                                 <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
                             </div>
                         </div>
+
                         <div class="col-12 col-sm-6">
                             <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
-                            <input asp-for="TrieuChung" class="form-control border-0" style="height: 150px;width: 100%"></input>
+                            <textarea asp-for="TrieuChung" class="form-control border-0" style="height: 150px;width: 100%"></textarea>
                             <span asp-validation-for="TrieuChung" class="text-danger"></span>
                         </div>
 
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary w-100 py-3">Book Appointment</button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -113,17 +110,18 @@
             if (form) {
                 form.addEventListener("submit", async (event) => {
                     event.preventDefault();
+                                    
+                const benhNhanData = {
+                    HoTen: document.querySelector("[name='HoTen']").value,
+                    Gioi: document.querySelector("[name='gender']:checked").value === "True",
+                    NamSinh: document.querySelector("[name='NamSinh']").value,  
+                    Sdt: document.querySelector("[name='Sdt']").value,
+                    DiaChi: document.querySelector("[name='DiaChi']").value,
+                    EmailBn: document.querySelector("[name='EmailBn']").value,
+                    TrieuChung: document.querySelector("[name='TrieuChung']").value,
+                    NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
+                };
 
-                    const benhNhanData = {
-                        HoTen: document.querySelector("[name='HoTen']").value,
-                        Gioi: document.querySelector("[name='gender']:checked").value === "True",
-                        NamSinh: parseInt(document.querySelector("[name='NamSinh']").value),
-                        Sdt: document.querySelector("[name='Sdt']").value,
-                        DiaChi: document.querySelector("[name='DiaChi']").value,
-                        EmailBn: document.querySelector("[name='EmailBn']").value,
-                        TrieuChung: document.querySelector("[name='TrieuChung']").value,
-                        NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
-                    };
 
                     console.log('Data being sent:', benhNhanData);
 
@@ -140,7 +138,7 @@
                             const result = await response.json();
                             console.log("Patient created successfully:", result);
                             alert("Patient created successfully!");
-                            window.location.href = "https://localhost:7101/";
+                            window.location.href = "https://localhost:5271/";
                         } else {
                             const errorText = await response.text();
                             console.error("Failed to create patient:", errorText);
@@ -157,7 +155,3 @@
         });
     </script>
 }
-
-
-
-
