@@ -38,6 +38,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("EmailBn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("GhiChu")
                         .HasColumnType("nvarchar(max)");
 
@@ -105,6 +109,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchiTiet"));
+
+                    b.Property<bool>("DaThanhToan")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -284,6 +291,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int?>("ChiTietHoaDonId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("DonThuocIddonThuoc")
+                        .HasColumnType("int");
+
                     b.Property<int>("IddungCu")
                         .HasColumnType("int");
 
@@ -305,6 +315,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.HasKey("IddonThuoc");
 
                     b.HasIndex("ChiTietHoaDonId");
+
+                    b.HasIndex("DonThuocIddonThuoc");
 
                     b.HasIndex("IddungCu");
 
@@ -562,6 +574,37 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.ToTable("ThiTruongs");
                 });
 
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.UnansweredQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("AskedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAnswered")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("MaNv")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaNv");
+
+                    b.ToTable("UnansweredQuestions");
+                });
+
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "ChanDoan")
@@ -661,6 +704,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .WithMany("DonThuocs")
                         .HasForeignKey("ChiTietHoaDonId");
 
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DonThuoc", null)
+                        .WithMany("DonThuocs")
+                        .HasForeignKey("DonThuocIddonThuoc");
+
                     b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "Kho")
                         .WithMany("DonThuocs")
                         .HasForeignKey("IddungCu")
@@ -750,6 +797,15 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.UnansweredQuestion", b =>
+                {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "NhanVien")
+                        .WithMany("UnansweredQuestions")
+                        .HasForeignKey("MaNv");
+
+                    b.Navigation("NhanVien");
+                });
+
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.BenhNhan", b =>
                 {
                     b.Navigation("DanhSachKhams");
@@ -793,6 +849,8 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DonThuoc", b =>
                 {
+                    b.Navigation("DonThuocs");
+
                     b.Navigation("HoaDons");
                 });
 
@@ -806,6 +864,8 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.NhanVien", b =>
                 {
                     b.Navigation("DanhSachKhams");
+
+                    b.Navigation("UnansweredQuestions");
                 });
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.TaiKhoan", b =>

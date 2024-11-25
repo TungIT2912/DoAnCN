@@ -1,3 +1,7 @@
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
 <!DOCTYPE html>
 <html lang="en">
   @{ Layout = "~/Views/Shared/_LayoutCustomer.cshtml"; }
@@ -8,25 +12,26 @@
 <title>Medicoz | Health and Medical HTML Template | About Us</title>
 
 <!-- Stylesheets -->
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/responsive.css" rel="stylesheet">
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
 
 <!--Color Themes-->
-<link id="theme-color-file" href="css/color-themes/default-theme.css" rel="stylesheet">
+    <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
 
 <!--Color Switcher Mockup-->
-<link href="css/color-switcher-design.css" rel="stylesheet">
+    @* <link href="/css/color-switcher-design.css" rel="stylesheet"> *@
 
-<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-<link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
 
 <!-- Responsive -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
-<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+    <!--[if lt IE 9]><script src="/js/respond.js"></script><![endif]-->
 </head>
+
 
 <body>
 
@@ -38,12 +43,12 @@
   
 
     <!--Page Title-->
-    <section class="page-title" style="background-image: url(images/background/8.jpg);">
+<section class="page-title" style="background-image: url('~/images/background/8.jpg');">
         <div class="auto-container">
             <div class="title-outer">            
                 <h1>About Us</h1>
                 <ul class="page-breadcrumb">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="~/Home/Index">Home</a></li>
                     <li>About</li>
                 </ul>
             </div>

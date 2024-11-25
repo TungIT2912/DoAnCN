@@ -1,0 +1,263 @@
+@model IEnumerable<WebQuanLyNhaKhoa.Data.ChiTietHoaDon>
+
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
+<head>
+<meta charset="utf-8">
+<title>Medicoz | Health and Medical HTML Template | Services</title>
+
+<!-- Stylesheets -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<link href="~/css/bootstrap.css" rel="stylesheet">
+<link href="~/css/style.css" rel="stylesheet">
+<link href="~/css/responsive.css" rel="stylesheet">
+<link href="~/css/table.css" rel="stylesheet">
+<link href="~/css/reciept.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <!--Color Themes-->
+    <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
+
+    <script src="~/js/table.js"></script>
+
+<link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+<link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+
+<!-- Responsive -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader"></div>
+
+     <!--Page Title-->
+<section class="page-title" style="background-image: url('@Url.Content("~/images/background/8.jpg")');">
+        <div class="auto-container">
+            <div class="title-outer">
+                <h1>Hóa đơn</h1>
+                <ul class="page-breadcrumb">
+                    <li><a href="~/Home/Index">Trang chủ</a></li>
+                    <li>Hóa đơn</li>
+                </ul> 
+            </div>
+        </div>
+    </section>
+    <!--End Page Title--> 
+
+<hr>
+
+<section>
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Search form that submits the query to the server -->
+            <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn bằng ID" />        
+        </div>
+    </div>
+    <br>
+
+</div>
+
+<br>
+
+
+
+@foreach (var chiTiet in Model) 
+{
+    <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
+                <div id="no-data-message" style="display: none; text-align: center; color: red;">
+            <h3>Không tìm thấy kết quả</h3>
+        </div>
+<br>
+<br>
+        <!-- The rest of the HTML structure for displaying invoice details -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default invoice" id="invoice">
+                    <div class="panel-body">
+                        <div class="invoice-ribbon">
+                            <div class="ribbon-inner">PAID</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 top-left">
+                                <div class="logo">
+                                    <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 top-right">
+                                <h3 class="marginright">INVOICE-@chiTiet.IdhoaDon</h3> 
+                                <span class="marginright">@DateTime.Now.ToString("dd MMMM yyyy")</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-4 from">
+                                <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
+                                <p>10/80c Song Hành Xa Lộ Hà Nội</p>
+                                <p>Tòa E2, Q.12</p>
+                                <p>Hồ Chí Minh, 700000</p>
+                                <p>SĐT: +(84) 347 123 534</p>
+                                <p>Email: pquangngo@gmail.com</p>
+                            </div>
+
+                            <div class="col-xs-4 to">
+                                <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
+                                <p>425 Market Street</p>
+                                <p>Suite 2200, San Francisco</p>
+                                <p>California, 94105</p>
+                                <p>Phone: 415-676-3600</p>
+                                <p>Email: john@doe.com</p>
+                            </div>
+                             @if (Model != null && Model.Any())
+                                    {
+
+                                           var item = Model.First();
+                  
+                            <div class="col-xs-4 text-right payment-details">
+                                <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
+                                <p>@DateTime.Now.ToString("dd MMMM yyyy")</p>
+                                <p>VAT: DK888-777 </p>
+                                <p>Total Amount: @item.TongTien.ToString("C")</p>
+                                <p>Email khách hàng: @item.EmailBn</p>
+                            </div>
+                                    
+                                }
+                        </div>
+
+                        <div class="row table-row">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width:5%">#</th>
+                                        <th style="width:30%">Tên Dịch Vụ</th>
+                                        <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                                        <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                                        <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                                        <th class="text-right" style="width:15%">Tổng Tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        int index = 1;
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td class="text-center">@index</td>
+                                                <td>@item.TenDon</td>
+                                                <td class="text-right">@item.PhuongThucThanhToan</td>
+                                                <td class="text-right">@item.TienThuoc.ToString("C")</td>
+                                                <td class="text-right">@item.TienDieuTri.ToString("C")</td>
+                                                <td class="text-right">@item.TongTien.ToString("C")</td>
+                                            </tr>
+                                            index++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center">No data available</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+}
+
+
+</section>
+
+
+<script>
+    $(document).ready(function() {
+        let timeout;
+
+        $('#invoice-search').on('keyup', function() {
+            var searchTerm = $(this).val().toLowerCase();
+
+            // Clear previous timeout to prevent multiple rapid calls
+            clearTimeout(timeout);
+
+            // Show the loading screen when the user starts typing
+            $('#loading').show();
+
+            // Delay the search action by 500ms (or adjust as needed)
+            timeout = setTimeout(function() {
+                let foundAny = false;
+
+                // If the search term is empty, hide all invoices
+                if (searchTerm === '') {
+                    $('[id^="invoice-container-"]').hide(); // Hide all invoices
+                } else {
+                    // Loop through each invoice container and toggle visibility based on search
+                    $('[id^="invoice-container-"]').each(function() {
+                        var invoiceId = $(this).attr('id').split('-').pop(); // Get the IdhoaDon part of the ID
+                        
+                        if (invoiceId.toLowerCase().includes(searchTerm)) {
+                            $(this).show();  // Show matching invoice
+                            foundAny = true;  // Mark that we found a matching invoice
+                        } else {
+                            $(this).hide();  // Hide non-matching invoices
+                        }
+                    });
+                }
+
+                // If no invoices are found, show the "No results found" message
+                if (!foundAny) {
+                    $('#no-data-message').show();  // Show no results message
+                } else {
+                    $('#no-data-message').hide();  // Hide no results message if data is found
+                }
+
+                // Hide the loading screen after the filtering process is complete
+                $('#loading').hide();
+            }, 500); // 500ms cooldown delay
+        });
+    });
+</script>
+
+
+
+
+
+</body>
+
+<!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
+</html>
+
+
+
+
+
+
+
+
+
+
+

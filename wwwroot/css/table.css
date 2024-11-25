@@ -1,0 +1,59 @@
+/* Ensure table is responsive and stackable */
+.table-responsive-stack {
+    width: 100%;
+    display: table;
+}
+
+.table-responsive-stack tr {
+    display: flex;
+    flex-direction: row;
+}
+.h2 {
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+}
+
+.table-responsive-stack td,
+.table-responsive-stack th {
+    display: block;
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 12px; /* Consistent padding for better spacing */
+    word-wrap: break-word; /* Avoids text overflow */
+}
+
+.table-responsive-stack .thead-dark th {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+}
+
+/* Style adjustments for desktop view */
+@media screen and (min-width: 769px) {
+    .table-responsive-stack {
+        display: table; /* Standard table layout */
+    }
+    .table-responsive-stack tr {
+        display: table-row;
+    }
+    .table-responsive-stack th,
+    .table-responsive-stack td {
+        display: table-cell;
+    }
+}
+
+/* Responsive stacking for smaller screens */
+@media screen and (max-width: 768px) {
+    .table-responsive-stack tr {
+        flex-direction: column;
+        display: block;
+        border-bottom: 3px solid #ccc;
+    }
+    .table-responsive-stack td {
+        width: 100%;
+    }
+    .table-responsive-stack thead {
+        display: none; /* Hide table headers */
+    }
+}

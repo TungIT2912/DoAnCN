@@ -5,13 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    body {
-        color: #566787;
-        background: #f5f5f5;
-        font-family: 'Varela Round', sans-serif;
-        font-size: 13px;
-    }
+   <head>
+      <meta charset="UTF-8">   
+      <link href="~/css/form.css" rel="stylesheet" type="text/css">
+   </head>
 
     .table-responsive {
         margin: 30px 0;
@@ -205,53 +202,7 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
-<div class="sidebar pe-4 pb-3">
-    <nav class="navbar bg-light navbar-light">
-        <a href="index.html" class="navbar-brand mx-4 mb-3">
-            <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>Dental</h3>
-        </a>
-        <div class="d-flex align-items-center ms-4 mb-4">
-            <div class="position-relative">
-                <img class="rounded-circle" src="~/images/customer-3.jpg" alt="" style="width: 40px; height: 40px;">
-                <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-            </div>
-            <div class="ms-3 text-center">
-                <h6 class="mb-0">Thanh Tùng</h6>
-                <span>Admin</span>
-            </div>
-        </div>
-        <div class="navbar-nav w-100">
-            <a asp-action="Index" asp-controller="NhanViens" class="nav-item nav-link active"><i class="micon fa fa-users"></i>Quản lý nhân viên</a>
-            <a asp-action="Index" asp-controller="Statics" class="nav-item nav-link ">
-                <i class="micon fa fa-dashboard"></i>Thống kê
-            </a>
-            <a asp-action="Index" asp-controller="TaiKhoans" class="nav-item nav-link ">
-                <i class="micon fa fa-users"></i>Quản lí tài khoản
-            </a>
-            <a asp-action="Index" asp-controller="BenhNhans" class="nav-item nav-link ">
-                <i class="micon fa fa-users"></i>Bệnh nhân
-            </a>
-            <a asp-action="Index" asp-controller="ThiTruongs" class="nav-item nav-link ">
-                <i class="micon fa fa-th me-2"></i>Thị trường
-            </a>
-            <a asp-action="Index" asp-controller="Khoes" class="nav-item nav-link ">
-                <i class="micon fa fa-cubes"></i>Kho
-            </a>
-            <a href="/Admin/LichSuNhapXuats/api/LichSuNhapXuats/Create" class="nav-item nav-link ">
-                <i class="micon fa fa-cubes"></i>Nhập hàng
-            </a>
-            <a asp-action="Index" asp-controller="LichSuNhapXuats" class="nav-item nav-link ">
-                <i class="micon fa fa-cubes"></i>Lịch sử nhập hàng
-            </a>
-            <a asp-action="Index" asp-controller="HoaDons" class="nav-item nav-link ">
-                <i class=" micon fa fa-cubes"></i>Hóa đơn
-            </a>
-            <a asp-action="Index" asp-controller="DichVus" class="nav-item nav-link ">
-                <i class=" micon fa fa-cubes"></i>Dịch vụ
-            </a>
-        </div>
-    </nav>
-</div>
+
 <div class="mobile-menu-overlay"></div>
 
 
@@ -265,91 +216,140 @@
                         ← Quay về lại danh sách
                     </button>
                 </a>
+                <br>
+                <hr>
 
-                <div class="flex justify-center items-center h-screen ">
-                    <div class="container p-[20px] max-w-[700px] max-h-[500px] bg-white rounded-xl">
-                        <div class="relative">
-                            <h1 class="text-[32px] font-bold">Tạo mới nhân viên</h1>
-                            <span class="absolute inline-block w-[70px] h-[4px] bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-xl"></span>
-                        </div>
-                        <div class="flex justify-center gap-10 mt-[10px]">
-                            <form id="createNhanVienForm" class="flex-wrap flex justify-around items-center" enctype="multipart/form-data">
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Ten" class="control-label">Tên</label>
-                                    <input asp-for="Ten" name="Ten" id="Ten" class="form-control" required />
+              <body class="zf-backgroundBg">
+    <div class="zf-templateWidth">
+        <form action="/YourAction" name="form" method="POST" enctype="multipart/form-data" id="createNhanVienForm">
+            <div class="zf-templateWrapper">
+                <!-- Header -->
+                <ul class="zf-tempHeadBdr">
+                    <li class="zf-tempHeadContBdr">
+                        <h2 class="zf-frmTitle"><em>Tạo nhân viên mới</em></h2>
+                        <p class="zf-frmDesc">Điền thông tin của nhân viên</p>
+                        <div class="zf-clearBoth"></div>
+                    </li>
+                </ul>
+
+                <!-- Form Container -->
+                <div class="zf-subContWrap zf-leftAlign">
+                    <ul>
+                        <!-- Tên -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Tên <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <input asp-for="Ten" id="Ten" class="form-control" placeholder="Họ và Tên" required />
                                     <span asp-validation-for="Ten" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Email" class="control-label">Email</label>
-                                    <input asp-for="Email" name="Email" id="Email" class="form-control" required />
+                        <!-- Email -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Email <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <input asp-for="Email" id="Email" class="form-control" placeholder="example@gmail.com" required />
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Sdt" class="control-label">Số điện thoại</label>
-                                    <input asp-for="Sdt" name="Sdt" id="Sdt" class="form-control" required />
+                        <!-- Số điện thoại -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">SĐT <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <input asp-for="Sdt" id="Sdt" class="form-control" placeholder="(+84) 123 456 789" required />
                                     <span asp-validation-for="Sdt" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label asp-for="MaCv" class="control-label">Chức vụ</label>
-                                    <select asp-for="MaCv" name="MaCv" id="MaCv" class="form-control" asp-items="ViewBag.ChucVuList" required>
-                                        <option value="">Chọn chức vụ</option>
+                        <!-- Chức vụ -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Chức vụ <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <select asp-for="MaCv" id="MaCv" class="form-control" asp-items="ViewBag.ChucVuList" required>
+                                    <option value="" selected>- Chọn chức vụ -</option>
                                     </select>
                                     <span asp-validation-for="MaCv" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label asp-for="KinhNghiem" class="control-label">Kinh nghiệm</label>
-                                    <input asp-for="KinhNghiem" name="KinhNghiem" id="KinhNghiem" class="form-control" required />
+                        <!-- Kinh nghiệm -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Kinh nghiệm <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <input asp-for="KinhNghiem" id="KinhNghiem" class="form-control" placeholder="Năm kinh nghiệm" required />
                                     <span asp-validation-for="KinhNghiem" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Diachi" class="control-label">Địa chỉ</label>
-                                    <input asp-for="Diachi" name="Diachi" id="Diachi" class="form-control" required />
+                        <!-- Địa chỉ -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Địa chỉ <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <input asp-for="Diachi" id="Diachi" class="form-control" placeholder="Địa chỉ" required />
                                     <span asp-validation-for="Diachi" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label class="control-label">Giới tính</label>
+                        <!-- Giới tính -->
+                        <li class="zf-radio zf-tempFrmWrapper">
+                            <label class="zf-labelName">Giới tính <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
                                     <div>
                                         <input type="radio" name="Gioi" value="true" id="GioiFemale" required />
-                                        <span>Nữ</span>
+                                    <label for="GioiFemale">Nữ</label>
                                     </div>
                                     <div>
                                         <input type="radio" name="Gioi" value="false" id="GioiMale" required />
-                                        <span>Nam</span>
+                                    <label for="GioiMale">Nam</label>
                                     </div>
                                     <span asp-validation-for="Gioi" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label for="hinh">Ảnh đại diện (tuỳ chọn)</label>
+                        <!-- Ảnh đại diện -->
+                        <li class="zf-tempFrmWrapper">
+                            <label class="zf-labelName">Ảnh đại diện</label>
+                            <div class="zf-tempContDiv">
                                     <input type="file" name="hinh" id="hinh" class="form-control" />
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label asp-for="MatKhau" class="control-label">Mật khẩu</label>
-                                    <input asp-for="MatKhau" name="MatKhau" id="MatKhau" type="password" class="form-control" required />
+                        <!-- Mật khẩu -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Mật khẩu <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <input asp-for="MatKhau" id="MatKhau" type="password" class="form-control" placeholder="Mật khẩu" required />
                                     <span asp-validation-for="MatKhau" class="text-danger"></span>
                                 </div>
+                        </li>
 
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Role" class="control-label">Vai trò</label>
-                                    <select asp-for="Role" name="Role" id="Role" class="form-control" asp-items="ViewBag.Roles" required>
-    <option value="">Chọn vai trò</option>
+                        <!-- Vai trò -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Vai trò <em class="zf-important">*</em></label>
+                            <div class="zf-tempContDiv">
+                                <select asp-for="Role" id="Role" class="form-control" asp-items="ViewBag.Roles" required>
+                                    <option value="" selected>- Chọn vai trò -</option>
 </select>
 
                                     <span asp-validation-for="Role" class="text-danger"></span>
                                 </div>
+                        </li>
+                    </ul>
+                </div>
 
-                                <div class="form-group col-md-6">
-                                    <button type="submit" class="btn btn-primary">Tạo mới</button>
-                                    <a asp-action="Index" class="btn btn-secondary">Trở về danh sách</a>
+                <!-- Submit Section -->
+                <ul>
+                    <li class="zf-fmFooter">
+                        <button type="submit" class="btn btn-primary zf-submitColor">Tạo mới</button>
+                    </li>
+                </ul>
                                 </div>
                             </form>
+    </div>
+</body>
+
+</html>
 
                             
                         </div>
@@ -384,12 +384,7 @@
             formData.append('Role', document.getElementById('Role').value);
 
             const avatar = document.querySelector('input[name="hinh"]').files[0];
-            if (avatar) {
-                formData.append('hinh', avatar);
-            }
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
+            if (avatar) formData.append('hinh', avatar);
 
             try {
                 const response = await fetch('api/NhanViens', {
@@ -404,14 +399,8 @@
                     alert("Tạo nhân viên thành công!");
                     window.location.href = '@Url.Action("Index", "NhanViens")';
                 } else {
-                    let errorMessage = "Đã xảy ra lỗi không xác định.";
-                    try {
-                        const error = JSON.parse(responseText);
-                        errorMessage = error.message;
-                    } catch {
-                        errorMessage = responseText;
-                    }
-                    alert("Lỗi khi tạo nhân viên: " + errorMessage);
+                    const responseText = await response.text();
+                    alert("Lỗi khi tạo nhân viên: " + (JSON.parse(responseText)?.message || responseText));
                 }
             } catch (error) {
                 alert("Đã xảy ra lỗi: " + error.message);

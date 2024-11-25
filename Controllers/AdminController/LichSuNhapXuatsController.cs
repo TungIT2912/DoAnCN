@@ -125,7 +125,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                     {
                         var khoDTO = new Kho
                         {
-                            IddungCu = dto.IdsanPham,
+                            IdsanPham = dto.IdsanPham,
                             Loai = existingItem.Loai,
                             DonViTinh = existingItem.DonViTinh,
                             SoLuong = dto.SoLuongNhapXuat

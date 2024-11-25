@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Answer Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var questionId = ViewBag.QuestionId;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trả Lời Tin Nhắn</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.18/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Trả Lời Tin Nhắn</h2>
+        @* <input type="hidden" id="=questionId" value="questionId"/> *@
+        <div class="form-group">
+            <label for="questionId">Question ID:</label>
+            <input type="text" class="form-control" id="questionId" />
+        </div>
+        <div class="form-group">
+            <label for="answer">Câu trả lời:</label>
+            <textarea class="form-control" id="answer" rows="3"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="sendAnswer()">Gửi</button>
+
+        <div id="messagesList" class="mt-4"></div>
+    </div>
+
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        connection.on("ReceiveMessage", (user, message) => {
+            displayMessage(user, message, 'alert-secondary');
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+
+        async function sendAnswer() {
+            const questionId = document.getElementById('questionId').value;
+            const answer = document.getElementById('answer').value;
+
+            if (!questionId || !answer) {
+                alert('Vui lòng nhập đầy đủ thông tin');
+                return;
+            }
+
+            const answerRequest = {
+                questionId: questionId,
+                answer: answer
+            };
+
+            try {
+                const response = await axios.post('/api/answer/answer', answerRequest);
+                document.getElementById('answer').value = '';
+
+                displayMessage('Bạn', answer, 'alert-info');
+
+                alert(response.data.message);
+
+                // Gửi tin nhắn tới người dùng qua SignalR
+                connection.invoke("SendMessage", "Nhân viên", answer).catch(err => console.error(err.toString()));
+            } catch (error) {
+                console.error(error);
+                alert('Đã xảy ra lỗi khi gửi câu trả lời');
+            }
+        }
+
+        function displayMessage(user, message, alertClass) {
+            const msg = document.createElement('div');
+            msg.className = `alert ${alertClass}`;
+            msg.textContent = `${user}: ${message}`;
+            document.getElementById('messagesList').appendChild(msg);
+        }
+    </script>
+</body>
+</html>
+
+

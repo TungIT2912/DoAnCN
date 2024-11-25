@@ -1,4 +1,6 @@
-﻿using WebQuanLyNhaKhoa.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebQuanLyNhaKhoa.Data;
+
 
 namespace WebQuanLyNhaKhoa.ServicesPay
 {

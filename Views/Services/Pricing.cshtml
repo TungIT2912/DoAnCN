@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+@using X.PagedList 
+
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/pricing-table.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
+@model IPagedList<WebQuanLyNhaKhoa.Data.DichVu>  
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
 <meta charset="utf-8">
-<title>Medicoz | Health and Medical HTML Template | Pricing Table</title>
+    <title>Medicoz | Health and Medical HTML Template | About Us</title>
 
 <!-- Stylesheets -->
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/responsive.css" rel="stylesheet">
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
 
 <!--Color Themes-->
-<link id="theme-color-file" href="css/color-themes/default-theme.css" rel="stylesheet">
+    <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
 
-<!--Color Switcher Mockup-->
-<link href="css/color-switcher-design.css" rel="stylesheet">
+    <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
 
 <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 <link rel="icon" href="images/favicon.png" type="image/x-icon">
@@ -66,19 +70,17 @@
                     <!--Tab-->
                     <div class="tab active-tab" id="tab1">
                         <div class="row">
-                            <!-- Pricing Block -->
+                @foreach (var item in Model)
+                {
                             <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
                                 <div class="inner-box">
                                     <div class="price-box">
-                                        <h4 class="price">$299</h4>
-                                        <div class="validaty">Per Month</div>
+                                <h4 class="price">@item.DonGia.ToString("0")</h4>
+                                <div class="validaty">VNĐ</div>
                                     </div>
-                                    <h3 class="title">Cardiology</h3>
+                            <h3 class="title">@item.TenDichVu</h3>
                                     <ul class="features">
-                                        <li>Functional Diagnotics</li>
-                                        <li>Allergens Drugs</li>
-                                        <li>Pollen Allergens</li>
-                                        <li>Food Allergens</li>
+                                <li>@item.IddichVu</li>
                                     </ul>
                                     <div class="btn-box">
                                         <a href="#" class="theme-btn">Get Offer</a>
@@ -104,44 +106,23 @@
                                         <a href="#" class="theme-btn">Get Offer</a>
                                     </div>
                                 </div>
+                }
                             </div>
 
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$150</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Body Checkup</h3>
-                                    <ul class="features">
-                                        <li>Tests and Treatment</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Laboratory Services</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Pricing Block -->
-                            <div class="pricing-block col-lg-3 col-md-6 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="price-box">
-                                        <h4 class="price">$100</h4>
-                                        <div class="validaty">Per Month</div>
-                                    </div>
-                                    <h3 class="title">Blood Test</h3>
-                                    <ul class="features">
-                                        <li>Blood Test Service</li>
-                                        <li>Safety Training Tips</li>
-                                        <li>Tests and Treatment</li>
-                                        <li>Food Allergens</li>
-                                    </ul>
-                                    <div class="btn-box">
-                                        <a href="#" class="theme-btn">Get Offer</a>
+            <!-- Pagination Controls -->
+            <div class="pagination-container">
+                @if (Model.HasPreviousPage)
+                {
+                    <a href="@Url.Action("Pricing", new { page = Model.PageNumber - 1 })" class="prev">Previous</a>
+                }
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <a href="@Url.Action("Pricing", new { page = i })" class="page-number @if (i == Model.PageNumber) { <text>active</text> }">@i</a>
+                }
+                @if (Model.HasNextPage)
+                {
+                    <a href="@Url.Action("Pricing", new { page = Model.PageNumber + 1 })" class="next">Next</a>
+                }
                                     </div>
                                 </div>
                             </div>

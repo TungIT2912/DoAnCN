@@ -34,6 +34,8 @@ namespace WebQuanLyNhaKhoa.Data
         public virtual ChanDoan? ChanDoan { get; set; }
 
         public DateTime? NgayKhamDau { get; set; }
+        [EmailAddress]
+        public string EmailBn { get; set; }
 
         // Quan hệ 1-n với DanhSachKham
         [JsonIgnore]
