@@ -51,15 +51,12 @@ const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
             const result = await response.json();
             const nhanViens = result.data;
             totalItems = result.totalItems; // Set totalItems from API response
-      
-            console.log(nhanViens); // Log the entire response to check its structure
-            
+
             displayData(nhanViens);  // Function to display data in the table
-            setupPaginationControls(totalItems);  // Function to set up pagination controls
+            setupPaginationControls(totalItems);  //
         } catch (error) {
             console.error('Fetch error:', error);
             alert('Không thể tải dữ liệu. Vui lòng thử lại.');
