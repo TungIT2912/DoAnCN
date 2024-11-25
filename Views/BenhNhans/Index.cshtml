@@ -60,18 +60,18 @@
 
         benhNhans.forEach(nv => {
             const row = document.createElement('tr');
-            const formattedNgayKhamDau = new Date(nv.ngayKhamDau).toLocaleDateString('en-GB');
-            const genderText = nv.gioi ? 'Nữ' : 'Nam';
+            const formattedNgayKhamDau = new Date(nv.NgayKhamDau).toLocaleDateString('en-GB');
+            const genderText = nv.Gioi ? 'Nữ' : 'Nam';
 
             row.innerHTML = `
-                <td>${nv.hoTen}</td>
+                <td>${nv.HoTen}</td>
                 <td>${genderText}</td>
-                <td>${nv.namSinh}</td>
-                <td>${nv.sdt}</td>
-                <td>${nv.diaChi}</td>
+                <td>${nv.NamSinh}</td>
+                <td>${nv.Sdt}</td>
+                <td>${nv.DiaChi}</td>
                 <td>${formattedNgayKhamDau}</td>
                 <td>
-                    <a href="/Admin/BenhNhans/api/BenhNhans/Detail/${nv.idbenhNhan}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
+                    <a href="/Admin/BenhNhans/api/BenhNhans/Detail/${nv.IdbenhNhan}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
                 </td>
             `;
             tableBody.appendChild(row);

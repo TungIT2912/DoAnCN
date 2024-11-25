@@ -82,19 +82,19 @@
         const tableBody = document.getElementById('dicvuTable').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = '';
         khoes.forEach(nv => {
-            const formattedDonGia = parseFloat(nv.donGia).toLocaleString('vi-VN', {
+            const formattedDonGia = parseFloat(nv.DonGia).toLocaleString('vi-VN', {
                 style: 'currency',
                 currency: 'VND'
             });
             const row = document.createElement('tr');
             row.innerHTML = `
-                        <td>${nv.tenDichVu}</td>
-                        <td>${nv.donViTinh}</td>
+                        <td>${nv.TenDichVu}</td>
+                        <td>${nv.DonViTinh}</td>
                         <td>${formattedDonGia}</td>
                         <td>
-                            <a href="/Admin/DichVus/api/DichVus/Edit/${nv.iddichVu}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
-                            <a href="/Admin/DichVus/api/DichVus/Detail/${nv.iddichVu}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
-                            <a href="#" class="dropdown-item delete-item" data-id="${nv.iddichVu}"><i class="dw dw-delete"></i> Xóa</a>
+                            <a href="/Admin/DichVus/api/DichVus/Edit/${nv.IddichVu}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
+                            <a href="/Admin/DichVus/api/DichVus/Detail/${nv.IddichVu}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
+                            <a href="#" class="dropdown-item delete-item" data-id="${nv.IddichVu}"><i class="dw dw-delete"></i> Xóa</a>
                         </td>
                     `;
             tableBody.appendChild(row);
