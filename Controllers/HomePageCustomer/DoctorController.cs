@@ -15,7 +15,7 @@ public class DoctorController : Controller
     {
        
         var doctors = _context.NhanViens
-            .Where(nv => nv.ChucVu.TenCv == "Doctor") 
+            .Where(nv => nv.ChucVu.TenCv == "Bác sĩ") 
             .ToList();
 
         return View(doctors); 
@@ -23,15 +23,14 @@ public class DoctorController : Controller
 
     public ActionResult DoctorDetails(int id)
     {
-        // Fetch details of a specific doctor by their ID
         var doctor = _context.NhanViens
             .FirstOrDefault(nv => nv.MaNv == id);
 
         if (doctor == null)
         {
-            return NotFound(); // Return 404 if not found
+            return NotFound(); 
         }
 
-        return View(doctor); // Pass the doctor details to the view
+        return View(doctor); 
     }
 }

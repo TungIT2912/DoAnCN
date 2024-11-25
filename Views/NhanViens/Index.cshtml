@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
 
 
@@ -17,6 +18,8 @@
         <table class="table table-striped table-hover" id="nhanVienTable">
             <thead class="thead-dark text-center">
                 <tr>
+                                        <th scope="col">#</th>
+
                     <th scope="col">Tên nhân viên</th>
                     <th scope="col">Số Điện Thoại</th>
                     <th scope="col">Chức vụ</th>
@@ -40,9 +43,11 @@
     let currentPage = 1;
     const pageSize = 10;
 
+
+
     async function fetchNhanViens(page) {
         try {
-            const response = await fetch(`NhanViens/api/NhanViens?pageNumber=${page}&pageSize=${pageSize}`);
+const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&pageSize=${pageSize}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -50,7 +55,9 @@
             const result = await response.json();
             const nhanViens = result.data;
             totalItems = result.totalItems; // Set totalItems from API response
-
+      
+            console.log(nhanViens); // Log the entire response to check its structure
+            
             displayData(nhanViens);  // Function to display data in the table
             setupPaginationControls(totalItems);  // Function to set up pagination controls
         } catch (error) {
@@ -66,11 +73,12 @@
         nhanViens.forEach(nv => {
             const row = document.createElement('tr');
             row.innerHTML = `
+            <td>${nv.maNv}</td>
                 <td>${nv.ten}</td>
                 <td>${nv.sdt}</td>
                 <td>${nv.tenCv}</td>
                 <td>${nv.kinhNghiem}</td>
-                <td>${nv.diachi}</td>
+                <td>${nv.diaChi}</td>
                 <td><img src="${nv.hinh}" alt="Hình" width="40px" class="avatar-sm rounded-circle me-2" /></td>
                 <td>${nv.email}</td>
                 <td>${nv.role}</td>
