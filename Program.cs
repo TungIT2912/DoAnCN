@@ -112,4 +112,6 @@ app.MapRazorPages();
 // Map SignalR hub
 app.MapHub<ChatHub>("/chatHub");
 
+app.MapControllers();
+app.MapRazorPages();
 app.Run();

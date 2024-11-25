@@ -154,6 +154,10 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 return NotFound("Invoice not found.");
             }
 
+        //    if (hoaDon == null)
+        //    {
+        //        return NotFound("Invoice not found.");
+        //    }
 
             hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc;
 

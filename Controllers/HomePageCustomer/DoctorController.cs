@@ -27,7 +27,7 @@ public class DoctorController : Controller
             .FirstOrDefault(nv => nv.MaNv == id);
 
         if (doctor == null)
-        {
+    {
             return NotFound(); 
         }
 

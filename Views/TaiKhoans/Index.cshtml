@@ -9,47 +9,54 @@
     <div class="table-title">
         <h2>Thông tin tài khoản</h2>
         @* <a href="Create" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i> Thêm mới</a> *@
-    </div>
+                    </div>
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="taiKhoanTable">
             <thead class="thead-dark text-center">
-                <tr>
+                                <tr>
                     <th scope="col">Tài khoản</th>
-                    <th scope="col">Chức vụ</th>
-                    <th scope="col">Role</th>
+                                    <th scope="col">Chức vụ</th>
+                                    <th scope="col">Role</th>
                     <th scope="col" style="width: 200px;">Action</th>
-                </tr>
-            </thead>
+                                </tr>
+                            </thead>
             <tbody id="tableBody" class="text-center">
                 <!-- Dynamic Content goes here -->
-            </tbody>
-        </table>
-    </div>
-    <div id="paginationContainer" class="pagination-controls"></div>
-</div>
+                            </tbody>
 
+                        </table>
+    </div>
+                        <div id="paginationContainer" class="pagination-controls"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 <script>
     let currentPage = 1;
     const pageSize = 10;
 
     async function fetchTaiKhoans(page) {
-        try {
+    try {
             const response = await fetch(`TaiKhoans/api/TaiKhoans?pageNumber=${page}&pageSize=${pageSize}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+        if (!response.ok) {
+            console.error('Response status:', response.status);
+            throw new Error('Network response was not ok');
+        }
 
-            const result = await response.json();
+        const result = await response.json();
             const taiKhoans = result.data;
-            totalItems = result.totalItems;
+        totalItems = result.totalItems;
 
             displayData(taiKhoans);
-            setupPaginationControls(totalItems);
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert('Không thể tải dữ liệu. Vui lòng thử lại.');
-        }
+        setupPaginationControls(totalItems);
+    } catch (error) {
+        console.error('Fetch error:', error);
+        alert('Không thể tải dữ liệu. Vui lòng thử lại.');
     }
+}
 
     function displayData(taiKhoans) {
         const tableBody = document.getElementById('taiKhoanTable').getElementsByTagName('tbody')[0];
@@ -58,19 +65,22 @@
             const actionText = tk.isLoocked ? "Bỏ chặn" : "Chặn";
 
             const row = document.createElement('tr');
+            const actionText = nv.isLoocked ? "Bỏ chặn" : "Chặn";
+
             row.innerHTML = `
                 <td>${tk.TenDangNhap}</td>
                 <td>${tk.ChucVu}</td>
                 <td>${tk.Role}</td>
-                <td>
+                    <td>
                     <a href="#" class="dropdown-item delete-item" data-id="${tk.Id}" data-islocked="${tk.isLoocked}">
-                        <i class="dw dw-delete"></i> ${actionText}
-                    </a>
-                </td>
-            `;
+                            <i class="dw dw-delete"></i> ${actionText}
+                        </a>
+                    </td>
+                `;
             tableBody.appendChild(row);
         });
 
+        // Add delete functionality
         const deleteLinks = document.querySelectorAll('.delete-item');
         deleteLinks.forEach(link => {
             link.addEventListener('click', async function (e) {
@@ -104,12 +114,13 @@
                 }
             });
         });
+
     }
 
     function setupPaginationControls(totalItems) {
         const totalPages = Math.ceil(totalItems / pageSize);
         const paginationContainer = document.getElementById('paginationContainer');
-        paginationContainer.innerHTML = '';
+        paginationContainer.innerHTML = ''; 
 
         for (let i = 1; i <= totalPages; i++) {
             const button = document.createElement('button');

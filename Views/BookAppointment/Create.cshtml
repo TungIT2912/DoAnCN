@@ -3,6 +3,12 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
+<style>
+    header {
+        position: relative;
+    }
+
+</style>
 
 <div class="container-xxl py-5">
     <div class="container">
@@ -29,6 +35,7 @@
                         <h5 class="mb-0">nhakhoahoanmy@gmail.com</h5>
                     </div>
                 </div>
+
             </div>
 
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -44,6 +51,7 @@
                             <div>
                                 <input asp-for="Gioi" type="radio" name="gender" value="True" />
                                 <span>Nữ</span>
+
                             </div>
                             <div>
                                 <input asp-for="Gioi" type="radio" name="gender" value="False" />
@@ -51,6 +59,7 @@
                             </div>
                             <span asp-validation-for="Gioi" class="text-danger"></span>
                         </div>
+
 
                         <div class="col-12 col-sm-6">
                             <label asp-for="NamSinh" class="control-label">Năm sinh</label>
@@ -95,7 +104,7 @@
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary w-100 py-3">Book Appointment</button>
                         </div>
-
+                        
                     </form>
                 </div>
             </div>
@@ -110,17 +119,17 @@
             if (form) {
                 form.addEventListener("submit", async (event) => {
                     event.preventDefault();
-                                    
-                const benhNhanData = {
-                    HoTen: document.querySelector("[name='HoTen']").value,
-                    Gioi: document.querySelector("[name='gender']:checked").value === "True",
+
+                    const benhNhanData = {
+                        HoTen: document.querySelector("[name='HoTen']").value,
+                        Gioi: document.querySelector("[name='gender']:checked").value === "True",
                     NamSinh: document.querySelector("[name='NamSinh']").value,  
-                    Sdt: document.querySelector("[name='Sdt']").value,
-                    DiaChi: document.querySelector("[name='DiaChi']").value,
+                        Sdt: document.querySelector("[name='Sdt']").value,
+                        DiaChi: document.querySelector("[name='DiaChi']").value,
                     EmailBn: document.querySelector("[name='EmailBn']").value,
-                    TrieuChung: document.querySelector("[name='TrieuChung']").value,
-                    NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
-                };
+                        TrieuChung: document.querySelector("[name='TrieuChung']").value,
+                        NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
+                    };
 
 
                     console.log('Data being sent:', benhNhanData);
@@ -155,3 +164,7 @@
         });
     </script>
 }
+
+
+
+

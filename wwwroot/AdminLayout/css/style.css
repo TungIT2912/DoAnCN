@@ -7,6 +7,15 @@
     --gray-dark: #A1A9B2; /* Darker gray for secondary text */
 }
 
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 45px;
+    bottom: 45px;
+    z-index: 99;
+}
+
+
 /*** Spinner ***/
 #spinner {
     opacity: 0;
@@ -16,6 +25,7 @@
 }
 
 #spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
     visibility: visible;
     opacity: 1;
     transition: opacity 0.5s ease-out, visibility 0s linear 0s;
@@ -39,6 +49,16 @@
 
 .btn-primary:hover {
     background-color: #007bb5;
+}
+
+.btn-sm-square {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-lg-square {
+    width: 48px;
+    height: 48px;
 }
 
 .btn-square,
@@ -93,6 +113,10 @@
     }
 
     .content {
+        width: calc(100% - 330px);
+    }
+
+    .content.open {
         width: 100%;
         margin-left: 0;
     }
@@ -105,6 +129,7 @@
     }
 
     .content {
+        width: 100%;
         margin-left: 0;
     }
 }
@@ -145,9 +170,30 @@
     background: var(--light);
 }
 
+.sidebar .navbar .dropdown-toggle::after {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+.sidebar .navbar .dropdown-item {
+    padding-left: 25px;
+    border-radius: 0 30px 30px 0;
+}
+
 .content .navbar .navbar-nav .nav-link {
     padding: 12px 15px;
     color: var(--dark);
+    outline: none;
 }
 
 .content .navbar .navbar-nav .nav-link:hover,
@@ -164,6 +210,27 @@
     background: #ffffff;
     border-radius: 40px;
 }
+
+.content .navbar .dropdown-toggle::after {
+    margin-left: 6px;
+    vertical-align: middle;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.content .navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+@media (max-width: 575.98px) {
+    .content .navbar .navbar-nav .nav-link {
+        margin-left: 15px;
+    }
+}
+
 
 /*** Date Picker ***/
 .bootstrap-datetimepicker-widget.bottom {
@@ -203,6 +270,9 @@
 }
 
 .testimonial-carousel .owl-dot {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
     width: 15px;
     height: 15px;
     border: 5px solid var(--primary);

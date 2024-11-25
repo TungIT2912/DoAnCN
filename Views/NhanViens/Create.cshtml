@@ -10,6 +10,193 @@
       <link href="~/css/form.css" rel="stylesheet" type="text/css">
    </head>
 
+    .table-responsive {
+        margin: 30px 0;
+    }
+
+    .table-wrapper {
+        min-width: 1000px;
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+
+    .table-title {
+        padding-bottom: 15px;
+        background: #299be4;
+        color: #fff;
+        padding: 16px 30px;
+        margin: -20px -25px 10px;
+        border-radius: 3px 3px 0 0;
+    }
+
+        .table-title h2 {
+            margin: 5px 0 0;
+            font-size: 24px;
+        }
+
+        .table-title .btn {
+            color: #566787;
+            float: right;
+            font-size: 13px;
+            background: #fff;
+            border: none;
+            min-width: 50px;
+            border-radius: 2px;
+            border: none;
+            outline: none !important;
+            margin-left: 10px;
+        }
+
+            .table-title .btn:hover, .table-title .btn:focus {
+                color: #566787;
+                background: #f2f2f2;
+            }
+
+            .table-title .btn i {
+                float: left;
+                font-size: 21px;
+                margin-right: 5px;
+            }
+
+            .table-title .btn span {
+                float: left;
+                margin-top: 2px;
+            }
+
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+        padding: 12px 15px;
+        vertical-align: middle;
+    }
+
+        table.table tr th:first-child {
+            width: 60px;
+        }
+
+        table.table tr th:last-child {
+            width: 100px;
+        }
+
+    table.table-striped tbody tr:nth-of-type(odd) {
+        background-color: #fcfcfc;
+    }
+
+    table.table-striped.table-hover tbody tr:hover {
+        background: #f5f5f5;
+    }
+
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+
+    table.table td:last-child i {
+        opacity: 0.9;
+        font-size: 22px;
+        margin: 0 5px;
+    }
+
+    table.table td a {
+        font-weight: bold;
+        color: #566787;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+        table.table td a:hover {
+            color: #2196F3;
+        }
+
+        table.table td a.settings {
+            color: #2196F3;
+        }
+
+        table.table td a.delete {
+            color: #F44336;
+        }
+
+    table.table td i {
+        font-size: 19px;
+    }
+
+    table.table .avatar {
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    .status {
+        font-size: 30px;
+        margin: 2px 2px 0 0;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 10px;
+    }
+
+    .text-success {
+        color: #10c469;
+    }
+
+    .text-info {
+        color: #62c9e8;
+    }
+
+    .text-warning {
+        color: #FFC107;
+    }
+
+    .text-danger {
+        color: #ff5b5b;
+    }
+
+    .pagination {
+        float: right;
+        margin: 0 0 5px;
+    }
+
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 2px !important;
+            text-align: center;
+            padding: 0 6px;
+        }
+
+            .pagination li a:hover {
+                color: #666;
+            }
+
+        .pagination li.active a, .pagination li.active a.page-link {
+            background: #03A9F4;
+        }
+
+            .pagination li.active a:hover {
+                background: #0397d6;
+            }
+
+        .pagination li.disabled i {
+            color: #ccc;
+        }
+
+        .pagination li i {
+            font-size: 16px;
+            padding-top: 6px
+        }
+
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+</style>
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
@@ -18,8 +205,10 @@
 
 <div class="mobile-menu-overlay"></div>
 
+
 <div class="main-container">
     <div class="xs-pd-20-10 pd-ltr-20">
+
         <div class="row clearfix progress-box">
             <div class="col-lg-12">
                 <a asp-action="Index">
@@ -51,8 +240,8 @@
                             <label class="zf-labelName">Tên <em class="zf-important">*</em></label>
                             <div class="zf-tempContDiv">
                                 <input asp-for="Ten" id="Ten" class="form-control" placeholder="Họ và Tên" required />
-                                <span asp-validation-for="Ten" class="text-danger"></span>
-                            </div>
+                                    <span asp-validation-for="Ten" class="text-danger"></span>
+                                </div>
                         </li>
 
                         <!-- Email -->
@@ -60,8 +249,8 @@
                             <label class="zf-labelName">Email <em class="zf-important">*</em></label>
                             <div class="zf-tempContDiv">
                                 <input asp-for="Email" id="Email" class="form-control" placeholder="example@gmail.com" required />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
                         </li>
 
                         <!-- Số điện thoại -->
@@ -69,8 +258,8 @@
                             <label class="zf-labelName">SĐT <em class="zf-important">*</em></label>
                             <div class="zf-tempContDiv">
                                 <input asp-for="Sdt" id="Sdt" class="form-control" placeholder="(+84) 123 456 789" required />
-                                <span asp-validation-for="Sdt" class="text-danger"></span>
-                            </div>
+                                    <span asp-validation-for="Sdt" class="text-danger"></span>
+                                </div>
                         </li>
 
                         <!-- Chức vụ -->
@@ -79,9 +268,9 @@
                             <div class="zf-tempContDiv">
                                 <select asp-for="MaCv" id="MaCv" class="form-control" asp-items="ViewBag.ChucVuList" required>
                                     <option value="" selected>- Chọn chức vụ -</option>
-                                </select>
-                                <span asp-validation-for="MaCv" class="text-danger"></span>
-                            </div>
+                                    </select>
+                                    <span asp-validation-for="MaCv" class="text-danger"></span>
+                                </div>
                         </li>
 
                         <!-- Kinh nghiệm -->
@@ -89,8 +278,8 @@
                             <label class="zf-labelName">Kinh nghiệm <em class="zf-important">*</em></label>
                             <div class="zf-tempContDiv">
                                 <input asp-for="KinhNghiem" id="KinhNghiem" class="form-control" placeholder="Năm kinh nghiệm" required />
-                                <span asp-validation-for="KinhNghiem" class="text-danger"></span>
-                            </div>
+                                    <span asp-validation-for="KinhNghiem" class="text-danger"></span>
+                                </div>
                         </li>
 
                         <!-- Địa chỉ -->
@@ -98,32 +287,32 @@
                             <label class="zf-labelName">Địa chỉ <em class="zf-important">*</em></label>
                             <div class="zf-tempContDiv">
                                 <input asp-for="Diachi" id="Diachi" class="form-control" placeholder="Địa chỉ" required />
-                                <span asp-validation-for="Diachi" class="text-danger"></span>
-                            </div>
+                                    <span asp-validation-for="Diachi" class="text-danger"></span>
+                                </div>
                         </li>
 
                         <!-- Giới tính -->
                         <li class="zf-radio zf-tempFrmWrapper">
                             <label class="zf-labelName">Giới tính <em class="zf-important">*</em></label>
                             <div class="zf-tempContDiv">
-                                <div>
-                                    <input type="radio" name="Gioi" value="true" id="GioiFemale" required />
+                                    <div>
+                                        <input type="radio" name="Gioi" value="true" id="GioiFemale" required />
                                     <label for="GioiFemale">Nữ</label>
-                                </div>
-                                <div>
-                                    <input type="radio" name="Gioi" value="false" id="GioiMale" required />
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="Gioi" value="false" id="GioiMale" required />
                                     <label for="GioiMale">Nam</label>
+                                    </div>
+                                    <span asp-validation-for="Gioi" class="text-danger"></span>
                                 </div>
-                                <span asp-validation-for="Gioi" class="text-danger"></span>
-                            </div>
                         </li>
 
                         <!-- Ảnh đại diện -->
                         <li class="zf-tempFrmWrapper">
                             <label class="zf-labelName">Ảnh đại diện</label>
                             <div class="zf-tempContDiv">
-                                <input type="file" name="hinh" id="hinh" class="form-control" />
-                            </div>
+                                    <input type="file" name="hinh" id="hinh" class="form-control" />
+                                </div>
                         </li>
 
                         <!-- Mật khẩu -->
@@ -131,8 +320,8 @@
                             <label class="zf-labelName">Mật khẩu <em class="zf-important">*</em></label>
                             <div class="zf-tempContDiv">
                                 <input asp-for="MatKhau" id="MatKhau" type="password" class="form-control" placeholder="Mật khẩu" required />
-                                <span asp-validation-for="MatKhau" class="text-danger"></span>
-                            </div>
+                                    <span asp-validation-for="MatKhau" class="text-danger"></span>
+                                </div>
                         </li>
 
                         <!-- Vai trò -->
@@ -141,9 +330,10 @@
                             <div class="zf-tempContDiv">
                                 <select asp-for="Role" id="Role" class="form-control" asp-items="ViewBag.Roles" required>
                                     <option value="" selected>- Chọn vai trò -</option>
-                                </select>
-                                <span asp-validation-for="Role" class="text-danger"></span>
-                            </div>
+</select>
+
+                                    <span asp-validation-for="Role" class="text-danger"></span>
+                                </div>
                         </li>
                     </ul>
                 </div>
@@ -154,15 +344,22 @@
                         <button type="submit" class="btn btn-primary zf-submitColor">Tạo mới</button>
                     </li>
                 </ul>
-            </div>
-        </form>
+                                </div>
+                            </form>
     </div>
 </body>
 
 </html>
 
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
+    </div>
+</div>
 
 @section Scripts {
     @{
@@ -170,10 +367,12 @@
     }
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+    
         document.getElementById('createNhanVienForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const formData = new FormData();
+
             formData.append('Ten', document.getElementById('Ten').value);
             formData.append('Sdt', document.getElementById('Sdt').value);
             formData.append('MaCv', document.getElementById('MaCv').value);
@@ -193,6 +392,9 @@
                     body: formData
                 });
 
+                console.log('Response Status:', response.status);
+                const responseText = await response.text();
+
                 if (response.ok) {
                     alert("Tạo nhân viên thành công!");
                     window.location.href = '@Url.Action("Index", "NhanViens")';
@@ -204,5 +406,6 @@
                 alert("Đã xảy ra lỗi: " + error.message);
             }
         });
+
     </script>
 }
