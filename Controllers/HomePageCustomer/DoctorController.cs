@@ -23,14 +23,20 @@ public class DoctorController : Controller
 
     public ActionResult DoctorDetails(int id)
     {
-        var doctor = _context.NhanViens
-            .FirstOrDefault(nv => nv.MaNv == id);
 
-        if (doctor == null)
-        {
-            return NotFound(); 
+
+
+                {
+            return View();
         }
+        // var doctor = _context.NhanViens
+        //     .FirstOrDefault(nv => nv.MaNv == id);
 
-        return View(doctor); 
+        // if (doctor == null)
+        // {
+        //     return NotFound(); 
+        // }
+
+        // return View(doctor); 
     }
 }
