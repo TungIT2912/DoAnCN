@@ -22,8 +22,11 @@ namespace WebQuanLyNhaKhoa.Data
         [ForeignKey("DanhSachKham")]
         public int? Idkham { get; set; }
 
+
         public string? PhuongThucThanhToan { get; set; }
 
+    public bool DaThanhToan { get; set; }
+    
         public string TenDon { get; set; }
         public string TenDieuTri { get; set; }
         public string? Description { get; set; }
@@ -49,4 +52,9 @@ namespace WebQuanLyNhaKhoa.Data
 
         
     }
+
+
+
+
+    
 }

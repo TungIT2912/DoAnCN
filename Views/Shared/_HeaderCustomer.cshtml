@@ -41,29 +41,22 @@
                     <div class="nav-outer">
                         <nav class="nav main-menu">
                             <ul class="navigation" id="navbar">
-                                <li class="current dropdown">
-                                    <span>Trang chủ</span>
-                                    <ul>
+                              
                                        
-                                        <li class="current"><a href="~/Home/Index">Trang chính</a></li>
-                                        <li><a href="~/Contact/Index">Liên hệ</a></li>
-                                        <li><a href="~/Contact/AboutUs">Về Chúng Tôi</a></li>
+                                        <li class="current"><a href="~/Home/Index">Trang chủ</a></li>                                
 
 
-                                    </ul>
-                                </li>
+                               
+                             
 
                                 <li class="dropdown">
                                     <span>Dịch vụ</span>
                                     <ul>
                                         <li><a href="~/Services/Index">Dịch vụ</a></li>
-                                        <li><a href="~/Services/Pricing">Bảng Giá</a></li>
+                                        <li><a href="~/Services/Pricing">Bảng giá</a></li>
 
-                                        <li><a href="gallery.html">Gallery</a></li>
-                                        <li><a href="elements.html">UI Elements</a></li>
-                                        <li><a href="coming-soon.html">Coming Soon</a></li>
-                                        <li><a href="error-page.html">Error 404</a></li>
-                                        <li><a href="terms-and-condition.html">Terms and Condition</a></li>
+                                        <li><a href="~/Services/HoaDonDetails">Chi tiết hóa đơn</a></li>
+                                        
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -87,7 +80,7 @@
                                     </ul>
                                 </li> *@
 
-                                <li class="dropdown">
+                                @* <li class="dropdown">
                                     <span>Blog</span>
                                     <ul>
                                         <li><a href="blog-standard.html">Standard</a></li>
@@ -108,8 +101,8 @@
                                             </ul>
                                         </li>
                                     </ul>
-                                </li>
-                                <li class="dropdown">
+                                </li> *@
+                                @* <li class="dropdown">
                                     <span>Shop</span>
                                     <ul>
                                         <li><a href="shop.html">Shop</a></li>
@@ -118,9 +111,13 @@
                                         <li><a href="checkout.html">Checkout</a></li>
                                         <li><a href="login.html">Login</a></li>
                                     </ul>
-                                </li>
-                                <li><a href="contact.html">Contact</a></li>
-                            @if (ViewBag.UserName != null)
+                                </li> *@
+
+                                <li><a href="~/Contact/Index">Liên hệ</a></li>
+                                <li><a href="~/Contact/AboutUs">Về Chúng Tôi</a></li>
+
+                                
+                                @if (ViewBag.UserName != null)
                             {
                                 <p>Xin chào, @ViewBag.Username!</p>
                                 <form asp-controller="Auth" asp-action="Logout" method="post">
@@ -132,11 +129,12 @@
                                 <li class="nav-item">
                                     <a class="btn btn-primary mx-1" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
                                 </li>
-                                <li class="nav-item">
+                                @* <li class="nav-item">
                                     <a class="btn btn-secondary mx-1" asp-controller="Auth" asp-action="Register">Đăng ký</a>
-                                </li>
+                                </li> *@
                             }
                             </ul>
+
                         </nav>
                         <!-- Main Menu End-->
 
@@ -146,7 +144,7 @@
 
                             <!-- Appointment Btn -->
 <!-- HTML -->
-<button class="button-86" role="button" onclick="location.href='@Url.Action("Add", "BookAppointment")'">Đăng ký khám</button>
+<button class="button-86" role="button" onclick="location.href='@Url.Action("Create", "BookAppointment")'">Đăng ký khám</button>
 
 <!-- CSS -->
 <style>

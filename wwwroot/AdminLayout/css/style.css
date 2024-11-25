@@ -1,69 +1,64 @@
 /********** Template CSS **********/
 :root {
-    --primary: #009CFF;
-    --light: #F3F6F9;
-    --dark: #191C24;
+    --primary: #009CFF; /* Bright blue primary color */
+    --light: #F3F6F9; /* Soft light gray */
+    --dark: #191C24; /* Dark text color for readability */
+    --gray-light: #E0E4E9; /* Light gray for subtle elements */
+    --gray-dark: #A1A9B2; /* Darker gray for secondary text */
 }
-
-.back-to-top {
-    position: fixed;
-    display: none;
-    right: 45px;
-    bottom: 45px;
-    z-index: 99;
-}
-
 
 /*** Spinner ***/
 #spinner {
     opacity: 0;
     visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    transition: opacity 0.5s ease-out, visibility 0s linear 0.5s;
     z-index: 99999;
 }
 
 #spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
     visibility: visible;
     opacity: 1;
+    transition: opacity 0.5s ease-out, visibility 0s linear 0s;
 }
 
 
 /*** Button ***/
 .btn {
-    transition: .5s;
+    transition: 0.5s ease-in-out;
+    font-weight: 600;
 }
 
-.btn.btn-primary {
-    color: #FFFFFF;
+.btn-primary {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: background-color 0.3s ease;
 }
 
-.btn-square {
-    width: 38px;
-    height: 38px;
-}
-
-.btn-sm-square {
-    width: 32px;
-    height: 32px;
-}
-
-.btn-lg-square {
-    width: 48px;
-    height: 48px;
+.btn-primary:hover {
+    background-color: #007bb5;
 }
 
 .btn-square,
 .btn-sm-square,
 .btn-lg-square {
-    padding: 0;
+    width: 38px;
+    height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: normal;
-    border-radius: 50px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
 }
 
+.btn-square:hover,
+.btn-sm-square:hover,
+.btn-lg-square:hover {
+    background-color: var(--gray-light);
+}
 
 /*** Layout ***/
 .sidebar {
@@ -71,43 +66,26 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 330px;
+    width: 280px;
     height: 100vh;
     overflow-y: auto;
     background: var(--light);
-    transition: 0.5s;
+    transition: 0.3s;
     z-index: 999;
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .content {
-    margin-left: 330px;
+    margin-left: 280px;
     min-height: 100vh;
-    background: #FFFFFF;
-    transition: 0.5s;
+    background: #ffffff;
+    transition: 0.3s;
+    padding: 20px;
 }
 
-@media (min-width: 992px) {
+@media (max-width: 991px) {
     .sidebar {
-        margin-left: 0;
-    }
-
-    .sidebar.open {
-        margin-left: -330px;
-    }
-
-    .content {
-        width: calc(100% - 330px);
-    }
-
-    .content.open {
-        width: 100%;
-        margin-left: 0;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .sidebar {
-        margin-left: -330px;
+        margin-left: -280px;
     }
 
     .sidebar.open {
@@ -120,21 +98,34 @@
     }
 }
 
+@media (max-width: 575px) {
+    .sidebar {
+        width: 100%;
+        margin-left: 0;
+    }
 
-/*** Navbar ***/
+    .content {
+        margin-left: 0;
+    }
+}
+
+/* Navbar Link Styling */
 .sidebar .navbar .navbar-nav .nav-link {
-    padding: 7px 20px;
+    padding: 20px 20px; /* Keep your original padding */
     color: var(--dark);
     font-weight: 500;
+    font-size: 18px; /* Increased font size for better readability */
+    line-height: 1.6; /* Adjust line height for balance */
     border-left: 3px solid var(--light);
     border-radius: 0 30px 30px 0;
     outline: none;
 }
 
+
 .sidebar .navbar .navbar-nav .nav-link:hover,
 .sidebar .navbar .navbar-nav .nav-link.active {
     color: var(--primary);
-    background: #FFFFFF;
+    background: #ffffff;
     border-color: var(--primary);
 }
 
@@ -144,8 +135,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 40px;
+    transition: background-color 0.3s ease;
 }
 
 .sidebar .navbar .navbar-nav .nav-link:hover i,
@@ -153,31 +145,9 @@
     background: var(--light);
 }
 
-.sidebar .navbar .dropdown-toggle::after {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    transition: .5s;
-}
-
-.sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
-    transform: rotate(-180deg);
-}
-
-.sidebar .navbar .dropdown-item {
-    padding-left: 25px;
-    border-radius: 0 30px 30px 0;
-}
-
 .content .navbar .navbar-nav .nav-link {
-    margin-left: 25px;
-    padding: 12px 0;
+    padding: 12px 15px;
     color: var(--dark);
-    outline: none;
 }
 
 .content .navbar .navbar-nav .nav-link:hover,
@@ -185,37 +155,15 @@
     color: var(--primary);
 }
 
-.content .navbar .sidebar-toggler,
-.content .navbar .navbar-nav .nav-link i {
+.content .navbar .sidebar-toggler {
     width: 40px;
     height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 40px;
 }
-
-.content .navbar .dropdown-toggle::after {
-    margin-left: 6px;
-    vertical-align: middle;
-    border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    transition: .5s;
-}
-
-.content .navbar .dropdown-toggle[aria-expanded=true]::after {
-    transform: rotate(-180deg);
-}
-
-@media (max-width: 575.98px) {
-    .content .navbar .navbar-nav .nav-link {
-        margin-left: 15px;
-    }
-}
-
 
 /*** Date Picker ***/
 .bootstrap-datetimepicker-widget.bottom {
@@ -228,11 +176,12 @@
 
 .bootstrap-datetimepicker-widget .table th {
     font-weight: 500;
+    color: var(--dark);
 }
 
 .bootstrap-datetimepicker-widget.dropdown-menu {
     padding: 10px;
-    border-radius: 2px;
+    border-radius: 5px;
 }
 
 .bootstrap-datetimepicker-widget table td.active,
@@ -245,33 +194,63 @@
 }
 
 
-/*** Testimonial ***/
-.progress .progress-bar {
-    width: 0px;
-    transition: 2s;
-}
-
-
-/*** Testimonial ***/
+/*** Testimonial Carousel ***/
 .testimonial-carousel .owl-dots {
     margin-top: 24px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
 }
 
 .testimonial-carousel .owl-dot {
-    position: relative;
-    display: inline-block;
-    margin: 0 5px;
     width: 15px;
     height: 15px;
     border: 5px solid var(--primary);
-    border-radius: 15px;
-    transition: .5s;
+    border-radius: 50%;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .testimonial-carousel .owl-dot.active {
     background: var(--dark);
     border-color: var(--primary);
+    transform: scale(1.2);
+}
+
+/*** Back to Top Button ***/
+.back-to-top {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 18px;
+    display: none;
+    cursor: pointer;
+    z-index: 999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.back-to-top:hover {
+    background-color: #007bb5;
+}
+
+@media (max-width: 575px) {
+    .back-to-top {
+        right: 15px;
+        bottom: 15px;
+    }
+}
+
+/*** Global Transitions ***/
+*, *::before, *::after {
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/*** Smooth Scroll ***/
+html {
+    scroll-behavior: smooth;
 }

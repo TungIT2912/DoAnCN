@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.Hubs;
 using WebQuanLyNhaKhoa.ServicesPay;
 using WebQuanLyNhaKhoa.wwwroot.AutoMapper;
 
@@ -13,24 +14,6 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
 // Configure JWT authentication
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = jwtSettings["Issuer"],
-//        ValidAudience = jwtSettings["Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(key)
-//    };
-//});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -49,7 +32,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 
-    // Cho phép lấy token từ cookie
+    // Allow getting token from cookie
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
@@ -60,30 +43,30 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Configure the DbContext
+// Configure services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()  // Allows any origin
+               .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
+               .AllowAnyHeader(); // Allows any headers
+    });
+});
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;  // Keep property names as they are
+    });
+
+builder.Services.AddSignalR();
+builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
+
+// Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-
-builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddControllersWithViews();
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
-    options.AddPolicy("StaffPolicy", policy => policy.RequireRole("Staff"));
-});
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-});
-
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
-
-builder.Services.AddRazorPages();
 
 // Dependency Injection setup
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
@@ -99,18 +82,19 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Apply CORS policy
+app.UseCors("AllowAll");  // Apply the "AllowAll" CORS policy
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=DanhSachKhams}/{action=Index}/{id?}");
+// Map Controller Routes
 app.MapAreaControllerRoute(
     name: "Admin",
     areaName: "Admin",
@@ -121,13 +105,11 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
-
+// Map controllers and Razor Pages
 app.MapControllers();
 app.MapRazorPages();
+
+// Map SignalR hub
+app.MapHub<ChatHub>("/chatHub");
+
 app.Run();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.DTO;
 
 namespace WebQuanLyNhaKhoa.Data
 {
@@ -39,5 +40,11 @@ namespace WebQuanLyNhaKhoa.Data
 		public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
         public virtual TaiKhoan TaiKhoan { get; set; } = null!;
         public virtual ChucVu ChucVu { get; set; } = null!;
+        public virtual ICollection<UnansweredQuestion> UnansweredQuestions { get; set; } = new List<UnansweredQuestion>();
+
+        internal static object Select(Func<object, NhanVienDTO> value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

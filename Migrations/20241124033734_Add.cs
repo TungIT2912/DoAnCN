@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class Add : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -109,7 +109,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdChanDoan = table.Column<int>(type: "int", nullable: true),
                     ChanDoanIdchanDoan = table.Column<int>(type: "int", nullable: true),
-                    NgayKhamDau = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    NgayKhamDau = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,6 +241,28 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UnansweredQuestions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AskedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsAnswered = table.Column<bool>(type: "bit", nullable: false),
+                    MaNv = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnansweredQuestions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UnansweredQuestions_NhanViens_MaNv",
+                        column: x => x.MaNv,
+                        principalTable: "NhanViens",
+                        principalColumn: "MaNv");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ChiTietHoaDons",
                 columns: table => new
                 {
@@ -250,6 +273,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IddieuTri = table.Column<int>(type: "int", nullable: false),
                     Idkham = table.Column<int>(type: "int", nullable: true),
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DaThanhToan = table.Column<bool>(type: "bit", nullable: false),
                     TenDon = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -322,7 +346,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     ThanhGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NgayLapDt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ChiTietHoaDonId = table.Column<int>(type: "int", nullable: true)
+                    ChiTietHoaDonId = table.Column<int>(type: "int", nullable: true),
+                    DonThuocIddonThuoc = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -338,6 +363,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                         principalTable: "DanhSachKhams",
                         principalColumn: "IdKham",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DonThuocs_DonThuocs_DonThuocIddonThuoc",
+                        column: x => x.DonThuocIddonThuoc,
+                        principalTable: "DonThuocs",
+                        principalColumn: "IddonThuoc");
                     table.ForeignKey(
                         name: "FK_DonThuocs_Khos_IddungCu",
                         column: x => x.IddungCu,
@@ -449,6 +479,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "ChiTietHoaDonId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DonThuocs_DonThuocIddonThuoc",
+                table: "DonThuocs",
+                column: "DonThuocIddonThuoc");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DonThuocs_IddungCu",
                 table: "DonThuocs",
                 column: "IddungCu");
@@ -498,6 +533,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 table: "NhanViens",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnansweredQuestions_MaNv",
+                table: "UnansweredQuestions",
+                column: "MaNv");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ChiTietHoaDons_HoaDons_IdhoaDon",
@@ -549,6 +589,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             migrationBuilder.DropTable(
                 name: "LichSuNhapXuats");
+
+            migrationBuilder.DropTable(
+                name: "UnansweredQuestions");
 
             migrationBuilder.DropTable(
                 name: "ChanDoans");

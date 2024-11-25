@@ -1,6 +1,91 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+//using WebQuanLyNhaKhoa.Data;
+//using WebQuanLyNhaKhoa.Models;
+
+//namespace WebQuanLyNhaKhoa.Controllers.ApiController
+//{
+
+//    public class HoaDonController : Controller
+//    {
+//        private readonly ApplicationDbContext _context;
+//        private readonly IConfiguration _configuration;
+
+//        public HoaDonController(ApplicationDbContext context, IConfiguration configuration)
+//        {
+//            _context = context;
+//            _configuration = configuration;
+//        }
+//[HttpGet]
+//public async Task<IActionResult> ThanhToan(int hoaDonId)
+//{
+//    // Kiểm tra `hoaDonId` có hợp lệ không
+//    if (hoaDonId <= 0)
+//    {
+//        return BadRequest("Invalid HoaDonId");
+//    }
+
+//    // Lấy hóa đơn từ database
+//    var hoaDon = await _context.HoaDons
+//.Include(h => h.DieuTri)
+//.ThenInclude(d => d.DichVu)
+//.Include(h => h.DieuTri.DanhSachKham)
+//.Include(h => h.DieuTri.DanhSachKham.BenhNhan)
+//.FirstOrDefaultAsync(h => h.IdhoaDon == hoaDonId);
+
+//    if (hoaDon == null)
+//    {
+//        return NotFound("Invoice not found.");
+//    }
+//    ViewBag.TenDichVu = hoaDon.DieuTri?.DichVu?.TenDichVu;
+//    ViewBag.TenBenhNhan = hoaDon.DieuTri?.DanhSachKham?.BenhNhan?.HoTen;
+//    ViewBag.SoDienThoaiBenhNhan = hoaDon.DieuTri?.DanhSachKham?.BenhNhan?.Sdt;
+//    return View(hoaDon);
+//}
+
+
+//[HttpPost]
+//public async Task<IActionResult> ThanhToanApi(int hoaDonId)
+//{
+//    // Kiểm tra tính hợp lệ của `hoaDonId`
+//    if (hoaDonId <= 0)
+//    {
+//        return BadRequest("Invalid HoaDonId");
+//    }
+
+//    // Lấy hóa đơn từ database
+//    var hoaDon = await _context.HoaDons.FindAsync(hoaDonId);
+//    if (hoaDon == null)
+//    {
+//        return NotFound("Invoice not found.");
+//    }
+
+//    // Giả sử bạn cập nhật trạng thái thanh toán (ví dụ: Paid)
+//    hoaDon.DaThanhToan = true; // Cập nhật trạng thái thanh toán thành "Paid"
+//    hoaDon.PhuongThucThanhToan = "COD"; // Cập nhật phương thức thanh toán
+//    hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc; // Tính lại tổng tiền nếu cần
+//    hoaDon.NgayLap = DateTime.Now;
+//    _context.HoaDons.Update(hoaDon);
+//    await _context.SaveChangesAsync();
+
+//    return Ok("Thanh toán thành công!");
+//}
+//    }
+//}
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.Models;
+using WebQuanLyNhaKhoa.ServicesPay;
 
 namespace WebQuanLyNhaKhoa.Controllers.ApiController
 {
@@ -8,10 +93,18 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
     public class HoaDonController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public HoaDonController(ApplicationDbContext context)
+        private readonly IConfiguration _configuration;
+        private readonly IVnPayService _vnPayService;
+        private readonly EmailService _emailService;
+
+        public HoaDonController(ApplicationDbContext context, IConfiguration configuration, IVnPayService vnPayService, EmailService emailService)
         {
             _context = context;
+            _configuration = configuration;
+            _vnPayService = vnPayService;
+            _emailService = emailService;
         }
+
         [HttpGet]
         public async Task<IActionResult> ThanhToan(int hoaDonId)
         {
@@ -26,28 +119,43 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
         .Include(h => h.DieuTri)
         .ThenInclude(d => d.DichVu)
         .Include(h => h.DieuTri.DanhSachKham)
-        .Include(h=> h.DieuTri.DanhSachKham.BenhNhan)
+                .Include(h => h.DieuTri.DanhSachKham.BenhNhan)
         .FirstOrDefaultAsync(h => h.IdhoaDon == hoaDonId);
 
             if (hoaDon == null)
             {
                 return NotFound("Invoice not found.");
             }
+
             ViewBag.TenDichVu = hoaDon.DieuTri?.DichVu?.TenDichVu;
             ViewBag.TenBenhNhan = hoaDon.DieuTri?.DanhSachKham?.BenhNhan?.HoTen;
             ViewBag.SoDienThoaiBenhNhan = hoaDon.DieuTri?.DanhSachKham?.BenhNhan?.Sdt;
             return View(hoaDon);
         }
 
-        //[HttpPost("api/PostThanhToan")]
-        //public async Task<ActionResult> ThanhToanHoaDon(int hoaDonId)
-        //{
-        //    var hoaDon = await _context.HoaDons.Include(h => h.DieuTri).FirstOrDefaultAsync(h => h.IdhoaDon == hoaDonId);
+        [HttpPost]
+        public async Task<IActionResult> ThanhToanApi(int hoaDonId, string paymentMethod)
+        {
+            // Kiểm tra tính hợp lệ của `hoaDonId`
+            if (hoaDonId <= 0)
+            {
+                return BadRequest("Invalid HoaDonId");
+            }
 
-        //    if (hoaDon == null)
-        //    {
-        //        return NotFound("Invoice not found.");
-        //    }
+            // Lấy hóa đơn từ database
+            var hoaDon = await _context.HoaDons
+                .Include(h => h.DieuTri)
+                .ThenInclude(d => d.DichVu)
+                .Include(h => h.DieuTri.DanhSachKham)
+                .Include(h => h.DieuTri.DanhSachKham.BenhNhan)
+                .FirstOrDefaultAsync(h => h.IdhoaDon == hoaDonId);
+            if (hoaDon == null)
+            {
+                return NotFound("Invoice not found.");
+            }
+
+
+            hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc;
 
         //    // Cập nhật trạng thái thanh toán là đã thanh toán
         //    hoaDon.DaThanhToan = true;
@@ -58,52 +166,93 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
         //    _context.HoaDons.Update(hoaDon);
         //    await _context.SaveChangesAsync();
 
-        //    return Ok("Payment successful. Invoice has been paid.");
-        //}
-        [HttpPost]
-        public async Task<IActionResult> ThanhToanHoaDon(int hoaDonId)
+            if (paymentMethod == "COD")
         {
-            var hoaDon = await _context.HoaDons.FindAsync(hoaDonId);
-            if (hoaDon == null)
-            {
-                return NotFound(new { message = "Invoice not found" });
+                hoaDon.DaThanhToan = true; 
+                hoaDon.PhuongThucThanhToan = "COD";
+                _context.HoaDons.Update(hoaDon);
+                await _context.SaveChangesAsync();
+                var currentTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                var patientEmail = hoaDon.DieuTri.DanhSachKham.BenhNhan.EmailBn; // Replace with the patient's email
+                var emailSubject = "Thanh toán hóa đơn";
+                var emailMessage = $"Bạn đã thanh toán thành công tiền viện phí.<br><br> " +
+                                    $"Bạn đã thanh toán thành công tiền viện phí vào lúc {currentTime}.<br><br>" +
+                                    $"Tổng tiền cần thanh toán là {hoaDon.TongTien.ToString("C", new CultureInfo("vi-VN"))}<br><br>" +
+                                    $"Thông tin chi tiết:<br><br>" +
+                                    $"Số tiền điều trị: {hoaDon.TienDieuTri.ToString("C", new CultureInfo("vi-VN"))}.<br><br> " +
+                                    $"Số tiền thuốc: {hoaDon.TienThuoc.ToString("C", new CultureInfo("vi-VN"))}.<br><br> ";
+                await _emailService.SendEmailAsync(patientEmail, emailSubject, emailMessage);
+                return Ok("Thanh toán thành công!");
             }
+            else if (paymentMethod == "VNPay")
+            {
 
-            // Giả sử bạn đã thêm trường trạng thái thanh toán trong lớp HoaDon
-            hoaDon.DaThanhToan = true; // Cập nhật trạng thái thanh toán thành "Paid"
-            hoaDon.PhuongThucThanhToan = "COD"; // Cập nhật phương thức thanh toán
-            hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc; // Tính lại tổng tiền nếu cần
-            hoaDon.NgayLap = DateTime.Now;
+                // Khởi tạo yêu cầu thanh toán VNPay
+                var paymentRequest = new VnPaymentRequestModel
+                {
+                    Amount = (double)hoaDon.TongTien,
+                    OrderId = hoaDonId,
+                    CreateDate = DateTime.Now
+                };
+                hoaDon.DaThanhToan = true;
+                hoaDon.PhuongThucThanhToan = "VNPay";
             _context.HoaDons.Update(hoaDon);
             await _context.SaveChangesAsync();
+                var currentTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                var patientEmail = hoaDon.DieuTri.DanhSachKham.BenhNhan.EmailBn; // Replace with the patient's email
+                var emailSubject = "Thanh toán hóa đơn";
+                var emailMessage = $"Bạn đã thanh toán thành công tiền viện phí.<br><br> " +
+                                    $"Bạn đã thanh toán thành công tiền viện phí vào lúc {currentTime}.<br><br>" +
+                                    $"Tổng tiền cần thanh toán là {hoaDon.TongTien.ToString("C", new CultureInfo("vi-VN"))}<br><br>" +
+                                    $"Thông tin chi tiết:<br><br>" +
+                                    $"Số tiền điều trị: {hoaDon.TienDieuTri.ToString("C", new CultureInfo("vi-VN"))}.<br><br> " +
+                                    $"Số tiền thuốc: {hoaDon.TienThuoc.ToString("C", new CultureInfo("vi-VN"))}.<br><br> ";
+                await _emailService.SendEmailAsync(patientEmail, emailSubject, emailMessage);
 
-            return Ok(new { message = "Payment successful", hoaDonId = hoaDon.IdhoaDon });
+                var paymentUrl = _vnPayService.CreatePaymentUrl(HttpContext, paymentRequest);
+                //return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, paymentRequest));
+                return Redirect(paymentUrl);
+            }
+            else
+            {
+                return BadRequest("Invalid payment method.");
+            }
         }
-        [HttpPost]
-        public async Task<IActionResult> ThanhToanApi(int hoaDonId)
+
+
+        
+
+        private static string HmacSHA512(string key, string input)
         {
-            // Kiểm tra tính hợp lệ của `hoaDonId`
-            if (hoaDonId <= 0)
+            using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(key)))
             {
-                return BadRequest("Invalid HoaDonId");
+                byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(input));
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
             }
 
-            // Lấy hóa đơn từ database
-            var hoaDon = await _context.HoaDons.FindAsync(hoaDonId);
-            if (hoaDon == null)
+        [HttpGet]
+        public async Task<IActionResult> ThanhToanVNPayReturn()
             {
-                return NotFound("Invoice not found.");
-            }
+            var response = _vnPayService.PaymentExcute(Request.Query);
 
-            // Giả sử bạn cập nhật trạng thái thanh toán (ví dụ: Paid)
-            hoaDon.DaThanhToan = true; // Cập nhật trạng thái thanh toán thành "Paid"
-            hoaDon.PhuongThucThanhToan = "COD"; // Cập nhật phương thức thanh toán
-            hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc; // Tính lại tổng tiền nếu cần
-            hoaDon.NgayLap = DateTime.Now;
+            if (response.Success)
+            {
+                // Tìm và cập nhật trạng thái thanh toán hóa đơn
+                var hoaDon = await _context.HoaDons.FindAsync(int.Parse(response.OrderId));
+                if (hoaDon != null)
+                {
+                    hoaDon.DaThanhToan = true;
+                    hoaDon.PhuongThucThanhToan = "VNPay";
             _context.HoaDons.Update(hoaDon);
             await _context.SaveChangesAsync();
-
-            return Ok("Thanh toán thành công!");
+                }
+                return View("ThanhToanThanhCong", response);
+            }
+            else
+            {
+                return View("ThanhToanThatBai");
+            }
         }
 
     }
