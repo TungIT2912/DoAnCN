@@ -36,8 +36,6 @@
             </div>
         </div>
 
-    </div>
-</div>
 <script>
     let currentPage = 1;
     const pageSize = 10;
@@ -71,7 +69,6 @@
             const formattedNgayKhamDau = new Date(nv.NgayKhamDau).toLocaleDateString('en-GB');
             const genderText = nv.Gioi ? 'Nữ' : 'Nam';
 
-            // Ensure that you are using the correct IdbenhNhan to generate the link
             row.innerHTML = `
                 <td>${nv.HoTen}</td>
                     <td>${genderText}</td>
@@ -108,5 +105,4 @@
     document.addEventListener('DOMContentLoaded', () => {
         fetchBenhNhans(currentPage);
     });
-
 </script>

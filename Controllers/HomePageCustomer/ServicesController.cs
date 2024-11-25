@@ -49,16 +49,7 @@ public IActionResult HoaDonDetails(string searchQuery)
 }
 
 
-//namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
-//{
-//    public class ServicesController : Controller
-//    {
-//        private readonly ApplicationDbContext _context;
 
-//        public ServicesController(ApplicationDbContext context)
-//        {
-//            _context = context;
-//        }
 
     }
 }

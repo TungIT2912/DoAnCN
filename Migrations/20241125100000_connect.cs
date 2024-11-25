@@ -6,7 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
+<<<<<<<< HEAD:Migrations/20241125100000_connect.cs
     public partial class connect : Migration
+========
+    public partial class Add : Migration
+>>>>>>>> origin/Phuc:Migrations/20241124033734_Add.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

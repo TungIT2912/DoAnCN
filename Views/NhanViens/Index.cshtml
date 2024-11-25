@@ -2,12 +2,12 @@
 
 @{
     ViewData["Title"] = "Index";
- Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @* 
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
- *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
 <div class="table-wrapper">
     <div class="table-title">
@@ -43,8 +43,6 @@
             </div>
         </div>
 
-    </div>
-</div>
 <script>
     let currentPage = 1;
     const pageSize = 10;
@@ -61,7 +59,9 @@ const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&
             const result = await response.json();
             const nhanViens = result.data;
             totalItems = result.totalItems; // Set totalItems from API response
-
+      
+            console.log(nhanViens); // Log the entire response to check its structure
+            
             displayData(nhanViens);  // Function to display data in the table
             setupPaginationControls(totalItems);  //
         } catch (error) {
@@ -71,7 +71,7 @@ const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&
     }
 
     function displayData(nhanViens) {
-        const tableBody = document.getElementById('nhanVienTable').getElementsByTagName('tbody')[0];
+        const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = ''; // Clear previous rows
 
         nhanViens.forEach(nv => {
@@ -116,5 +116,4 @@ const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&
     document.addEventListener('DOMContentLoaded', () => {
         fetchNhanViens(currentPage);
     });
-
 </script>

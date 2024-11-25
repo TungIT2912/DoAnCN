@@ -9,31 +9,25 @@
     <div class="table-title">
         <h2>Thông tin tài khoản</h2>
         @* <a href="Create" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i> Thêm mới</a> *@
-                    </div>
+    </div>
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="taiKhoanTable">
             <thead class="thead-dark text-center">
-                                <tr>
+                <tr>
                     <th scope="col">Tài khoản</th>
-                                    <th scope="col">Chức vụ</th>
-                                    <th scope="col">Role</th>
+                    <th scope="col">Chức vụ</th>
+                    <th scope="col">Role</th>
                     <th scope="col" style="width: 200px;">Action</th>
-                                </tr>
-                            </thead>
+                </tr>
+            </thead>
             <tbody id="tableBody" class="text-center">
                 <!-- Dynamic Content goes here -->
-                            </tbody>
-
-                        </table>
+            </tbody>
+        </table>
     </div>
-                        <div id="paginationContainer" class="pagination-controls"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    <div id="paginationContainer" class="pagination-controls"></div>
 </div>
+
 <script>
     let currentPage = 1;
     const pageSize = 10;
@@ -65,8 +59,6 @@
             const actionText = tk.isLoocked ? "Bỏ chặn" : "Chặn";
 
             const row = document.createElement('tr');
-            const actionText = nv.isLoocked ? "Bỏ chặn" : "Chặn";
-
             row.innerHTML = `
                 <td>${tk.TenDangNhap}</td>
                 <td>${tk.ChucVu}</td>
@@ -80,7 +72,6 @@
             tableBody.appendChild(row);
         });
 
-        // Add delete functionality
         const deleteLinks = document.querySelectorAll('.delete-item');
         deleteLinks.forEach(link => {
             link.addEventListener('click', async function (e) {
@@ -114,13 +105,12 @@
                 }
             });
         });
-
     }
 
     function setupPaginationControls(totalItems) {
         const totalPages = Math.ceil(totalItems / pageSize);
         const paginationContainer = document.getElementById('paginationContainer');
-        paginationContainer.innerHTML = ''; 
+        paginationContainer.innerHTML = '';
 
         for (let i = 1; i <= totalPages; i++) {
             const button = document.createElement('button');
