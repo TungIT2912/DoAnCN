@@ -12,8 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241112032705_test")]
-    partial class test
+    [Migration("20241121065132_connect")]
+    partial class connect
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
