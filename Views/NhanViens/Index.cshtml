@@ -1,13 +1,13 @@
-﻿@model WebQuanLyNhaKhoa.Data.NhanVien
+﻿@model WebQuanLyNhaKhoa.DTO.NhanVienDTO
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@* 
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-
-
+ *@
 
 <div class="table-wrapper">
     <div class="table-title">
@@ -67,29 +67,29 @@ const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&
     }
 
     function displayData(nhanViens) {
-        const tableBody = document.getElementById('tableBody');
+        const tableBody = document.getElementById('nhanVienTable').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = ''; // Clear previous rows
 
         nhanViens.forEach(nv => {
             const row = document.createElement('tr');
             row.innerHTML = `
-            <td>${nv.maNv}</td>
-                <td>${nv.ten}</td>
-                <td>${nv.sdt}</td>
-                <td>${nv.tenCv}</td>
-                <td>${nv.kinhNghiem}</td>
-                <td>${nv.diaChi}</td>
-                <td><img src="${nv.hinh}" alt="Hình" width="40px" class="avatar-sm rounded-circle me-2" /></td>
-                <td>${nv.email}</td>
-                <td>${nv.role}</td>
-                <td>
-                    <a href="/Admin/NhanViens/api/NhanViens/Edit/${nv.maNv}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
-                    <a href="/Admin/NhanViens/api/NhanViens/Detail/${nv.maNv}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
-                </td>
-            `;
+                    <td>${nv.ten}</td>
+                    <td>${nv.sdt}</td>
+                    <td>${nv.tenCv}</td>
+                    <td>${nv.kinhNghiem}</td>
+                    <td>${nv.diachi}</td>
+                    <td><img src="${nv.hinh}" alt="Hình" width="40px" class="avatar-sm rounded-circle me-2" /></td>
+                    <td>${nv.email}</td>
+                    <td>${nv.role}</td>
+                    <td>
+                        <a href="/Admin/NhanViens/api/NhanViens/Edit/${nv.maNv}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
+                        <a href="/Admin/NhanViens/api/NhanViens/Detail/${nv.maNv}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
+                    </td>
+                `;
             tableBody.appendChild(row);
         });
     }
+
 
     function setupPaginationControls(totalItems) {
         const totalPages = Math.ceil(totalItems / pageSize);
