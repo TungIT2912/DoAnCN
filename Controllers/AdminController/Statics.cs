@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class Statics : Controller
     {
         ApplicationDbContext _context;

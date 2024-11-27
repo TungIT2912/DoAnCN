@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class NhanViensController : Controller
     {
         private readonly ApplicationDbContext _context;
