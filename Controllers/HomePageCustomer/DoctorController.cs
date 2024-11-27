@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using WebQuanLyNhaKhoa.Data;
 
@@ -21,22 +22,21 @@ public class DoctorController : Controller
         return View(doctors); 
     }
 
-    public ActionResult DoctorDetails(int id)
+    
+
+public IActionResult DoctorDetails(int id)
     {
+        var nhanVien = _context.NhanViens
+            .Include(nv => nv.ChucVu)
+            .FirstOrDefault(nv => nv.MaNv == id);
 
-
-
-                {
-            return View();
+        if (nhanVien == null)
+        {
+            return NotFound();
         }
-        // var doctor = _context.NhanViens
-        //     .FirstOrDefault(nv => nv.MaNv == id);
 
-        // if (doctor == null)
-        // {
-        //     return NotFound(); 
-        // }
+        return View(nhanVien); 
 
-        // return View(doctor); 
+        
     }
 }

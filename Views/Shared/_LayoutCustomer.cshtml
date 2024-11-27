@@ -68,6 +68,41 @@
                   language-code="vi">
     </df-messenger> *@
 
+
+<script>
+    document.querySelector('#email-form button').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        // Get data from the first form
+        var username = document.querySelector('[name="username"]').value;
+        var phone = document.querySelector('[name="phone"]').value;
+        var email = document.querySelector('[name="email"]').value;
+        var contactMessage = document.querySelector('[name="contact_message"]').value;
+        
+        // Fill in the second form
+        document.querySelector('[asp-for="HoTen"]').value = username;
+        document.querySelector('[asp-for="Sdt"]').value = phone;
+        document.querySelector('[asp-for="EmailBn"]').value = email;
+        document.querySelector('[asp-for="TrieuChung"]').value = contactMessage;
+
+        // Now, submit the second form if needed (uncomment the next line to submit it after populating)
+        // document.querySelector('#createBenhNhan').submit();
+    });
+</script>
+
+
+
+
+
+
     @RenderSection("Scripts", required: false)
+
+
+
+
+
+
+
+
 </body>
 </html>

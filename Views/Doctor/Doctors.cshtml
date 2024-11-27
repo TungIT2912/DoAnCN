@@ -61,9 +61,9 @@
                             <div class="inner-box">
                                 <div class="image-box">
                                     <figure class="image">
-                                        <a href="doctor-detail/@doctor.MaNv">
-                                            <img src="@Url.Content(doctor.Hinh)" alt="@doctor.Hinh" />
-                                        </a>
+                            <a href="@Url.Action("DoctorDetails", "Doctor", new { id = doctor.MaNv })">
+                                <img src="@Url.Content(doctor.Hinh)" alt="@doctor.Ten" />       
+                                                                 </a>
                                     </figure>
                                     <ul class="social-links">
                                         <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>

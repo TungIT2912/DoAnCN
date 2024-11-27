@@ -25,7 +25,7 @@
                         <i class="fa fa-envelope-open text-primary"></i>
                     </div>
                     <div class="ms-4">
-                        <p class="mb-2">Mail Us Now</p>
+                        <p class="mb-2">Email của chúng tôi</p>
                         <h5 class="mb-0">nhakhoahoanmy@gmail.com</h5>
                     </div>
                 </div>
@@ -33,71 +33,70 @@
 
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5">
-                    <form id="createBenhNhan" class="row g-3 w-100" method="post" enctype="multipart/form-data">
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="HoTen" class="control-label">Họ tên</label>
-                            <input asp-for="HoTen" required type="text" class="form-control border-0" style="height: 55px;">
-                            <span asp-validation-for="HoTen" class="text-danger"></span>
-                        </div>
+      <!-- Second Form (Will be auto-populated with data from the first form) -->
+                                <form id="createBenhNhan" class="row g-3 w-100" method="post" enctype="multipart/form-data">
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="HoTen" class="control-label">Họ tên</label>
+                                        <input asp-for="HoTen" required type="text" class="form-control border-0" style="height: 55px;">
+                                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                                    </div>
 
-                        <div class="col-12 col-sm-6">
-                            <div>
-                                <input asp-for="Gioi" type="radio" name="gender" value="True" />
-                                <span>Nữ</span>
-                            </div>
-                            <div>
-                                <input asp-for="Gioi" type="radio" name="gender" value="False" />
-                                <span>Nam</span>
-                            </div>
-                            <span asp-validation-for="Gioi" class="text-danger"></span>
-                        </div>
+                                    <div class="col-12 col-sm-6">
+                                        <div>
+                                            <input asp-for="Gioi" type="radio" name="gender" value="True" />
+                                            <span>Nữ</span>
+                                        </div>
+                                        <div>
+                                            <input asp-for="Gioi" type="radio" name="gender" value="False" />
+                                            <span>Nam</span>
+                                        </div>
+                                        <span asp-validation-for="Gioi" class="text-danger"></span>
+                                    </div>
 
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="NamSinh" class="control-label">Năm sinh</label>
-                            <input asp-for="NamSinh" type="text" placeholder="Nhập năm sinh" class="form-control border-0" style="height: 55px;">
-                            <span asp-validation-for="NamSinh" class="text-danger"></span>
-                        </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="NamSinh" class="control-label">Năm sinh</label>
+                                        <input asp-for="NamSinh" type="text" placeholder="Nhập năm sinh" class="form-control border-0" style="height: 55px;">
+                                        <span asp-validation-for="NamSinh" class="text-danger"></span>
+                                    </div>
 
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="Sdt" class="control-label">Số điện thoại</label>
-                            <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
-                            <span asp-validation-for="Sdt" class="text-danger"></span>
-                        </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="Sdt" class="control-label">Số điện thoại</label>
+                                        <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
+                                        <span asp-validation-for="Sdt" class="text-danger"></span>
+                                    </div>
 
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="EmailBn" class="control-label">Email</label>
-                            <input asp-for="EmailBn" type="email" class="form-control border-0" style="height: 55px;width: 100%">
-                            <span asp-validation-for="EmailBn" class="text-danger"></span>
-                        </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="EmailBn" class="control-label">Email</label>
+                                        <input asp-for="EmailBn" type="email" class="form-control border-0" style="height: 55px;width: 100%">
+                                        <span asp-validation-for="EmailBn" class="text-danger"></span>
+                                    </div>
 
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
-                            <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;width: 100%">
-                            <span asp-validation-for="DiaChi" class="text-danger"></span>
-                        </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                                        <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;width: 100%">
+                                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                                    </div>
 
-                        <div class="col-12 col-sm-6" style=" width: 100%;">
-                            <div class="date" id="date" data-target-input="nearest">
-                                <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
-                                <input asp-for="NgayKhamDau" type="datetime-local"
-                                       class="form-control border-0 datetimepicker-input"
-                                       placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
-                                <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
-                            </div>
-                        </div>
+                                    <div class="col-12 col-sm-6" style=" width: 100%;">
+                                        <div class="date" id="date" data-target-input="nearest">
+                                            <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                            <input asp-for="NgayKhamDau" type="datetime-local"
+                                                class="form-control border-0 datetimepicker-input"
+                                                placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
+                                            <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
-                            <textarea asp-for="TrieuChung" class="form-control custom-textarea" style="height: 150px; width: 208%"></textarea>
-                            <span asp-validation-for="TrieuChung" class="text-danger"></span>
-                        </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
+                                        <textarea asp-for="TrieuChung" class="form-control custom-textarea" style="height: 150px; width: 208%"></textarea>
+                                        <span asp-validation-for="TrieuChung" class="text-danger"></span>
+                                    </div>
 
-
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary w-100 py-3">Book Appointment</button>
-                        </div>
-
-                    </form>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch kham</button>
+                                    </div>
+                                </form>
                 </div>
             </div>
         </div>

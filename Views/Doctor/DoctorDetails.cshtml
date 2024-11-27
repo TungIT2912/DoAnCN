@@ -3,275 +3,202 @@
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/doctor-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:54 GMT -->
 <head>
-<meta charset="utf-8">
-<title>Medicoz | Health and Medical HTML Template | Doctor Detail</title>
+    <meta charset="utf-8">
+    @* <title>Medicoz | Doctor Detail</title> *@
 
-
-
-<!-- Stylesheets -->
-<link href="~/css/bootstrap.css" rel="stylesheet">
-<link href="~/css/style.css" rel="stylesheet">
-<link href="~/css/responsive.css" rel="stylesheet">
-
-    <!--Color Themes-->
+    <!-- Stylesheets -->
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
     <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
-
-
-<!--Color Switcher Mockup-->
-@* <link href="~/css/color-switcher-design.css" rel="stylesheet"> *@
-
-<link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
-<link rel="icon" href="~/images/favicon.png" type="image/x-icon">
-
-<!-- Responsive -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
-<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+    <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 </head>
 
 <body>
-
-<div class="page-wrapper">
-
-   
-
-    <!--Page Title-->
-    <section class="page-title" style="background-image: url(images/background/8.jpg);">
-        <div class="auto-container">
-            <div class="title-outer">
-                <h1>Dedicated Doctor</h1>
-                <ul class="page-breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                    <li>Doctors</li>
-                </ul> 
+    <div class="page-wrapper">
+        <!--Page Title-->
+<section class="page-title" style="background-image: url('@Url.Content("~/images/background/8.jpg")');">
+            <div class="auto-container">
+                <div class="title-outer">
+                    <h1>Chi tiết bác sĩ</h1>
+                    <ul class="page-breadcrumb">
+                        <li><a href="~/Home/Index">Trang chủ</a></li>
+                        <li>Bác sĩ</li>
+                    </ul> 
+                </div>
             </div>
-        </div>
-    </section>
-    <!--End Page Title-->
+        </section>
 
-    <!-- Doctor Detail Section -->
-    <section class="doctor-detail-section">
-        <div class="auto-container">
-            <div class="row">
-                <!-- Content Side -->
-                <div class="content-side col-lg-8 col-md-12 col-sm-12 order-2">
-                    <div class="docter-detail">
-                        <h3 class="name">Dr. Morila Wood</h3>
-                        <span class="designation">MBBS (Sydney), FRACS (Paediatric Surgery)</span>
-                        <div class="text">After graduating from West Virginia University Medical School, Dr. Emily Haden completed a two-year fellowship in sports medicine at Akron Children’s Hospital. During his training at Akron, Dr. Emily Haden Alex was team physician for the University of Akron and Walsh University.</div> 
-                        <ul class="doctor-info-list">
-                            <li>
-                                <strong>Speciality</strong>
-                                <p>Endocrinology <br>Paediatric Medicine <br>Urology</p>
-                            </li>
-                            <li>
-                                <strong>Education</strong>
-                                <p>Doctor of Medicine, University of Texas, USA (1990) Medical Orientation Program, St. Louis University (St. Louis, Missouri 1996)</p>
-                            </li>
-                            <li>
-                                <strong>Experience</strong>
-                                <p>25 years of Experience in Medicine <br> Vice President and Chief Medical Officer, Kessler Institute for Rehabilitation <br>Medical Corporation Professor, Institute Of Coast Private Hospital Campus</p>
-                            </li>
-                            <li>
-                                <strong>Address</strong>
-                                <p>Suite 27, Medical Centre, The Sunshine Coast Private Hospital, QLD 4556</p>
-                            </li>
-                            <li>
-                                <strong>Timing</strong>
-                                <p>Monday - Friday 08:00 - 20:00 <br> Saturday&nbsp; 09:00 - 18:00 <br> Sunday &nbsp; &nbsp; 09:00 - 18:00</p>
-                            </li>
-                            <li>
-                                <strong>Phone</strong>
-                                <p><a href="#">+1-23-345-6789</a></p>
-                            </li>
-                            <li>
-                                <strong>Email</strong>
-                                <p><a href="#">myemail@yourdomain.com</a></p>
-                            </li>
-                            <li>
-                                <strong>Website</strong>
-                                <p><a href="#">www.yourdomain.com</a></p>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="appointment-form default-form">
-                        <div class="sec-title">
-                            <span class="sub-title">Online Appoinment</span>
-                            <h2>Make An Appointment</h2>
-                            <span class="divider"></span>
+        <!-- Doctor Detail Section -->
+        <section class="doctor-detail-section">
+            <div class="auto-container">
+                <div class="row">
+                    <!-- Content Side -->
+                    <div class="content-side col-lg-8 col-md-12 col-sm-12 order-2">
+                        <div class="doctor-detail">
+                            <!-- Doctor's Name -->
+                            <h3 class="name">@Model.Ten</h3>
+                            <!-- Doctor's Designation -->
+                            <span class="designation">@Model.ChucVu?.TenCv</span>
+                            <hr>
+                            <!-- Doctor's Biography -->
+                            <div class="text">@Model.Mota test testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest</div>
+                            <hr>
+                            <ul class="doctor-info-list">
+                                @* <li>
+                                    <strong>Speciality</strong>
+                                    <p>@Model.ChucVu?.Ten</p>
+                                </li> *@
+                                @* <li>
+                                    <strong>Education</strong>
+                                    <p>Medical degree and training details can be added here if available.</p>
+                                </li> *@
+                                <li>
+                                    <strong>Kinh nghiệm</strong>
+                                    <p>@Model.KinhNghiem </p>
+                                </li>
+                                <li>
+                                    <strong>Địa chỉ</strong>
+                                    <p>@Model.Diachi</p>
+                                </li>
+                                <li>
+                                    <strong>Thời gian</strong>
+                                    <p>T2 - T6 08:00 - 20:00</p>
+                                </li>
+                                <li>
+                                    <strong>SĐT</strong>
+                                    <p><a href="tel:@Model.Sdt">@Model.Sdt</a></p>
+                                </li>
+                                <li>
+                                    <strong>Email</strong>
+                                    <p><a href="mailto:@Model.Email">@Model.Email</a></p>
+                                </li>
+                            </ul>
                         </div>
 
-                        <!--Comment Form-->
+                        <!-- Appointment Form -->
+                        <div class="appointment-form default-form">
+                            <div class="sec-title">
+                                <span class="sub-title">Lịch khám online</span>
+                                <h2>Đặt lịch khám</h2>
+                                <span class="divider"></span>
+                            </div>
+
+                            <!-- Appointment Form -->
+                                  <!-- The form where you're targeting the button -->
                         <form action="#" method="post" id="email-form">
                             <div class="row">
                                 <div class="form-group col-lg-6 col-md-12">
-                                    <input type="text" name="username" placeholder="Your Name">
+                                    <input type="text" name="username" placeholder="Họ và tên">
                                 </div>
-
                                 <div class="form-group col-lg-6 col-md-12">
-                                    <input type="text" name="phone" placeholder="Your Phone">
+                                    <input type="text" name="phone" placeholder="SĐT">
                                 </div>
-
                                 <div class="form-group col-lg-12 col-md-12">
-                                    <input type="email" name="email" placeholder="Your Email *">
+                                    <input type="email" name="email" placeholder="Email">
                                 </div>
-                                
                                 <div class="form-group col-lg-12 col-md-12">
-                                    <textarea name="contact_message" placeholder="Tell us about Pasent"></textarea>
+                                    <textarea name="contact_message" placeholder="Triệu chứng"></textarea>
                                 </div>
-                                
                                 <div class="form-group col-lg-12 col-md-12">
-                                    <button class="theme-btn btn-style-one" type="button" name="submit-form"><span class="btn-title">Submit Query</span></button>
+                                    <button class="theme-btn btn-style-one" type="button" name="submit-form"><span class="btn-title">Gửi yêu cầu</span></button>
                                 </div>
                             </div>
                         </form>
-                    </div>
-                </div>
 
-                <!-- Sidebar Side -->
-                <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
-                    <div class="sidebar"> 
-                        <!-- Team Block -->
-                        <div class="team-block wow fadeInUp">
-                            <div class="inner-box">
-                                <figure class="image"><img src="images/resource/team-1.jpg" alt=""></figure>
-                                <ul class="social-links">
-                                    <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                                    <li><a href="#"><span class="fab fa-google-plus-g"></span></a></li>
-                                    <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                                    <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                                </ul>
-                            </div>
                         </div>
+                    </div>
 
-                        <!-- Doctor Availability -->
-                        <div class="docter-availability">
-                            <div class="inner">
-                                <div class="sec-title">
-                                    <span class="sub-title">Timining</span>
-                                    <h2>Availability</h2>
-                                    <span class="divider"></span>
-                                    <div class="text">Suspendisse potenti. Maecenas dapibus ac tellus sed pulvinar. Vestibulum bib volutpat accumsan non laoreet nulla luctus.</div>
+
+<script>
+    document.querySelector('#email-form button').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        // Get data from the first form
+        var username = document.querySelector('[name="username"]').value;
+        var phone = document.querySelector('[name="phone"]').value;
+        var email = document.querySelector('[name="email"]').value;
+        var contactMessage = document.querySelector('[name="contact_message"]').value;
+
+        // Construct the URL with query parameters
+        var url = "http://localhost:5271/customer/controller/Create?HoTen=" + encodeURIComponent(username) +
+                  "&Sdt=" + encodeURIComponent(phone) + 
+                  "&EmailBn=" + encodeURIComponent(email) + 
+                  "&TrieuChung=" + encodeURIComponent(contactMessage);
+
+        // Redirect to the second page with query parameters
+        window.location.href = url;
+    });
+</script>
+
+
+
+
+                    <!-- Sidebar Side -->
+                    <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
+                        <div class="sidebar"> 
+                            <!-- Team Block (optional image) -->
+                            <div class="team-block wow fadeInUp">
+                                <div class="inner-box">
+                                    <figure class="image">
+                                        <img src="@Url.Content(Model.Hinh)" alt="@Model.Ten">
+                                    </figure>
+                                    <ul class="social-links">
+                                        <li><a href="#"><span class="fab fa-facebook"></span></a></li>
+                                        <li><a href="#"><span class="fab fa-google-plus-g"></span></a></li>
+                                        <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                        <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
+                                    </ul>
                                 </div>
-                                <ul class="timing-list-two">
-                                    <li>Monday - Friday <span>08:00 - 20:00</span></li>
-                                    <li>Saturday <span>09:00 - 18:00</span></li>
-                                    <li>Sunday  <span>09:00 - 18:00</span></li>
-                                </ul>
+                            </div>
+
+                            <!-- Doctor Availability -->
+                            <div class="doctor-availability">
+                                <div class="inner">
+                                    <div class="sec-title">
+                                        @* <span class="sub-title"></span> *@
+                                        <h2>Thời gian biểu</h2>
+                                        <span class="divider"></span>
+                                        <div class="text">Bác sĩ có mặt trong các giờ sau:</div>
+                                    </div>
+                                    <ul class="timing-list-two">
+                                        <li>T2 - T6 <span>08:00 - 20:00</span></li>
+                                        <li>T7 <span>09:00 - 18:00</span></li>
+                                        <li>Chủ nhật  <span>09:00 - 18:00</span></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- End Doctor Detail Section -->
+        </section>
 
-    <!-- Team Section -->
-    <section class="team-section">
-        <div class="auto-container">
-            <div class="row">
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-1.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-google-plus-g"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Team Section (optional, showing other doctors) -->
+        <section class="team-section">
+            <!-- Additional team section code if necessary -->
+        </section>
 
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-2.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-google-plus-g"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-3.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-google-plus-g"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Block -->
-                <div class="team-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                    <div class="inner-box">
-                        <figure class="image"><img src="images/resource/team-4.jpg" alt=""></figure>
-                        <ul class="social-links">
-                            <li><a href="#"><span class="fab fa-facebook"></span></a></li>
-                            <li><a href="#"><span class="fab fa-google-plus-g"></span></a></li>
-                            <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#"><span class="fab fa-pinterest"></span></a></li>
-                        </ul>
-                        <div class="info-box">
-                            <h4 class="name"><a href="doctor-detail.html">Dr. Morila Wood</a></h4>
-                            <span class="designation">Senior Dr. at Delmont</span>
-                        </div>
-                    </div>
+        <!-- Clients Section -->
+        <section class="clients-section alternate">
+            <div class="auto-container">
+                <div class="sponsors-outer">
+                    <!-- Clients Carousel -->
+                    <ul class="clients-carousel owl-carousel owl-theme">
+                        <li class="slide-item"> <a href="#"><img src="~/images/clients/1.png" alt=""></a> </li>
+                        <li class="slide-item"> <a href="#"><img src="~/images/clients/2.png" alt=""></a> </li>
+                        <li class="slide-item"> <a href="#"><img src="~/images/clients/3.png" alt=""></a> </li>
+                        <li class="slide-item"> <a href="#"><img src="~/images/clients/4.png" alt=""></a> </li>
+                        <li class="slide-item"> <a href="#"><img src="~/images/clients/5.png" alt=""></a> </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- End Team Section -->
-
-    <!-- Clients Section -->
-    <section class="clients-section alternate">
-        <div class="auto-container">
-
-            <!-- Sponsors Outer -->
-            <div class="sponsors-outer">
-                <!--clients carousel-->
-                <ul class="clients-carousel owl-carousel owl-theme">
-                    <li class="slide-item"> <a href="#"><img src="images/clients/1.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/2.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/3.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/4.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/5.png" alt=""></a> </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <!--End Clients Section -->
-
-
-</div><!-- End Page Wrapper -->
+        </section>
+    </div>
 
 </body>
-
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/doctor-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:54 GMT -->
 </html>
-
-
