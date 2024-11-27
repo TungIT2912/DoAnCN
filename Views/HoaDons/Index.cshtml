@@ -79,20 +79,20 @@
         tableBody.innerHTML = '';
         khoes.forEach(nv => {
             const row = document.createElement('tr');
-            const date = new Date(nv.ngayLap);
+            const date = new Date(nv.NgayLap);
             const formattedDate = date.toLocaleDateString('en-GB'); // Formats as dd/MM/yyyy
 
             row.innerHTML = `
-                <td>${nv.tenBn}</td>
-                <td>${nv.phuongThucThanhToan}</td>
-                <td>${nv.tienThuoc}</td>
-                <td>${nv.tienDieuTri}</td>
-                <td>${nv.tongTien}</td>
-                <td>${formattedDate}</td>
-                <td>
-                    <a href="/Admin/ChiTietHoaDons/api/ChiTietHoaDons/Detail/${nv.idkham}"><i class="dw dw-delete"></i> Chi tiết</a>
-                </td>
-            `;
+                <td>${nv.TenBn}</td>
+                <td>${nv.PhuongThucThanhToan}</td>
+                <td>${nv.TienThuoc}</td>
+                <td>${nv.TienDieuTri}</td>
+                <td>${nv.TongTien}</td>
+                        <td>${formattedDate}</td>
+                        <td>
+                    <a href="/Admin/ChiTietHoaDons/api/ChiTietHoaDons/Detail/${nv.Idkham}"><i class="dw dw-delete"></i> Chi tiết</a>
+                        </td>
+                    `;
             tableBody.appendChild(row);
         });
     }

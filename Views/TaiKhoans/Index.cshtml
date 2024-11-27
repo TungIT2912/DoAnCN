@@ -33,23 +33,24 @@
     const pageSize = 10;
 
     async function fetchTaiKhoans(page) {
-        try {
+    try {
             const response = await fetch(`TaiKhoans/api/TaiKhoans?pageNumber=${page}&pageSize=${pageSize}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+        if (!response.ok) {
+            console.error('Response status:', response.status);
+            throw new Error('Network response was not ok');
+        }
 
-            const result = await response.json();
+        const result = await response.json();
             const taiKhoans = result.data;
-            totalItems = result.totalItems;
+        totalItems = result.totalItems;
 
             displayData(taiKhoans);
-            setupPaginationControls(totalItems);
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert('Không thể tải dữ liệu. Vui lòng thử lại.');
-        }
+        setupPaginationControls(totalItems);
+    } catch (error) {
+        console.error('Fetch error:', error);
+        alert('Không thể tải dữ liệu. Vui lòng thử lại.');
     }
+}
 
     function displayData(taiKhoans) {
         const tableBody = document.getElementById('taiKhoanTable').getElementsByTagName('tbody')[0];
@@ -59,15 +60,15 @@
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${tk.tenDangNhap}</td>
-                <td>${tk.chucVu}</td>
-                <td>${tk.role}</td>
-                <td>
-                    <a href="#" class="dropdown-item delete-item" data-id="${tk.id}" data-islocked="${tk.isLoocked}">
-                        <i class="dw dw-delete"></i> ${actionText}
-                    </a>
-                </td>
-            `;
+                <td>${tk.TenDangNhap}</td>
+                <td>${tk.ChucVu}</td>
+                <td>${tk.Role}</td>
+                    <td>
+                    <a href="#" class="dropdown-item delete-item" data-id="${tk.Id}" data-islocked="${tk.isLoocked}">
+                            <i class="dw dw-delete"></i> ${actionText}
+                        </a>
+                    </td>
+                `;
             tableBody.appendChild(row);
         });
 

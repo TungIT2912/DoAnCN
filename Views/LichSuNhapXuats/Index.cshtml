@@ -88,15 +88,15 @@
             const row = document.createElement('tr');
 
             // Convert nv.ngayNhap to Date format dd/MM/yyyy
-            const date = new Date(nv.ngayNhap);
+            const date = new Date(nv.NgayNhap);
             const formattedDate = date.toLocaleDateString('en-GB'); // Formats as dd/MM/yyyy
 
             row.innerHTML = `
-                <td>${nv.noiDung}</td>
-                <td>${nv.tenDungCu}</td>
-                <td>${nv.loai}</td>
-                <td>${nv.donViTinh}</td>
-                <td>${nv.soLuongNhapXuat}</td>
+                <td>${nv.NoiDung}</td>
+                <td>${nv.TenDungCu}</td>
+                <td>${nv.Loai}</td>
+                <td>${nv.DonViTinh}</td>
+                <td>${nv.SoLuongNhapXuat}</td>
                 <td>${formattedDate}</td>
             `;
             tableBody.appendChild(row);

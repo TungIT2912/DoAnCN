@@ -6,6 +6,10 @@
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
 
+<head>
+    <meta charset="UTF-8">
+    <link href="~/css/form.css" rel="stylesheet" type="text/css">
+</head>
 
 <script>
     $(document).ready(function () {
@@ -13,62 +17,79 @@
     });
 </script>
 
-
 <div class="mobile-menu-overlay"></div>
-
 
 <div class="main-container">
     <div class="xs-pd-20-10 pd-ltr-20">
-
         <div class="row clearfix progress-box">
             <div class="col-lg-12">
-                <div class="flex justify-center items-center h-screen ">
-                    <div class="container p-[20px] max-w-[700px] max-h-[500px] bg-white rounded-xl">
-                        <div class="relative">
-                            <h1 class="text-[32px] font-bold">Nhập hàng</h1>
-                            <span class="absolute inline-block w-[70px] h-[4px] bg-gradient-to-r from-blue-500 to-fuchsia-500 rounded-xl"></span>
-                        </div>
-                        <div class="flex justify-center gap-10 mt-[10px]">
-                            <form id="createLichSuForm" class="flex-wrap flex justify-around items-center">
-                                <div class="form-group col-md-12">
-                                    <label asp-for="NoiDung" class="control-label">Nội dung</label>
-                                    <br>
-                                    <select asp-for="NoiDung" name="NoiDung" id="NoiDung" class="form-control" asp-items="ViewBag.Contents" required>
-                                        <option value="">Chọn nội dung</option>
-                                    </select>
-                                    <span asp-validation-for="NoiDung" class="text-danger"></span>
-                                </div>
+                <a asp-action="Index">
+                    <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
+                        ← Quay về lại danh sách
+                    </button>
+                </a>
+                <br>
+                <hr>
 
-                                <div class="form-group col-md-12">
-                                    <label asp-for="IdsanPham" class="control-label">Sản phẩm</label>
-                                    <br>
-                                    <select asp-for="IdsanPham" name="IdsanPham" id="IdsanPham" class="form-control" asp-items="ViewBag.SanPhams" required>
-                                        <option value="">Chọn nội dung</option>
-                                    </select>
-                                    <span asp-validation-for="IdsanPham" class="text-danger"></span>
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label asp-for="SoLuongNhapXuat" class="control-label">Số lượng nhập xuất</label>
-                                    <br>
-                                    <input asp-for="SoLuongNhapXuat" type="number" name="SoLuongNhapXuat" id="SoLuongNhapXuat" class="form-control" required />
-                                    <span asp-validation-for="SoLuongNhapXuat" class="text-danger"></span>
-                                </div>
-                               <br>
-                               <hr>
-                                <div class="form-group col-md-12">
-                                    <button type="submit" class="btn btn-primary">Tạo mới</button>
-                                </div>
-                            </form>
+                <body class="zf-backgroundBg">
+                    <div class="zf-templateWidth">
+                        <form action="/YourAction" name="form" method="POST" enctype="multipart/form-data" id="createLichSuForm">
+                            <div class="zf-templateWrapper">
+                                <!-- Header -->
+                                <ul class="zf-tempHeadBdr">
+                                    <li class="zf-tempHeadContBdr">
+                                        <h2 class="zf-frmTitle"><em>Nhập hàng</em></h2>
+                                        <p class="zf-frmDesc">Nhập hàng vào kho</p>
+                                        <div class="zf-clearBoth"></div>
+                                    </li>
+                                </ul>
 
+                                <!-- Form Container -->
+                                <div class="zf-subContWrap zf-leftAlign">
+                                    <ul>
+                                        <!-- Tên -->
+                                        <li class="zf-tempFrmWrapper zf-large">
+                                            <label class="zf-labelName">Nội dung <em class="zf-important">*</em></label>
+                                            <div class="zf-tempContDiv">
+                                                
+                                                <select asp-for="NoiDung" name="NoiDung" id="NoiDung" class="form-control" asp-items="ViewBag.Contents" required>
+                                                    <option value="">Chọn nội dung</option>
+                                                </select>
+                                                <span asp-validation-for="NoiDung" class="text-danger"></span>
+                                            </div>
+                                        </li>
 
-                        </div>
+                                        <!-- Email -->
+                                        <li class="zf-tempFrmWrapper zf-large">
+                                            <label class="zf-labelName">Sản phẩm <em class="zf-important">*</em></label>
+                                            <div class="zf-tempContDiv">
+                                                <select asp-for="IdsanPham" name="IdsanPham" id="IdsanPham" class="form-control" asp-items="ViewBag.SanPhams" required>
+                                                    <option value="">Chọn nội dung</option>
+                                                </select>
+                                                <span asp-validation-for="IdsanPham" class="text-danger"></span>
+                                            </div>
+                                        </li>
+
+                                        <!-- Số điện thoại -->
+                                        <li class="zf-tempFrmWrapper zf-large">
+                                            <label class="zf-labelName">Số lượng <em class="zf-important">*</em></label>
+                                            <div class="zf-tempContDiv">
+                                                
+                                                <input asp-for="SoLuongNhapXuat" type="number" name="SoLuongNhapXuat" id="SoLuongNhapXuat" class="form-control" required />
+                                                <span asp-validation-for="SoLuongNhapXuat" class="text-danger"></span>
+                                            </div>
+                                        </li>
+                                <ul>
+                                    <li class="zf-fmFooter">
+                                        <button type="submit" class="btn btn-primary zf-submitColor">Tạo mới</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
                     </div>
-                </div>
-            </div>
-        </div>
+                </body>
 
-    </div>
-</div>
+                </html>
 
 @section Scripts {
     @{

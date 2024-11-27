@@ -9,50 +9,56 @@
     <div class="table-title">
         <h2>Danh sách bệnh nhân</h2>
         <a href="Create" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i> Thêm mới</a>
-    </div>
+                    </div>
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="benhNhanTable">
             <thead class="thead-dark text-center">
-                <tr>
-                    <th scope="col" style="width: 200px;">Họ và tên</th>
-                    <th scope="col">Giới tính</th>
-                    <th scope="col">Năm sinh</th>
-                    <th scope="col">Số Điện Thoại</th>
-                    <th scope="col">Địa chỉ</th>
-                    <th scope="col">Ngày khám đầu tiên</th>
-                    <th scope="col" style="width: 200px;height:100px">Action</th>
-                </tr>
-            </thead>
+                                <tr>
+                                    <th scope="col" style="width: 200px;">Họ và tên</th>
+                                    <th scope="col">Giới tính</th> 
+                                    <th scope="col">Năm sinh</th>
+                                    <th scope="col">Số Điện Thoại</th>
+                                    <th scope="col">Địa chỉ</th>
+                                    <th scope="col">Ngày khám đầu tiên</th>
+                                    <th scope="col" style="width: 200px;height:100px">Action</th>
+                                </tr>
+                            </thead>
             <tbody id="tableBody" class="text-center">
                 <!-- Dynamic Content goes here -->
-            </tbody>
-        </table>
+                            </tbody>
+
+
+                        </table>
     </div>
-    <div id="paginationContainer" class="pagination-controls"></div>
-</div>
+                        <div id="paginationContainer" class="pagination-controls"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 <script>
     let currentPage = 1;
     const pageSize = 10;
 
     async function fetchBenhNhans(page) {
-        try {
+    try {
             const response = await fetch(`BenhNhans/api/BenhNhans?pageNumber=${page}&pageSize=${pageSize}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+        if (!response.ok) {
+            console.error('Response status:', response.status); // Log status
+            throw new Error('Network response was not ok');
+        }
 
-            const result = await response.json();
+        const result = await response.json();
             const benhNhans = result.data;
             totalItems = result.totalItems; // Set totalItems from API response
-
+       
             displayData(benhNhans);  // Function to display data in the table
             setupPaginationControls(totalItems);  // Function to set up pagination controls
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert('Không thể tải dữ liệu. Vui lòng thử lại.');
-        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+        alert('Không thể tải dữ liệu. Vui lòng thử lại.');
     }
+}
 
     function displayData(benhNhans) {
         const tableBody = document.getElementById('tableBody');
@@ -60,20 +66,20 @@
 
         benhNhans.forEach(nv => {
             const row = document.createElement('tr');
-            const formattedNgayKhamDau = new Date(nv.ngayKhamDau).toLocaleDateString('en-GB');
-            const genderText = nv.gioi ? 'Nữ' : 'Nam';
+            const formattedNgayKhamDau = new Date(nv.NgayKhamDau).toLocaleDateString('en-GB');
+            const genderText = nv.Gioi ? 'Nữ' : 'Nam';
 
             row.innerHTML = `
-                <td>${nv.hoTen}</td>
-                <td>${genderText}</td>
-                <td>${nv.namSinh}</td>
-                <td>${nv.sdt}</td>
-                <td>${nv.diaChi}</td>
-                <td>${formattedNgayKhamDau}</td>
-                <td>
-                    <a href="/Admin/BenhNhans/api/BenhNhans/Detail/${nv.idbenhNhan}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
-                </td>
-            `;
+                <td>${nv.HoTen}</td>
+                    <td>${genderText}</td>
+                <td>${nv.NamSinh}</td>
+                <td>${nv.Sdt}</td>
+                <td>${nv.DiaChi}</td>
+                    <td>${formattedNgayKhamDau}</td>
+                    <td>
+                    <a href="/Admin/BenhNhans/api/BenhNhans/Detail/${nv.IdbenhNhan}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
+                    </td>
+                `;
             tableBody.appendChild(row);
         });
     }

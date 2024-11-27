@@ -145,6 +145,13 @@
                                 <span asp-validation-for="Role" class="text-danger"></span>
                             </div>
                         </li>
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Mô tả</label>
+                            <div class="zf-tempContDiv">
+                                <textarea asp-for="Mota" id="Mota" class="form-control" rows="4" placeholder="Nhập mô tả cho nhân viên bạn"></textarea>
+                                <span asp-validation-for="Mota" class="text-danger"></span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
 
@@ -183,6 +190,7 @@
             formData.append('Email', document.getElementById('Email').value);
             formData.append('MatKhau', document.getElementById('MatKhau').value);
             formData.append('Role', document.getElementById('Role').value);
+            formData.append('Mota', document.getElementById('Mota').value);
 
             const avatar = document.querySelector('input[name="hinh"]').files[0];
             if (avatar) formData.append('hinh', avatar);

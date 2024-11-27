@@ -77,12 +77,16 @@
         const tableBody = document.getElementById('thiTruongTable').getElementsByTagName('tbody')[0];
         tableBody.innerHTML = '';
         khoes.forEach(nv => {
+            const formattedDonGia = parseFloat(nv.DonGia).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
             const row = document.createElement('tr');
             row.innerHTML = `
-                        <td>${nv.tenSanPham}</td>
-                        <td>${nv.loai}</td>
-                        <td>${nv.donViTinh}</td>
-                        <td>${nv.donGia}</td>
+                        <td>${nv.TenSanPham}</td>
+                        <td>${nv.Loai}</td>
+                        <td>${nv.DonViTinh}</td>
+                        <td>${formattedDonGia}</td>
                     `;
             tableBody.appendChild(row);
         });

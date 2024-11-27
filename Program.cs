@@ -72,6 +72,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Auth/login";
+                options.AccessDeniedPath = "/Home/404";
+            });
 
 var app = builder.Build();
 
@@ -112,4 +118,9 @@ app.MapRazorPages();
 // Map SignalR hub
 app.MapHub<ChatHub>("/chatHub");
 
+
+
+
+app.MapControllers();
+app.MapRazorPages();
 app.Run();

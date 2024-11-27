@@ -10,8 +10,8 @@
                 <div class="inner-container">
                     <div class="top-left">
                         <ul class="contact-list clearfix">
-                            <li><i class="flaticon-hospital-1"></i>234 Triumph, Los Angeles, California, US </li>
-                            <li><i class="flaticon-back-in-time"></i>Mon - Sat 8.00 - 18.00. Sunday CLOSED</li>
+                            <li><i class="flaticon-hospital-1"></i>210/80c Song Hành Xa Lộ Hà Nội, Phường Tân Phú, Quận 9, Hồ Chí Minh </li>
+                            <li><i class="flaticon-back-in-time"></i>T2 - T7 8:00 - 18:00. Chủ nhật đóng cửa</li>
                         </ul>
                     </div>
                     <div class="top-right">
@@ -53,7 +53,7 @@
                                     <span>Dịch vụ</span>
                                     <ul>
                                         <li><a href="~/Services/Index">Dịch vụ</a></li>
-                                        <li><a href="~/Services/Pricing">Bảng giá</a></li>
+                                        @* <li><a href="~/Services/Pricing">Bảng giá</a></li> *@
 
                                         <li><a href="~/Services/HoaDonDetails">Chi tiết hóa đơn</a></li>
                                         
@@ -126,9 +126,8 @@
                             }
                             else
                             {
-                                <li class="nav-item">
-                                    <a class="btn btn-primary mx-1" asp-controller="Auth" asp-action="Login">Đăng nhập</a>
-                                </li>
+                   
+
                                 @* <li class="nav-item">
                                     <a class="btn btn-secondary mx-1" asp-controller="Auth" asp-action="Register">Đăng ký</a>
                                 </li> *@
@@ -144,7 +143,17 @@
 
                             <!-- Appointment Btn -->
 <!-- HTML -->
-<button class="button-86" role="button" onclick="location.href='@Url.Action("Create", "BookAppointment")'">Đăng ký khám</button>
+                            <button class="button-86" role="button" onclick="location.href='@Url.Action("Create", "BookAppointment")'" style="margin-right: 20px;">Đăng ký khám</button>                             
+                    <button class="button-86" role="button" onclick="confirmLogin()">Đăng nhập</button>                           
+
+<script>
+    function confirmLogin() {
+        const isStaff = confirm("Chức năng này chỉ dùng cho nhân viên, bạn có muốn tiếp tục?");
+        if (isStaff) {
+            window.location.href = '@Url.Action("Login", "Auth")';
+        }
+    }
+</script>
 
 <!-- CSS -->
 <style>
