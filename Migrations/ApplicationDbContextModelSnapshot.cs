@@ -485,6 +485,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("MaCv")
                         .HasColumnType("int");
 
+                    b.Property<string>("Mota")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Sdt")
                         .HasColumnType("nvarchar(max)");
 

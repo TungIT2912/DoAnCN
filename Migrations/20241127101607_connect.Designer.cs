@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241125114932_connect")]
+    [Migration("20241127101607_connect")]
     partial class connect
     {
         /// <inheritdoc />
@@ -487,6 +487,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.Property<int>("MaCv")
                         .HasColumnType("int");
+
+                    b.Property<string>("Mota")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sdt")
                         .HasColumnType("nvarchar(max)");

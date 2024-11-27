@@ -141,7 +141,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     Gioi = table.Column<bool>(type: "bit", nullable: true),
                     Diachi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Hinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                    Hinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Mota = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

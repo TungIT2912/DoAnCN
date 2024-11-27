@@ -42,11 +42,18 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
             decimal?[] revenuePerMonth = new decimal?[12];
             decimal? totalRevenue = 0;
-
-            foreach (var invoice in invoices)
+            var invoicesCopy = invoices.ToList();
+            Console.WriteLine($"Invoices Count Before Loop: {invoices.Count}");
+            foreach (var invoice in invoicesCopy)
             {
                 int monthIndex = invoice.NgayLap.Month - 1;
+
+                if (!revenuePerMonth[monthIndex].HasValue)
+                {
+                    revenuePerMonth[monthIndex] = 0;
+                }
                 revenuePerMonth[monthIndex] += invoice.TongTien;
+
                 totalRevenue += invoice.TongTien;
             }
 
@@ -54,15 +61,16 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             {
                 string label;
                 decimal? formattedValue;
+                decimal actualValue = value ?? 0;
 
-                if (value < 1000000)
+                if (actualValue < 1000000)
                 {
-                    formattedValue = value / 1000; // Convert to thousands
+                    formattedValue = actualValue / 1000; 
                     label = $"Tháng {index + 1} ngàn";
                 }
                 else
                 {
-                    formattedValue = value / 1000000; // Convert to millions
+                    formattedValue = actualValue / 1000000; 
                     label = $"Tháng {index + 1} triệu";
                 }
 
