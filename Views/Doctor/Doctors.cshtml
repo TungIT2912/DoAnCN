@@ -58,7 +58,7 @@
                         <div class="image-box">
                             <figure class="image">
                                 <a href="doctor-detail/@doctor.MaNv">
-                                    @* <img src="@Url.Content("~/images/resource/" + doctor.Hinh)" alt="@doctor.Ten"> *@
+                                    <img src="@Url.Content(doctor.Hinh)" alt="@doctor.Hinh" />
                                 </a>
                             </figure>
                             <ul class="social-links">
@@ -70,16 +70,16 @@
                         </div>
                         <div class="info-box">
                             <h5 class="name"><a href="doctor-detail/@doctor.MaNv">@doctor.Ten</a></h5>
-                            <span class="designation">@doctor.KinhNghiem</span>
+                            <span class="designation">@doctor.KinhNghiem kinh nghiệm</span>
                         </div>
                     </div>
                 </div>
             }
         </div>
-        <div class="sec-bottom-text">
+        @* <div class="sec-bottom-text">
             Don’t hesitate, contact us for better help and services. 
             <a href="#">Explore all Dr. Team</a>
-        </div>
+        </div> *@
     </div>
 </section>
     <!--End Team Section -->

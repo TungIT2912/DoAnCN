@@ -15,7 +15,7 @@ public class DoctorController : Controller
     {
        
         var doctors = _context.NhanViens
-            .Where(nv => nv.ChucVu.TenCv == "Bác sĩ") 
+            .Where(nv => nv.ChucVu.MaCv == 1) 
             .ToList();
 
         return View(doctors); 
