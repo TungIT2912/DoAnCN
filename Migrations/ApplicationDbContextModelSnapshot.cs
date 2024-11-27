@@ -218,6 +218,10 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddichVu"));
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal>("DonGia")
                         .HasColumnType("decimal(18,2)");
 

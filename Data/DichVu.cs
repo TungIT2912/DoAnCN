@@ -25,6 +25,9 @@ namespace WebQuanLyNhaKhoa.Data
 		[Range(0, double.MaxValue)]
 		public decimal DonGia { get; set; }
 
+		[StringLength(500)]
+        public string? Description { get; set; } 
+
 		// Quan hệ 1-n với DieuTri
 		public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
 

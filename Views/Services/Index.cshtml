@@ -1,5 +1,6 @@
-﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.DichVu>
-
+﻿@model IPagedList<WebQuanLyNhaKhoa.Data.DichVu>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
@@ -37,6 +38,68 @@
 <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
 </head>
 
+<style>
+    .pagination-services {
+ display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    z-index: 999; /* Ensure it's above other elements */
+    position: relative; /* This is needed to apply z-index */
+    background-color: #f4f4f4;
+    }
+
+    .pagination-services ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pagination-services li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .pagination-services a {
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .pagination-services a:hover {
+        background-color: #f0f0f0;
+    }
+
+    .pagination-services .active {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 12px; /* Adjust padding as needed */
+    margin: 0 10px; /* Adjust margin as needed */
+}
+</style>
+@{
+    // List of available flaticon icon classes
+    var iconClasses = new List<string>
+    {
+        "flaticon-first-aid",
+        "flaticon-medical",
+        "flaticon-hospital",
+        @* "flaticon-ambulance", *@
+        "flaticon-doctor",
+        @* "flaticon-nurse", *@
+        "flaticon-syringe",
+        "flaticon-heart",
+        "flaticon-stethoscope",
+        @* "flaticon-patient-care" *@
+    };
+
+    // Initialize the randomizer
+    Random random = new Random();
+}
+
 <body>
 
 <div class="page-wrapper">
@@ -48,10 +111,10 @@
     <section class="page-title" style="background-image: url(images/background/8.jpg);">
         <div class="auto-container">
             <div class="title-outer">
-                <h1>Services</h1>
+                <h1>Dịch vụ</h1>
                 <ul class="page-breadcrumb">
-                    <li><a href="~/Home/Index">Home</a></li>
-                    <li>Services</li>
+                    <li><a href="~/Home/Index">Trang chủ</a></li>
+                    <li>Dịch vụ</li>
                 </ul> 
             </div>
         </div>
@@ -72,11 +135,14 @@
 <section class="services-section">
     <div class="auto-container">
         <div class="row">
+            <span class="d-block text-center mb-4">(Áp dụng cho ngày @DateTime.Now.ToString("dd/MM/yy"))</span>
+
             @foreach (var service in Model)
             {
+                                var randomIconClass = iconClasses[random.Next(iconClasses.Count)];
                 <div class="service-block col-lg-4 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-first-aid"></span> <!-- Placeholder for icon -->
+                        <span class="icon @randomIconClass"></span> 
                         <h5>
                             <a href="#" data-bs-toggle="modal" data-bs-target="#serviceModal-@service.IddichVu">
                                 @service.TenDichVu
@@ -97,11 +163,11 @@
                                 <h5 class="modal-title" id="serviceModalLabel-@service.IddichVu">@service.TenDichVu</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <p><strong>Đơn vị tính:</strong> @service.DonViTinh</p>
-                                <p><strong>Giá:</strong> @service.DonGia.ToString("N0") VNĐ</p>
-                                <p><strong>Mô tả:</strong> @* Add your service description here *@</p>
-                            </div>
+                                <div class="modal-body">
+                                    <p><strong>Đơn vị tính:</strong> @service.DonViTinh</p>
+                                    <p><strong>Giá:</strong> @service.DonGia.ToString("N0") VNĐ</p>
+                                    <p><strong>Mô tả:</strong> @service.Description</p>
+                                </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
@@ -110,9 +176,27 @@
                 </div>
             }
         </div>
-    </div>
-</section>
 
+
+    </div>
+
+ <!-- Pagination -->
+            <div class="pagination-container pagination-services">
+                @Html.PagedListPager(
+                    Model,
+                    page => Url.Action("Index", new { page }),
+                    new PagedListRenderOptions
+                    {
+                        @* DisplayPageCountAndCurrentLocation = true, *@
+                        @* DisplayItemSliceAndTotal = true, *@
+                        MaximumPageNumbersToDisplay = 5,
+               
+                    }
+                )
+            </div>
+
+</section>
+       
 
     <!--End Services Section -->
     
@@ -124,10 +208,10 @@
                 <!-- Content Column -->
                 <div class="content-column col-lg-6 col-md-12 col-sm-12">
                     <div class="inner-column">
-                        <span class="title">Need a Doctor for Check-up?</span>
-                        <h2>Just Make an Appointment <br>and You’re Done!</h2>
-                        <div class="number">Get Your Quote or Call: <strong>(0080) 123-453-789</strong></div>
-                        <a href="~/BookAppointment/Add" class="theme-btn btn-style-three"><span class="btn-title">Get an Appointment</span></a>
+                        <span class="title">CẦN ĐẶT LỊCH KHÁM BỆNH?</span>
+                        <h2>HÃY ĐẶT LỊCH <br>LÀ BẠN SẼ XONG!</Nav></h2>
+                        <div class="number">Đặt lịch hoặc gọi số</i> <strong>+(84) 347 123 534</strong></div>
+                        <a href="~/BookAppointment/Create" class="theme-btn btn-style-three"><span class="btn-title">Đặt lịch khám</span></a>
                     </div>
                 </div>
                 <div class="image-column col-lg-6 col-md-12 col-sm-12">
@@ -181,44 +265,6 @@
 
 <br>
 
-<div class="container my-5">
-    <!-- Service Pricing Section -->
-    <h2 class="text-center mb-4">Bảng giá dịch vụ</h2>
-    <span class="d-block text-center mb-4">(Áp dụng cho ngày @DateTime.Now.ToString("dd/MM/yy"))</span>
-    
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-responsive-stack" id="tableOne">
-            <thead class="thead-dark text-center">
-                <tr>
-                    <th>STT</th>
-                    <th>Tên dịch vụ</th>
-                    <th>Đơn vị</th>
-                    <th>Giá tham khảo</th>
-                </tr>
-            </thead>
-            <tbody class="text-center text-black">
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.IddichVu</td>
-                        <td>@item.TenDichVu</td>
-                        <td>@item.DonViTinh</td>
-                        <td>@item.DonGia VND</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
-   
-   
-   
-   
-
-
-</div>
 <!-- /.container -->
 
 

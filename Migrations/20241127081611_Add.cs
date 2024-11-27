@@ -80,7 +80,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IdchanDoan = table.Column<int>(type: "int", nullable: false),
                     TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {

@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241124033734_Add")]
+    [Migration("20241127081611_Add")]
     partial class Add
     {
         /// <inheritdoc />
@@ -220,6 +220,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnName("IdDichVu");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddichVu"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal>("DonGia")
                         .HasColumnType("decimal(18,2)");
