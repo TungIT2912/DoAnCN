@@ -85,6 +85,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             }
 
             // Gửi thông báo real-time tới người dùng cụ thể qua SignalR
+           
             await _chatHubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", employee.Ten, answerRequest.Answer);
             return Json(new { message = "Câu hỏi đã được trả lời thành công!" });
         }

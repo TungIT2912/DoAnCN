@@ -1,31 +1,126 @@
 ﻿@{
     ViewData["Title"] = "Answer Question";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
     var questionId = ViewBag.QuestionId;
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trả Lời Tin Nhắn</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.18/signalr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #007bff;
+        }
+
+        .form-group textarea {
+            resize: none;
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #messagesList {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .alert {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+
+        .alert-info {
+            background-color: #d9f2fc;
+            color: #007bff;
+        }
+
+        .alert-secondary {
+            background-color: #f5f5f5;
+            color: #6c757d;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-content span {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+
+            .alert-content span {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container">
         <h2>Trả Lời Tin Nhắn</h2>
-        <div class="form-group">
-            <label for="questionId">Question ID:</label>
-            <input type="text" class="form-control" id="questionId" />
-        </div>
-        <div class="form-group">
-            <label for="answer">Câu trả lời:</label>
-            <textarea class="form-control" id="answer" rows="3"></textarea>
-        </div>
-        <button class="btn btn-primary" onclick="sendAnswer()">Gửi</button>
+        <input type="hidden" id="questionId" value="@questionId" />
 
-        <div id="messagesList" class="mt-4"></div>
+        <div class="form-group">
+            <label for="answer" class="font-weight-bold">Câu trả lời:</label>
+            <textarea class="form-control" id="answer" rows="4" placeholder="Nhập câu trả lời của bạn..."></textarea>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="sendAnswer()">
+            <i class="fas fa-paper-plane"></i> Gửi Câu Trả Lời
+        </button>
+
+        <div id="messagesList" class="mt-4">
+            <!-- Tin nhắn sẽ hiển thị tại đây -->
+        </div>
     </div>
 
     <script>
@@ -34,7 +129,7 @@
             .build();
 
         connection.on("ReceiveMessage", (user, message) => {
-            displayMessage(user, message, 'alert-secondary');
+            displayMessage(user, message, 'alert-secondary', '/images/default-avatar.png');
         });
 
         connection.start().catch(err => console.error(err.toString()));
@@ -43,40 +138,39 @@
             const questionId = document.getElementById('questionId').value;
             const answer = document.getElementById('answer').value;
 
-            if (!questionId || !answer) {
-                alert('Vui lòng nhập đầy đủ thông tin');
+            if (!questionId || !answer.trim()) {
+                alert('Vui lòng nhập đầy đủ thông tin.');
                 return;
             }
 
-            const answerRequest = {
-                questionId: questionId,
-                answer: answer
-            };
-
             try {
-                const response = await axios.post('/api/answer/answer', answerRequest);
+                await axios.post('/api/answer/answer', { questionId, answer });
+
                 document.getElementById('answer').value = '';
-
-                displayMessage('Bạn', answer, 'alert-info');
-
-                alert(response.data.message);
-
-                // Gửi tin nhắn tới người dùng qua SignalR
-                connection.invoke("SendMessage", "Nhân viên", answer).catch(err => console.error(err.toString()));
+                displayMessage('Bạn', answer, 'alert-info', '/images/nhanvien17.jpg');
             } catch (error) {
                 console.error(error);
-                alert('Đã xảy ra lỗi khi gửi câu trả lời');
+                alert('Đã xảy ra lỗi khi gửi câu trả lời.');
             }
         }
 
-        function displayMessage(user, message, alertClass) {
+        function displayMessage(user, message, alertClass, avatarUrl) {
             const msg = document.createElement('div');
-            msg.className = `alert ${alertClass}`;
-            msg.textContent = `${user}: ${message}`;
+            msg.className = `alert ${alertClass} alert-content`;
+
+            const avatar = document.createElement('img');
+            avatar.src = avatarUrl;
+            avatar.alt = `${user} Avatar`;
+            avatar.className = 'message-avatar';
+
+            const messageContent = document.createElement('span');
+            messageContent.textContent = `${user}: ${message}`;
+
+            msg.appendChild(avatar);
+            msg.appendChild(messageContent);
+
             document.getElementById('messagesList').appendChild(msg);
         }
     </script>
 </body>
 </html>
-
-

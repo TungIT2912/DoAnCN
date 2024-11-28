@@ -33,11 +33,14 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 return BadRequest("Yêu cầu không hợp lệ!");
             }
 
-            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "google-credentials.json");
+            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "chatbotnhakhoa-tron-8d502648728a.json");
             if (!System.IO.File.Exists(credentialPath))
             {
                 return BadRequest($"Không tìm thấy tệp credentials tại: {credentialPath}");
             }
+
+            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
+            Console.WriteLine("GOOGLE_APPLICATION_CREDENTIALS: " + System.Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS"));
 
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
 
@@ -77,6 +80,19 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 };
 
                 var response = sessionClient.DetectIntent(session, queryInput);
+                if (response == null)
+                {
+                    Console.WriteLine("Response is null");
+                    return null;
+                }
+
+                if (response.QueryResult == null)
+                {
+                    Console.WriteLine("QueryResult is null");
+                    return null;
+                }
+
+                Console.WriteLine("Fulfillment Text: " + response.QueryResult.FulfillmentText);
                 return response.QueryResult.FulfillmentText;
             }
             catch (Exception ex)
@@ -85,6 +101,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 return null;
             }
         }
+
     }
 
     public class UserMessage

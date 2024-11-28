@@ -99,5 +99,52 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
 
             return Ok(danhSachKhamsDTO);
         }
+
+        [HttpGet("PhoneAndDate")]
+        public IActionResult PhoneAndDate()
+        {
+            return View();
+        }
+
+        [HttpGet("api/GetBenhNhan")]
+        public async Task<ActionResult<IEnumerable<BenhNhanDTO>>> GetBenhNhans(string query = "", string filter = "nothing")
+        {
+            var currentDay = DateTime.Now;
+            var queryable = _context.BenhNhans.AsQueryable();
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                queryable = queryable.Where(n => n.HoTen.Contains(query));
+            }
+
+            switch (filter)
+            {
+                case "Nam":
+                    queryable = queryable.Where(n => n.Gioi == false);
+                    break;
+                case "Nữ":
+                    queryable = queryable.Where(n => n.Gioi == true);
+                    break;
+                case "today":
+                    queryable = queryable.Where(n => n.NgayKhamDau.HasValue &&
+                        n.NgayKhamDau.Value.Date == currentDay.Date);
+                    break;
+            }
+
+            var result = await queryable
+                .Select(n => new BenhNhanDTO
+                {
+                    IdbenhNhan = n.IdbenhNhan,
+                    HoTen = n.HoTen,
+                    Gioi = n.Gioi,
+                    Sdt = n.Sdt,
+                    NamSinh = n.NamSinh,
+                    DiaChi = n.DiaChi,
+                    NgayKhamDau = n.NgayKhamDau
+                })
+                .ToListAsync();
+
+            return Ok(result);
+        }
     }
 }

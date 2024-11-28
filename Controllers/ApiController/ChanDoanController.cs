@@ -250,6 +250,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 Sdt = bn.Sdt,
                 DiaChi = bn.DiaChi,
                 TrieuChung = bn.TrieuChung,
+                IdChanDoan = bn.IdChanDoan,
                 NgayKhamDau = bn.NgayKhamDau
             }).ToList();
 

@@ -66,12 +66,15 @@
     <!-- Header Web Start-->
     @await Html.PartialAsync("_HeaderCustomer")
     <!-- Header Web End-->
+    @await Html.PartialAsync("_Chatbot")
     <!-- MainContent Web Start-->
     @RenderBody()
     <!-- MainContent Web End-->
     <!-- Footer Web Start-->
     @await Html.PartialAsync("_FooterCustomer")
     <!-- Footer Web End-->
+    
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -103,12 +106,12 @@
 <script src="~/js/owl.js"></script> 
 <script src="~/js/popper.min.js"></script> 
 <script src="~/js/script.js"></script> 
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    @* <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <df-messenger intent="WELCOME"
                   chat-title="ChatBotNhaKhoa"
                   agent-id="71ef94b8-d40f-4c7b-b7e9-c970d14a81d6"
                   language-code="vi">
-    </df-messenger>
+    </df-messenger> *@
 
 
 

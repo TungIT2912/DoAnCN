@@ -1,37 +1,40 @@
 ﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.ChanDoanDTO>
 @{
     ViewData["Title"] = "Chẩn Đoán Bệnh";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
-<h2>Chẩn Đoán Bệnh</h2>
+<h4 class="text-center text-primary my-4">CHẨN ĐOÁN BỆNH</h4>
 
 <!-- Form chọn ngày để lọc bệnh nhân -->
-<div class="form-group">
-    <label for="ngayKham">Chọn Ngày Khám</label>
-    <input type="date" id="ngayKham" class="form-control" onchange="loadBenhNhansByDate()" />
+<div class="form-group row justify-content-center mb-4">
+    <label for="ngayKham" class="col-sm-2 col-form-label font-weight-bold text-dark">Chọn Ngày Khám:</label>
+    <div class="col-sm-4">
+        <input type="date" id="ngayKham" class="form-control border-primary shadow-sm" onchange="loadBenhNhansByDate()" />
+    </div>
 </div>
 
 <!-- Bảng danh sách bệnh nhân -->
-<table class="table" id="benhNhanTable">
-    <thead>
-        <tr>
-            <th>Họ Tên</th>
-            <th>Giới</th>
-            <th>Năm Sinh</th>
-            <th>Triệu Chứng</th>
-            <th>Chẩn Đoán</th>
-            <th>Ghi Chú</th>
-            <th>Thao Tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Danh sách bệnh nhân sẽ được tải động -->
-    </tbody>
-</table>
+<div class="table-responsive shadow-sm">
+    <table class="table table-hover table-bordered align-middle" id="benhNhanTable">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th scope="col">Họ Tên</th>
+                <th scope="col">Giới</th>
+                <th scope="col">Năm Sinh</th>
+                <th scope="col">Triệu Chứng</th>
+                <th scope="col">Chẩn Đoán</th>
+                <th scope="col">Ghi Chú</th>
+                <th scope="col">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Danh sách bệnh nhân sẽ được tải động -->
+        </tbody>
+    </table>
+</div>
 
 <script>
-    // Hàm tải danh sách bệnh nhân theo ngày khám
     async function loadBenhNhansByDate() {
         const date = document.getElementById("ngayKham").value;
         if (!date) return;
@@ -44,28 +47,50 @@
 
         if (response.ok) {
             benhNhans.forEach(async (benhNhan) => {
-                // Tạo các tùy chọn chẩn đoán cho từng bệnh nhân
                 const chanDoanSelect = document.createElement("select");
-                chanDoanSelect.classList.add("form-control");
+                chanDoanSelect.classList.add("form-control", "border-primary", "shadow-sm");
                 await loadChanDoans(chanDoanSelect);
 
-                const row = `<tr>
-                        <td>${benhNhan.hoTen}</td>
-                        <td>${benhNhan.gioi}</td>
-                        <td>${benhNhan.namSinh}</td>
-                        <td>${benhNhan.trieuChung}</td>
-                        <td>${chanDoanSelect.outerHTML}</td>
-                        <td><input type="text" class="form-control" id="ghiChu-${benhNhan.idbenhNhan}" /></td>
-                        <td><button class="btn btn-primary" onclick="chanDoanBenh(${benhNhan.idbenhNhan})">Lưu</button></td>
-                    </tr>`;
-                tbody.innerHTML += row;
+                if (benhNhan.idChanDoan != null) {
+                    const options = chanDoanSelect.options;
+                    for (let i = 0; i < options.length; i++) {
+                        if (options[i].value == benhNhan.idChanDoan) {
+                            options[i].selected = true;
+                            break;
+                        }
+                    }
+                } else {
+                    const optionDefault = document.createElement("option");
+                    optionDefault.value = "";
+                    optionDefault.textContent = "Chưa chẩn đoán";
+                    optionDefault.disabled = true;
+                    optionDefault.selected = true;
+                    chanDoanSelect.prepend(optionDefault);
+                }
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${benhNhan.hoTen}</td>
+                    <td>${benhNhan.gioi ? 'Nữ' : 'Nam'}</td>
+                    <td>${benhNhan.namSinh}</td>
+                    <td>${benhNhan.trieuChung}</td>
+                    <td></td>
+                    <td><input type="text" class="form-control border-primary shadow-sm" id="ghiChu-${benhNhan.idbenhNhan}" placeholder="Nhập ghi chú" /></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm shadow-sm" onclick="chanDoanBenh(${benhNhan.idbenhNhan})">
+                            <i class="fas fa-save"></i> Lưu
+                        </button>
+                    </td>
+                `;
+                row.cells[4].appendChild(chanDoanSelect);
+
+                tbody.appendChild(row);
             });
         } else {
             alert("Không có bệnh nhân nào trong ngày đã chọn.");
         }
     }
 
-    // Hàm tải danh sách chẩn đoán
     async function loadChanDoans(selectElement) {
         const response = await fetch('/ChanDoan/api/GetChanDoan');
         const chanDoans = await response.json();
@@ -78,9 +103,8 @@
         });
     }
 
-    // Hàm chẩn đoán bệnh cho bệnh nhân
     async function chanDoanBenh(idBenhNhan) {
-        const idChanDoan = document.querySelector(`#benhNhanTable tr td select`).value;
+        const idChanDoan = document.querySelector(`#ghiChu-${idBenhNhan}`).closest("tr").querySelector("select").value;
         const ghiChu = document.getElementById(`ghiChu-${idBenhNhan}`).value;
 
         const response = await fetch(`/ChanDoan/api/ChanDoanBenh`, {
@@ -91,12 +115,74 @@
 
         if (response.ok) {
             alert("Chẩn đoán bệnh thành công!");
+            loadBenhNhansByDate();
         } else {
             const result = await response.json();
             alert(result.message || "Không thể lưu chẩn đoán.");
         }
     }
 </script>
+
+<style>
+    h4 {
+        font-family: 'Arial', sans-serif;
+        font-size:30px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #0056b3;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-control {
+        border-radius: 8px;
+    }
+
+    #ngayKham {
+        font-size: 1rem;
+    }
+
+    .table th {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @Model (max-width: 768px) {
+        .form-group label {
+            font-size: 0.9rem;
+        }
+
+        #ngayKham {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+
 @* <h2>Chẩn Đoán Bệnh</h2>
 
 <!-- Form chọn ngày để lọc bệnh nhân -->
