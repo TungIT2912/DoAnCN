@@ -32,5 +32,9 @@ namespace WebQuanLyNhaKhoa.Data
 		public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
 
 		public virtual ChanDoan ChanDoan { get; set; } = null!;
+
+
+		  [NotMapped]
+    public NhanVien? AssignedDoctor { get; set; }
 	}
 }

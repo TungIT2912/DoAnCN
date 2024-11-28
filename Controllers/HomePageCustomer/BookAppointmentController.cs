@@ -43,10 +43,17 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
            return Ok(benhNhanDTOs);
        }
        [HttpGet("Create")]
-       public IActionResult Create()
+       public IActionResult Create(string time)
        {
-
-           return View();
+                if (!string.IsNullOrEmpty(time))
+            {
+                // Convert the time range to a specific DateTime if needed
+                // Example: Assume the date is today
+                var timeParts = time.Split('-');
+                var startTime = DateTime.Parse(timeParts[0].Trim());
+                ViewBag.Time = startTime.ToString("yyyy-MM-ddTHH:mm"); // For datetime-local format
+            }
+            return View();
        }
        // POST: api/BenhNhan
     //    [Authorize(Roles = "Admin,Staff")]

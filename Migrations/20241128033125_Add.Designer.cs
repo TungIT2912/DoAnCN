@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127135436_Add")]
+    [Migration("20241128033125_Add")]
     partial class Add
     {
         /// <inheritdoc />
@@ -221,6 +221,13 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddichVu"));
 
+                    b.Property<int?>("AssignedDoctorMaNv")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -241,7 +248,13 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("TimeSlot")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("IddichVu");
+
+                    b.HasIndex("AssignedDoctorMaNv");
 
                     b.HasIndex("IdchanDoan");
 
@@ -666,11 +679,17 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DichVu", b =>
                 {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "AssignedDoctor")
+                        .WithMany()
+                        .HasForeignKey("AssignedDoctorMaNv");
+
                     b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "ChanDoan")
                         .WithMany("DichVus")
                         .HasForeignKey("IdchanDoan")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AssignedDoctor");
 
                     b.Navigation("ChanDoan");
                 });

@@ -77,15 +77,18 @@
                                         <span asp-validation-for="DiaChi" class="text-danger"></span>
                                     </div>
 
-                                    <div class="col-12 col-sm-6" style=" width: 100%;">
-                                        <div class="date" id="date" data-target-input="nearest">
-                                            <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
-                                            <input asp-for="NgayKhamDau" type="datetime-local"
-                                                class="form-control border-0 datetimepicker-input"
-                                                placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
-                                            <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
-                                        </div>
-                                    </div>
+                                                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                                <div class="date" id="date" data-target-input="nearest">
+                                    <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                    <input asp-for="NgayKhamDau" type="datetime-local"
+                                        class="form-control border-0 datetimepicker-input"
+                                        placeholder="Choose Date"
+                                        data-target="#date" data-toggle="datetimepicker"
+                                        style="height: 55px;"
+                                        value="@ViewBag.Time">
+                                    <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+                                </div>
+                            </div>
 
                                     <div class="col-12 col-sm-6">
                                         <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
@@ -94,7 +97,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch kham</button>
+                                        <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch khám</button>
                                     </div>
                                 </form>
                 </div>

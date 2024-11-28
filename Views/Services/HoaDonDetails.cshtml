@@ -36,7 +36,28 @@
 <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
 <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
 </head>
+<style>
+.search-box {
+    width: 100%; /* Adjust width as per your design */
+    max-width: 400px; /* Optional: to set a maximum width */
+    padding: 12px 20px; /* Add padding to make the box more spacious */
+    font-size: 16px; /* Font size for better readability */
+    border-radius: 25px; /* Rounded corners for a softer look */
+    border: 1px solid #ccc; /* Light border */
+    outline: none; /* Remove the default outline */
+    transition: border 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
 
+.search-box:focus {
+    border-color: #007BFF; /* Highlight border color on focus */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Subtle shadow for focus effect */
+}
+
+.search-box::placeholder {
+    color: #999; /* Lighter placeholder text */
+    font-style: italic; /* Optional: add italic for placeholder text */
+}
+</style>
 <body>
 
 <div class="page-wrapper">
@@ -68,7 +89,7 @@
     <div class="row">
         <div class="col-md-12">
             <!-- Search form that submits the query to the server -->
-            <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn bằng ID" />        
+            <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn (ID)" />        
         </div>
     </div>
     <br>
@@ -79,119 +100,121 @@
 
 
 
-@foreach (var chiTiet in Model) 
-{
-    <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
-                <div id="no-data-message" style="display: none; text-align: center; color: red;">
-            <h3>Không tìm thấy kết quả</h3>
-        </div>
-<br>
-<br>
-        <!-- The rest of the HTML structure for displaying invoice details -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="panel panel-default invoice" id="invoice">
-                    <div class="panel-body">
-                        <div class="invoice-ribbon">
-                            <div class="ribbon-inner">PAID</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6 top-left">
-                                <div class="logo">
-                                    <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+    @foreach (var chiTiet in Model) 
+    {
+        <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
+                    <div id="no-data-message" style="display: none; text-align: center; color: red;">
+                <h3>Không tìm thấy kết quả</h3>
+            </div>
+    <br>
+    <br>
+            <!-- The rest of the HTML structure for displaying invoice details -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default invoice" id="invoice">
+                        <div class="panel-body">
+                            <div class="invoice-ribbon">
+                                <div class="ribbon-inner">PAID</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 top-left">
+                                    <div class="logo">
+                                        <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 top-right">
+                                    <h3 class="marginright">HÓA ĐƠN-@chiTiet.IdhoaDon</h3> 
+                                    <span class="marginright">@DateTime.Now.ToString("dd MMMM yyyy")</span>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-4 from">
+                                    <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
+                                    <p>10/80c Song Hành Xa Lộ Hà Nội</p>
+                                    <p>Tòa E2, Q.12</p>
+                                    <p>Hồ Chí Minh, 700000</p>
+                                    <p>SĐT: +(84) 347 123 534</p>
+                                    <p>Email: pquangngo@gmail.com</p>
+                                </div>
 
-                            <div class="col-sm-6 top-right">
-                                <h3 class="marginright">INVOICE-@chiTiet.IdhoaDon</h3> 
-                                <span class="marginright">@DateTime.Now.ToString("dd MMMM yyyy")</span>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-xs-4 from">
-                                <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
-                                <p>10/80c Song Hành Xa Lộ Hà Nội</p>
-                                <p>Tòa E2, Q.12</p>
-                                <p>Hồ Chí Minh, 700000</p>
-                                <p>SĐT: +(84) 347 123 534</p>
-                                <p>Email: pquangngo@gmail.com</p>
+                                <div class="col-xs-4 to">
+                                    <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
+                                    <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
+                                                                             @* <p>Số điện thoại: @chiTiet.Sdt</p>  *@
+
+                                @* <p>Tiền thuốc: @Model.TienThuoc</p>
+                                <p>Tiền điều trị: @Model.TienDieuTri</p>
+                                <p>Tổng tiền: @Model.TongTien</p>
+                                <p>Ngày lập: @Model.NgayLap.ToString("dd/MM/yyyy")</p> *@
+                                </div>
+                                @if (Model != null && Model.Any())
+                                        {
+
+                                            var item = Model.First();
+                    
+                                <div class="col-xs-4 text-right payment-details">
+                                    <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
+                                    <p>@DateTime.Now.ToString("dd MMMM yyyy")</p>
+                                    <p>VAT: DK888-777 </p>
+                                    <p>Tổng tiền: @item.TongTien.ToString("C")</p>
+                                    <p>Email khách hàng: @item.EmailBn</p>
+                                </div>
+                                        
+                                    }
                             </div>
 
-                            <div class="col-xs-4 to">
-                                <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
-                                @* <p>425 Market Street</p>
-                                <p>Suite 2200, San Francisco</p>
-                                <p>California, 94105</p>
-                                <p>Phone: 415-676-3600</p>
-                                <p>Email: john@doe.com</p> *@
-                            </div>
-                             @if (Model != null && Model.Any())
-                                    {
-
-                                           var item = Model.First();
-                  
-                            <div class="col-xs-4 text-right payment-details">
-                                <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
-                                <p>@DateTime.Now.ToString("dd MMMM yyyy")</p>
-                                <p>VAT: DK888-777 </p>
-                                <p>Total Amount: @item.TongTien.ToString("C")</p>
-                                <p>Email khách hàng: @item.EmailBn</p>
-                            </div>
-                                    
-                                }
-                        </div>
-
-                        <div class="row table-row">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" style="width:5%">#</th>
-                                        <th style="width:30%">Tên Dịch Vụ</th>
-                                        <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                                        <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                                        <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                                        <th class="text-right" style="width:15%">Tổng Tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model != null && Model.Any())
-                                    {
-                                        int index = 1;
-                                        foreach (var item in Model)
+                            <div class="row table-row">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width:5%">#</th>
+                                            <th style="width:30%">Tên Dịch Vụ</th>
+                                            <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                                            <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                                            <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                                            <th class="text-right" style="width:15%">Tổng Tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null && Model.Any())
+                                        {
+                                            int index = 1;
+                                            foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">@index</td>
+                                                    <td>@item.TenDon</td>
+                                                    <td class="text-right">@item.PhuongThucThanhToan</td>
+                                                    <td class="text-right">@item.TienThuoc.ToString("C")</td>
+                                                    <td class="text-right">@item.TienDieuTri.ToString("C")</td>
+                                                    <td class="text-right">@item.TongTien.ToString("C")</td>
+                                                </tr>
+                                                index++;
+                                            }
+                                        }
+                                        else
                                         {
                                             <tr>
-                                                <td class="text-center">@index</td>
-                                                <td>@item.TenDon</td>
-                                                <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                <td class="text-right">@item.TienThuoc.ToString("C")</td>
-                                                <td class="text-right">@item.TienDieuTri.ToString("C")</td>
-                                                <td class="text-right">@item.TongTien.ToString("C")</td>
+                                                <td colspan="6" class="text-center">No data available</td>
                                             </tr>
-                                            index++;
                                         }
-                                    }
-                                    else
-                                    {
-                                        <tr>
-                                            <td colspan="6" class="text-center">No data available</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <br>
-    <br>
-    <br>
-}
+        <br>
+        <br>
+        <br>
+    }
 
 
-</section>
+    </section>
 
 
 <script>

@@ -19,25 +19,28 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // GET: Services
-public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1)
 {
     int pageSize = 6;
 
-    // Retrieve paginated data directly from the database
+    // Retrieve paginated DichVu data, including the AssignedDoctor
     var dichVus = await _context.DichVus
-        .OrderBy(dv => dv.IddichVu) // Optional: Order the data by a specific field
+        .OrderBy(dv => dv.IddichVu)  // Optional: Order by specific field
         .Skip((page - 1) * pageSize)
         .Take(pageSize)
         .ToListAsync();
 
     // Retrieve total count for pagination
     var totalCount = await _context.DichVus.CountAsync();
-
-    // Create a PagedList
+    // Create a PagedList for the DichVu data
     var pagedList = new StaticPagedList<DichVu>(dichVus, page, pageSize, totalCount);
 
+
+    // Pass the paged list to the view
     return View(pagedList);
 }
+
+
 
 
         public ActionResult Pricing(int? page)

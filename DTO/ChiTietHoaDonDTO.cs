@@ -22,6 +22,8 @@ namespace WebQuanLyNhaKhoa.DTO
 
         public DateTime NgayLap { get; set; }
         public string? EmailBn { get; set; }
+            public string? Sdt { get; set; }
+            
         public List<DonThuoc1DTO> DonThuocs { get; set; } = new List<DonThuoc1DTO>();
         public List<DieuTriDTO> DieuTris { get; set; } = new List<DieuTriDTO>();
 
