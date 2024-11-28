@@ -125,7 +125,7 @@
 
                                 <div class="col-sm-6 top-right">
                                     <h3 class="marginright">HÓA ĐƠN-@chiTiet.IdhoaDon</h3> 
-                                    <span class="marginright">@DateTime.Now.ToString("dd MMMM yyyy")</span>
+<span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
                                 </div>
                             </div>
                             <hr>
@@ -136,7 +136,7 @@
                                     <p>Tòa E2, Q.12</p>
                                     <p>Hồ Chí Minh, 700000</p>
                                     <p>SĐT: +(84) 347 123 534</p>
-                                    <p>Email: pquangngo@gmail.com</p>
+                                    <p>Email: nhakhoahoanmy@gmail.com</p>
                                 </div>
 
                                 <div class="col-xs-4 to">
@@ -144,9 +144,9 @@
                                     <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
                                                                              @* <p>Số điện thoại: @chiTiet.Sdt</p>  *@
 
-                                @* <p>Tiền thuốc: @Model.TienThuoc</p>
-                                <p>Tiền điều trị: @Model.TienDieuTri</p>
-                                <p>Tổng tiền: @Model.TongTien</p>
+                                @* <p>Tiền thuốc: @chiTiet.TienThuoc</p>
+                                <p>Tiền điều trị: @chiTiet.TienDieuTri</p>
+                                <p>Tổng tiền: @chiTiet.TongTien</p>
                                 <p>Ngày lập: @Model.NgayLap.ToString("dd/MM/yyyy")</p> *@
                                 </div>
                                 @if (Model != null && Model.Any())
@@ -156,9 +156,9 @@
                     
                                 <div class="col-xs-4 text-right payment-details">
                                     <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
-                                    <p>@DateTime.Now.ToString("dd MMMM yyyy")</p>
-                                    <p>VAT: DK888-777 </p>
-                                    <p>Tổng tiền: @item.TongTien.ToString("C")</p>
+                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                    @* <p>VAT: DK888-777 </p> *@
+                            <p>Tổng tiền: @item.TongTien.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</p>
                                     <p>Email khách hàng: @item.EmailBn</p>
                                 </div>
                                         
@@ -187,9 +187,10 @@
                                                     <td class="text-center">@index</td>
                                                     <td>@item.TenDon</td>
                                                     <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                    <td class="text-right">@item.TienThuoc.ToString("C")</td>
-                                                    <td class="text-right">@item.TienDieuTri.ToString("C")</td>
-                                                    <td class="text-right">@item.TongTien.ToString("C")</td>
+                                            <td class="text-right">@item.TienThuoc.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                            <td class="text-right">@item.TienDieuTri.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                            <td class="text-right">@item.TongTien.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
+
                                                 </tr>
                                                 index++;
                                             }
