@@ -28,24 +28,33 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         [HttpGet("api/GetDonThuoc")]
         public async Task<ActionResult<IEnumerable<DonThuoc1DTO>>> GetAllDonThuoc()
         {
-            var donThuocs = await _context.DonThuocs
-                .Include(d => d.Kho)
-                .Select(d => new DonThuoc1DTO
-                {
-                    IdhoaDon = d.ChiTietHoaDon.IdhoaDon,
-                    Idkham = d.Idkham,
-                    tenThuoc = d.Kho.ThiTruong.TenSanPham, // Giả sử `tenThuoc` là tên của dụng cụ/thuốc trong bảng `ThiTruong`
-                    ThanhGia = d.ThanhGia,
-                    TongTien = d.TongTien,
-                    IddungCu = d.IddungCu, // Đưa ID dụng cụ vào dưới dạng danh sách
-                    SoLuong = d.SoLuong,   // Đưa số lượng vào dưới dạng danh sách
-                    NgayLapDt = d.NgayLapDt,
-                    
-                })
-                .ToListAsync();
+            try
+            {
+                var donThuocs = await _context.DonThuocs
+                    .Include(d => d.Kho)
+                    .ThenInclude(k => k.ThiTruong)
+                    .Include(d => d.ChiTietHoaDon)
+                    .Select(d => new DonThuoc1DTO
+                    {
+                        IdhoaDon = d.ChiTietHoaDon != null ? d.ChiTietHoaDon.IdhoaDon : 0,
+                        Idkham = d.Idkham,
+                        tenThuoc = d.Kho.ThiTruong.TenSanPham ?? "Không có tên thuốc",
+                        ThanhGia = d.ThanhGia,
+                        TongTien = d.TongTien,
+                        IddungCu = d.IddungCu,
+                        SoLuong = d.SoLuong,
+                        NgayLapDt = d.NgayLapDt
+                    })
+                    .ToListAsync();
 
-            return Ok(donThuocs);
+                return Ok(donThuocs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi khi tải dữ liệu: {ex.Message}");
+            }
         }
+
 
 
         [HttpGet("api/GetDanhSachKhamOptions")]

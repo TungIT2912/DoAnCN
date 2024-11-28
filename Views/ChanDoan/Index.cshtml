@@ -37,13 +37,13 @@
         data.forEach(chanDoan => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                    <td>${chanDoan.idchanDoan}</td>
-                    <td>${chanDoan.tenChanDoan}</td>
+                    <td>${chanDoan.IdchanDoan}</td>
+                    <td>${chanDoan.TenChanDoan}</td>
                     <td>
-                        <a href="/ChanDoan/Edit/${chanDoan.idchanDoan}" class="text-info" title="Sửa">
+                        <a href="/ChanDoan/Edit/${chanDoan.IdchanDoan}" class="text-info" title="Sửa">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="#" onclick="deleteChanDoan(${chanDoan.idchanDoan})" class="text-danger ml-2" title="Xóa">
+                            <a href="#" onclick="deleteChanDoan(${chanDoan.IdchanDoan})" class="text-danger ml-2" title="Xóa">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>

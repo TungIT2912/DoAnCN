@@ -14,8 +14,8 @@
     <table id="treatmentTable" class="table table-hover table-striped align-middle shadow-sm rounded">
         <thead class="thead-custom text-light">
             <tr>
-                <th scope="col">ID Dịch Vụ</th>
-                <th scope="col">ID Khám</th>
+                <th scope="col">Tên Dịch Vụ</th>
+                <th scope="col">Bệnh Nhân Điều Trị</th>
                 <th scope="col">Số Lượng</th>
                 <th scope="col">Tổng Tiền </th>
                 <th scope="col">Hành Động</th>
@@ -37,15 +37,15 @@
         treatments.forEach(treatment => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${treatment.iddichVu}</td>
-                <td>${treatment.idkham}</td>
-                <td>${treatment.soLuong}</td>
-                <td>${treatment.thanhTien}</td>
+                <td>${treatment.TenDichVu}</td>
+                <td>${treatment.TenBenhNhan}</td>
+                <td>${treatment.SoLuong}</td>
+                <td>${treatment.ThanhTien}</td>
                 <td>
-                    <button class="btn btn-sm btn-info" onclick="editTreatment(${treatment.iddieuTri})">
+                    <button class="btn btn-sm btn-info" onclick="editTreatment(${treatment.IddieuTri})">
                         <i class="fas fa-edit"></i> Edit
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteTreatment(${treatment.iddieuTri})">
+                    <button class="btn btn-sm btn-danger" onclick="deleteTreatment(${treatment.IddieuTri})">
                         <i class="fas fa-trash-alt"></i> Delete
                     </button>
                 </td>
@@ -57,16 +57,16 @@
         window.location.href = '/DieuTri/create';
     }
     // Delete treatment
-    async function deleteTreatment(id) {
-        if (confirm("Are you sure you want to delete this treatment?")) {
-            await fetch(`/DieuTri/api/DeleteDieuTri/${id}`, { method: 'DELETE' });
+    async function deleteTreatment(Id) {
+        if (confirm("Bạn có chắc chắn muốn xóa Điều Trị?")) {
+            await fetch(`/DieuTri/api/DeleteDieuTri/${Id}`, { method: 'DELETE' });
             fetchTreatments(); // Refresh the list
         }
     }
 
     // Edit treatment
-    function editTreatment(id) {
-        window.location.href = `/DieuTri/details/${id}`;
+    function editTreatment(Id) {
+        window.location.href = `/DieuTri/details/${Id}`;
     }
 
     // Initial fetch of treatments

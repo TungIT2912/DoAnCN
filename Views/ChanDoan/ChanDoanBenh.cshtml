@@ -51,10 +51,10 @@
                 chanDoanSelect.classList.add("form-control", "border-primary", "shadow-sm");
                 await loadChanDoans(chanDoanSelect);
 
-                if (benhNhan.idChanDoan != null) {
+                if (benhNhan.IdChanDoan != null) {
                     const options = chanDoanSelect.options;
                     for (let i = 0; i < options.length; i++) {
-                        if (options[i].value == benhNhan.idChanDoan) {
+                        if (options[i].value == benhNhan.IdChanDoan) {
                             options[i].selected = true;
                             break;
                         }
@@ -70,14 +70,14 @@
 
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${benhNhan.hoTen}</td>
-                    <td>${benhNhan.gioi ? 'Nữ' : 'Nam'}</td>
-                    <td>${benhNhan.namSinh}</td>
-                    <td>${benhNhan.trieuChung}</td>
+                    <td>${benhNhan.HoTen}</td>
+                    <td>${benhNhan.Gioi ? 'Nữ' : 'Nam'}</td>
+                    <td>${benhNhan.NamSinh}</td>
+                    <td>${benhNhan.TrieuChung}</td>
                     <td></td>
-                    <td><input type="text" class="form-control border-primary shadow-sm" id="ghiChu-${benhNhan.idbenhNhan}" placeholder="Nhập ghi chú" /></td>
+                    <td><input type="text" class="form-control border-primary shadow-sm" id="ghiChu-${benhNhan.IdbenhNhan}" placeholder="Nhập ghi chú" /></td>
                     <td>
-                        <button class="btn btn-primary btn-sm shadow-sm" onclick="chanDoanBenh(${benhNhan.idbenhNhan})">
+                        <button class="btn btn-primary btn-sm shadow-sm" onclick="chanDoanBenh(${benhNhan.IdbenhNhan})">
                             <i class="fas fa-save"></i> Lưu
                         </button>
                     </td>
@@ -97,20 +97,20 @@
 
         chanDoans.forEach((chanDoan) => {
             const option = document.createElement("option");
-            option.value = chanDoan.idchanDoan;
-            option.textContent = chanDoan.tenChanDoan;
+            option.value = chanDoan.IdchanDoan;
+            option.textContent = chanDoan.TenChanDoan;
             selectElement.appendChild(option);
         });
     }
 
-    async function chanDoanBenh(idBenhNhan) {
-        const idChanDoan = document.querySelector(`#ghiChu-${idBenhNhan}`).closest("tr").querySelector("select").value;
-        const ghiChu = document.getElementById(`ghiChu-${idBenhNhan}`).value;
+    async function chanDoanBenh(IdBenhNhan) {
+        const IdChanDoan = document.querySelector(`#ghiChu-${IdBenhNhan}`).closest("tr").querySelector("select").value;
+        const GhiChu = document.getElementById(`ghiChu-${IdBenhNhan}`).value;
 
         const response = await fetch(`/ChanDoan/api/ChanDoanBenh`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ idBenhNhan, idChanDoan, ghiChu })
+            body: JSON.stringify({ IdBenhNhan, IdChanDoan, GhiChu })
         });
 
         if (response.ok) {

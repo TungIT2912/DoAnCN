@@ -29,15 +29,15 @@
                     questionDiv.innerHTML = `
                             <div class="question-header">
                                 <h3>Câu Hỏi:</h3>
-                                <p>${question.question}</p>
+                                <p>${question.Question}</p>
                             </div>
                             <div class="question-details">
-                                <p><span>Thời gian:</span> ${new Date(question.askedOn).toLocaleString()}</p>
-                                <p><span>Trạng Thái:</span> ${question.isAnswered ? 'Đã trả lời' : 'Chưa trả lời'}</p>
-                                <p><span>Id Nhân Viên:</span> ${question.maNv || 'Chưa gán'}</p>
-                                <p><span>Tên Nhân Viên:</span> ${question.answeredByName || 'Chưa gán'}</p>
+                                <p><span>Thời gian:</span> ${new Date(question.AskedOn).toLocaleString()}</p>
+                                <p><span>Trạng Thái:</span> ${question.IsAnswered ? 'Đã trả lời' : 'Chưa trả lời'}</p>
+                                <p><span>Id Nhân Viên:</span> ${question.MaNv || 'Chưa gán'}</p>
+                                <p><span>Tên Nhân Viên:</span> ${question.AnsweredByName || 'Chưa gán'}</p>
                             </div>
-                            <button class="btn-answer" onclick="location.href='/api/answer/post?questionId=${question.id}'">Answer</button>
+                            <button class="btn-answer" onclick="location.href='/api/answer/post?questionId=${question.Id}'">Answer</button>
                         `;
                     container.appendChild(questionDiv);
                 });

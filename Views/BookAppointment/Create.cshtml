@@ -163,7 +163,7 @@
                             const result = await response.json();
                             console.log("Patient created successfully:", result);
                             alert("Patient created successfully!");
-                            window.location.href = "https://localhost:5271/";
+                            window.location.href = "https://localhost:7101/";
                         } else {
                             const errorText = await response.text();
                             console.error("Failed to create patient:", errorText);
