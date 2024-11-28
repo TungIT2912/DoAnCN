@@ -44,6 +44,7 @@ namespace WebQuanLyNhaKhoa.Data
 
         [EmailAddress]
         public string? EmailBn { get; set; }
+        public string? Sdt { get; set; }
 
         public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
         public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
