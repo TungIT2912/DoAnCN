@@ -14,24 +14,6 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]);
 
 // Configure JWT authentication
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//.AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = jwtSettings["Issuer"],
-//        ValidAudience = jwtSettings["Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(key)
-//    };
-//});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -50,66 +32,52 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 
-    // Cho phép lấy token từ cookie
+    // Allow getting token from cookie
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
-      {
+        {
             context.Token = context.Request.Cookies["jwt_token"];
             return Task.CompletedTask;
         }
     };
 });
 
-// Configure the DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+// Configure services
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+        builder.AllowAnyOrigin()  // Allows any origin
+               .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
+               .AllowAnyHeader(); // Allows any headers
     });
 });
-//test
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null; // Giữ nguyên tên thuộc tính
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;  // Keep property names as they are
     });
 
-
-
 builder.Services.AddSignalR();
-builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
-    options.AddPolicy("StaffPolicy", policy => policy.RequireRole("Staff"));
-});
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-});
-
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>()
-//    .AddDefaultTokenProviders();
-
-builder.Services.AddRazorPages();
+// Configure DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Dependency Injection setup
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
-
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Auth/login";
+                options.AccessDeniedPath = "/Home/404";
+            });
 
 var app = builder.Build();
 
@@ -119,19 +87,20 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-app.UseCors("AllowAll");
+
+// Apply CORS policy
+app.UseCors("AllowAll");  // Apply the "AllowAll" CORS policy
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=DanhSachKhams}/{action=Index}/{id?}");
+// Map Controller Routes
 app.MapAreaControllerRoute(
     name: "Admin",
     areaName: "Admin",
@@ -142,14 +111,15 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-    endpoints.MapControllers();
-    endpoints.MapHub<ChatHub>("/chatHub");
-});
+// Map controllers and Razor Pages
+app.MapControllers();
+app.MapRazorPages();
+
+// Map SignalR hub
+app.MapHub<ChatHub>("/chatHub");
+
+
+
 
 app.MapControllers();
 app.MapRazorPages();

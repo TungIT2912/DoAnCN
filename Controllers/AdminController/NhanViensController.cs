@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class NhanViensController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -155,7 +156,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Gioi = dto.Gioi,
                 Hinh = dto.Hinh,
                 Email = dto.Email,
-                TaiKhoan = user
+                TaiKhoan = user,
+                Mota = dto.Mota,
             };
 
             _context.NhanViens.Add(newNhanVien);
@@ -274,7 +276,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Hinh = nhanVien.Hinh,
                 Email = nhanVien.Email,
                 MatKhau = nhanVien.TaiKhoan.MatKhau,
-                Role = nhanVien.TaiKhoan.Role
+                Role = nhanVien.TaiKhoan.Role,
+                Mota = nhanVien.Mota,
             };
             ViewBag.ChucVuList = new SelectList(_context.ChucVus, "MaCv", "TenCv");
             ViewBag.Roles = new SelectList(new[] { "Admin", "Customer" });
@@ -317,6 +320,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             nhanVien.Hinh = dto.Hinh;
             nhanVien.Email = dto.Email;
             var taikhoan = nhanVien.TaiKhoan; 
+            nhanVien.Mota = dto.Mota;
             bool accountUpdated = false;
 
             if (taikhoan.TenDangNhap != dto.Email)
@@ -374,7 +378,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Hinh = nhanVien.Hinh,
                 Email = nhanVien.Email,
                 MatKhau = nhanVien.TaiKhoan.MatKhau,
-                Role = nhanVien.TaiKhoan.Role
+                Role = nhanVien.TaiKhoan.Role,
+                Mota = nhanVien.Mota,
             };
             ViewBag.ChucVuList = new SelectList(_context.ChucVus, "MaCv", "TenCv");
             ViewBag.Roles = new SelectList(new[] { "Admin", "Customer" });

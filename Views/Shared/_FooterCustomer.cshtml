@@ -1,40 +1,173 @@
-﻿@*   <!-- Footer Start -->
-<div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
-    <div class="container py-5">
-        <div class="row g-5">
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-light mb-4">Address</h5>
-                <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Phường Tân Phú, Quận 9, Thành phố Hồ Chí Minh, Việt Nam</p>
-                <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+0348859428</p>
-                <p class="mb-2"><i class="fa fa-envelope me-3"></i>nhakhoahoanmy@gmail.com</p>
-                <div class="d-flex pt-2">
-                    <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-youtube"></i></a>
-                    <a class="btn btn-outline-light btn-social rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-light mb-4">Services</h5>
-                <a class="btn btn-link" href="">Răng sứ</a>
-                <a class="btn btn-link" href="">Nội nha tại răng cửa</a>
-                <a class="btn btn-link" href="">Hàm khung kim loại</a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-light mb-4">Introduce</h5>
-                <a class="btn btn-link" asp-controller="OurDoctors" asp-action="Index">Our Doctors</a>
-                <a class="btn btn-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
-                <a class="btn btn-link" asp-controller="Services" asp-action="Index">Our Services</a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-light mb-4">Newsletter</h5>
-                <p>Hãy nhập email của bạn và liên hệ với chúng tôi</p>
-                <div class="position-relative mx-auto" style="max-width: 400px;">
-                    <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your Email">
-                    <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Contact Us</button>
+﻿
+    <style>
+        .widgets-section .auto-container {
+    display: flex;
+    flex-wrap: wrap; /* Đảm bảo các cột có thể xuống dòng nếu cần */
+    justify-content: space-between; /* Căn đều các cột */
+}
+
+.widgets-section .big-column {
+    flex: 1 1 48%; /* Các cột chiếm khoảng 48% chiều rộng của container */
+    margin-bottom: 20px; /* Giữ khoảng cách giữa các cột */
+}
+
+.footer-column {
+    margin-bottom: 20px; /* Giữ khoảng cách giữa các cột */
+}
+
+    </style>
+    
+    <!-- Main Footer -->
+    <footer class="main-footer style-three">
+        <!--Widgets Section-->
+    <div class="widgets-section" style="background-image: url(@Url.Content("~/images/background/7.jpg"));">
+            <div class="auto-container">
+                <div class="row">
+                    <!--Big Column-->
+                    <div class="big-column col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                        <div class="row">
+                            <!--Footer Column-->
+                            <div class="footer-column col-xl-7 col-lg-6 col-md-6 col-sm-12">
+                                <div class="footer-widget about-widget">
+                                    <div class="logo">
+                                        <a href="~/Home/Index"><img src="~/images/logo-5.png" alt="" /></a>
+                                    </div>
+                                    <div class="text">
+                                        <p>Phòng khám của chúng tôi đã phát triển để cung cấp một cơ sở vật chất đạt tiêu chuẩn thế giới cho các dịch vụ phục hồi nha khoa tiên tiến. </p>
+                                        <p>Chúng tôi là một trong những nhà cung cấp cấy ghép nha khoa uy tín nhất tại Úc với hơn 30 năm kinh nghiệm và đào tạo chất lượng. </p>
+                                    </div>
+                                    <ul class="social-icon-three">
+                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-skype"></i></a></li>
+                                        <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!--Footer Column-->
+                            <div class="footer-column col-xl-5 col-lg-6 col-md-6 col-sm-12">
+                                <div class="footer-widget">
+                                    <h2 class="widget-title">Dịch vụ</h2>
+                                    <ul class="user-links">
+                                        <li><a href="~/Services/Index">Nha Khoa Tổng Quát</a></li>
+                                        <li><a href="~/Services/Index">Chỉnh nha</a></li>
+                                        <li><a href="~/Services/Index">Cấy ghép răng</a></li>
+                                        <li><a href="~/Services/Index">Tẩy trắng răng</a></li>
+                                        <li><a href="~/Services/Index">Chỉnh hình thẩm mỹ</a></li>
+                                        <li><a href="~/Services/Index">Điều trị nướu</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<!--Big Column-->
+@* <!--Big Column-->
+<div class="big-column col-xl-6 col-lg-12 col-md-12 col-sm-12">
+    <div class="row">
+        <!--Footer Column-->
+        <div class="footer-column col-lg-6 col-md-6 col-sm-12">
+            <!--Footer Widget-->
+            <div class="footer-widget recent-posts">
+                <h2 class="widget-title">Lời khuyên từ bác sĩ</h2>
+                 <!--Footer Column-->
+                <div class="widget-content">
+                    <div class="post">
+                        <div class="thumb">
+                            <img src="~/images/resource/post-thumb-1.jpg" alt="">
+                        </div>
+                        <h4>Chăm sóc răng miệng hàng ngày đúng cách.</h4>
+                        <span class="date">@DateTime.Now.ToString("dd/MM/yy")</span>
+                        <p>Bác sĩ nha khoa khuyên bạn nên đánh răng ít nhất 2 lần mỗi ngày và sử dụng chỉ nha khoa để duy trì vệ sinh răng miệng khỏe mạnh.</p> 
+                    </div>
+
+                    <div class="post">
+                        <div class="thumb">
+                            <img src="~/images/resource/post-thumb-2.jpg" alt="">
+                        </div>
+                        <h4>Đảm bảo chế độ ăn uống tốt cho răng miệng.</h4>
+                        <span class="date">@DateTime.Now.ToString("dd/MM/yy")</span>
+                        <p>Ăn thực phẩm có lợi cho răng như rau quả, sữa và tránh đồ ngọt giúp bảo vệ sức khỏe răng miệng của bạn.</p>
+                    </div>
+
+                    <div class="post">
+                        <div class="thumb">
+                            <img src="~/images/resource/post-thumb-3.jpg" alt="">
+                        </div>
+                        <h4>Thăm khám răng miệng định kỳ.</h4>
+                        <span class="date">@DateTime.Now.ToString("dd/MM/yy")</span>
+                         <p>Hãy thăm bác sĩ nha khoa ít nhất 6 tháng một lần để kiểm tra và phòng ngừa các vấn đề về răng miệng như sâu răng, viêm lợi.</p> 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
- *@
+</div> *@
+
+
+
+                            <!--Footer Column-->
+                            <div class="footer-column col-lg-6 col-md-6 col-sm-12">
+                                <!--Footer Column-->
+                                <div class="footer-widget contact-widget">
+                                    <h2 class="widget-title">Địa chỉ</h2>
+                                     <!--Footer Column-->
+                                    <div class="widget-content">
+                                        <ul class="contact-list">
+                                            <li>
+                                                <span class="icon flaticon-placeholder"></span>
+                                                <div class="text">Phường Tân Phú, Quận 9 <Br>TP. Hồ Chí Minh, Việt Nam</div>
+                                            </li>
+
+                                            <li>
+                                                <span class="icon flaticon-call-1"></span>
+                                                <div class="text">T2 - T6 : 08:30 - 18:00</div>
+                                                <a href="tel:+89868679575"><strong>+(84) 347 123 534</strong></a>
+                                            </li>
+
+                                            <li>
+                                                <span class="icon flaticon-email"></span>
+                                                <div class="text">Bạn có câu hỏi?<br>
+                                                <a href="mailto:info@gmail.com"><strong>nhakhoahoanmy@gmail.com</strong></a></div>
+                                            </li>
+                                            
+                                            <li>
+                                                <span class="icon flaticon-back-in-time"></span>
+                                                <div class="text">T2 - T7 8.00 - 18.00<br>
+                                                <strong>Chủ nhật đóng cửa</strong></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Footer Bottom-->
+        <div class="footer-bottom">
+            <!-- Scroll To Top -->
+            <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+            
+            <div class="auto-container">
+                <div class="inner-container clearfix">
+                    <div class="footer-nav">
+                        <ul class="clearfix">
+                           <li><a href="index.html">Bảo mật và Điều khoản</a></li> 
+                           <li><a href="about-us.html">Liên hệ</a></li> 
+                           <li><a href="services.html">Nhà cung cấp</a></li>  
+                        </ul>
+                    </div>
+                    
+                    <div class="copyright-text">
+                        <p>Copyright © 2024 <a href="#">PTH Team 💖</a>All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--End Main Footer -->

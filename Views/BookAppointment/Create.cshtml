@@ -3,26 +3,20 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-<style>
-    header {
-        position: relative;
-    }
-
-</style>
 
 <div class="container-xxl py-5">
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                 <p class="d-inline-block border rounded-pill py-1 px-4">Đăng ký khám</p>
-                <h1 class="mb-4">Make An Appointment To Visit Our Doctor</h1>
+                <h1 class="mb-4">Đặt lịch hẹn khám bác sĩ</h1>
                 <p class="mb-4">Hãy đăng kí lịch khám để gặp gỡ các nha sĩ có nhiều năm kinh nghiệm của chúng tôi. Chúng tôi xin hứa sẽ giúp cho hàm răng của bạn trắng sáng và ngày càng mạnh khỏe hơn</p>
                 <div class="bg-light rounded d-flex align-items-center p-5 mb-4">
                     <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
                         <i class="fa fa-phone-alt text-primary"></i>
                     </div>
                     <div class="ms-4">
-                        <p class="mb-2">Call Us Now</p>
+                        <p class="mb-2">Hãy gọi chúng tôi</i></p>
                         <h5 class="mb-0">+0348859428</h5>
                     </div>
                 </div>
@@ -31,81 +25,109 @@
                         <i class="fa fa-envelope-open text-primary"></i>
                     </div>
                     <div class="ms-4">
-                        <p class="mb-2">Mail Us Now</p>
+                        <p class="mb-2">Email của chúng tôi</p>
                         <h5 class="mb-0">nhakhoahoanmy@gmail.com</h5>
                     </div>
                 </div>
-
             </div>
+
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5">
+      <!-- Second Form (Will be auto-populated with data from the first form) -->
+                                <form id="createBenhNhan" class="row g-3 w-100" method="post" enctype="multipart/form-data">
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="HoTen" class="control-label">Họ tên</label>
+                                        <input asp-for="HoTen" required type="text" class="form-control border-0" style="height: 55px;">
+                                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                                    </div>
 
-                    <form id="createBenhNhan" class="row g-3" style="align-items:center" class="p-[20px]" method="post" enctype="multipart/form-data">
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="HoTen" class="control-label">Họ tên</label>
-                            <input asp-for="HoTen" required type="text" class="form-control border-0" placeholder="" style="height: 55px;">
-                            <span asp-validation-for="HoTen" class="text-danger"></span>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <div>
-                                <input asp-for="Gioi" type="radio" name="gender" value="True" />
-                                <span>Nữ</span>
+                                    <div class="col-12 col-sm-6">
+                                        <div>
+                                            <input asp-for="Gioi" type="radio" name="gender" value="True" />
+                                            <span>Nữ</span>
+                                        </div>
+                                        <div>
+                                            <input asp-for="Gioi" type="radio" name="gender" value="False" />
+                                            <span>Nam</span>
+                                        </div>
+                                        <span asp-validation-for="Gioi" class="text-danger"></span>
+                                    </div>
 
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="NamSinh" class="control-label">Năm sinh</label>
+                                        <input asp-for="NamSinh" type="text" placeholder="Nhập năm sinh" class="form-control border-0" style="height: 55px;">
+                                        <span asp-validation-for="NamSinh" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="Sdt" class="control-label">Số điện thoại</label>
+                                        <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
+                                        <span asp-validation-for="Sdt" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="EmailBn" class="control-label">Email</label>
+                                        <input asp-for="EmailBn" type="email" class="form-control border-0" style="height: 55px;width: 100%">
+                                        <span asp-validation-for="EmailBn" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                                        <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;width: 100%">
+                                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                                    </div>
+
+                                                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                                <div class="date" id="date" data-target-input="nearest">
+                                    <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                    <input asp-for="NgayKhamDau" type="datetime-local"
+                                        class="form-control border-0 datetimepicker-input"
+                                        placeholder="Choose Date"
+                                        data-target="#date" data-toggle="datetimepicker"
+                                        style="height: 55px;"
+                                        value="@ViewBag.Time">
+                                    <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+                                </div>
                             </div>
-                            <div>
-                                <input asp-for="Gioi" type="radio" name="gender" value="False" />
-                                <span>Nam</span>
-                            </div>
-                            <span asp-validation-for="Gioi" class="text-danger"></span>
-                        </div>
 
+                                    <div class="col-12 col-sm-6">
+                                        <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
+                                        <textarea asp-for="TrieuChung" class="form-control custom-textarea" style="height: 150px; width: 208%"></textarea>
+                                        <span asp-validation-for="TrieuChung" class="text-danger"></span>
+                                    </div>
 
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="NamSinh" class="control-label">Năm sinh</label>
-                            <input asp-for="NamSinh" type="text" placeholder="Nhập năm sinh" class="form-control border-0" style="height: 55px;">
-                            <span asp-validation-for="NamSinh" class="text-danger"></span>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="Sdt" class="control-label">Số điện thoại</label>
-                            <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
-                            <span asp-validation-for="Sdt" class="text-danger"></span>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="EmailBn" class="control-label">Email</label>
-                            <input asp-for="EmailBn" type="text" class="form-control border-0" style="height: 55px;width: 100%">
-                            <span asp-validation-for="EmailBn" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
-                            <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;width: 100%">
-                            <span asp-validation-for="DiaChi" class="text-danger"></span>
-                        </div>
-                        <div class="col-12 col-sm-6" style=" width: 100%;">
-                            <div class="date" id="date" data-target-input="nearest">
-                                <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
-                                <input asp-for="NgayKhamDau" type="datetime-local"
-                                       class="form-control border-0 datetimepicker-input"
-                                       placeholder="Choose Date" data-target="#date" data-toggle="datetimepicker" style="height: 55px;">
-                                <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
-                            <input asp-for="TrieuChung" class="form-control border-0" style="height: 150px;width: 100%"></input>
-                            <span asp-validation-for="TrieuChung" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary w-100 py-3">Book Appointment</button>
-                        </div>
-                        
-                    </form>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch khám</button>
+                                    </div>
+                                </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<style>
+    .custom-textarea {
+    height: 200px; /* Make the textarea a bit taller */
+    padding: 12px; /* Add padding for better readability */
+    font-size: 1rem; /* Increase font size for better legibility */
+    border-radius: 8px; /* Rounded corners for a softer look */
+    border: 1px solid #ccc; /* Light border */
+    resize: vertical; /* Allow vertical resizing only */
+    background-color: #f8f9fa; /* Light background color for better contrast */
+    transition: all 0.3s ease-in-out; /* Smooth transition on focus */
+}
+
+.custom-textarea:focus {
+    border-color: #007bff; /* Focus border color */
+    outline: none; /* Remove outline on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow effect on focus */
+    background-color: #ffffff; /* Change background on focus */
+}
+
+.custom-textarea::placeholder {
+    color: #aaa; /* Lighter placeholder text */
+}
+</style>
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -113,17 +135,18 @@
             if (form) {
                 form.addEventListener("submit", async (event) => {
                     event.preventDefault();
+                                    
+                const benhNhanData = {
+                    HoTen: document.querySelector("[name='HoTen']").value,
+                    Gioi: document.querySelector("[name='gender']:checked").value === "True",
+                    NamSinh: document.querySelector("[name='NamSinh']").value,  
+                    Sdt: document.querySelector("[name='Sdt']").value,
+                    DiaChi: document.querySelector("[name='DiaChi']").value,
+                    EmailBn: document.querySelector("[name='EmailBn']").value,
+                    TrieuChung: document.querySelector("[name='TrieuChung']").value,
+                    NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
+                };
 
-                    const benhNhanData = {
-                        HoTen: document.querySelector("[name='HoTen']").value,
-                        Gioi: document.querySelector("[name='gender']:checked").value === "True",
-                        NamSinh: parseInt(document.querySelector("[name='NamSinh']").value),
-                        Sdt: document.querySelector("[name='Sdt']").value,
-                        DiaChi: document.querySelector("[name='DiaChi']").value,
-                        EmailBn: document.querySelector("[name='EmailBn']").value,
-                        TrieuChung: document.querySelector("[name='TrieuChung']").value,
-                        NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
-                    };
 
                     console.log('Data being sent:', benhNhanData);
 
@@ -140,7 +163,7 @@
                             const result = await response.json();
                             console.log("Patient created successfully:", result);
                             alert("Patient created successfully!");
-                            window.location.href = "https://localhost:7101/";
+                            window.location.href = "https://localhost:5271/";
                         } else {
                             const errorText = await response.text();
                             console.error("Failed to create patient:", errorText);
@@ -157,7 +180,3 @@
         });
     </script>
 }
-
-
-
-

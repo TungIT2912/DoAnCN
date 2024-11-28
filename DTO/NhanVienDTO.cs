@@ -21,5 +21,6 @@ namespace WebQuanLyNhaKhoa.DTO
         public string Email { get; set; }
         public string MatKhau { get; set; }
         public string Role { get; set; }
+        public string? Mota { get; set; }
     }
 }

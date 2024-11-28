@@ -1,73 +1,12 @@
-﻿@model IEnumerable<WebQuanLyNhaKhoa.Data.DichVu>
-
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-@* <style>
-    .Services img{
-        width: 100%;
-        object-fit:cover
-    }
-    .services__container {
-        width: 1320px;
-        max-width: calc(100% - 60px);
-        margin: 0 auto;
-    }
-
-    .services__row {
-        display: flex;
-        margin-top: 20px;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .services__left h1 {
-        text-transform: uppercase;
-        font-size: 36px;
-        font-style: italic;
-        color: rgb(37 99 235);
-        text-decoration: underline;
-        font-weight: 700;
-        
-    }
-
-    .services__left span {
-        font-size: 20px;
-        font-style: italic;
-        font-weight: 400;
-        color:rgb(245 158 11);
-    }
-
-    .services__right img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover
-    }
-    .services__body table{
-        margin-top: 20px;
-        width: 100%;
-    }
-    .services__body tbody{
-        text-align:center;
-        border: 2px solid rgb(34 211 238);
-        color: black;
-
-    }
-    .services__body th{
-        padding: 10px;
-        boder: 2px solid rgb(34 211 238);
-    }
-</style> *@
-
-
-
-<!DOCTYPE html>
-<html lang="en">
+﻿@model IPagedList<WebQuanLyNhaKhoa.Data.DichVu>
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
+<!DOCTYPE html>
+<html lang="en">
+
 <!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
 <head>
 <meta charset="utf-8">
@@ -77,12 +16,17 @@
 <link href="~/css/bootstrap.css" rel="stylesheet">
 <link href="~/css/style.css" rel="stylesheet">
 <link href="~/css/responsive.css" rel="stylesheet">
+<link href="~/css/table.css" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!--Color Themes-->
-<link id="theme-color-file" href="~/css/color-themes/default-theme.css" rel="stylesheet">
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<!--Color Switcher Mockup-->
-<link href="~/css/color-switcher-design.css" rel="stylesheet">
+    <!--Color Themes-->
+    <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
+
+    <script src="~/js/table.js"></script>
 
 <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
 <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
@@ -94,6 +38,68 @@
 <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
 </head>
 
+<style>
+    .pagination-services {
+ display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    z-index: 999; /* Ensure it's above other elements */
+    position: relative; /* This is needed to apply z-index */
+    background-color: #f4f4f4;
+    }
+
+    .pagination-services ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pagination-services li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    .pagination-services a {
+        display: inline-block;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .pagination-services a:hover {
+        background-color: #f0f0f0;
+    }
+
+    .pagination-services .active {
+    background-color: #333;
+    color: #fff;
+    padding: 5px 12px; /* Adjust padding as needed */
+    margin: 0 10px; /* Adjust margin as needed */
+}
+</style>
+@{
+    // List of available flaticon icon classes
+    var iconClasses = new List<string>
+    {
+        "flaticon-first-aid",
+        "flaticon-medical",
+        "flaticon-hospital",
+        @* "flaticon-ambulance", *@
+        "flaticon-doctor",
+        @* "flaticon-nurse", *@
+        @* "flaticon-syringe", *@
+        "flaticon-heart",
+        @* "flaticon-stethoscope", *@
+        @* "flaticon-patient-care" *@
+    };
+
+    // Initialize the randomizer
+    Random random = new Random();
+}
+
 <body>
 
 <div class="page-wrapper">
@@ -102,79 +108,96 @@
     <div class="preloader"></div>
 
     <!--Page Title-->
-    <section class="page-title" style="background-image: url(images/background/8.jpg);">
+<section class="page-title" style="background-image: url('@Url.Content("~/images/background/8.jpg")');">
         <div class="auto-container">
             <div class="title-outer">
-                <h1>Services</h1>
+                <h1>Dịch vụ</h1>
                 <ul class="page-breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                    <li>Services</li>
+                    <li><a href="~/Home/Index">Trang chủ</a></li>
+                    <li>Dịch vụ</li>
                 </ul> 
             </div>
         </div>
     </section>
     <!--End Page Title-->
-
-    <!-- Services Section -->
-    <section class="services-section">
-        <div class="auto-container">
-            <div class="row">
-                <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
+@* 
+               <div class="service-block col-lg-4 col-md-6 col-sm-12">
                     <div class="inner-box">
                         <span class="icon flaticon-heartbeat"></span>
                         <h5><a href="#">Health Check</a></h5>
                         <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
                     </div>
-                </div>
+                </div> *@
 
-                <!-- Service Block -->
+
+    <!-- Services Section -->
+
+<section class="services-section">
+    <div class="auto-container">
+        <div class="row">
+            <span class="d-block text-center mb-4">(Áp dụng cho ngày @DateTime.Now.ToString("dd/MM/yy"))</span>
+
+            @foreach (var service in Model)
+            {
+                                var randomIconClass = iconClasses[random.Next(iconClasses.Count)];
                 <div class="service-block col-lg-4 col-md-6 col-sm-12">
                     <div class="inner-box">
-                        <span class="icon flaticon-surgery-room"></span>
-                        <h5><a href="#">Operation Theater</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                        <span class="icon @randomIconClass"></span> 
+                        <h5>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#serviceModal-@service.IddichVu">
+                                @service.TenDichVu
+                            </a>
+                        </h5>
+                        <div class="text">
+                            Đơn vị tính: @service.DonViTinh<br />
+                            Giá: @service.DonGia.ToString("N0") VNĐ
+                        </div>
                     </div>
                 </div>
 
-                <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <span class="icon flaticon-pharmacy"></span>
-                        <h5><a href="#">Pharmacy Support</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
+                <!-- Modal for the service -->
+                <div class="modal fade" id="serviceModal-@service.IddichVu" tabindex="-1" aria-labelledby="serviceModalLabel-@service.IddichVu" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="serviceModalLabel-@service.IddichVu">@service.TenDichVu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                                <div class="modal-body">
+                                    <p><strong>Đơn vị tính:</strong> @service.DonViTinh</p>
+                                    <p><strong>Giá:</strong> @service.DonGia.ToString("N0") VNĐ</p>
+                                    <p><strong>Mô tả:</strong> @service.Description</p>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <span class="icon flaticon-transport"></span>
-                        <h5><a href="#">Ambulance Car</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
-                    </div>
-                </div>
-
-                <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <span class="icon flaticon-lab"></span>
-                        <h5><a href="#">Lat Tests</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
-                    </div>
-                </div>
-
-                <!-- Service Block -->
-                <div class="service-block col-lg-4 col-md-6 col-sm-12">
-                    <div class="inner-box">
-                        <span class="icon flaticon-first-aid"></span>
-                        <h5><a href="#">Intensive Care</a></h5>
-                        <div class="text">We offer extensive medical procedures to outbound & inbound patients what it is and we are very proud achievement staff.</div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
-    </section>
+
+
+    </div>
+
+ <!-- Pagination -->
+            <div class="pagination-container pagination-services">
+                @Html.PagedListPager(
+                    Model,
+                    page => Url.Action("Index", new { page }),
+                    new PagedListRenderOptions
+                    {
+                        @* DisplayPageCountAndCurrentLocation = true, *@
+                        @* DisplayItemSliceAndTotal = true, *@
+                        MaximumPageNumbersToDisplay = 5,
+               
+                    }
+                )
+            </div>
+
+</section>
+       
+
     <!--End Services Section -->
     
     <!-- Appointment Section -->
@@ -185,18 +208,18 @@
                 <!-- Content Column -->
                 <div class="content-column col-lg-6 col-md-12 col-sm-12">
                     <div class="inner-column">
-                        <span class="title">Need a Doctor for Check-up?</span>
-                        <h2>Just Make an Appointment <br>and You’re Done!</h2>
-                        <div class="number">Get Your Quote or Call: <strong>(0080) 123-453-789</strong></div>
-                        <a href="#" class="theme-btn btn-style-three"><span class="btn-title">Get an Appointment</span></a>
+                        <span class="title">CẦN ĐẶT LỊCH KHÁM BỆNH?</span>
+                        <h2>HÃY ĐẶT LỊCH <br>LÀ BẠN SẼ XONG!</Nav></h2>
+                        <div class="number">Đặt lịch hoặc gọi số</i> <strong>+(84) 347 123 534</strong></div>
+                        <a href="~/BookAppointment/Create" class="theme-btn btn-style-three"><span class="btn-title">Đặt lịch khám</span></a>
                     </div>
                 </div>
                 <div class="image-column col-lg-6 col-md-12 col-sm-12">
-                    <figure class="image"><img src="images/resource/image-4.png" alt=""></figure>
+                    <figure class="image"><img src="~/images/resource/image-4.png" alt=""></figure>
                 </div>
             </div>
 
-            <div class="fun-fact-section">
+            @* <div class="fun-fact-section">
                 <div class="row">
                     <!--Column-->
                     <div class="counter-column col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
@@ -234,15 +257,28 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> *@
+
+
+
+            
+        </div> 
+        <br>
+<br>
+<br>
     </section>
     <!-- End Appointment Section -->
 
 
+
+
+<!-- /.container -->
+
+
+
+
 <!-- Page Header End -->
-<div class="Services">  
-    @* <img src="~/images/poster__services.jpg" class="services__image" /> *@
+@* <div class="Services">  
     <div class="services__container">
         <!-- Service Header Start-->
         <div class="services__row">
@@ -256,132 +292,330 @@
         </div>
         <!-- Service Header End-->
 
-        <!-- Service Body Start-->
-        <div class="services__body">
-            <table class="w-100" >
-                <tbody class="border-2 border-cyan-400 border-solid text-center text-black">
-                    <tr >
-                        <th class="p-3 border-3">STT</th>
-                        <th class="p-3 border-3 ">Tên dịch vụ</th>
-                        <th class="p-3 border-3">Đơn vị</th>
-                        <th class="p-3 border-3">Giá tham khảo</th>
-                    </tr>
-                    @foreach(var item in Model)
-                    {
-                        <tr>
-                            <th class="p-3 border-3">@item.IddichVu</th>
-                            <th class="p-3 border-3 ">@item.TenDichVu</th>
-                            <th class="p-3 border-3">@item.DonViTinh</th>
-                            <th class="p-3 border-3">@item.DonGia VND</th>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+     <!-- Service Body Start-->
+<div class="services__body">
+    <table class="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
+        <thead class="bg-cyan-500 text-white text-lg">
+            <tr>
+                <th class="p-4 border">STT</th>
+                <th class="p-4 border">Tên dịch vụ</th>
+                <th class="p-4 border">Đơn vị</th>
+                <th class="p-4 border">Giá tham khảo</th>
+            </tr>
+        </thead>
+        <tbody class="text-center text-black bg-white">
+            @foreach (var item in Model)
+            {
+                <tr class="hover:bg-gray-100 transition duration-300">
+                    <td class="p-3 border">@item.IddichVu</td>
+                    <td class="p-3 border">@item.TenDichVu</td>
+                    <td class="p-3 border">@item.DonViTinh</td>
+                    <td class="p-3 border">@item.DonGia VND</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>  *@
 
-
-
-     <!-- Testimonial Section -->
-    <section class="testimonial-section">
+    <!-- Time Table Section -->
+    <section class="time-table-section">
         <div class="auto-container">
-            <!-- Sec Title -->
-            <div class="sec-title text-center">
-                <span class="title">HAPPY Patient</span>
-                <h2>What Says Our Patients</h2>
-                <span class="divider"></span>
-            </div>
-            
-            <div class="testimonial-outer">
-                <!-- Client Testimonial Carousel -->
-                <div class="client-testimonial-carousel owl-carousel owl-theme">
-                
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                    
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                    
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
+            <div class="table-outer">
+                <!-- Doctors Time Table -->
+                <table class="doctors-time-table">
+                    <thead>
+                        <tr> 
+                            <th class="dark">Thời gian biểu</th>
+                            <th>Thứ 2</th>
+                            <th>Thứ 3</th>
+                            <th>Thứ 4</th>
+                            <th>Thứ 5</th>
+                            <th>Thứ 6</th>
+                            <th>Thứ 7</th>
+                            <th>CN</th>
+                        </tr>
+                    </thead>
 
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                    
-                    <!--Testimonial Block -->
-                    <div class="testimonial-block">
-                        <div class="inner-box">
-                            <div class="text">Medical Centre is a great place to get all of your medical needs. I came in for a check up and did not wait more than 5 minutes before I was seen. I can only imagine the type of service you get for more serious issues. Thanks!</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Thumbs Carousel -->
-                <div class="client-thumb-outer">
-                    <div class="client-thumbs-carousel owl-carousel owl-theme">
-                        <div class="thumb-item">
-                            <figure class="thumb-box"><img src="images/resource/testi-thumb-1.jpg" alt=""></figure>
-                            <div class="author-info">
-                                <span class="icon fa fa-quote-left"></span>
-                                <div class="author-name">Lara Croft</div>
-                                <div class="designation">Restaurant Owner</div>
-                            </div>
-                        </div>
-                        <div class="thumb-item">
-                            <figure class="thumb-box"><img src="images/resource/testi-thumb-2.jpg" alt=""></figure>
-                            <div class="author-info">
-                                <span class="icon fa fa-quote-left"></span>
-                                <div class="author-name">Lara Croft</div>
-                                <div class="designation">Restaurant Owner</div>
-                            </div>
-                        </div>
-                        <div class="thumb-item">
-                            <figure class="thumb-box"><img src="images/resource/testi-thumb-3.jpg" alt=""></figure>
-                            <div class="author-info">
-                                <span class="icon fa fa-quote-left"></span>
-                                <div class="author-name">Lara Croft</div>
-                                <div class="designation">Restaurant Owner</div>
-                            </div>
-                        </div>
-                        <div class="thumb-item">
-                            <figure class="thumb-box"><img src="images/resource/testi-thumb-2.jpg" alt=""></figure>
-                            <div class="author-info">
-                                <span class="icon fa fa-quote-left"></span>
-                                <div class="author-name">Lara Croft</div>
-                                <div class="designation">Restaurant Owner</div>
-                            </div>
-                        </div>
-                        <div class="thumb-item">
-                            <figure class="thumb-box"><img src="images/resource/testi-thumb-3.jpg" alt=""></figure>
-                            <div class="author-info">
-                                <span class="icon fa fa-quote-left"></span>
-                                <div class="author-name">Lara Croft</div>
-                                <div class="designation">Restaurant Owner</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              <tbody>
+    <!-- Table Row 08:00am -->
+    <tr>
+        <th>08:00am</th>
+        <td>
+                        
+            <strong> 8:00 am - 9:00 am </strong>
+            <div class="doctor-info">
+                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
             </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 8:00 am - 9:00 am </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 8:00 am - 9:00 am </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=8:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 8:00 am - 9:00 am </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=8:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+    </tr>
+
+    <!-- Table Row 10:00am -->
+    <tr>
+        <th>10:00am</th>
+        <td class="empty"></td>
+        <td>
+                        <strong> 10:00 am - 10:30 am </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 10:00 am - 10:30 am </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 10:00 am - 10:30 am </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+    </tr>
+
+    <!-- Table Row 11:00am -->
+    <tr>
+        <th>11:00am</th>
+        <td>
+                        <strong> 11:00 am - 11:30 pm </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 11:00 am - 11:30 pm </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 11:00 am - 11:30 pm </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        <strong> 11:00 am - 11:30 pm </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+    </tr>
+
+    <!-- Table Row 11:30am -->
+    <tr>
+        <th>11:30am</th>
+        <td class="empty"></td>
+        <td>
+                        @* <strong>Khám nha khoa</strong> *@
+            <strong> 11:30 am - 12:30 pm </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        @* <strong>Khám nha khoa</strong> *@
+            <strong> 11:30 am - 12:30 pm </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+        <td>
+                        @* <strong>Khám nha khoa</strong> *@
+            <strong> 11:30 am - 12:30 pm </strong>
+            <div class="doctor-info">
+                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                <h4 class="name">Khám nha khoa</h4>
+                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+            </div>
+        </td>
+        <td class="empty"></td>
+    </tr>
+
+<!-- Table Row 12:00am -->
+<tr>
+    <th>12:00am</th>
+    <td>
+        <strong> 12:00 pm - 12:30 pm </strong>
+       
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
         </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+       <strong> 12:00 pm - 12:30 pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+<strong> 12:00 pm - 12:30 pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+<strong> 12:00 pm - 12:30 pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+</tr>
+
+<!-- Table Row 01:00pm -->
+<tr>
+    <th>01:00pm</th>
+    <td class="empty"></td>
+    <td>
+        <strong>01:00pm -- 01:30pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+        <strong>01:00pm -- 01:30pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+        <strong>01:00pm -- 01:30pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+</tr>
+
+<!-- Table Row 02:00pm -->
+<tr>
+    <th>02:00pm</th>
+    <td>
+        <strong> 02:00pm - 02:30pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+        <strong> 02:00pm - 02:30pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+        <strong> 02:00pm - 02:30pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+    <td class="empty"></td>
+    <td>
+        <strong> 02:00pm - 02:30pm </strong>
+        <div class="doctor-info">
+            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+            <h4 class="name">Khám nha khoa</h4>
+            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+        </div>
+    </td>
+</tr>
+
+
+
+
+
+
+
+
+</tbody>
+
+                </table>
+            </div>
+        </div>      
     </section>
-    <!-- End Testimonial Section -->
+    <!-- End Time Table Section -->
+
 
     <!-- Clients Section -->
     <section class="clients-section alternate">
@@ -391,226 +625,22 @@
             <div class="sponsors-outer">
                 <!--clients carousel-->
                 <ul class="clients-carousel owl-carousel owl-theme">
-                    <li class="slide-item"> <a href="#"><img src="images/clients/1.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/2.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/3.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/4.png" alt=""></a> </li>
-                    <li class="slide-item"> <a href="#"><img src="images/clients/5.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="~/images/clients/1.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="~/images/clients/2.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="~/images/clients/3.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="~/images/clients/4.png" alt=""></a> </li>
+                    <li class="slide-item"> <a href="#"><img src="~/images/clients/5.png" alt=""></a> </li>
                 </ul>
             </div>
         </div>
     </section>
     <!--End Clients Section -->
 
-    <!-- Main Footer -->
-    <footer class="main-footer">
-        <!--Widgets Section-->
-        <div class="widgets-section" style="background-image: url(images/background/7.jpg);">
-            <div class="auto-container">
-                <div class="row">
-                    <!--Big Column-->
-                    <div class="big-column col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                        <div class="row">
-                            <!--Footer Column-->
-                            <div class="footer-column col-xl-7 col-lg-6 col-md-6 col-sm-12">
-                                <div class="footer-widget about-widget">
-                                    <div class="logo">
-                                        <a href="index.html"><img src="images/logo-2.png" alt="" /></a>
-                                    </div>
-                                    <div class="text">
-                                        <p>Our Clinic has grown to provide a world class facility for the clinic advanced restorative. </p>
-                                        <p>We are among the most qualified implant providers in the AUS with over 30 years of quality training and experience.</p>
-                                    </div>
-                                    <ul class="social-icon-three">
-                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-skype"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!--Footer Column-->
-                            <div class="footer-column col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                                <div class="footer-widget">
-                                    <h2 class="widget-title">Departments</h2>
-                                    <ul class="user-links">
-                                        <li><a href="#">Surgery & Radiology</a></li>
-                                        <li><a href="#">Family Medicine</a></li>
-                                        <li><a href="#">Women’s Health</a></li>
-                                        <li><a href="#">Optician</a></li>
-                                        <li><a href="#">Pediatrics</a></li>
-                                        <li><a href="#">Dermatology</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Big Column-->
-                    <div class="big-column col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                        <div class="row">
-                            <!--Footer Column-->
-                            <div class="footer-column col-lg-6 col-md-6 col-sm-12">
-                                <!--Footer Column-->
-                                <div class="footer-widget recent-posts">
-                                    <h2 class="widget-title">Latest News</h2>
-                                     <!--Footer Column-->
-                                    <div class="widget-content">
-                                        <div class="post">
-                                            <div class="thumb"><a href="blog-post-image.html"><img src="images/resource/post-thumb-1.jpg" alt=""></a></div>
-                                            <h4><a href="blog-post-image.html">Integrative Medicine <Br>& Cancer Treatment.</a></h4>
-                                            <span class="date">July 11, 2020</span>
-                                        </div>
-
-                                        <div class="post">
-                                            <div class="thumb"><a href="blog-post-image.html"><img src="images/resource/post-thumb-2.jpg" alt=""></a></div>
-                                            <h4><a href="blog-post-image.html">Achieving Better <br>Health Care Time.</a></h4>
-                                            <span class="date">August 1, 2020</span>
-                                        </div>
-
-                                        <div class="post">
-                                            <div class="thumb"><a href="blog-post-image.html"><img src="images/resource/post-thumb-3.jpg" alt=""></a></div>
-                                            <h4><a href="blog-post-image.html">Great Health Care <br>For Patients.</a></h4>
-                                            <span class="date">August 1, 2020</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--Footer Column-->
-                            <div class="footer-column col-lg-6 col-md-6 col-sm-12">
-                                <!--Footer Column-->
-                                <div class="footer-widget contact-widget">
-                                    <h2 class="widget-title">Contact Us</h2>
-                                     <!--Footer Column-->
-                                    <div class="widget-content">
-                                        <ul class="contact-list">
-                                            <li>
-                                                <span class="icon flaticon-placeholder"></span>
-                                                <div class="text">2130 Fulton Street San Diego <Br>CA 94117-1080 USA</div>
-                                            </li>
-
-                                            <li>
-                                                <span class="icon flaticon-call-1"></span>
-                                                <div class="text">Mon to Fri : 08:30 - 18:00</div>
-                                                <a href="tel:+89868679575"><strong>+898 68679 575</strong></a>
-                                            </li>
-
-                                            <li>
-                                                <span class="icon flaticon-email"></span>
-                                                <div class="text">Do you have a Question?<br>
-                                                <a href="mailto:info@gmail.com"><strong>info@gmail.com</strong></a></div>
-                                            </li>
-
-                                            <li>
-                                                <span class="icon flaticon-back-in-time"></span>
-                                                <div class="text">Mon - Sat 8.00 - 18.00<br>
-                                                <strong>Sunday CLOSED</strong></div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--Footer Bottom-->
-        <div class="footer-bottom">
-            <!-- Scroll To Top -->
-            <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
-            
-            <div class="auto-container">
-                <div class="inner-container clearfix">
-                    <div class="footer-nav">
-                        <ul class="clearfix">
-                           <li><a href="index.html">Privacy Policy</a></li> 
-                           <li><a href="about-us.html">Contact</a></li> 
-                           <li><a href="services.html">Supplier</a></li>  
-                        </ul>
-                    </div>
-                    
-                    <div class="copyright-text">
-                        <p>Copyright © 2020 <a href="#">Bold Touch</a>All Rights Reserved.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--End Main Footer -->
 
 </div><!-- End Page Wrapper -->
 
 
-<!-- Color Palate / Color Switcher -->
-<div class="color-palate">
-    <div class="inner-palate">
-        <div class="color-trigger"><i class="fa fa-cog"></i></div>
-        <div class="color-palate-head"><h5>GET AN AWESOME START!</h5></div>
-        <div class="various-color clearfix">
-            <div class="colors-list">
-                <h6>Choose Your Color</h6>
-                <span class="palate default-color active" data-theme-file="css/color-themes/default-theme.css"></span>
-                <span class="palate tealblue-color" data-theme-file="css/color-themes/tealblue.css"></span>
-                <span class="palate scarlet-color" data-theme-file="css/color-themes/scarlet.css"></span>
-                <span class="palate kellygreen-color" data-theme-file="css/color-themes/kellygreen.css"></span>
-                <span class="palate dodgerblue-color" data-theme-file="css/color-themes/dodgerblue.css"></span>
-                <span class="palate red-color" data-theme-file="css/color-themes/red.css"></span>
-                <span class="palate selectiveyellow-color" data-theme-file="css/color-themes/selectiveyellow.css"></span>
-                <span class="palate maroon-color" data-theme-file="css/color-themes/maroon.css"></span>
-                <span class="palate brown-color" data-theme-file="css/color-themes/brown.css"></span>
-                <span class="palate green-color" data-theme-file="css/color-themes/green.css"></span>
-                <span class="palate duchessblue-color" data-theme-file="css/color-themes/duchessblue.css"></span>
-                <span class="palate lightblue-color" data-theme-file="css/color-themes/lightblue.css"></span>
-                <span class="palate frenchgray-color" data-theme-file="css/color-themes/frenchgray.css"></span>
-                <span class="palate telemagenta-color" data-theme-file="css/color-themes/telemagenta.css"></span>
-                <span class="palate signalviolet-color" data-theme-file="css/color-themes/signalviolet.css"></span>
-            </div>
-        </div>
-        <div class="lower-options">
-            <h6>RTL Supported</h6>
-            <ul class="rtl-version option-box"> <li class="active">LTR</li> <li class="rtl">RTL</li> </ul>
-            <h6>Box &amp; Wide layout</h6>
-            <ul class="box-version option-box"> <li class="active">Wide</li> <li class="box">Boxed</li> </ul>
-            <div class="box-mode-bg">
-                <h6>Boxed Mode Backgrounds</h6>
-                <ul class="clearfix"> 
-                    <li class="active" style="background-image: url(images/background/boxed-bg/1.png);"></li>
-                    <li style="background-image: url(images/background/boxed-bg/2.png);"></li>
-                    <li style="background-image: url(images/background/boxed-bg/3.png);"></li>
-                    <li style="background-image: url(images/background/boxed-bg/4.png);"></li>
-                    <li style="background-image: url(images/background/boxed-bg/5.png);"></li>
-                    <li style="background-image: url(images/background/boxed-bg/6.png);"></li>
-                    <li style="background-image: url(images/background/boxed-bg/7.png);"></li>
-                    <li style="background-image: url(images/background/boxed-bg/8.png);"></li>
-                </ul>
-            </div>
-            <div class="palate-foo">
-                <span>You will find much more options for colors and styling in admin panel. This color picker is used only for demonstation purposes.</span>
-            </div>
-            <a href="https://themeforest.net/item/medicoz-clinic-hospital-html-template/28397578?ref=bold_touch" class="purchase-btn">Purchase now $12</a>
-        </div>
-    </div>
-</div><!-- End Color Switcher -->
 
-<script src="js/jquery.js"></script>  
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.fancybox.js"></script>
-<script src="js/jquery.modal.min.js"></script>
-<script src="js/mmenu.polyfills.js"></script>
-<script src="js/mmenu.js"></script>
-<script src="js/appear.js"></script>
-<script src="js/mixitup.js"></script>
-<script src="js/owl.js"></script>
-<script src="js/wow.js"></script>
-<script src="js/script.js"></script>
-<!-- Color Setting -->
-<script src="js/color-settings.js"></script>
 </body>
 
 <!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
