@@ -43,21 +43,31 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Configure Kestrel to use specific ports
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(7101, listenOptions =>
+    {
+        listenOptions.UseHttps(); // Bind to HTTPS
+    });
+    options.ListenLocalhost(7100); // Optional HTTP
+});
+
 // Configure services
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.AllowAnyOrigin()  // Allows any origin
-               .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
-               .AllowAnyHeader(); // Allows any headers
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
     });
 });
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;  // Keep property names as they are
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
 
 builder.Services.AddSignalR();
@@ -73,11 +83,11 @@ builder.Services.AddSingleton<IVnPayService, VnPayService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/Auth/login";
-                options.AccessDeniedPath = "/Home/404";
-            });
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/login";
+        options.AccessDeniedPath = "/Home/404";
+    });
 
 var app = builder.Build();
 
@@ -89,7 +99,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 // Apply CORS policy
-app.UseCors("AllowAll");  // Apply the "AllowAll" CORS policy
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -111,16 +121,11 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 
-// Map controllers and Razor Pages
 app.MapControllers();
 app.MapRazorPages();
 
 // Map SignalR hub
 app.MapHub<ChatHub>("/chatHub");
 
-
-
-
-app.MapControllers();
-app.MapRazorPages();
+// Run the app
 app.Run();
