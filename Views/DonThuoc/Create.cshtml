@@ -1,77 +1,181 @@
 ﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.DonThuocDTO>
 @{
     ViewData["Title"] = "Create Prescription";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
-<h2>@ViewData["Title"]</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Prescription</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #dae2f8, #d6a4a4);
+            font-family: 'Arial', sans-serif;
+        }
 
-<form id="donThuocForm">
-    <div class="form-group">
-        <label for="Idkham">Chọn Bệnh Nhân</label>
-        <select id="Idkham" class="form-control" name="Idkham">
-            <!-- Các option bệnh nhân sẽ được load vào đây -->
-        </select>
+        .card {
+            border-radius: 20px;
+            background: #fff;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            border-radius: 20px 20px 0 0;
+            background: linear-gradient(90deg, #4b6cb7, #182848);
+            color: #fff;
+        }
+
+        .btn {
+            border-radius: 30px;
+        }
+
+        select.form-select {
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        select.form-select:focus {
+            border-color: #4b6cb7;
+            box-shadow: 0 0 5px rgba(75, 108, 183, 0.5);
+        }
+
+        button:hover {
+            background-color: #4b6cb7 !important;
+            color: #fff;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-gradient-primary text-white text-center py-4">
+            <h2><i class="fa-solid fa-prescription-bottle"></i> Tạo Đơn Thuốc</h2>
+        </div>
+        <div class="card-body p-4">
+            <form id="donThuocForm">
+                <!-- Chọn bệnh nhân -->
+                <div class="mb-4">
+                    <label for="Idkham" class="form-label fs-5"><strong>Chọn Bệnh Nhân</strong></label>
+                    <select id="Idkham" class="form-select form-select-lg">
+                        <!-- Các option bệnh nhân sẽ được load vào đây -->
+                    </select>
+                </div>
+
+                <!-- Chọn dụng cụ -->
+                <div class="mb-4">
+                    <label for="IddungCu" class="form-label fs-5"><strong>Chọn Dụng Cụ</strong></label>
+                    <select id="IddungCu" class="form-select form-select-lg" multiple>
+                        <!-- Các option dụng cụ sẽ được load vào đây -->
+                    </select>
+                    <small class="form-text text-muted">
+                        Giữ phím <kbd>Ctrl</kbd> để chọn nhiều dụng cụ.
+                    </small>
+                </div>
+
+                <!-- Số lượng -->
+                <div id="soLuongContainer" class="mb-4"></div>
+
+                <!-- Nút submit -->
+                <button type="submit" class="btn btn-success w-100 py-3">
+                    <i class="fa-solid fa-check-circle"></i> Tạo Đơn Thuốc
+                </button>
+            </form>
+        </div>
     </div>
+</div>
 
-    <div class="form-group">
-        <label for="IddungCu">Chọn Dụng Cụ</label>
-        <select id="IddungCu" class="form-control" name="IddungCu" multiple="multiple">
-            <!-- Các option dụng cụ sẽ được load vào đây -->
-        </select>
+<!-- Loading spinner -->
+<div id="loadingSpinner" class="text-center my-4" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
     </div>
+    <p>Đang tải dữ liệu...</p>
+</div>
 
-    <div class="form-group" id="soLuongContainer">
-        <label for="SoLuong">Số Lượng</label>
-        <!-- Các input số lượng sẽ được thêm vào từ JavaScript -->
+<!-- Toast Notification -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong id="toastTitle" class="me-auto"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div id="toastBody" class="toast-body"></div>
     </div>
+</div>
 
-    <button type="submit" class="btn btn-primary">Tạo Đơn Thuốc</button>
-</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Fetch patients options from API
-    fetch('/DonThuoc/api/GetDanhSachKhamOptions')
-        .then(response => response.json())
-        .then(data => {
+    const spinner = document.getElementById('loadingSpinner');
+
+    // Hiển thị Toast
+    function showToast(message, title = 'Thông Báo', isSuccess = true) {
+        const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+        const toastTitle = document.getElementById('toastTitle');
+        const toastBody = document.getElementById('toastBody');
+
+        toastTitle.textContent = title;
+        toastBody.textContent = message;
+
+        document.getElementById('liveToast').className = `toast ${isSuccess ? 'bg-success' : 'bg-danger'} text-white`;
+        toast.show();
+    }
+
+    // Fetch dữ liệu bệnh nhân và dụng cụ
+    function fetchData() {
+        spinner.style.display = 'block';
+
+        Promise.all([
+            fetch('/DonThuoc/api/GetDanhSachKhamOptions').then(response => response.json()),
+            fetch('/DonThuoc/api/GetDungCuOptions').then(response => response.json())
+        ]).then(([patients, tools]) => {
+            spinner.style.display = 'none';
+
+            // Load danh sách bệnh nhân
             const patientSelect = document.getElementById('Idkham');
-            data.forEach(patient => {
+            patients.forEach(patient => {
                 const option = document.createElement('option');
-                option.value = patient.id;
-                option.textContent = patient.name;
+                option.value = patient.Id;
+                option.textContent = patient.Name;
                 patientSelect.appendChild(option);
             });
-        })
-        .catch(error => {
-            console.error('Error fetching patients:', error);
-        });
 
-    // Fetch tools options from API
-    fetch('/DonThuoc/api/GetDungCuOptions')
-        .then(response => response.json())
-        .then(data => {
+            // Load danh sách dụng cụ
             const toolSelect = document.getElementById('IddungCu');
-            data.forEach(tool => {
+            tools.forEach(tool => {
                 const option = document.createElement('option');
-                option.value = tool.id;
-                option.textContent = tool.name;
+                option.value = tool.Id;
+                option.textContent = tool.Name;
                 toolSelect.appendChild(option);
             });
 
-            // Add event listener to dynamically create quantity inputs for selected tools
-            toolSelect.addEventListener('change', function() {
+            // Tạo input số lượng cho mỗi dụng cụ được chọn
+            toolSelect.addEventListener('change', function () {
                 const selectedOptions = Array.from(toolSelect.selectedOptions);
                 const soLuongContainer = document.getElementById('soLuongContainer');
-                soLuongContainer.innerHTML = ''; // Clear previous quantity inputs
+                soLuongContainer.innerHTML = '';
 
                 selectedOptions.forEach(option => {
                     const label = document.createElement('label');
-                    label.setAttribute('for', `SoLuong-${option.value}`);
                     label.textContent = `Số lượng cho dụng cụ ${option.textContent}:`;
 
                     const input = document.createElement('input');
                     input.type = 'number';
-                    input.id = `SoLuong-${option.value}`;
-                    input.name = `SoLuong-${option.value}`; // Unique name for each input
+                    input.name = `SoLuong-${option.value}`;
                     input.classList.add('form-control');
                     input.required = true;
 
@@ -79,37 +183,47 @@
                     soLuongContainer.appendChild(input);
                 });
             });
-        })
-        .catch(error => {
-            console.error('Error fetching tools:', error);
+        }).catch(error => {
+            spinner.style.display = 'none';
+            showToast('Lỗi khi tải dữ liệu!', 'Lỗi', false);
+            console.error(error);
         });
+    }
 
-    // Listen for form submit event
+    // Gửi dữ liệu khi submit
+    // Gửi dữ liệu khi submit
     document.getElementById('donThuocForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+        event.preventDefault(); // Ngăn chặn reload trang mặc định
 
-        const idkham = document.getElementById('Idkham').value;
-        const iddungCu = Array.from(document.getElementById('IddungCu').selectedOptions).map(option => option.value);
+        // Hiển thị thông báo "Đang gửi dữ liệu..."
+        showToast('Đang gửi dữ liệu...', 'Thông Báo', true);
 
-        // Collect quantities for each selected tool
+        // Lấy dữ liệu từ các trường trong form
+        const idkham = document.getElementById('Idkham').value; // Lấy ID bệnh nhân
+        const iddungCu = Array.from(document.getElementById('IddungCu').selectedOptions).map(option => option.value); // Lấy danh sách dụng cụ được chọn
+
+        // Thu thập số lượng cho từng dụng cụ được chọn
         const soLuong = iddungCu.map(id => {
-            const input = document.getElementById(`SoLuong-${id}`);
+            const input = document.querySelector(`input[name="SoLuong-${id}"]`);
             return input ? parseInt(input.value) : 0;
         });
 
-        if (!idkham || iddungCu.length === 0 || soLuong.some(s => s <= 0)) {
-            alert('Vui lòng điền đủ thông tin!');
+        // Kiểm tra tính hợp lệ
+        if (!idkham || iddungCu.length === 0 || soLuong.some(s => isNaN(s) || s <= 0)) {
+            showToast('Vui lòng điền đầy đủ thông tin và số lượng hợp lệ!', 'Lỗi', false);
             return;
         }
 
-        // Log data before sending
-        console.log("Data being sent:", {
-            Idkham: parseInt(idkham),
-            IddungCu: iddungCu.map(id => parseInt(id)), // Array of tool IDs
-            SoLuong: soLuong // Array of quantities for each tool
-        });
+        // Tạo dữ liệu JSON để gửi đến API
+        const requestData = {
+            Idkham: parseInt(idkham), // ID bệnh nhân
+            IddungCu: iddungCu.map(id => parseInt(id)), // Danh sách ID dụng cụ
+            SoLuong: soLuong // Danh sách số lượng tương ứng
+        };
 
-        // Send request to API
+        console.log('Dữ liệu gửi đi:', requestData);
+
+        // Gửi dữ liệu đến API
         fetch('/DonThuoc/api/PostDonThuoc', {
             method: 'POST',
             headers: {
@@ -120,26 +234,37 @@
                 IddungCu: iddungCu.map(id => parseInt(id)), // Array of tool IDs
                 SoLuong: soLuong, // Array of quantities for each tool
             })
+
         })
-            .then(response => response.json())
-            .then(data => {
-                
-                const hoaDonId = data.hoaDonId;
-                console.log("Response id:", hoaDonId);
-                console.log("Response data:", data);
-                if (data && data.success) { // Giả định rằng API trả về một thuộc tính `success: true` khi thành công
-                    alert('Đơn thuốc đã được tạo thành công!');
-                } else {
-                    alert('Đơn thuốc đã được tạo thành công!');
+        .then(response => response.json())
+        .then(data => {
+            console.log('Kết quả API trả về:', data);
+
+            if (data.success) {
+                showToast('Đơn thuốc đã được tạo thành công!', 'Thành Công', true);
+
+                // Chuyển hướng đến trang thanh toán hoặc hiển thị thêm thông tin
+                if (data.hoaDonId) {
                     window.location.href = `/HoaDon/ThanhToan?hoaDonId=${data.hoaDonId}`;
                 }
-            })
-            .catch(error => {
-                console.error('Có lỗi xảy ra:', error);
-                alert('Có lỗi xảy ra, vui lòng thử lại!');
-            });
+            } else {
+                showToast('Đơn thuốc đã được tạo thành công!', 'Thành Công', true);
+                window.location.href = `/HoaDon/ThanhToan?hoaDonId=${data.hoaDonId}`;
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi khi gửi dữ liệu:', error);
+            showToast('Không thể kết nối với server. Vui lòng thử lại sau!', 'Lỗi', false);
+        });
     });
+
+
+    // Gọi fetch data khi load trang
+    fetchData();
 </script>
+</body>
+</html>
+
 
 
 

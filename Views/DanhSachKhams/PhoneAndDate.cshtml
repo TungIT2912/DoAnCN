@@ -1,0 +1,218 @@
+﻿@{
+    ViewData["Title"] = "Tìm kiếm bệnh nhân";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
+}
+
+<h2 class="text-center text-primary mb-4">DANH SÁCH KHÁM</h2>
+
+<!-- Khu vực tìm kiếm -->
+<div class="d-flex flex-wrap justify-content-center gap-4 mb-4">
+    <!-- Tìm kiếm theo ngày -->
+    <div class="form-group">
+        <label for="dateSearch" class="font-weight-bold">Tìm theo ngày:</label>
+        <div class="input-group">
+            <input type="date" id="dateSearch" class="form-control border-primary" />
+            <button id="searchByDate" class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </div>
+
+    <!-- Tìm kiếm theo số điện thoại -->
+    <div class="form-group">
+        <label for="phoneSearch" class="font-weight-bold">Tìm theo số điện thoại:</label>
+        <div class="input-group">
+            <input type="text" id="phoneSearch" class="form-control border-primary" placeholder="Nhập số điện thoại" />
+            <button id="searchByPhone" class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </div>
+</div>
+
+<!-- Khu vực hiển thị kết quả -->
+<div class="table-responsive">
+    <table class="table table-hover table-striped align-middle shadow-sm rounded" id="resultTable">
+        <thead class="thead-custom text-light">
+            <tr>
+                <th scope="col">Họ Tên</th>
+                <th scope="col">Số Điện Thoại</th>
+                <th scope="col">Địa Chỉ</th>
+                <th scope="col">Ngày Khám</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Kết quả tìm kiếm sẽ hiển thị tại đây -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const resultTable = document.getElementById("resultTable").querySelector("tbody");
+
+    // Function hiển thị dữ liệu vào bảng
+    function updateResultTable(data) {
+        if (data.length > 0) {
+            resultTable.innerHTML = data
+                .map(
+                    (item) => `
+                <tr>
+                    <td>${item.HoTen || item.hoTenBenhNhan}</td>
+                    <td>${item.Sdt || item.sdtBenhnhan}</td>
+                    <td>${item.DiaChi || item.diaChiBenhnhan}</td>
+                    <td>${item.NgayKhamDau || item.ngayKhamDau}</td>
+                </tr>`
+                )
+                .join("");
+        } else {
+            resultTable.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Không tìm thấy kết quả phù hợp.</td></tr>`;
+        }
+    }
+
+    // Lấy toàn bộ danh sách bệnh nhân khi tải trang
+    async function loadAllPatients() {
+        resultTable.innerHTML = `<tr><td colspan="4" class="text-center">Đang tải dữ liệu...</td></tr>`;
+        try {
+            const response = await fetch(`/DanhSachKhams/api/GetBenhNhan`);
+            const data = await response.json();
+            updateResultTable(data);
+        } catch (error) {
+            resultTable.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Lỗi khi tải dữ liệu.</td></tr>`;
+            console.error(error);
+        }
+    }
+
+    // Tìm kiếm theo ngày
+    document.getElementById("searchByDate").addEventListener("click", async () => {
+        const date = document.getElementById("dateSearch").value;
+        if (!date) {
+            alert("Vui lòng chọn ngày khám.");
+            return;
+        }
+        resultTable.innerHTML = `<tr><td colspan="4" class="text-center">Đang tải...</td></tr>`;
+
+        try {
+            const response = await fetch(`/DanhSachKhams/api/GetBenhNhanByDate?date=${date}`);
+            const data = await response.json();
+            updateResultTable(data);
+        } catch (error) {
+            resultTable.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Lỗi khi tải dữ liệu.</td></tr>`;
+            console.error(error);
+        }
+    });
+
+    // Tìm kiếm theo số điện thoại
+    document.getElementById("searchByPhone").addEventListener("click", async () => {
+        const phone = document.getElementById("phoneSearch").value.trim();
+        if (!phone) {
+            alert("Vui lòng nhập số điện thoại.");
+            return;
+        }
+        resultTable.innerHTML = `<tr><td colspan="4" class="text-center">Đang tải...</td></tr>`;
+
+        try {
+            const response = await fetch(`/DanhSachKhams/api/GetAppointmentsByPhone?sdt=${phone}`);
+            const data = await response.json();
+            updateResultTable(data);
+        } catch (error) {
+            resultTable.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Lỗi khi tải dữ liệu.</td></tr>`;
+            console.error(error);
+        }
+    });
+
+    // Tải danh sách bệnh nhân khi trang được tải
+    window.addEventListener("DOMContentLoaded", loadAllPatients);
+</script>
+
+<style>
+    h2 {
+        font-family: 'Arial', sans-serif;
+        font-size:30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .form-group {
+        min-width: 300px;
+    }
+
+    .thead-custom {
+        background: linear-gradient(90deg, #007bff, #0056b3);
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    /* Bảng tổng thể */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+        word-wrap: break-word;
+    }
+
+    .table th {
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f4f8;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    /* Hiệu ứng bo góc */
+    .rounded {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    /* Hiệu ứng bóng */
+    .shadow-sm {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive nhỏ */
+    @Model (max-width: 768px) {
+        .table th, .table td {
+            font-size: 12px;
+            padding: 8px;
+        }
+    }
+
+    @Model (max-width: 576px) {
+        .table {
+            font-size: 10px;
+        }
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    @Model (max-width: 768px) {
+        .form-group {
+            width: 100%;
+        }
+    }
+</style>

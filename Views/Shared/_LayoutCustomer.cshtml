@@ -28,10 +28,11 @@
     <link href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
     <link href="~/css/site.css" rel="stylesheet">
 </head>
+@RenderSection("Scripts", required: false)
 <body>
     <!-- Header -->
     @await Html.PartialAsync("_HeaderCustomer")
-
+    @await Html.PartialAsync("_Chatbot")
     <!-- Main Content -->
     @RenderBody()
 
@@ -95,7 +96,7 @@
 
 
 
-    @RenderSection("Scripts", required: false)
+
 
 
 

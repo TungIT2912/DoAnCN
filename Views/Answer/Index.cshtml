@@ -1,12 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Unanswered Questions";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
-<h2>Unanswered Questions</h2>
+<h2 class="page-title">Câu Hỏi Chưa Được Trả Lời</h2>
 
-<div id="questions-container">
-    <!-- Questions will be loaded here -->
+<div id="questions-container" class="questions-container">
+    <!-- Questions will be dynamically loaded here -->
 </div>
 
 <script>
@@ -18,17 +18,27 @@
                 const container = document.getElementById('questions-container');
                 container.innerHTML = ''; // Clear any existing content
 
+                if (data.length === 0) {
+                    container.innerHTML = '<p class="no-questions">No unanswered questions available.</p>';
+                    return;
+                }
+
                 data.forEach(question => {
                     const questionDiv = document.createElement('div');
                     questionDiv.className = 'question-item';
                     questionDiv.innerHTML = `
-                        <p><strong>Câu Hỏi:</strong> ${question.question}</p>
-                        <p><strong>Thời gian:</strong> ${new Date(question.askedOn).toLocaleString()}</p>
-                                <p><strong>Trạng Thái:</strong> ${question.isAnswered}</p>
-                                <p><strong>Id Nhan vien:</strong> ${question.maNv}</p>
-                                <p><strong>Ten Nhan Vien:</strong> ${question.answeredByName}</p>
-                        <button onclick="location.href='/api/answer/post?questionId=${question.id}'">Answer</button>
-                    `;
+                            <div class="question-header">
+                                <h3>Câu Hỏi:</h3>
+                                <p>${question.Question}</p>
+                            </div>
+                            <div class="question-details">
+                                <p><span>Thời gian:</span> ${new Date(question.AskedOn).toLocaleString()}</p>
+                                <p><span>Trạng Thái:</span> ${question.IsAnswered ? 'Đã trả lời' : 'Chưa trả lời'}</p>
+                                <p><span>Id Nhân Viên:</span> ${question.MaNv || 'Chưa gán'}</p>
+                                <p><span>Tên Nhân Viên:</span> ${question.AnsweredByName || 'Chưa gán'}</p>
+                            </div>
+                            <button class="btn-answer" onclick="location.href='/api/answer/post?questionId=${question.Id}'">Answer</button>
+                        `;
                     container.appendChild(questionDiv);
                 });
             })
@@ -42,13 +52,97 @@
 </script>
 
 <style>
-    .question-item {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin: 10px 0;
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+        color: #333;
     }
 
-    .question-item button {
-        margin-top: 10px;
+    .page-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 20px 0;
+        color: #4a90e2;
+    }
+
+    .questions-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .question-item {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .question-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+    .question-header {
+        background: #f4f4f4;
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .question-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .question-header p {
+            margin: 5px 0 0;
+            font-size: 1rem;
+            color: #333;
+        }
+
+    .question-details {
+        padding: 15px;
+    }
+
+        .question-details p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+
+        .question-details span {
+            font-weight: bold;
+            color: #333;
+        }
+
+    .btn-answer {
+        display: inline-block;
+        background: #4a90e2;
+        color: #fff;
+        padding: 10px 20px;
+        margin: 15px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .btn-answer:hover {
+            background: #357abd;
+        }
+
+    .no-questions {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #999;
+        margin-top: 20px;
     }
 </style>

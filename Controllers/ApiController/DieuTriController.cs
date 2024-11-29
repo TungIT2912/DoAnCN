@@ -129,6 +129,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using WebQuanLyNhaKhoa.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 
 namespace WebQuanLyNhaKhoa.Controllers
 {
@@ -142,7 +143,7 @@ namespace WebQuanLyNhaKhoa.Controllers
             _context = context;
         }
 
-        
+
         [HttpGet("Index")]
         public IActionResult Index()
         {
@@ -161,7 +162,9 @@ namespace WebQuanLyNhaKhoa.Controllers
                     IddichVu = dt.IddichVu,
                     Idkham = dt.Idkham,
                     SoLuong = dt.SoLuong,
-                    ThanhTien = dt.ThanhTien
+                    ThanhTien = dt.ThanhTien,
+                    TenDichVu = dt.DichVu.TenDichVu,
+                    TenBenhNhan = dt.DanhSachKham.BenhNhan.HoTen
                 })
                 .ToListAsync();
             return Ok(treatments); // Returns list of treatments as JSON
@@ -191,10 +194,6 @@ namespace WebQuanLyNhaKhoa.Controllers
                 return StatusCode(500, "An error occurred while fetching options: " + ex.Message);
             }
         }
-
-
-
-
 
         // Fetch services
         [HttpGet("api/GetDichVuOptions")]
@@ -240,7 +239,7 @@ namespace WebQuanLyNhaKhoa.Controllers
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-               
+
                 // Validate related entities
                 var dichVu = await _context.DichVus.FindAsync(newDieuTriDto.IddichVu);
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDieuTriDto.Idkham);
@@ -259,7 +258,7 @@ namespace WebQuanLyNhaKhoa.Controllers
 
                 var newDieuTri = new DieuTri
                 {
-                    
+
                     IddichVu = newDieuTriDto.IddichVu,
                     Idkham = newDieuTriDto.Idkham,
                     IddungCu = newDieuTriDto.IddungCu,
@@ -277,17 +276,17 @@ namespace WebQuanLyNhaKhoa.Controllers
                 {
                     Idkham = newDieuTri.Idkham,
                     IddieuTri = newDieuTri.IddieuTri,
-                    PhuongThucThanhToan = "Chưa có", 
+                    PhuongThucThanhToan = "Chưa có",
                     TienDieuTri = treatmentCost,
-                    TienThuoc = 0,  
+                    TienThuoc = 0,
                     TongTien = treatmentCost,
                     NgayLap = DateTime.Now,
-                   
+
                 };
                 _context.HoaDons.Add(newHoaDon);
                 await _context.SaveChangesAsync();
 
-              
+
                 var newChiTietHoaDon = new ChiTietHoaDon
                 {
                     IdhoaDon = newHoaDon.IdhoaDon,
@@ -312,9 +311,9 @@ namespace WebQuanLyNhaKhoa.Controllers
                 newDieuTriDto.IddieuTri = newDieuTri.IddieuTri;
                 newDieuTriDto.ThanhTien = treatmentCost;
                 newDieuTriDto.hoaDonId = newHoaDon.IdhoaDon;
-                
+
                 Console.WriteLine($"HoaDon ID: {newHoaDon.IdhoaDon}");
-                return CreatedAtAction(nameof(CreateDieuTriWithInvoices), new { id= newDieuTriDto.Idkham }, newDieuTriDto);
+                return CreatedAtAction(nameof(CreateDieuTriWithInvoices), new { id = newDieuTriDto.Idkham }, newDieuTriDto);
             }
             catch
             {
@@ -364,6 +363,50 @@ namespace WebQuanLyNhaKhoa.Controllers
             if (treatment == null) return NotFound();
 
             return View(treatment); // Renders Details.cshtml with treatment data
+        }
+
+
+
+        // API Endpoint to get diagnosis by patient ID
+        [HttpGet("api/GetDiagnosisByPatient/{id}")]
+        public async Task<ActionResult> GetDiagnosisByPatient(int id)
+        {
+
+
+            var danhSachKham = await _context.DanhSachKhams
+                .Include(h => h.BenhNhan)
+                .ThenInclude(bn => bn.ChanDoan)
+                .FirstOrDefaultAsync(h => h.Idkham == id);
+
+            if (danhSachKham == null)
+            {
+                Console.WriteLine("DanhSachKham is null");
+                return NotFound($"No records found for patient ID: {id}");
+            }
+
+            if (danhSachKham.BenhNhan == null)
+            {
+                Console.WriteLine("BenhNhan is null");
+                return NotFound($"No patient information found for patient ID: {id}");
+            }
+
+            if (danhSachKham.BenhNhan.ChanDoan == null)
+            {
+                Console.WriteLine("ChanDoan is null");
+                return NotFound($"No diagnosis information found for patient ID: {id}");
+            }
+
+            var diagnosis = new
+            {
+                Content = danhSachKham.BenhNhan.ChanDoan.TenChanDoan, // Nội dung chẩn đoán
+
+            };
+
+            // Trả về thông tin chẩn đoán
+            return Ok(diagnosis);
+
+
+
         }
     }
 }

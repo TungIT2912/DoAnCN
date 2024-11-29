@@ -31,9 +31,6 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdbenhNhan"));
 
-                    b.Property<int?>("ChanDoanIdchanDoan")
-                        .HasColumnType("int");
-
                     b.Property<string>("DiaChi")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -74,7 +71,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("IdbenhNhan");
 
-                    b.HasIndex("ChanDoanIdchanDoan");
+                    b.HasIndex("IdChanDoan");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -619,7 +616,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "ChanDoan")
                         .WithMany()
-                        .HasForeignKey("ChanDoanIdchanDoan");
+                        .HasForeignKey("IdChanDoan");
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.TaiKhoan", "TaiKhoan")
                         .WithOne("BenhNhan")

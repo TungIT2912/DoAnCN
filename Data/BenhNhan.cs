@@ -30,8 +30,10 @@ namespace WebQuanLyNhaKhoa.Data
 		public string? TrieuChung { get; set; }
 		public string? GhiChu { get; set; }
 
+        
+        [ForeignKey("ChanDoan")]
+        
         public int? IdChanDoan { get; set; }
-        public virtual ChanDoan? ChanDoan { get; set; }
 
         public DateTime? NgayKhamDau { get; set; }
         [EmailAddress]
@@ -41,5 +43,6 @@ namespace WebQuanLyNhaKhoa.Data
         [JsonIgnore]
         public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
         public virtual TaiKhoan? TaiKhoan { get; set; }
+        public virtual ChanDoan? ChanDoan { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace WebQuanLyNhaKhoa.DTO
         public string? TrieuChung { get; set; }
         [EmailAddress]
         public string? EmailBn { get; set; }
-
+        public int? IdChanDoan { get; set; }
         public DateTime? NgayKhamDau { get; set; }
         public string? TenDangNhap { get; set; }
         public string? MatKhau { get; set; }
