@@ -88,6 +88,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Auth/login";
         options.AccessDeniedPath = "/Home/404";
     });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -126,6 +133,8 @@ app.MapRazorPages();
 
 // Map SignalR hub
 app.MapHub<ChatHub>("/chatHub");
+
+app.UseCors("AllowAll");
 
 // Run the app
 app.Run();
