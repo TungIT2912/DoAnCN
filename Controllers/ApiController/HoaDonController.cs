@@ -244,8 +244,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 {
                     hoaDon.DaThanhToan = true;
                     hoaDon.PhuongThucThanhToan = "VNPay";
-            _context.HoaDons.Update(hoaDon);
-            await _context.SaveChangesAsync();
+                    _context.HoaDons.Update(hoaDon);
+                    await _context.SaveChangesAsync();
                 }
                 return View("ThanhToanThanhCong", response);
             }

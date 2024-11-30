@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class connect : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,7 +80,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IdchanDoan = table.Column<int>(type: "int", nullable: false),
                     TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,7 +109,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     TrieuChung = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdChanDoan = table.Column<int>(type: "int", nullable: true),
-                    ChanDoanIdchanDoan = table.Column<int>(type: "int", nullable: true),
                     NgayKhamDau = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -116,8 +116,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     table.PrimaryKey("PK_BenhNhans", x => x.IdBenhNhan);
                     table.ForeignKey(
-                        name: "FK_BenhNhans_ChanDoans_ChanDoanIdchanDoan",
-                        column: x => x.ChanDoanIdchanDoan,
+                        name: "FK_BenhNhans_ChanDoans_IdChanDoan",
+                        column: x => x.IdChanDoan,
                         principalTable: "ChanDoans",
                         principalColumn: "IdChanDoan");
                     table.ForeignKey(
@@ -418,9 +418,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BenhNhans_ChanDoanIdchanDoan",
+                name: "IX_BenhNhans_IdChanDoan",
                 table: "BenhNhans",
-                column: "ChanDoanIdchanDoan");
+                column: "IdChanDoan");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BenhNhans_UserId",
@@ -553,7 +553,7 @@ namespace WebQuanLyNhaKhoa.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_BenhNhans_ChanDoans_ChanDoanIdchanDoan",
+                name: "FK_BenhNhans_ChanDoans_IdChanDoan",
                 table: "BenhNhans");
 
             migrationBuilder.DropForeignKey(

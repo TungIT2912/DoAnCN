@@ -18,6 +18,7 @@ namespace WebQuanLyNhaKhoa.DTO
 
 		public decimal ThanhTien { get; set; }
         public string TenDichVu { get; set; } = string.Empty;
+        public string TenBenhNhan { get; set; } = string.Empty;
         public string DonViTinh { get; set; } = string.Empty;
 
     }

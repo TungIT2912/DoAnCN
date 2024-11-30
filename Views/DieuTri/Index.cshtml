@@ -1,56 +1,151 @@
 ﻿@{
     ViewData["Title"] = "Treatment List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
-<h2>Treatment List</h2>
-<table id="treatmentTable" border="1">
-    <thead>
-        <tr>
-            <th>Service ID</th>
-            <th>Diagnosis ID</th>
-            <th>Quantity</th>
-            <th>Total Price</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<h2 class="text-center text-primary my-4" style="font-size:30PX;">DANH SÁCH ĐIỀU TRỊ</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-left:20px">
+    <button class="btn btn-success" onclick="createTreatment()">
+        <i class="fas fa-plus-circle"></i> Tạo Điều Trị
+    </button>
+</div>
+<div class="table-responsive">
+    <table id="treatmentTable" class="table table-hover table-striped align-middle shadow-sm rounded">
+        <thead class="thead-custom text-light">
+            <tr>
+                <th scope="col">Tên Dịch Vụ</th>
+                <th scope="col">Bệnh Nhân Điều Trị</th>
+                <th scope="col">Số Lượng</th>
+                <th scope="col">Tổng Tiền </th>
+                <th scope="col">Hành Động</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
 <script>
+    // Fetch and display treatment data
     async function fetchTreatments() {
         const response = await fetch('/DieuTri/api/GetDieuTri');
         const treatments = await response.json();
 
         const tableBody = document.querySelector('#treatmentTable tbody');
-        tableBody.innerHTML = '';
+        tableBody.innerHTML = ''; // Clear previous content
 
         treatments.forEach(treatment => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${treatment.iddichVu}</td>
-                <td>${treatment.idkham}</td>
-                <td>${treatment.soLuong}</td>
-                <td>${treatment.thanhTien}</td>
+                <td>${treatment.TenDichVu}</td>
+                <td>${treatment.TenBenhNhan}</td>
+                <td>${treatment.SoLuong}</td>
+                <td>${treatment.ThanhTien}</td>
                 <td>
-                    <button onclick="editTreatment(${treatment.iddieuTri})">Edit</button>
-                    <button onclick="deleteTreatment(${treatment.iddieuTri})">Delete</button>
+                    <button class="btn btn-sm btn-info" onclick="editTreatment(${treatment.IddieuTri})">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTreatment(${treatment.IddieuTri})">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
                 </td>
             `;
             tableBody.appendChild(row);
         });
     }
-
-    async function deleteTreatment(id) {
-        if (confirm("Are you sure you want to delete this treatment?")) {
-            await fetch(`/DieuTri/api/DeleteDieuTri/${id}`, { method: 'DELETE' });
+    function createTreatment() {
+        window.location.href = '/DieuTri/create';
+    }
+    // Delete treatment
+    async function deleteTreatment(Id) {
+        if (confirm("Bạn có chắc chắn muốn xóa Điều Trị?")) {
+            await fetch(`/DieuTri/api/DeleteDieuTri/${Id}`, { method: 'DELETE' });
             fetchTreatments(); // Refresh the list
         }
     }
 
-    function editTreatment(id) {
-        window.location.href = `/DieuTri/details/${id}`;
+    // Edit treatment
+    function editTreatment(Id) {
+        window.location.href = `/DieuTri/details/${Id}`;
     }
 
+    // Initial fetch of treatments
     fetchTreatments();
 </script>
+
+<style>
+    /* Header styles */
+    .thead-custom {
+        background: linear-gradient(90deg, #007bff, #0056b3);
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    /* Table styles */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+        word-wrap: break-word;
+    }
+
+    .table th {
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f4f8;
+    }
+
+    .table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    /* Button styles */
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+    .btn-info:hover {
+        background-color: #138496;
+        border-color: #117a8b;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    /* Responsive tweaks */
+    @Model (max-width: 768px) {
+        .table th, .table td {
+            font-size: 12px;
+            padding: 8px;
+        }
+    }
+
+    @Model (max-width: 576px) {
+        .table {
+            font-size: 10px;
+        }
+    }
+</style>

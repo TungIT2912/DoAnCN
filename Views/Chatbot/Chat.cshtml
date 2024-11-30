@@ -2,179 +2,7 @@
     ViewData["Title"] = "Danh sách chẩn đoán";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
- @* <style>
-     #chatbox {
-         width: 300px;
-         height: 400px;
-         border: 1px solid #ccc;
-         display: flex;
-         flex-direction: column;
-         padding: 10px;
-     }
-
-     #messages {
-         flex: 1;
-         overflow-y: auto;
-         margin-bottom: 10px;
-     }
-
-     .message {
-         margin: 5px 0;
-     }
-
-     .user {
-         text-align: right;
-         color: blue;
-     }
-
-     .bot {
-         text-align: left;
-         color: green;
-     }
-
-     #input-area {
-         display: flex;
-     }
-
-         #input-area input {
-             flex: 1;
-             padding: 5px;
-         }
-
-         #input-area button {
-             padding: 5px;
-         }
- </style>
-     <div id="chatbox">
-         <div id="messages"></div>
-         <div id="input-area">
-             <input type="text" id="user-input" placeholder="Nhập tin nhắn..." />
-             <button onclick="sendMessage()">Gửi</button>
-         </div>
-     </div>
-
-     <script>
-         const apiUrl = "https://e2d6-2405-4802-80fd-1d50-8d79-c45d-cde0-7d7b.ngrok-free.app/api/chatbot/webhook";
-
-         async function sendMessage() {
-           const input = document.getElementById("user-input");
-           const messages = document.getElementById("messages");
-
-           const userMessage = input.value;
-           if (!userMessage) return;
-
-           // Hiển thị tin nhắn của người dùng
-           const userDiv = document.createElement("div");
-           userDiv.className = "message user";
-           userDiv.innerText = userMessage;
-           messages.appendChild(userDiv);
-
-           input.value = ""; // Xóa input sau khi gửi
-
-           // Gửi tin nhắn đến API
-           try {
-             const response = await fetch(apiUrl, {
-               method: "POST",
-               headers: {
-                 "Content-Type": "application/json",
-               },
-               body: JSON.stringify({
-                 queryResult: {
-                   queryText: userMessage,
-                 },
-               }),
-             });
-
-             const data = await response.json();
-             const botMessage = data.fulfillmentText || "Chatbot không phản hồi.";
-
-             // Hiển thị phản hồi của chatbot
-             const botDiv = document.createElement("div");
-             botDiv.className = "message bot";
-             botDiv.innerText = botMessage;
-             messages.appendChild(botDiv);
-
-             // Cuộn xuống cuối cùng
-             messages.scrollTop = messages.scrollHeight;
-           } catch (error) {
-             console.error("Lỗi khi gửi tin nhắn:", error);
-           }
-         }
-     </script> *@
-
-
-@* 
-    <title>Chat với Nhân Viên</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.18/signalr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-
-    <div class="container mt-5">
-        <h2>Chat với Nhân Viên</h2>
-        <div class="form-group">
-            <label for="userMessage">Tin nhắn:</label>
-            <textarea class="form-control" id="userMessage" rows="3"></textarea>
-        </div>
-        <button class="btn btn-primary" onclick="sendMessage()">Gửi</button>
-
-        <div id="messagesList" class="mt-4"></div>
-    </div>
-
-    <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chatHub")
-            .build();
-
-        connection.on("ReceiveMessage", (user, message) => {
-            const msg = document.createElement('div');
-            msg.className = 'alert alert-secondary';
-            msg.textContent = `${user}: ${message}`;
-            document.getElementById('messagesList').appendChild(msg);
-        });
-
-        connection.start().catch(err => console.error(err.toString()));
-
-        async function sendMessage() {
-            const userMessage = document.getElementById('userMessage').value;
-
-            if (!userMessage) {
-                alert('Vui lòng nhập tin nhắn');
-                return;
-            }
-
-            const messageRequest = {
-                message: userMessage,
-                connectionId: connection.connectionId
-            };
-
-            try {
-            const response = await axios.post('/api/chatbot/webhook', messageRequest);
-                document.getElementById('userMessage').value = '';
-
-                const userMsg = document.createElement('div');
-                userMsg.className = 'alert alert-primary';
-                userMsg.textContent = `Bạn: ${userMessage}`;
-                document.getElementById('messagesList').appendChild(userMsg);
-
-                const responseMsg = document.createElement('div');
-                responseMsg.className = 'alert alert-info';
-                responseMsg.textContent = `Hệ thống: ${response.data.fulfillmentText}`;
-                document.getElementById('messagesList').appendChild(responseMsg);
-
-                // Hiển thị ConnectionId 
-                const connectionIdMsg = document.createElement('div'); 
-                connectionIdMsg.className = 'alert alert-warning'; 
-                connectionIdMsg.textContent = `Connection ID: ${response.data.connectionId}`; 
-                document.getElementById('messagesList').appendChild(connectionIdMsg);
-            } catch (error) {
-                console.error(error);
-                alert('Đã xảy ra lỗi khi gửi tin nhắn');
-            }
-        }
-    </script>
- *@
-
-
+ @* 
 <!DOCTYPE html>
 <html>
 <head>
@@ -232,8 +60,8 @@
                 displayMessage('Bạn', userMessage, 'alert-primary');
                 displayMessage('Hệ thống', response.data.fulfillmentText, 'alert-info');
 
-                // Hiển thị ConnectionId
-                displayMessage('Connection ID', response.data.connectionId, 'alert-warning');
+                //Hiển thị ConnectionId
+                // displayMessage('Connection ID', response.data.connectionId, 'alert-warning');
 
                 // Lưu tin nhắn vào localStorage
                 saveMessage({ user: 'Bạn', message: userMessage });
@@ -267,6 +95,213 @@
             msg.className = `alert ${alertClass}`;
             msg.textContent = `${user}: ${message}`;
             document.getElementById('messagesList').appendChild(msg);
+        }
+    </script>
+</body>
+</html>
+ *@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat với Nhân Viên</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+
+        .chatbox {
+            width: 300px;
+            max-height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbox-header {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chatbox-body {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbox-footer {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+            .chatbox-footer textarea {
+                flex-grow: 1;
+                resize: none;
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+            .chatbox-footer button {
+                margin-left: 10px;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: #ffffff;
+                cursor: pointer;
+            }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+            display: inline-block;
+            clear: both;
+            position: relative;
+        }
+
+            .message.user {
+                background-color: #007bff;
+                color: #ffffff;
+                align-self: flex-end;
+            }
+
+            .message.system {
+                background-color: #f4f4f4;
+                color: #333333;
+                align-self: flex-start;
+            }
+
+            .message.user::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: -10px;
+                transform: translateY(-50%);
+                border-width: 10px 0 10px 10px;
+                border-style: solid;
+                border-color: transparent transparent transparent #007bff;
+            }
+
+            .message.system::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: -10px;
+                transform: translateY(-50%);
+                border-width: 10px 10px 10px 0;
+                border-style: solid;
+                border-color: transparent #f4f4f4 transparent transparent;
+            }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.18/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+    <div class="chatbox">
+        <div class="chatbox-header">
+            <h5>Chat với Nhân Viên</h5>
+        </div>
+        <div id="messagesList" class="chatbox-body"></div>
+        <div class="chatbox-footer">
+            <textarea id="userMessage" rows="1"></textarea>
+            <button onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        connection.on("ReceiveMessage", (user, message) => {
+            displayMessage(user, message, 'system');
+
+            // Lưu tin nhắn vào localStorage
+            saveMessage({ user: user, message: message });
+        });
+
+        connection.start().then(() => {
+            // Tải lại các tin nhắn từ localStorage
+            loadMessages();
+        }).catch(err => console.error(err.toString()));
+
+        async function sendMessage() {
+            const userMessage = document.getElementById('userMessage').value;
+
+            if (!userMessage) {
+                alert('Vui lòng nhập tin nhắn');
+                return;
+            }
+
+            const messageRequest = {
+                message: userMessage,
+                connectionId: connection.connectionId
+            };
+
+            try {
+                const response = await axios.post('/api/chatbot/webhook', messageRequest);
+                document.getElementById('userMessage').value = '';
+
+                displayMessage('Bạn', userMessage, 'user');
+                displayMessage('Hệ thống', response.data.fulfillmentText, 'system');
+
+                // Lưu tin nhắn vào localStorage
+                saveMessage({ user: 'Bạn', message: userMessage });
+                saveMessage({ user: 'Hệ thống', message: response.data.fulfillmentText });
+            } catch (error) {
+                console.error(error);
+                alert('Đã xảy ra lỗi khi gửi tin nhắn');
+            }
+        }
+
+        function saveMessage(message) {
+            let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+            messages.push({ ...message, timestamp: new Date().getTime() });
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        }
+
+        function loadMessages() {
+            let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+            const tenMinutesAgo = new Date().getTime() - 10 * 60 * 1000;
+            messages = messages.filter(msg => msg.timestamp > tenMinutesAgo);
+
+            messages.forEach(msg => {
+                displayMessage(msg.user, msg.message, msg.user === 'Bạn' ? 'user' : 'system');
+            });
+
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        }
+
+        function displayMessage(user, message, messageType) {
+            const msg = document.createElement('div');
+            msg.className = `message ${messageType}`;
+            msg.textContent = `${user}: ${message}`;
+            document.getElementById('messagesList').appendChild(msg);
+            document.getElementById('messagesList').scrollTop = document.getElementById('messagesList').scrollHeight;
         }
     </script>
 </body>

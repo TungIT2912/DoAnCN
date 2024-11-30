@@ -1,159 +1,297 @@
-﻿@* @{
-    ViewData["Title"] = "Create Treatment";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h2>Create Treatment</h2>
-<form id="createForm">
-    <label>Service ID:</label>
-    <input type="number" id="serviceId" required><br>
-
-    <label>Diagnosis ID:</label>
-    <input type="number" id="diagnosisId" required><br>
-
-    <label>dụng cụ ID:</label>
-    <input type="number" id="dungCuId" required><br>
-
-    <label>Quantity:</label>
-    <input type="number" id="quantity" required><br>
-
-    <button type="submit">Create</button>
-</form>
-
-<script>
-    document.getElementById('createForm').addEventListener('submit', async function (event) {
-        event.preventDefault();
-
-        const newTreatment = {
-            iddichVu: document.getElementById('serviceId').value,
-            idkham: document.getElementById('diagnosisId').value,
-            iddungCu: document.getElementById('dungCuId').value,
-            soLuong: document.getElementById('quantity').value
-        };
-
-        const response = await fetch('/DieuTri/api/PostDieuTri', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newTreatment)
-        });
-
-        if (response.ok) {
-            alert("Treatment created successfully");
-            window.location.href = '/DieuTri/Index';
-        } else {
-            alert("Failed to create treatment");
-        }
-    });
-</script>
- *@
- @model IEnumerable<WebQuanLyNhaKhoa.DTO.DieuTriDTO>
+﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.DieuTriDTO>
 @{
     ViewData["Title"] = "Create Treatment";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
-<h2>Create New Treatment</h2>
+<link rel="stylesheet" href="~/css/CreateTreatment.css" />
 
-<form id="createTreatmentForm">
-    <div>
-        <label for="iddichVu">Service:</label>
-        <select id="iddichVu" name="IddichVu" required>
-            <option value="">Select Service</option>
-        </select>
-    </div>
+<h2 class="form-title">TẠO ĐIỀU TRỊ</h2>
 
-    <div>
-        <label for="idkham">Patient:</label>
-        <select id="idkham" name="Idkham" required>
-            <option value="">Select Patient</option>
-        </select>
-    </div>
+<div class="form-container" style="margin-left:450px;">
+    <form id="createTreatmentForm">
 
-    <div>
-        <label for="iddungCu">Tool:</label>
-        <select id="iddungCu" name="IddungCu" required>
-            <option value="">Select Tool</option>
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="idkham">Bệnh Nhân:</label>
+            <select id="idkham" name="Idkham" required onchange="loadDiagnosisByPatient()">
+                <option value="">Chọn Bệnh Nhân</option>
+            </select>
+        </div>
 
-    <div>
-        <label for="soLuong">Quantity:</label>
-        <input type="number" id="soLuong" name="SoLuong" required />
-    </div>
+        <div id="diagnosisInfo" class="diagnosis-info">
+            <!-- Diagnosis information will be displayed here -->
+        </div>
 
-    <button type="button" onclick="createTreatment()">Create Treatment</button>
-</form>
+        <div class="form-group" style="margin-top:20px;">
+            <label for="iddichVu">Dịch Vụ:</label>
+            <select id="iddichVu" name="IddichVu" required>
+                <option value="">Chọn Dịch Vụ</option>
+            </select>
+        </div>
 
-<p id="message"></p>
+        
+
+        <div class="form-group">
+            <label for="iddungCu">Dụng Cụ:</label>
+            <select id="iddungCu" name="IddungCu" required>
+                <option value="">Chọn Dụng Cụ</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="soLuong">Số Lượng:</label>
+            <input type="number" id="soLuong" name="SoLuong" required min="1" max="100" />
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-submit" onclick="createTreatment()">Tạo</button>
+        </div>
+    </form>
+
+    <p id="message" class="message"></p>
+</div>
+
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-           loadOptions();
-        });
+        loadOptions();
+    });
 
-        async function loadOptions() {
+    // Load options for dropdowns
+    async function loadOptions() {
         await loadDropdown('/DieuTri/api/GetDichVuOptions', 'iddichVu');
         await loadDropdown('/DieuTri/api/GetDanhSachKhamOptions', 'idkham');
         await loadDropdown('/DieuTri/api/GetDungCuOptions', 'iddungCu');
+    }
+
+    // Load dropdown data from API
+    async function loadDropdown(apiUrl, selectId) {
+        const select = document.getElementById(selectId);
+        // select.innerHTML = '<option value="">Loading...</option>';
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            // select.innerHTML = '<option value="">Select an option</option>';
+            data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.Id;
+                option.textContent = item.Name;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error(`Error loading ${selectId} options:`, error);
+            select.innerHTML = '<option value="">Error loading options</option>';
+        }
+    }
+
+    // Load diagnosis info when patient is selected
+    async function loadDiagnosisByPatient() {
+        const patientId = document.getElementById('idkham').value;
+        const diagnosisInfo = document.getElementById('diagnosisInfo');
+
+        if (!patientId) {
+            diagnosisInfo.textContent = 'Vui Lòng Chọn Bệnh Nhân!';
+            diagnosisInfo.style.color = '#ff6347'; // Error color
+            return;
         }
 
-        async function loadDropdown(apiUrl, selectId) {
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                const select = document.getElementById(selectId);
-                data.forEach(item => {
-                    const option = document.createElement("option");
-                    option.value = item.id;
-                    option.textContent = item.name;
-                    select.appendChild(option);
-                });
-            } catch (error) {
-                console.error(`Error loading ${selectId} options:`, error);
-                document.getElementById("message").textContent = `Error loading options for ${selectId}.`;
+        try {
+            const response = await fetch(`/DieuTri/api/GetDiagnosisByPatient/${patientId}`);
+            if (response.ok) {
+                const diagnosis = await response.json();
+                diagnosisInfo.textContent = `Diagnosis: ${diagnosis.Content}`;
+                diagnosisInfo.style.color = '#007bff'; // Info color
+            } else if (response.status === 404) {
+                diagnosisInfo.textContent = "No diagnosis found for the selected patient.";
+                diagnosisInfo.style.color = '#ff6347';
+            } else {
+                const errorText = await response.text();
+                diagnosisInfo.textContent = `Error: ${errorText}`;
+                diagnosisInfo.style.color = '#ff6347';
             }
+        } catch (error) {
+            console.error("Error fetching diagnosis:", error);
+            diagnosisInfo.textContent = "An error occurred while fetching the diagnosis.";
+            diagnosisInfo.style.color = '#ff6347';
+        }
+    }
+
+    // Create treatment
+    async function createTreatment() {
+        const iddichVu = document.getElementById('iddichVu').value;
+        const idkham = document.getElementById('idkham').value;
+        const iddungCu = document.getElementById('iddungCu').value;
+        const soLuong = document.getElementById('soLuong').value;
+
+        const message = document.getElementById('message');
+
+        if (!iddichVu || !idkham || !iddungCu || !soLuong) {
+            message.textContent = 'Please fill in all fields before creating the treatment.';
+            return;
         }
 
-        async function createTreatment() {
-            const formData = {
-                IddichVu: document.getElementById('iddichVu').value,
-                Idkham: document.getElementById('idkham').value,
-                IddungCu: document.getElementById('iddungCu').value,
-                SoLuong: document.getElementById('soLuong').value
-            };
+        const formData = {
+            IddichVu: iddichVu,
+            Idkham: idkham,
+            IddungCu: iddungCu,
+            SoLuong: soLuong
+        };
 
-            try {
-                const response = await fetch('/DieuTri/api/PostDieuTri', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
+    try {
+        const response = await fetch('/DieuTri/api/PostDieuTri', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
 
-                const message = document.getElementById('message');
-                if (response.ok) {
-                    const data = await response.json();
-                    const hoaDonId = data.hoaDonId;
-                    console.log("API response data:", data);
-                     // alert("Tạo Điều trị thành công!");
-                    const createPrescription = confirm("Treatment created successfully! Do you want to create a prescription?");
-                    if (createPrescription) {
-                        window.location.href = '@Url.Action("Create", "DonThuoc")'; 
-                    } else {
-                        window.location.href = `@Url.Action("ThanhToan", "HoaDon")?hoaDonId=${hoaDonId}`;
-
-                    }
-                } else {
-                    const errorText = await response.text();
-                    message.textContent = `Error: ${errorText}`;
-                }
-            } catch (error) {
-                console.error("Error creating treatment:", error);
-                document.getElementById("message").textContent = "An error occurred while creating the treatment.";
+        if (response.ok) {
+            const data = await response.json();
+            const hoaDonId = data.hoaDonId;
+            const createPrescription = confirm("Tạo Điều Trị Thành Công! bạn Có Muốn Tiếp Tục Tạo Đơn Thuốc Không?");
+            if (createPrescription) {
+                window.location.href = '/DonThuoc/Create';
+            } else {
+                window.location.href = `/HoaDon/ThanhToan?hoaDonId=${hoaDonId}`;
             }
+        } else {
+            const errorText = await response.text();
+            message.textContent = `Error: ${errorText}`;
         }
+    } catch (error) {
+        console.error("Error creating treatment:", error);
+        message.textContent = "An error occurred while creating the treatment.";
+    }
+}
 
     </script>
 }
+<style>
+    /* Reset & Typography */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #74ebd5, #acb6e5);
+        min-height: 100vh;
+        display: flex; /* Dùng flexbox để căn giữa */
+        justify-content: center; /* Căn giữa ngang */
+        align-items: center; /* Căn giữa dọc */
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+        color: #ffffff;
+        margin-bottom: 30px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Form Container */
+    .form-container {
+        background: #ffffff;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 700px;
+    }
+
+    /* Form Groups */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #333333;
+        margin-bottom: 10px;
+    }
+
+    .form-group select,
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background: #f9f9f9;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .form-group select:hover,
+    .form-group input:hover {
+        border-color: #74c0fc;
+        background: #ffffff;
+    }
+
+    .form-group select:focus,
+    .form-group input:focus {
+        border-color: #1c7ed6;
+        box-shadow: 0 0 8px rgba(28, 126, 214, 0.4);
+    }
+
+    /* Diagnosis Info */
+    .diagnosis-info {
+        font-size: 0.9rem;
+        color: #495057;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 10px;
+        text-align: left;
+    }
+
+    /* Button */
+    .btn-submit {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #1e90ff, #3742fa);
+        color: #ffffff;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #3742fa, #1e90ff);
+        box-shadow: 0 8px 15px rgba(30, 144, 255, 0.3);
+    }
+
+    /* Message */
+    .message {
+        margin-top: 20px;
+        font-size: 1rem;
+        color: #d63031;
+        text-align: center;
+        font-weight: 500;
+    }
+    .form-title{
+        color: #4a90e2;
+        margin-top:20px;
+    }
+    /* Responsive Design */
+    @Model (max-width: 768px) {
+        .form-container {
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>

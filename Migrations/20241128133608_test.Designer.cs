@@ -12,8 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241127101607_connect")]
-    partial class connect
+    [Migration("20241128133608_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,9 +33,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnName("IdBenhNhan");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdbenhNhan"));
-
-                    b.Property<int?>("ChanDoanIdchanDoan")
-                        .HasColumnType("int");
 
                     b.Property<string>("DiaChi")
                         .HasMaxLength(200)
@@ -77,7 +74,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.HasKey("IdbenhNhan");
 
-                    b.HasIndex("ChanDoanIdchanDoan");
+                    b.HasIndex("IdChanDoan");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -220,6 +217,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnName("IdDichVu");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IddichVu"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal>("DonGia")
                         .HasColumnType("decimal(18,2)");
@@ -615,7 +616,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.ChanDoan", "ChanDoan")
                         .WithMany()
-                        .HasForeignKey("ChanDoanIdchanDoan");
+                        .HasForeignKey("IdChanDoan");
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.TaiKhoan", "TaiKhoan")
                         .WithOne("BenhNhan")

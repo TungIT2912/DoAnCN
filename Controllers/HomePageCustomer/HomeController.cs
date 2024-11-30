@@ -22,16 +22,24 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // GET: Home
-        public async Task<IActionResult> Index()
-        {
-            var username = GetLoggedInUsername();
-            ViewBag.Username = username;
-            int Experienced = 10;
-            //var qlnhaKhoaContext = _context.NhanViens.Where(n => Convert.ToInt16(n.KinhNghiem) > Experienced).Take(4);
-            var qlnhaKhoaContext = _context.NhanViens.Where(n => n.Ten != null);
-            return View(await qlnhaKhoaContext.ToListAsync());
-        }
-        
+public async Task<IActionResult> Index()
+{
+    var username = GetLoggedInUsername();
+    ViewBag.Username = username;
+    int Experienced = 10;
+
+    var qlnhaKhoaContext = _context.NhanViens.Where(n => n.Ten != null);
+
+    int nhanViensCount = await _context.NhanViens.CountAsync();
+        int khachHangCount = await _context.HoaDons.CountAsync();
+
+
+    ViewBag.NhanViensCount = nhanViensCount;
+    ViewBag.KhachHangCount = khachHangCount;
+
+    return View(await qlnhaKhoaContext.ToListAsync());
+}
+
         private string GetLoggedInUsername()
         {
             if (Request.Cookies.TryGetValue("jwt_token", out string token))
