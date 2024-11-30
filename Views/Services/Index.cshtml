@@ -144,7 +144,7 @@
                     <div class="inner-box">
                         <span class="icon @randomIconClass"></span> 
                         <h5>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#serviceModal-@service.IddichVu">
+                           <a href="@Url.Action("ServicesDetail", "Services", new { id = service.IddichVu })">
                                 @service.TenDichVu
                             </a>
                         </h5>
@@ -331,8 +331,7 @@
                             <th>Thứ 4</th>
                             <th>Thứ 5</th>
                             <th>Thứ 6</th>
-                            <th>Thứ 7</th>
-                            <th>CN</th>
+                    
                         </tr>
                     </thead>
 
