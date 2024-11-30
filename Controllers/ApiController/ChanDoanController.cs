@@ -251,7 +251,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 DiaChi = bn.DiaChi,
                 TrieuChung = bn.TrieuChung,
                 IdChanDoan = bn.IdChanDoan,
-                NgayKhamDau = bn.NgayKhamDau
+                NgayKhamDau = bn.NgayKhamDau.ToString()
             }).ToList();
 
             return Ok(benhNhanDTOs);

@@ -21,6 +21,7 @@ namespace WebQuanLyNhaKhoa.Data
 
         public DateTime NgayKham { get; set; }
 
+        public DateTime time {  get; set; }
 
 
         // Quan hệ 1-n với DieuTri, DonThuoc, HoaDon

@@ -93,6 +93,16 @@
                                             </div>
                                         </li>
 
+                                        <li class="zf-tempFrmWrapper zf-large">
+                                            <label class="zf-labelName">Chuyên ngành <em class="zf-important">*</em></label>
+                                            <div class="zf-tempContDiv">
+                                                <select asp-for="IddichVu" id="IddichVu" class="form-control" asp-items="ViewBag.DichVuList" required>
+                                                    <option value="" selected>- Chọn chuyên ngành -</option>
+                                                </select>
+                                                <span asp-validation-for="IddichVu" class="text-danger"></span>
+                                            </div>
+                                        </li>
+
                                         <!-- Địa chỉ -->
                                         <li class="zf-tempFrmWrapper zf-large">
                                             <label class="zf-labelName">Địa chỉ <em class="zf-important">*</em></label>
@@ -185,6 +195,7 @@
             formData.append('Sdt', document.getElementById('Sdt').value);
             formData.append('MaCv', document.getElementById('MaCv').value);
             formData.append('KinhNghiem', document.getElementById('KinhNghiem').value);
+            formData.append('IddichVu', document.getElementById('IddichVu').value);
             formData.append('Diachi', document.getElementById('Diachi').value);
             formData.append('Gioi', document.querySelector('input[name="Gioi"]:checked').value === 'true');
             formData.append('Email', document.getElementById('Email').value);

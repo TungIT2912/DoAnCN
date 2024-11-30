@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class connect : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,6 +81,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     TenDichVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DonViTinh = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DonGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Hinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
@@ -125,40 +126,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                         column: x => x.UserId,
                         principalTable: "TaiKhoans",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NhanViens",
-                columns: table => new
-                {
-                    MaNv = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MaCv = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    KinhNghiem = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Gioi = table.Column<bool>(type: "bit", nullable: true),
-                    Diachi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Hinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Mota = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NhanViens", x => x.MaNv);
-                    table.ForeignKey(
-                        name: "FK_NhanViens_ChucVus_MaCv",
-                        column: x => x.MaCv,
-                        principalTable: "ChucVus",
-                        principalColumn: "MaCV",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_NhanViens_TaiKhoans_UserId",
-                        column: x => x.UserId,
-                        principalTable: "TaiKhoans",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,6 +183,47 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NhanViens",
+                columns: table => new
+                {
+                    MaNv = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ten = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MaCv = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    KinhNghiem = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    IddichVu = table.Column<int>(type: "int", nullable: false),
+                    Gioi = table.Column<bool>(type: "bit", nullable: true),
+                    Diachi = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Hinh = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Mota = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NhanViens", x => x.MaNv);
+                    table.ForeignKey(
+                        name: "FK_NhanViens_ChucVus_MaCv",
+                        column: x => x.MaCv,
+                        principalTable: "ChucVus",
+                        principalColumn: "MaCV",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NhanViens_DichVus_IddichVu",
+                        column: x => x.IddichVu,
+                        principalTable: "DichVus",
+                        principalColumn: "IdDichVu",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NhanViens_TaiKhoans_UserId",
+                        column: x => x.UserId,
+                        principalTable: "TaiKhoans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DanhSachKhams",
                 columns: table => new
                 {
@@ -223,7 +231,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdbenhNhan = table.Column<int>(type: "int", nullable: false),
                     MaNv = table.Column<int>(type: "int", nullable: true),
-                    NgayKham = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    NgayKham = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    time = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -269,19 +278,19 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     IdchiTiet = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IddonThuoc = table.Column<int>(type: "int", nullable: false),
+                    IddonThuoc = table.Column<int>(type: "int", nullable: true),
                     IdhoaDon = table.Column<int>(type: "int", nullable: false),
-                    IddieuTri = table.Column<int>(type: "int", nullable: false),
+                    IddieuTri = table.Column<int>(type: "int", nullable: true),
                     Idkham = table.Column<int>(type: "int", nullable: true),
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DaThanhToan = table.Column<bool>(type: "bit", nullable: false),
-                    TenDon = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DaThanhToan = table.Column<bool>(type: "bit", nullable: true),
+                    TenDon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -347,8 +356,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     ThanhGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NgayLapDt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ChiTietHoaDonId = table.Column<int>(type: "int", nullable: true),
-                    DonThuocIddonThuoc = table.Column<int>(type: "int", nullable: true)
+                    ChiTietHoaDonId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -364,11 +372,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                         principalTable: "DanhSachKhams",
                         principalColumn: "IdKham",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DonThuocs_DonThuocs_DonThuocIddonThuoc",
-                        column: x => x.DonThuocIddonThuoc,
-                        principalTable: "DonThuocs",
-                        principalColumn: "IddonThuoc");
                     table.ForeignKey(
                         name: "FK_DonThuocs_Khos_IddungCu",
                         column: x => x.IddungCu,
@@ -480,11 +483,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "ChiTietHoaDonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DonThuocs_DonThuocIddonThuoc",
-                table: "DonThuocs",
-                column: "DonThuocIddonThuoc");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DonThuocs_IddungCu",
                 table: "DonThuocs",
                 column: "IddungCu");
@@ -523,6 +521,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 name: "IX_LichSuNhapXuats_IdsanPham",
                 table: "LichSuNhapXuats",
                 column: "IdsanPham");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NhanViens_IddichVu",
+                table: "NhanViens",
+                column: "IddichVu");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NhanViens_MaCv",

@@ -45,7 +45,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 NamSinh = nv.NamSinh,
                 Sdt = nv.Sdt,
                 DiaChi = nv.DiaChi,
-                NgayKhamDau = nv.NgayKhamDau,
+                NgayKhamDau = nv.NgayKhamDau.ToString(),
             }).ToList();
 
             return Ok(new { data = benhNhanDTOs, totalItems });
@@ -76,7 +76,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 NamSinh= benhNhan.NamSinh,
                 Sdt = benhNhan.Sdt,
                 DiaChi = benhNhan.DiaChi,
-                NgayKhamDau = benhNhan.NgayKhamDau
+                NgayKhamDau = benhNhan.NgayKhamDau.ToString()
             };
             return View(benhNhanDTO);
         }

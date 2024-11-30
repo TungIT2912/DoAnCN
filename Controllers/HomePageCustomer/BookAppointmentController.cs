@@ -37,7 +37,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                NamSinh = nv.NamSinh,
                Sdt = nv.Sdt,
                DiaChi = nv.DiaChi,
-               NgayKhamDau = nv.NgayKhamDau,
+               NgayKhamDau = nv.NgayKhamDau.ToString(),
            }).ToList();
 
            return Ok(benhNhanDTOs);
@@ -47,15 +47,13 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
        {
                 if (!string.IsNullOrEmpty(time))
             {
-                // Convert the time range to a specific DateTime if needed
-                // Example: Assume the date is today
+              
                 var timeParts = time.Split('-');
                 var startTime = DateTime.Parse(timeParts[0].Trim());
-                ViewBag.Time = startTime.ToString("yyyy-MM-ddTHH:mm"); // For datetime-local format
+                ViewBag.Time = startTime.ToString("yyyy-MM-ddTHH:mm"); 
             }
             return View();
        }
-       // POST: api/BenhNhan
     //    [Authorize(Roles = "Admin,Staff")]
        [HttpPost("api/PostBenhNhan")]
        public async Task<ActionResult<BenhNhan>> PostBenhNhan([FromBody] BenhNhan benhNhan)

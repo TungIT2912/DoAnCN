@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class NhanViensController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -69,6 +69,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         public IActionResult Create()
         {
             ViewBag.ChucVuList = new SelectList(_context.ChucVus, "MaCv", "TenCv");
+            ViewBag.DichVuList = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
             ViewBag.Roles = new SelectList(new[] { "Admin", "Staff" });
             return View();
         }
@@ -152,6 +153,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Sdt = dto.Sdt,
                 MaCv = dto.MaCv,
                 KinhNghiem = dto.KinhNghiem,
+                IddichVu = dto.IddichVu,
                 Diachi = dto.Diachi,
                 Gioi = dto.Gioi,
                 Hinh = dto.Hinh,
@@ -171,7 +173,6 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                     Ten = newNhanVien.Ten,
                     Sdt = newNhanVien.Sdt,
                     MaCv = newNhanVien.MaCv,
-                    
                     KinhNghiem = newNhanVien.KinhNghiem,
                     Diachi = newNhanVien.Diachi,
                     Gioi = newNhanVien.Gioi,
@@ -190,20 +191,18 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
         private async Task<string> SaveImage(IFormFile hinh)
         {
-            // Set the path for saving the image
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(hinh.FileName)}"; // Keep the original extension
+           
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(hinh.FileName)}"; 
             var savePath = Path.Combine("wwwroot/images", fileName);
 
-            // Create the directory if it does not exist
             Directory.CreateDirectory(Path.GetDirectoryName(savePath)!);
 
-            // Save the image to the specified path
             using (var fileStream = new FileStream(savePath, FileMode.Create))
             {
                 await hinh.CopyToAsync(fileStream);
             }
 
-            return "/images/" + fileName; // Return the relative path as a string
+            return "/images/" + fileName; 
         }
 
 
@@ -257,6 +256,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
             var nhanVien = await _context.NhanViens
                         .Include(n => n.TaiKhoan)
+                        .Include(n => n.DichVu)
                         .FirstOrDefaultAsync(n => n.MaNv == id);
             if (nhanVien == null)
             {
@@ -271,6 +271,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Sdt = nhanVien.Sdt,
                 MaCv = nhanVien.MaCv,
                 KinhNghiem = nhanVien.KinhNghiem,
+                IddichVu = nhanVien.IddichVu,
                 Diachi = nhanVien.Diachi,
                 Gioi = nhanVien.Gioi,
                 Hinh = nhanVien.Hinh,
@@ -280,6 +281,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Mota = nhanVien.Mota,
             };
             ViewBag.ChucVuList = new SelectList(_context.ChucVus, "MaCv", "TenCv");
+            ViewBag.DichVuList = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
             ViewBag.Roles = new SelectList(new[] { "Admin", "Customer" });
             return View(nhanVienDTO);
         }
@@ -315,6 +317,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             nhanVien.Sdt = dto.Sdt;
             nhanVien.MaCv = dto.MaCv;
             nhanVien.KinhNghiem = dto.KinhNghiem;
+            nhanVien.IddichVu = dto.IddichVu;
             nhanVien.Diachi = dto.Diachi;
             nhanVien.Gioi = dto.Gioi;
             nhanVien.Hinh = dto.Hinh;
@@ -358,6 +361,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
             var nhanVien = await _context.NhanViens
                         .Include(n => n.ChucVu)
+                        .Include(n => n.DichVu)
                         .Include(n => n.TaiKhoan)
                         .FirstOrDefaultAsync(n => n.MaNv == id);
             if (nhanVien == null)
@@ -373,6 +377,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 Sdt = nhanVien.Sdt,
                 TenCv = nhanVien.ChucVu.TenCv,
                 KinhNghiem = nhanVien.KinhNghiem,
+                TenChuyenNghanh = nhanVien.DichVu.TenDichVu,
                 Diachi = nhanVien.Diachi,
                 Gioi = nhanVien.Gioi,
                 Hinh = nhanVien.Hinh,
@@ -383,6 +388,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             };
             ViewBag.ChucVuList = new SelectList(_context.ChucVus, "MaCv", "TenCv");
             ViewBag.Roles = new SelectList(new[] { "Admin", "Customer" });
+            ViewBag.DichVuList = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
             return View(nhanVienDTO);
         }
 

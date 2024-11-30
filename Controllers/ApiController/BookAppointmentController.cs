@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.DTO;
@@ -40,7 +41,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 Sdt = nv.Sdt,
                 DiaChi = nv.DiaChi,
                 EmailBn = nv.EmailBn,
-                NgayKhamDau = nv.NgayKhamDau,
+                NgayKhamDau = nv.NgayKhamDau.ToString(),
             }).ToList();
 
             return Ok(benhNhanDTOs);
@@ -49,7 +50,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         [HttpGet("Create")]
         public IActionResult Create()
         {
-
+            ViewBag.DichVuList = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
             return View();
         }
         // POST: api/BenhNhan
@@ -62,7 +63,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 return BadRequest(ModelState);
             }
 
-            
+
+
             var newBenhNhan = new BenhNhan
             {
                 HoTen = benhNhan.HoTen,
@@ -70,30 +72,25 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 NamSinh = benhNhan.NamSinh,
                 Sdt = benhNhan.Sdt,
                 DiaChi = benhNhan.DiaChi,
-                
                 TrieuChung = benhNhan.TrieuChung,
-                NgayKhamDau = benhNhan.NgayKhamDau,
+                NgayKhamDau = DateTime.Parse(benhNhan.NgayKhamDau),
                 EmailBn = benhNhan.EmailBn
             };
 
-            // Thêm bệnh nhân mới vào DbContext
             _context.BenhNhans.Add(newBenhNhan);
 
-            _context.BenhNhans.Add(newBenhNhan); 
+            //_context.BenhNhans.Add(newBenhNhan); 
             var saveResult = await _context.SaveChangesAsync();
 
-            // Nếu lưu thành công, tiếp tục lưu lịch khám
             if (saveResult > 0)
             {
-                // Tạo một lịch khám cho bệnh nhân
                 var newDanhSachKham = new DanhSachKham
                 {
                     IdbenhNhan = newBenhNhan.IdbenhNhan,
-                    NgayKham = benhNhan.NgayKhamDau ?? DateTime.Now, 
-                    MaNv = null 
+                    NgayKham = DateTime.Parse(benhNhan.NgayKhamDau), 
+                    MaNv = benhNhan.MaNv,
                 };
 
-                // Thêm lịch khám vào bảng DanhSachKham
                 _context.DanhSachKhams.Add(newDanhSachKham);
 
                 // Lưu lịch khám vào cơ sở dữ liệu
@@ -111,7 +108,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         DiaChi = newBenhNhan.DiaChi,
                         EmailBn = newBenhNhan.EmailBn,
                         TrieuChung = newBenhNhan.TrieuChung,
-                        NgayKhamDau = newBenhNhan.NgayKhamDau
+                        NgayKhamDau = newBenhNhan.NgayKhamDau.ToString()
                     };
 
                     return CreatedAtAction(nameof(GetBenhhNhans), new { id = newBenhNhan.IdbenhNhan }, createdBenhNhanDTO);
@@ -166,5 +163,75 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         //    return Ok(benhNhanDTOs);
         //}
 
+        [HttpPost("getAvailableSlots")]
+        public IActionResult GetAvailableSlots([FromBody] BenhNhanDTO request)
+        {
+            DateTime selectedDate = DateTime.Parse(request.NgayKhamDau);
+            var availableSlots = GenerateTimeSlots(selectedDate);
+            var doctorId = request.MaNv;
+            var existingAppointments = _context.DanhSachKhams
+                                       .Where(a => a.MaNv == doctorId && a.NgayKham.Date == selectedDate.Date)
+                                       .GroupBy(a => a.time)
+                                       .Select(g => new { Time = g.Key, Count = g.Count() })
+                                       .ToList();
+
+            List<string> disabledSlots = new List<string>();
+
+            foreach (var slot in availableSlots.ToList())
+            {
+                var slotString = slot.ToString("HH:mm"); 
+
+             
+                if (existingAppointments.Any(a => a.Time.ToString("HH:mm") == slotString && a.Count >= 3))
+                {
+                 
+                    disabledSlots.Add(slotString);
+                }
+            }
+
+            return Ok(new
+            {
+                availableSlots = availableSlots
+                    .Where(slot => !disabledSlots.Contains(slot.ToString("HH:mm"))) 
+                    .Select(slot => slot.ToString("HH:mm")),
+                 disabledSlots = disabledSlots
+            });
+        }
+
+
+        [HttpPost("checkAvailability")]
+        public IActionResult CheckAvailability([FromBody] BenhNhanDTO request)
+        {
+            DateTime selectedDate = DateTime.Parse(request.NgayKhamDau);
+            DateTime selectedTime = DateTime.Parse(request.NgayKhamDau + " " + request.time);
+
+            var existingAppointments = _context.DanhSachKhams
+                .Where(a => a.NgayKham.Date == selectedDate.Date && a.time == selectedTime)
+                .ToList();
+
+            if (existingAppointments.Count >= 3)
+            {
+                return BadRequest("Khung giờ khám này đã kín");
+            }
+
+            return Ok("Khung giờ này có thể chọn.");
+        }
+
+      
+        private List<DateTime> GenerateTimeSlots(DateTime selectedDate)
+        {
+            var slots = new List<DateTime>();
+            var start = selectedDate.AddHours(8);  
+            var end = selectedDate.AddHours(18);   
+
+            while (start < end)
+            {
+                slots.Add(start);
+                start = start.AddHours(1); 
+            }
+
+            return slots;
+        }
     }
 }
+

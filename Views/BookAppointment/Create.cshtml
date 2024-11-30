@@ -33,7 +33,6 @@
 
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5">
-      <!-- Second Form (Will be auto-populated with data from the first form) -->
                                 <form id="createBenhNhan" class="row g-3 w-100" method="post" enctype="multipart/form-data">
                                     <div class="col-12 col-sm-6">
                                         <label asp-for="HoTen" class="control-label">Họ tên</label>
@@ -77,18 +76,44 @@
                                         <span asp-validation-for="DiaChi" class="text-danger"></span>
                                     </div>
 
-                                                        <div class="col-12 col-sm-6" style=" width: 100%;">
-                                <div class="date" id="date" data-target-input="nearest">
-                                    <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
-                                    <input asp-for="NgayKhamDau" type="datetime-local"
-                                        class="form-control border-0 datetimepicker-input"
-                                        placeholder="Choose Date"
-                                        data-target="#date" data-toggle="datetimepicker"
-                                        style="height: 55px;"
-                                        value="@ViewBag.Time">
-                                    <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
-                                </div>
-                            </div>
+                                    <div class="col-12 col-sm-6" style=" width: 100%;">
+                                        <label asp-for="IddichVu" class="control-label">Chọn chuyên nghành</label>
+                                    <select asp-for="IddichVu" id="IddichVu" class="form-control" asp-items="ViewBag.DichVuList" required>
+                                            <option value="" selected>- Chọn chuyên ngành -</option>
+                                        </select>
+                                        <span asp-validation-for="IddichVu" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6" style=" width: 100%;">
+                                        <label asp-for="MaNv" class="control-label">Các bác sĩ chuyên ngành</label>
+                                        <select asp-for="MaNv" id="MaNv" name="MaNv" required>
+                                            <option value="">Chọn bác sĩ</option>
+                                        </select>
+                                        <span asp-validation-for="MaNv" class="text-danger"></span>
+                                    </div>
+
+
+                                    <div class="col-12 col-sm-6" style=" width: 100%;">
+                                        <div class="date" id="date" data-target-input="nearest">
+                                            <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                                <input asp-for="NgayKhamDau" type="date" id="bookingDate"
+                                                class="form-control border-0 datetimepicker-input"
+                                                placeholder="Choose Date"
+                                                data-target="#date" data-toggle="datetimepicker"
+                                                style="height: 55px;"
+                                                value="@ViewBag.Time">
+                                            <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6" style=" width: 100%;">
+                                        <div class="date" id="date" data-target-input="nearest">
+                                            <label asp-for="time" class="control-label">Ca khám</label>
+                                                <select id="bookingTime" name="time" required>
+                                                    <option value="">Chọn ca khám</option>
+                                                </select>
+                                            <span asp-validation-for="time" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
                                     <div class="col-12 col-sm-6">
                                         <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
@@ -130,6 +155,72 @@
 </style>
 @section Scripts {
     <script>
+        $(document).ready(function () {
+            
+            $('#IddichVu').change(function () {
+                var dichVuId = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("GetNhanViensByDichVu", "BookAppointment")',
+                    type: 'GET',
+                    data: { dichVuId: dichVuId }, 
+                    success: function (data) {
+                        $('#MaNv').empty();
+                        $('#MaNv').append('<option value="">Chọn bác sĩ</option>');
+
+                        $.each(data, function (index, nhanVien) {
+                            $('#MaNv').append('<option value="' + nhanVien.Id + '">' + nhanVien.Ten + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+        document.getElementById('bookingDate').addEventListener('change', async function () {
+            const selectedDate = this.value;
+
+            try {
+                const response = await fetch('/api/BookAppointment/getAvailableSlots', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ NgayKham: selectedDate })
+                });
+
+                const result = await response.json();
+
+                const timeSelect = document.getElementById('bookingTime');
+
+                timeSelect.innerHTML = '<option value="">Chọn ca khám</option>';
+
+                result.availableSlots.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.text = time;
+                    timeSelect.appendChild(option);
+                });
+
+                    
+                result.disabledSlots.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.text = `${time} - Ca này đã kín`;
+                    option.disabled = true;  
+                    timeSelect.appendChild(option);
+                });
+
+                if (response.ok) {
+                    document.getElementById('availabilityMessage').innerHTML = 'Chọn ca khám của bạn.';
+                } else {
+                    document.getElementById('availabilityMessage').innerHTML = 'Không còn ca nào.';
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while fetching the available time slots.");
+            }
+        });
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById('createBenhNhan');
             if (form) {
@@ -139,12 +230,13 @@
                 const benhNhanData = {
                     HoTen: document.querySelector("[name='HoTen']").value,
                     Gioi: document.querySelector("[name='gender']:checked").value === "True",
-                    NamSinh: document.querySelector("[name='NamSinh']").value,  
+                    NamSinh: document.querySelector("[name='NamSinh']").value, 
                     Sdt: document.querySelector("[name='Sdt']").value,
                     DiaChi: document.querySelector("[name='DiaChi']").value,
                     EmailBn: document.querySelector("[name='EmailBn']").value,
                     TrieuChung: document.querySelector("[name='TrieuChung']").value,
-                    NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value
+                    NgayKhamDau: document.querySelector("[name='NgayKhamDau']").value,
+                    Time: document.querySelector("[name='time']").value
                 };
 
 
