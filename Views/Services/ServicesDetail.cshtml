@@ -60,8 +60,10 @@
                         <h5 class="text-muted">Đơn vị tính:</h5>
                         <p class="fs-5">@Model.Service.DonViTinh</p>
                     </div>
-                    <p><strong>Giá:</strong> @Model.Service.DonGia.ToString("N0") VNĐ</p>
-
+                    <div class="mb-4">
+                        <h5 class="text-muted">Giá:</h5>
+                        <p class="fs-5">@Model.Service.DonGia.ToString("N0") VNĐ</p>
+                    </div>
                     <div>
                         <h5 class="text-muted">Mô tả:</h5>
                         <p class="fs-5">@Model.Service.Description</p>
@@ -72,7 +74,7 @@
 
         <!-- Doctors List Section -->
         <div class="doctors-section mt-5">
-            <h3 class="text-primary">Doctors for this service</h3>
+            <h3 class="text-primary">Các bác sĩ chuyên về dịch vụ này</h3>
             <div class="row">
                 @foreach (var doctor in Model.Doctors)
                 {
