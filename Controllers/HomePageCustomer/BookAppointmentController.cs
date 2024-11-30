@@ -6,7 +6,8 @@ using WebQuanLyNhaKhoa.DTO;
 
 namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
-   [Route("customer/controller")]
+[Route("BookAppointment")]
+
    public class BookAppointmentController : Controller
    {
        private readonly ApplicationDbContext _context;
@@ -42,19 +43,19 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 
            return Ok(benhNhanDTOs);
        }
-       [HttpGet("Create")]
-       public IActionResult Create(string time)
-       {
-                if (!string.IsNullOrEmpty(time))
-            {
-                // Convert the time range to a specific DateTime if needed
-                // Example: Assume the date is today
-                var timeParts = time.Split('-');
-                var startTime = DateTime.Parse(timeParts[0].Trim());
-                ViewBag.Time = startTime.ToString("yyyy-MM-ddTHH:mm"); // For datetime-local format
-            }
-            return View();
-       }
+    //    [HttpGet("Create")]
+    //    public IActionResult Create(string time)
+    //    {
+    //             if (!string.IsNullOrEmpty(time))
+    //         {
+    //             // Convert the time range to a specific DateTime if needed
+    //             // Example: Assume the date is today
+    //             var timeParts = time.Split('-');
+    //             var startTime = DateTime.Parse(timeParts[0].Trim());
+    //             ViewBag.Time = startTime.ToString("yyyy-MM-ddTHH:mm"); // For datetime-local format
+    //         }
+    //         return View();
+    //    }
        // POST: api/BenhNhan
     //    [Authorize(Roles = "Admin,Staff")]
        [HttpPost("api/PostBenhNhan")]
