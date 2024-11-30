@@ -26,9 +26,9 @@ namespace WebQuanLyNhaKhoa.Data
 		public DateTime? NgayLapDt { get; set; }
         [ForeignKey("ChiTietHoaDon")]
         public int? ChiTietHoaDonId { get; set; } 
-                public ICollection<DonThuoc>? DonThuocs { get; set; }
+        //public ICollection<DonThuoc>? DonThuocs { get; set; }
 
-public virtual ChiTietHoaDon? ChiTietHoaDon { get; set; }
+		public virtual ChiTietHoaDon? ChiTietHoaDon { get; set; }
         public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
 		public virtual Kho Kho { get; set; } = null!;

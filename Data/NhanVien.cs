@@ -28,6 +28,9 @@ namespace WebQuanLyNhaKhoa.Data
         public int  UserId { get; set; } 
         [StringLength(200)]
 		public string? KinhNghiem { get; set; }
+        [ForeignKey("DichVu")]
+        [Required]
+        public int IddichVu { get; set; }
         public bool? Gioi { get; set; }
         [StringLength(200)]
         public string? Diachi { get; set; }
@@ -41,6 +44,7 @@ namespace WebQuanLyNhaKhoa.Data
         public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
         public virtual TaiKhoan TaiKhoan { get; set; } = null!;
         public virtual ChucVu ChucVu { get; set; } = null!;
+        public virtual DichVu DichVu { get; set; } = null!;
         public virtual ICollection<UnansweredQuestion> UnansweredQuestions { get; set; } = new List<UnansweredQuestion>();
 
         internal static object Select(Func<object, NhanVienDTO> value)

@@ -135,7 +135,7 @@
                                 <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
                                 <p>@DateTime.Now.ToString("dd MMMM yyyy")</p>
                                 <p>VAT: DK888-777 </p>
-                                <p>Total Amount: @item.TongTien.ToString("C")</p>
+                                <p>Total Amount:  @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TongTien.Value) : "N/A")</p>
                                 <p>Email khách hàng: @item.EmailBn</p>
                             </div>
                                     
@@ -164,9 +164,9 @@
                                                 <td class="text-center">@index</td>
                                                 <td>@item.TenDon</td>
                                                 <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                <td class="text-right">@item.TienThuoc.ToString("C")</td>
-                                                <td class="text-right">@item.TienDieuTri.ToString("C")</td>
-                                                <td class="text-right">@item.TongTien.ToString("C")</td>
+                                                <td class="text-right"> @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
+                                                <td class="text-right"> @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienDieuTri.Value) : "N/A")</td>
+                                                <td class="text-right"> @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TongTien.Value) : "N/A")</td>
                                             </tr>
                                             index++;
                                         }
