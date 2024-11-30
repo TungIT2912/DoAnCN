@@ -53,6 +53,18 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             ViewBag.DichVuList = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
             return View();
         }
+
+        [HttpGet("GetNhanViensByDichVu")]
+        public IActionResult GetNhanViensByDichVu(int dichVuId)
+        {
+            var nhanViens = _context.NhanViens
+                                   .Where(nv => nv.IddichVu == dichVuId)
+                                   .Select(nv => new { Id = nv.MaNv, Ten = nv.Ten })
+                                   .ToList();
+
+            return Json(nhanViens);
+        }
+
         // POST: api/BenhNhan
         //[Authorize(Roles = "Admin,Staff")]
         [HttpPost("api/PostBenhNhan")]
@@ -89,6 +101,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                     IdbenhNhan = newBenhNhan.IdbenhNhan,
                     NgayKham = DateTime.Parse(benhNhan.NgayKhamDau), 
                     MaNv = benhNhan.MaNv,
+                    time = DateTime.Parse(benhNhan.time),
                 };
 
                 _context.DanhSachKhams.Add(newDanhSachKham);
@@ -163,38 +176,47 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         //    return Ok(benhNhanDTOs);
         //}
 
-        [HttpPost("getAvailableSlots")]
-        public IActionResult GetAvailableSlots([FromBody] BenhNhanDTO request)
+        [HttpGet("getAvailableSlots")]
+        public IActionResult GetAvailableSlots([FromQuery] string ngayKham, [FromQuery] int maNv)
         {
-            DateTime selectedDate = DateTime.Parse(request.NgayKhamDau);
-            var availableSlots = GenerateTimeSlots(selectedDate);
-            var doctorId = request.MaNv;
+            if (!DateTime.TryParse(ngayKham, out DateTime selectedDate))
+            {
+                return BadRequest("Invalid date format.");
+            }
+            if (selectedDate.DayOfWeek == DayOfWeek.Saturday || selectedDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                return BadRequest("Dịch vụ chúng tôi không hoạt động vào thứ 7 và chủ nhật.");
+            }
+
+            var availableSlots = GenerateTimeSlots(selectedDate); 
             var existingAppointments = _context.DanhSachKhams
-                                       .Where(a => a.MaNv == doctorId && a.NgayKham.Date == selectedDate.Date)
-                                       .GroupBy(a => a.time)
-                                       .Select(g => new { Time = g.Key, Count = g.Count() })
-                                       .ToList();
+                .Where(a => a.MaNv == maNv && a.NgayKham.Date == selectedDate.Date  )
+                .GroupBy(a => a.time)
+                .Select(g => new { Time = g.Key, Count = g.Count() })
+                .ToList();
 
             List<string> disabledSlots = new List<string>();
 
             foreach (var slot in availableSlots.ToList())
             {
-                var slotString = slot.ToString("HH:mm"); 
-
-             
-                if (existingAppointments.Any(a => a.Time.ToString("HH:mm") == slotString && a.Count >= 3))
+                var timeRange = slot.Split(" - "); 
+                if (timeRange.Length != 2)
                 {
-                 
-                    disabledSlots.Add(slotString);
+                    continue;
+                }
+
+                var startTime = DateTime.Parse(timeRange[0]);
+
+                if (existingAppointments.Any(a => a.Time.TimeOfDay == startTime.TimeOfDay && a.Count >= 2))
+                {
+                    disabledSlots.Add(slot);
                 }
             }
 
             return Ok(new
             {
-                availableSlots = availableSlots
-                    .Where(slot => !disabledSlots.Contains(slot.ToString("HH:mm"))) 
-                    .Select(slot => slot.ToString("HH:mm")),
-                 disabledSlots = disabledSlots
+                availableSlots = availableSlots.Except(disabledSlots),
+                disabledSlots = disabledSlots
             });
         }
 
@@ -203,7 +225,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         public IActionResult CheckAvailability([FromBody] BenhNhanDTO request)
         {
             DateTime selectedDate = DateTime.Parse(request.NgayKhamDau);
-            DateTime selectedTime = DateTime.Parse(request.NgayKhamDau + " " + request.time);
+            DateTime selectedTime = DateTime.Parse(request.time);
 
             var existingAppointments = _context.DanhSachKhams
                 .Where(a => a.NgayKham.Date == selectedDate.Date && a.time == selectedTime)
@@ -217,21 +239,39 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             return Ok("Khung giờ này có thể chọn.");
         }
 
-      
-        private List<DateTime> GenerateTimeSlots(DateTime selectedDate)
-        {
-            var slots = new List<DateTime>();
-            var start = selectedDate.AddHours(8);  
-            var end = selectedDate.AddHours(18);   
 
-            while (start < end)
+        private List<string> GenerateTimeSlots(DateTime selectedDate)
+        {
+            var slots = new List<string>();
+
+            var morningStart = selectedDate.AddHours(8);  
+            var morningEnd = selectedDate.AddHours(11).AddMinutes(30); 
+
+            while (morningStart < morningEnd)
             {
-                slots.Add(start);
-                start = start.AddHours(1); 
+                var nextSlot = morningStart.AddHours(1); 
+                if (nextSlot > morningEnd) break;
+
+                slots.Add($"{morningStart:hh\\:mm tt} - {nextSlot:hh\\:mm tt}");
+                morningStart = nextSlot;
+            }
+
+            var afternoonStart = selectedDate.AddHours(13);
+            var afternoonEnd = selectedDate.AddHours(17); 
+
+            while (afternoonStart < afternoonEnd)
+            {
+                var nextSlot = afternoonStart.AddHours(1); 
+
+                if (nextSlot > afternoonEnd) break; 
+
+                slots.Add($"{afternoonStart:hh\\:mm tt} - {nextSlot:hh\\:mm tt}");
+                afternoonStart = nextSlot;
             }
 
             return slots;
         }
+
     }
 }
 
