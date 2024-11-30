@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class Statics : Controller
     {
         ApplicationDbContext _context;

@@ -15,7 +15,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class LichSuNhapXuatsController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -33,7 +33,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 return BadRequest("Yêu cầu không hợp lệ!");
             }
 
-            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "chatbotnhakhoa-tron-017f313f14d5.json");
+            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "chatbotnhakhoa-tron-5a1ac2452807.json");
             if (!System.IO.File.Exists(credentialPath))
             {
                 return BadRequest($"Không tìm thấy tệp credentials tại: {credentialPath}");
