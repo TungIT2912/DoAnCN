@@ -34,7 +34,7 @@
 
     async function fetchTaiKhoans(page) {
     try {
-            const response = await fetch(`TaiKhoans/api/TaiKhoans?pageNumber=${page}&pageSize=${pageSize}`);
+            const response = await fetch(`/Admin/TaiKhoans/api/TaiKhoans?pageNumber=${page}&pageSize=${pageSize}`);
         if (!response.ok) {
             console.error('Response status:', response.status);
             throw new Error('Network response was not ok');
@@ -59,16 +59,17 @@
             const actionText = tk.isLoocked ? "Bỏ chặn" : "Chặn";
 
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${tk.TenDangNhap}</td>
-                <td>${tk.ChucVu}</td>
-                <td>${tk.Role}</td>
-                    <td>
+                    row.innerHTML = `
+                <td>${tk.TenDangNhap || 'Chưa có tên'}</td>
+                <td>${tk.ChucVu || 'Chưa có chức vụ'}</td>
+                <td>${tk.Role || 'Chưa có role'}</td>
+                <td>
                     <a href="#" class="dropdown-item delete-item" data-id="${tk.Id}" data-islocked="${tk.isLoocked}">
-                            <i class="dw dw-delete"></i> ${actionText}
-                        </a>
-                    </td>
-                `;
+                        <i class="dw dw-delete"></i> ${actionText}
+                    </a>
+                </td>
+            `;
+
             tableBody.appendChild(row);
         });
 

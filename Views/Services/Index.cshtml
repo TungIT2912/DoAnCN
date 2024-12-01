@@ -144,13 +144,13 @@
                     <div class="inner-box">
                         <span class="icon @randomIconClass"></span> 
                         <h5>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#serviceModal-@service.IddichVu">
+                           <a href="@Url.Action("ServicesDetail", "Services", new { id = service.IddichVu })">
                                 @service.TenDichVu
                             </a>
                         </h5>
                         <div class="text">
                             Đơn vị tính: @service.DonViTinh<br />
-                            Giá: @service.DonGia.ToString("N0") VNĐ
+                           Mô tả: @service.Description
                         </div>
                     </div>
                 </div>
@@ -317,292 +317,441 @@
     </table>
 </div>  *@
 
-    <!-- Time Table Section -->
-    <section class="time-table-section">
-        <div class="auto-container">
-            <div class="table-outer">
-                <!-- Doctors Time Table -->
-                <table class="doctors-time-table">
-                    <thead>
-                        <tr> 
-                            <th class="dark">Thời gian biểu</th>
-                            <th>Thứ 2</th>
-                            <th>Thứ 3</th>
-                            <th>Thứ 4</th>
-                            <th>Thứ 5</th>
-                            <th>Thứ 6</th>
-                            <th>Thứ 7</th>
-                            <th>CN</th>
-                        </tr>
-                    </thead>
+<!-- Time Table Section -->
+<section class="time-table-section">
+    <div class="auto-container">
+        <div class="table-outer">
+            <!-- Doctors Time Table -->
+            <table class="doctors-time-table">
+                <thead>
+                    <tr> 
+                        <th class="dark">Thời gian biểu</th>
+                        <th>Thứ 2</th>
+                        <th>Thứ 3</th>
+                        <th>Thứ 4</th>
+                        <th>Thứ 5</th>
+                        <th>Thứ 6</th>
+                    </tr>
+                </thead>
 
-              <tbody>
-    <!-- Table Row 08:00am -->
-    <tr>
-        <th>08:00am</th>
-        <td>
+                <tbody>
+                    <!-- Table Row 08:00am -->
+                    <tr>
+                        <th>08:00am</th>
+                        <td>
+                            <strong> 8:00 am - 9:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                          <td>
+                            <strong> 8:00 am - 9:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                                                <td>
+                            <strong> 8:00 am - 9:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                             <td>
+                            <strong> 8:00 am - 9:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
                         
-            <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="icon"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-    </tr>
 
-    <!-- Table Row 10:00am -->
-    <tr>
-        <th>10:00am</th>
-        <td class="empty"></td>
-        <td>
-                        <strong> 10:00 am - 10:30 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 10:00 am - 10:30 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 10:00 am - 10:30 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-    </tr>
 
-    <!-- Table Row 11:00am -->
-    <tr>
-        <th>11:00am</th>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-    </tr>
+                           <td>
+                            <strong> 8:00 am - 9:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                    </tr>
 
-    <!-- Table Row 11:30am -->
-    <tr>
-        <th>11:30am</th>
-        <td class="empty"></td>
-        <td>
-                        @* <strong>Khám nha khoa</strong> *@
-            <strong> 11:30 am - 12:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        @* <strong>Khám nha khoa</strong> *@
-            <strong> 11:30 am - 12:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        @* <strong>Khám nha khoa</strong> *@
-            <strong> 11:30 am - 12:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-    </tr>
-
-<!-- Table Row 12:00am -->
-<tr>
-    <th>12:00am</th>
-    <td>
-        <strong> 12:00 pm - 12:30 pm </strong>
-       
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-       <strong> 12:00 pm - 12:30 pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-<strong> 12:00 pm - 12:30 pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-<strong> 12:00 pm - 12:30 pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-</tr>
-
-<!-- Table Row 01:00pm -->
-<tr>
-    <th>01:00pm</th>
-    <td class="empty"></td>
-    <td>
-        <strong>01:00pm -- 01:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong>01:00pm -- 01:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong>01:00pm -- 01:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-</tr>
-
-<!-- Table Row 02:00pm -->
-<tr>
-    <th>02:00pm</th>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-</tr>
+                    <!-- Table Row 09:00am -->
+                    <tr>
+                        <th>09:00am</th>
+                        <td>
+                            <strong> 9:00 am - 10:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=9:00%20am%20-%2010:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                            
+                            
+                                              <td>
+                            <strong> 9:00 am - 10:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=9:00%20am%20-%2010:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>      
+                            
+                             <td>
+                            <strong> 9:00 am - 10:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=9:00%20am%20-%2010:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>                        <td>
+                            <strong> 9:00 am - 10:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=9:00%20am%20-%2010:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+       <td>
+                            <strong> 9:00 am - 10:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=9:00%20am%20-%2010:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
 
 
 
+
+                    </tr>
+
+                    <!-- Table Row 10:00am -->
+                    <tr>
+                        <th>10:00am</th>
+                        <td>
+                            <strong> 10:00 am - 11:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=10:00%20am%20-%2011:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        
+                        <td>
+                            <strong> 10:00 am - 11:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=10:00%20am%20-%2011:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+<td>
+                            <strong> 10:00 am - 11:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=10:00%20am%20-%2011:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+                        <td>
+                            <strong> 10:00 am - 11:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=10:00%20am%20-%2011:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+                        <td>
+                            <strong> 10:00 am - 11:00 am </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=10:00%20am%20-%2011:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+
+                    </tr>
+
+                    <!-- Table Row 11:00am -->
+                    <tr>
+                        <th>11:00am</th>
+                        <td>
+                            <strong> 11:00 am - 12:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=11:00%20am%20-%2012:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong> 11:00 am - 12:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=11:00%20am%20-%2012:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+                              <td>
+                            <strong> 11:00 am - 12:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=11:00%20am%20-%2012:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+                              <td>
+                            <strong> 11:00 am - 12:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=11:00%20am%20-%2012:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+                        
+                              <td>
+                            <strong> 11:00 am - 12:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=11:00%20am%20-%2012:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    <!-- Break Time (12:00pm - 01:00pm) -->
+                    <tr>
+                        <th>12:00pm</th>
+                        <td colspan="5" class="break">Nghỉ trưa (12:00pm - 1:00pm)</td>
+                    </tr>
+
+                    <!-- Table Row 01:00pm -->
+                    <tr>
+                        <th>01:00pm</th>
+                        <td>
+                            <strong> 01:00 pm - 02:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=1:00%20pm%20-%202:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong> 01:00 pm - 02:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=1:00%20pm%20-%202:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+    <td>
+                            <strong> 01:00 pm - 02:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=1:00%20pm%20-%202:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+
+    <td>
+                            <strong> 01:00 pm - 02:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=1:00%20pm%20-%202:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                            <td>
+                            <strong> 01:00 pm - 02:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=1:00%20pm%20-%202:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+                        
+                                            </tr>
+
+                    <!-- Table Row 02:00pm -->
+                    <tr>
+                        <th>02:00pm</th>
+                        <td>
+                            <strong> 02:00 pm - 03:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=2:00%20pm%20-%203:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong> 02:00 pm - 03:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=2:00%20pm%20-%203:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong> 02:00 pm - 03:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=2:00%20pm%20-%203:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        
+                        
+                        
+                        
+                        <td>
+                            <strong> 02:00 pm - 03:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=2:00%20pm%20-%203:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                                                <td>
+                            <strong> 02:00 pm - 03:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=2:00%20pm%20-%203:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        
+                        
+                        
+                                            </tr>
+
+                    <!-- Table Row 03:00pm -->
+                    <tr>
+                        <th>03:00pm</th>
+                        <td>
+                            <strong> 03:00 pm - 04:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=3:00%20pm%20-%204:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong> 03:00 pm - 04:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=3:00%20pm%20-%204:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+                        <td>
+                            <strong> 03:00 pm - 04:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=3:00%20pm%20-%204:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+                                                <td>
+                            <strong> 03:00 pm - 04:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=3:00%20pm%20-%204:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong> 03:00 pm - 04:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=3:00%20pm%20-%204:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        
+                                            </tr>
+
+                    <!-- Table Row 04:00pm -->
+                    <tr>
+                        <th>04:00pm</th>
+                        <td>
+                            <strong> 04:00 pm - 05:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=4:00%20pm%20-%205:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong> 04:00 pm - 05:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=4:00%20pm%20-%205:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+                        <td>
+                            <strong> 04:00 pm - 05:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=4:00%20pm%20-%205:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+                                                <td>
+                            <strong> 04:00 pm - 05:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=4:00%20pm%20-%205:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+                                                <td>
+                            <strong> 04:00 pm - 05:00 pm </strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="~/customer/controller/Create?time=4:00%20pm%20-%205:00%20pm" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
 
 

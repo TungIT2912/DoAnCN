@@ -41,6 +41,8 @@ namespace WebQuanLyNhaKhoa.Data
 		public string? Hinh { get; set; }
         public string? Mota { get; set; }
 
+        
+
         public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
         public virtual TaiKhoan TaiKhoan { get; set; } = null!;
         public virtual ChucVu ChucVu { get; set; } = null!;

@@ -89,7 +89,10 @@
     <div class="row">
         <div class="col-md-12">
             <!-- Search form that submits the query to the server -->
-            <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn (ID)" />        
+            <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn (SĐT)" />       
+            <div id="loading" style="display:none;">Đang tải...</div>
+            <div id="no-data-message" style="display:none;">Không có dữ liệu</div>
+ 
         </div>
     </div>
     <br>
@@ -142,7 +145,7 @@
                                 <div class="col-xs-4 to">
                                     <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
                                     <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
-                                                                             @* <p>Số điện thoại: @chiTiet.Sdt</p>  *@
+                                        <p>Số điện thoại: @chiTiet.Sdt</p> 
 
                                 @* <p>Tiền thuốc: @chiTiet.TienThuoc</p>
                                 <p>Tiền điều trị: @chiTiet.TienDieuTri</p>
@@ -219,52 +222,46 @@
 
 
 <script>
-    $(document).ready(function() {
-        let timeout;
+$(document).ready(function () {
+    // Debounce timeout for search input
+    let timeout;
 
-        $('#invoice-search').on('keyup', function() {
-            var searchTerm = $(this).val().toLowerCase();
+    // Search input handler
+    $('#invoice-search').on('keyup', function () {
+        const searchTerm = $(this).val().trim(); // Get and trim input value
+        clearTimeout(timeout); // Clear previous timeout to avoid spamming
 
-            // Clear previous timeout to prevent multiple rapid calls
-            clearTimeout(timeout);
+        $('#loading').show(); // Show loading indicator
+        $('#no-data-message-global').hide(); // Hide "No Results" by default
 
-            // Show the loading screen when the user starts typing
-            $('#loading').show();
+        timeout = setTimeout(function () {
+            let foundAny = false; // Tracks if we find any matching invoice
 
-            // Delay the search action by 500ms (or adjust as needed)
-            timeout = setTimeout(function() {
-                let foundAny = false;
+            // Loop through all invoices
+            $('[id^="invoice-container-"]').each(function () {
+                const phoneText = $(this).find('.to p:nth-child(3)').text().trim(); // Extract SĐT
+                const phoneNumber = phoneText.replace('Số điện thoại: ', '').trim(); // Clean phone number
 
-                // If the search term is empty, hide all invoices
-                if (searchTerm === '') {
-                    $('[id^="invoice-container-"]').hide(); // Hide all invoices
+                // Match search term
+                if (phoneNumber === searchTerm) {
+                    $(this).show(); // Show matching invoice
+                    foundAny = true; // Mark as found
                 } else {
-                    // Loop through each invoice container and toggle visibility based on search
-                    $('[id^="invoice-container-"]').each(function() {
-                        var invoiceId = $(this).attr('id').split('-').pop(); // Get the IdhoaDon part of the ID
-                        
-                        if (invoiceId.toLowerCase().includes(searchTerm)) {
-                            $(this).show();  // Show matching invoice
-                            foundAny = true;  // Mark that we found a matching invoice
-                        } else {
-                            $(this).hide();  // Hide non-matching invoices
-                        }
-                    });
+                    $(this).hide(); // Hide non-matching invoice
                 }
+            });
 
-                // If no invoices are found, show the "No results found" message
-                if (!foundAny) {
-                    $('#no-data-message').show();  // Show no results message
-                } else {
-                    $('#no-data-message').hide();  // Hide no results message if data is found
-                }
+            // Show "No Results" if nothing matches
+            if (!foundAny) {
+                $('#no-data-message-global').show();
+            }
 
-                // Hide the loading screen after the filtering process is complete
-                $('#loading').hide();
-            }, 500); // 500ms cooldown delay
-        });
+            $('#loading').hide(); // Hide loading indicator
+        }, 500); // Debounce: Wait 500ms after user stops typing
     });
+});
 </script>
+
 
 
 
