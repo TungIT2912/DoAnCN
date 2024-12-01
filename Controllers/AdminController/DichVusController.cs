@@ -60,7 +60,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         }
 
         [HttpPost("api/DichVus")]
-        public async Task<IActionResult> Create([FromBody] DichVuDTO dto)
+        public async Task<IActionResult> Create([FromForm] DichVuDTO dto, IFormFile? hinh)
         {
             if (!ModelState.IsValid)
             {
@@ -72,6 +72,15 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 return BadRequest(new { success = false, errors });
             }
 
+            if (hinh != null && hinh.Length > 0)
+            {
+
+                dto.Hinh = await SaveImage(hinh);
+            }
+            else
+            {
+                dto.Hinh = "/images/anonymous.png";
+            }
 
             var existingItem = await _context.ChanDoans
                 .FirstOrDefaultAsync(x => x.IdchanDoan == dto.IdchanDoan);
@@ -84,6 +93,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                     TenDichVu = dto.TenDichVu,
                     DonViTinh = dto.DonViTinh,
                     DonGia  = dto.DonGia,
+                    Hinh = dto.Hinh,
                 };
                 _context.DichVus.Add(dv);
                 var historySaveResult = await _context.SaveChangesAsync();
@@ -98,14 +108,30 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                         TenDichVu = dv.TenDichVu,
                         DonViTinh = dv.DonViTinh,
                         DonGia = dv.DonGia,
+                        Hinh = dv.Hinh,
                     };
 
                     return CreatedAtAction(nameof(GetDichVuById), new { id = dv.IddichVu }, createdLSunDTO);
                 }
             }
-            // If any save operation fails, return a BadRequest with an error message
-            return BadRequest(new { success = false, message = "Thêm lịch sử thất bại." });
+            return BadRequest(new { success = false, message = "Thêm dich vu thất bại." });
         }
+
+        private async Task<string> SaveImage(IFormFile hinh)
+        {
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(hinh.FileName)}"; 
+            var savePath = Path.Combine("wwwroot/images", fileName);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(savePath)!);
+
+            using (var fileStream = new FileStream(savePath, FileMode.Create))
+            {
+                await hinh.CopyToAsync(fileStream);
+            }
+
+            return "/images/" + fileName; 
+        }
+
 
         [HttpGet("api/DichVus/{id}")]
         public async Task<ActionResult<DichVuDTO>> GetDichVuById(int id)
@@ -163,7 +189,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View(nhanVienDTO);
         }
         [HttpPut("api/DichVus/Update/{id}")]
-        public async Task<IActionResult> Edit(int id, [FromBody] DichVuDTO dto)
+        public async Task<IActionResult> Edit(int id, [FromForm] DichVuDTO dto, IFormFile? Hinh)
         {
           
             var dichvu = await _context.DichVus
@@ -180,10 +206,19 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
                 return BadRequest(new { success = false, errors });
             }
+            if (Hinh != null && Hinh.Length > 0)
+            {
+                dto.Hinh = await SaveImage(Hinh);
+            }
+            else
+            {
+                dto.Hinh = dichvu.Hinh;
+            }
             dichvu.IdchanDoan = dto.IdchanDoan;
             dichvu.TenDichVu = dto.TenDichVu;
             dichvu.DonViTinh = dto.DonViTinh;
             dichvu.DonGia = dto.DonGia;
+            dichvu.Hinh = dto.Hinh;
             try
             {
                 await _context.SaveChangesAsync();
@@ -219,7 +254,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 TenChuanDoan = nhanVien.ChanDoan.TenChanDoan,
                 TenDichVu = nhanVien.TenDichVu,
                 DonViTinh = nhanVien.DonViTinh,
-                DonGia = nhanVien.DonGia
+                DonGia = nhanVien.DonGia,
+                Hinh  = nhanVien.Hinh,
             };
             return View(nhanVienDTO);
         }
@@ -228,22 +264,18 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         [HttpDelete("api/DichVus/Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            // Find the item with the specified id
+            
             var dichVu = await _context.DichVus.FindAsync(id);
 
-            // If the item doesn't exist, return NotFound
             if (dichVu == null)
             {
                 return NotFound();
             }
 
-            // Remove the item from the DbContext
             _context.DichVus.Remove(dichVu);
 
-            // Save the changes to the database
             await _context.SaveChangesAsync();
 
-            // Return Ok status to indicate success
             return Ok();
         }
         private bool DichVuExists(int id)

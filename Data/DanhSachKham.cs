@@ -21,6 +21,9 @@ namespace WebQuanLyNhaKhoa.Data
 
         public DateTime NgayKham { get; set; }
 
+        public DateTime time {  get; set; }
+
+
         // Quan hệ 1-n với DieuTri, DonThuoc, HoaDon
         public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
         public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();

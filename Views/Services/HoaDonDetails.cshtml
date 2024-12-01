@@ -161,7 +161,7 @@
                                     <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
                             <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
                                     @* <p>VAT: DK888-777 </p> *@
-                            <p>Tổng tiền: @item.TongTien.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</p>
+                                        <p>Tổng tiền:  @(item.TongTien.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</p>
                                     <p>Email khách hàng: @item.EmailBn</p>
                                 </div>
                                         
@@ -190,9 +190,9 @@
                                                     <td class="text-center">@index</td>
                                                     <td>@item.TenDon</td>
                                                     <td class="text-right">@item.PhuongThucThanhToan</td>
-                                            <td class="text-right">@item.TienThuoc.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
-                                            <td class="text-right">@item.TienDieuTri.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
-                                            <td class="text-right">@item.TongTien.ToString("C", new System.Globalization.CultureInfo("vi-VN"))</td>
+                                                    <td class="text-right"> @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
+                                                    <td class="text-right"> @(item.TienDieuTri.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
+                                                    <td class="text-right"> @(item.TongTien.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
 
                                                 </tr>
                                                 index++;

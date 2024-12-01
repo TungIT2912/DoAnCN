@@ -15,13 +15,18 @@ namespace WebQuanLyNhaKhoa.DTO
         [Phone]
         public string? Sdt { get; set; }
 
+        public int? IddichVu { get; set; }
+
+        public int? MaNv { get; set; }
+
         [StringLength(200)]
         public string? DiaChi { get; set; }
         public string? TrieuChung { get; set; }
         [EmailAddress]
         public string? EmailBn { get; set; }
         public int? IdChanDoan { get; set; }
-        public DateTime? NgayKhamDau { get; set; }
+        public string time {  get; set; }
+        public string NgayKhamDau { get; set; }
         public string? TenDangNhap { get; set; }
         public string? MatKhau { get; set; }
     }

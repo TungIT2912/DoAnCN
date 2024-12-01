@@ -12,13 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Migrations/20241129104705_test.Designer.cs
-    [Migration("20241129104705_test")]
-    partial class test
-========
-    [Migration("20241130084759_connect")]
+    [Migration("20241130085017_connect")]
     partial class connect
->>>>>>>> origin/TTung:Migrations/20241130084759_connect.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

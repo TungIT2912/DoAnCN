@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.DTO;
@@ -40,7 +41,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 Sdt = nv.Sdt,
                 DiaChi = nv.DiaChi,
                 EmailBn = nv.EmailBn,
-                NgayKhamDau = nv.NgayKhamDau,
+                NgayKhamDau = nv.NgayKhamDau.ToString(),
             }).ToList();
 
             return Ok(benhNhanDTOs);
@@ -49,9 +50,21 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         [HttpGet("Create")]
         public IActionResult Create()
         {
-
+            ViewBag.DichVuList = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
             return View();
         }
+
+        [HttpGet("GetNhanViensByDichVu")]
+        public IActionResult GetNhanViensByDichVu(int dichVuId)
+        {
+            var nhanViens = _context.NhanViens
+                                   .Where(nv => nv.IddichVu == dichVuId)
+                                   .Select(nv => new { Id = nv.MaNv, Ten = nv.Ten })
+                                   .ToList();
+
+            return Json(nhanViens);
+        }
+
         // POST: api/BenhNhan
         //[Authorize(Roles = "Admin,Staff")]
         [HttpPost("api/PostBenhNhan")]
@@ -62,7 +75,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 return BadRequest(ModelState);
             }
 
-            
+
+
             var newBenhNhan = new BenhNhan
             {
                 HoTen = benhNhan.HoTen,
@@ -70,30 +84,26 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 NamSinh = benhNhan.NamSinh,
                 Sdt = benhNhan.Sdt,
                 DiaChi = benhNhan.DiaChi,
-                
                 TrieuChung = benhNhan.TrieuChung,
-                NgayKhamDau = benhNhan.NgayKhamDau,
+                NgayKhamDau = DateTime.Parse(benhNhan.NgayKhamDau),
                 EmailBn = benhNhan.EmailBn
             };
 
-            // Thêm bệnh nhân mới vào DbContext
             _context.BenhNhans.Add(newBenhNhan);
 
-            _context.BenhNhans.Add(newBenhNhan); 
+            //_context.BenhNhans.Add(newBenhNhan); 
             var saveResult = await _context.SaveChangesAsync();
 
-            // Nếu lưu thành công, tiếp tục lưu lịch khám
             if (saveResult > 0)
             {
-                // Tạo một lịch khám cho bệnh nhân
                 var newDanhSachKham = new DanhSachKham
                 {
                     IdbenhNhan = newBenhNhan.IdbenhNhan,
-                    NgayKham = benhNhan.NgayKhamDau ?? DateTime.Now, 
-                    MaNv = null 
+                    NgayKham = DateTime.Parse(benhNhan.NgayKhamDau), 
+                    MaNv = benhNhan.MaNv,
+                    time = DateTime.Parse(benhNhan.time),
                 };
 
-                // Thêm lịch khám vào bảng DanhSachKham
                 _context.DanhSachKhams.Add(newDanhSachKham);
 
                 // Lưu lịch khám vào cơ sở dữ liệu
@@ -111,7 +121,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         DiaChi = newBenhNhan.DiaChi,
                         EmailBn = newBenhNhan.EmailBn,
                         TrieuChung = newBenhNhan.TrieuChung,
-                        NgayKhamDau = newBenhNhan.NgayKhamDau
+                        NgayKhamDau = newBenhNhan.NgayKhamDau.ToString()
                     };
 
                     return CreatedAtAction(nameof(GetBenhhNhans), new { id = newBenhNhan.IdbenhNhan }, createdBenhNhanDTO);
@@ -166,5 +176,102 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         //    return Ok(benhNhanDTOs);
         //}
 
+        [HttpGet("getAvailableSlots")]
+        public IActionResult GetAvailableSlots([FromQuery] string ngayKham, [FromQuery] int maNv)
+        {
+            if (!DateTime.TryParse(ngayKham, out DateTime selectedDate))
+            {
+                return BadRequest("Invalid date format.");
+            }
+            if (selectedDate.DayOfWeek == DayOfWeek.Saturday || selectedDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                return BadRequest("Dịch vụ chúng tôi không hoạt động vào thứ 7 và chủ nhật.");
+            }
+
+            var availableSlots = GenerateTimeSlots(selectedDate); 
+            var existingAppointments = _context.DanhSachKhams
+                .Where(a => a.MaNv == maNv && a.NgayKham.Date == selectedDate.Date  )
+                .GroupBy(a => a.time)
+                .Select(g => new { Time = g.Key, Count = g.Count() })
+                .ToList();
+
+            List<string> disabledSlots = new List<string>();
+
+            foreach (var slot in availableSlots.ToList())
+            {
+                var timeRange = slot.Split(" - "); 
+                if (timeRange.Length != 2)
+                {
+                    continue;
+                }
+
+                var startTime = DateTime.Parse(timeRange[0]);
+
+                if (existingAppointments.Any(a => a.Time.TimeOfDay == startTime.TimeOfDay && a.Count >= 2))
+                {
+                    disabledSlots.Add(slot);
+                }
+            }
+
+            return Ok(new
+            {
+                availableSlots = availableSlots.Except(disabledSlots),
+                disabledSlots = disabledSlots
+            });
+        }
+
+
+        [HttpPost("checkAvailability")]
+        public IActionResult CheckAvailability([FromBody] BenhNhanDTO request)
+        {
+            DateTime selectedDate = DateTime.Parse(request.NgayKhamDau);
+            DateTime selectedTime = DateTime.Parse(request.time);
+
+            var existingAppointments = _context.DanhSachKhams
+                .Where(a => a.NgayKham.Date == selectedDate.Date && a.time == selectedTime)
+                .ToList();
+
+            if (existingAppointments.Count >= 3)
+            {
+                return BadRequest("Khung giờ khám này đã kín");
+            }
+
+            return Ok("Khung giờ này có thể chọn.");
+        }
+
+
+        private List<string> GenerateTimeSlots(DateTime selectedDate)
+        {
+            var slots = new List<string>();
+
+            var morningStart = selectedDate.AddHours(8);  
+            var morningEnd = selectedDate.AddHours(11).AddMinutes(30); 
+
+            while (morningStart < morningEnd)
+            {
+                var nextSlot = morningStart.AddHours(1); 
+                if (nextSlot > morningEnd) break;
+
+                slots.Add($"{morningStart:hh\\:mm tt} - {nextSlot:hh\\:mm tt}");
+                morningStart = nextSlot;
+            }
+
+            var afternoonStart = selectedDate.AddHours(13);
+            var afternoonEnd = selectedDate.AddHours(17); 
+
+            while (afternoonStart < afternoonEnd)
+            {
+                var nextSlot = afternoonStart.AddHours(1); 
+
+                if (nextSlot > afternoonEnd) break; 
+
+                slots.Add($"{afternoonStart:hh\\:mm tt} - {nextSlot:hh\\:mm tt}");
+                afternoonStart = nextSlot;
+            }
+
+            return slots;
+        }
+
     }
 }
+

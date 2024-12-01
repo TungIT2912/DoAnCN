@@ -15,6 +15,8 @@ namespace WebQuanLyNhaKhoa.DTO
 		public int MaCv { get; set; }
         public string? TenCv { get; set; }
         public string? KinhNghiem { get; set; }
+        public int IddichVu { get; set; }
+        public string? TenChuyenNghanh { get; set; }
         public string? Diachi { get; set; }
         public bool? Gioi { get; set; }
         public string? Hinh { get; set; } = "/images/anonymous.png";

@@ -20,7 +20,7 @@ namespace WebQuanLyNhaKhoa.DTO
         public decimal? TienDieuTri { get; set; }
         public decimal? TongTien { get; set; }
 
-        public DateTime NgayLap { get; set; }
+        public DateTime? NgayLap { get; set; }
         public string? EmailBn { get; set; }
             public string? Sdt { get; set; }
             

@@ -12,6 +12,7 @@ namespace WebQuanLyNhaKhoa.DTO
         public string sdtBenhnhan { get; set; }
         public string diaChiBenhnhan { get; set; }
 
+        public string GioKham { get; set; }
 
 
         public int? MaNv { get; set; }

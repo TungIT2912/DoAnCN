@@ -287,20 +287,12 @@ namespace WebQuanLyNhaKhoa.Migrations
                     TenDon = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TenDieuTri = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-<<<<<<<< HEAD:Migrations/20241129104705_test.cs
-                    TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    NgayLap = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true)
-========
                     TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true)
->>>>>>>> origin/TTung:Migrations/20241130084759_connect.cs
+                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

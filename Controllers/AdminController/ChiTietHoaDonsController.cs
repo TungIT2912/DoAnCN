@@ -30,66 +30,66 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         }
 
        [HttpGet("api/ChiTietHoaDons/Detail/{id}")]
-public async Task<IActionResult> Details(int? id)
-{
-    if (id == null)
+    public async Task<IActionResult> Details(int? id)
     {
-        return NotFound();
-    }
-
-    var cthd = await _context.ChiTietHoaDons
-                .Include(n => n.DonThuocs)
-                .Include(n => n.DieuTris)
-                .Include(n => n.HoaDon)
-                .Include(n => n.DanhSachKham)
-                .Include(n => n.DanhSachKham.BenhNhan)
-                .Include(n => n.HoaDon.DonThuoc.Kho.ThiTruong)
-                .Include(n => n.HoaDon.DieuTri.DichVu)
-                .FirstOrDefaultAsync(n => n.IdchiTiet == id);
-    if (cthd == null)
-    {
-        Console.WriteLine($"Mã chi tiết hóa đơn không tồn tại.");
-        return NotFound();
-    }
-
-    var cthdDTO = new ChiTietHoaDonDTO
-    {
-        IdchiTiet = cthd.IdchiTiet,
-        tenBn = cthd.DanhSachKham.BenhNhan.HoTen,
-        Idkham = cthd.Idkham,
-        IdhoaDon = cthd.IdhoaDon,
-        PhuongThucThanhToan = cthd.PhuongThucThanhToan,
-        TenDon = cthd.TenDon,
-        TenDieuTri = cthd.TenDieuTri,
-        Description = cthd.Description,
-        TienThuoc = cthd.TienThuoc,
-        TienDieuTri = cthd.TienDieuTri,
-        TongTien = cthd.TongTien,
-        NgayLap = cthd.NgayLap,
-        EmailBn = cthd.EmailBn,
-        Sdt = cthd.DanhSachKham.BenhNhan.Sdt,
-
-        DonThuocs = cthd.DonThuocs.Select(dt => new DonThuoc1DTO
+        if (id == null)
         {
-            Idkham = dt.Idkham,
-            IddungCu = dt.IddungCu,
-            tenThuoc = dt.Kho.ThiTruong.TenSanPham,
-            SoLuong = dt.SoLuong,
-            ThanhGia = dt.ThanhGia,
-            TongTien = dt.TongTien,
-            NgayLapDt = dt.NgayLapDt
-        }).ToList(),
+            return NotFound();
+        }
 
-        DieuTris = cthd.DieuTris.Select(dt => new DieuTriDTO
+        var cthd = await _context.ChiTietHoaDons
+                    .Include(n => n.DonThuocs)
+                    .Include(n => n.DieuTris)
+                    .Include(n => n.HoaDon)
+                    .Include(n => n.DanhSachKham)
+                    .Include(n => n.DanhSachKham.BenhNhan)
+                    .Include(n => n.HoaDon.DonThuoc.Kho.ThiTruong)
+                    .Include(n => n.HoaDon.DieuTri.DichVu)
+                    .FirstOrDefaultAsync(n => n.IdchiTiet == id);
+        if (cthd == null)
         {
-            IddichVu = dt.IddichVu,
-            tenDieuTri = dt.DichVu.TenDichVu,
-            Idkham = dt.Idkham,
-            IddungCu = dt.IddungCu,
-            SoLuong = dt.SoLuong,
-            ThanhTien = dt.ThanhTien
-        }).ToList()
-    };
+            Console.WriteLine($"Mã chi tiết hóa đơn không tồn tại.");
+            return NotFound();
+        }
+
+        var cthdDTO = new ChiTietHoaDonDTO
+        {
+            IdchiTiet = cthd.IdchiTiet,
+            tenBn = cthd.DanhSachKham.BenhNhan.HoTen,
+            Idkham = cthd.Idkham,
+            IdhoaDon = cthd.IdhoaDon,
+            PhuongThucThanhToan = cthd.PhuongThucThanhToan,
+            TenDon = cthd.TenDon,
+            TenDieuTri = cthd.TenDieuTri,
+            Description = cthd.Description,
+            TienThuoc = cthd.TienThuoc,
+            TienDieuTri = cthd.TienDieuTri,
+            TongTien = cthd.TongTien,
+            NgayLap = cthd.NgayLap,
+            EmailBn = cthd.EmailBn,
+            Sdt = cthd.DanhSachKham.BenhNhan.Sdt,
+
+            DonThuocs = cthd.DonThuocs.Select(dt => new DonThuoc1DTO
+            {
+                Idkham = dt.Idkham,
+                IddungCu = dt.IddungCu,
+                tenThuoc = dt.Kho.ThiTruong.TenSanPham,
+                SoLuong = dt.SoLuong,
+                ThanhGia = dt.ThanhGia,
+                TongTien = dt.TongTien,
+                NgayLapDt = dt.NgayLapDt
+            }).ToList(),
+
+            DieuTris = cthd.DieuTris.Select(dt => new DieuTriDTO
+            {
+                IddichVu = dt.IddichVu,
+                tenDieuTri = dt.DichVu.TenDichVu,
+                Idkham = dt.Idkham,
+                IddungCu = dt.IddungCu,
+                SoLuong = dt.SoLuong,
+                ThanhTien = dt.ThanhTien
+            }).ToList()
+        };
 
     return View(cthdDTO); 
 }

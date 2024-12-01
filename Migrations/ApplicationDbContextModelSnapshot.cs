@@ -107,7 +107,7 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdchiTiet"));
 
-                    b.Property<bool>("DaThanhToan")
+                    b.Property<bool?>("DaThanhToan")
                         .HasColumnType("bit");
 
                     b.Property<string>("Description")
@@ -116,10 +116,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("EmailBn")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IddieuTri")
+                    b.Property<int?>("IddieuTri")
                         .HasColumnType("int");
 
-                    b.Property<int>("IddonThuoc")
+                    b.Property<int?>("IddonThuoc")
                         .HasColumnType("int");
 
                     b.Property<int>("IdhoaDon")
@@ -128,7 +128,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int?>("Idkham")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("NgayLap")
+                    b.Property<DateTime?>("NgayLap")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PhuongThucThanhToan")
@@ -138,20 +138,18 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenDieuTri")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenDon")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TienDieuTri")
+                    b.Property<decimal?>("TienDieuTri")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TienThuoc")
+                    b.Property<decimal?>("TienThuoc")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TongTien")
+                    b.Property<decimal?>("TongTien")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdchiTiet");
@@ -200,6 +198,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<DateTime>("NgayKham")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("time")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Idkham");
 
                     b.HasIndex("IdbenhNhan");
@@ -229,6 +230,10 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Hinh")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("IdchanDoan")
                         .HasColumnType("int");
@@ -295,9 +300,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int?>("ChiTietHoaDonId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DonThuocIddonThuoc")
-                        .HasColumnType("int");
-
                     b.Property<int>("IddungCu")
                         .HasColumnType("int");
 
@@ -319,8 +321,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.HasKey("IddonThuoc");
 
                     b.HasIndex("ChiTietHoaDonId");
-
-                    b.HasIndex("DonThuocIddonThuoc");
 
                     b.HasIndex("IddungCu");
 
@@ -482,6 +482,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("IddichVu")
+                        .HasColumnType("int");
+
                     b.Property<string>("KinhNghiem")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -504,6 +507,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("MaNv");
+
+                    b.HasIndex("IddichVu");
 
                     b.HasIndex("MaCv");
 
@@ -711,10 +716,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .WithMany("DonThuocs")
                         .HasForeignKey("ChiTietHoaDonId");
 
-                    b.HasOne("WebQuanLyNhaKhoa.Data.DonThuoc", null)
-                        .WithMany("DonThuocs")
-                        .HasForeignKey("DonThuocIddonThuoc");
-
                     b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "Kho")
                         .WithMany("DonThuocs")
                         .HasForeignKey("IddungCu")
@@ -787,6 +788,12 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.NhanVien", b =>
                 {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.DichVu", "DichVu")
+                        .WithMany()
+                        .HasForeignKey("IddichVu")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebQuanLyNhaKhoa.Data.ChucVu", "ChucVu")
                         .WithMany("NhanViens")
                         .HasForeignKey("MaCv")
@@ -800,6 +807,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .IsRequired();
 
                     b.Navigation("ChucVu");
+
+                    b.Navigation("DichVu");
 
                     b.Navigation("TaiKhoan");
                 });
@@ -856,8 +865,6 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.DonThuoc", b =>
                 {
-                    b.Navigation("DonThuocs");
-
                     b.Navigation("HoaDons");
                 });
 

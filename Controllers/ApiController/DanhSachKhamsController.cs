@@ -48,7 +48,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 Sdt = bn.Sdt,
                 DiaChi = bn.DiaChi, 
                 TrieuChung = bn.TrieuChung,
-                NgayKhamDau = bn.NgayKhamDau
+                NgayKhamDau = bn.NgayKhamDau.ToString()
             }).ToList();
 
             return Ok(benhNhanDTOs);
@@ -140,7 +140,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                     Sdt = n.Sdt,
                     NamSinh = n.NamSinh,
                     DiaChi = n.DiaChi,
-                    NgayKhamDau = n.NgayKhamDau
+                    NgayKhamDau = n.NgayKhamDau.ToString()
                 })
                 .ToListAsync();
 

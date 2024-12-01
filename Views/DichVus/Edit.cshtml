@@ -92,6 +92,15 @@
                                                 </span>
                                             </div>
                                         </li>
+
+                                        <!-- Ảnh đại diện -->
+                                        <li class="zf-tempFrmWrapper zf-large">
+                                            <label class="zf-labelName">Ảnh</label>
+                                            <div class="zf-tempContDiv">
+                                                <input type="file" name="hinh" id="hinh" class="form-control" />
+                                            </div>
+                                        </li>
+
                                     </ul>
                                 </div>
 
@@ -118,14 +127,16 @@
         document.getElementById('createNhanVienForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            // Prepare data as a JSON object
-            const data = {
-                IddichVu: document.getElementById('IddichVu').value,
-                IdchanDoan: document.getElementById('IdchanDoan').value,
-                TenDichVu: document.getElementById('TenDichVu').value,
-                DonViTinh: document.getElementById('DonViTinh').value,
-                DonGia: document.getElementById('DonGia').value
-            };
+            const formData = new FormData();
+            formData.append('IdchanDoan', document.getElementById('IdchanDoan').value);
+            formData.append('TenDichVu', document.getElementById('TenDichVu').value);
+            formData.append('DonViTinh', document.getElementById('DonViTinh').value);
+            formData.append('DonGia', document.getElementById('DonGia').value);
+
+            const avatar = document.querySelector('input[name="hinh"]').files[0];
+            if (avatar) {
+                formData.append('hinh', avatar);
+            }
 
             const id = data.IddichVu;
             console.log("Updating DichVu with id:", id);
@@ -134,9 +145,9 @@
                 const response = await fetch(`/Admin/DichVus/api/DichVus/Update/${id}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json' // Set Content-Type to JSON
+                        'Content-Type': 'application/json' 
                     },
-                    body: JSON.stringify(data) // Send data as JSON string
+                    body: formData
                 });
 
                 console.log('Response Status:', response.status);

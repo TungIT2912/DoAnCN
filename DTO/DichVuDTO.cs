@@ -13,5 +13,6 @@ namespace WebQuanLyNhaKhoa.DTO
         public string TenDichVu { get; set; }
         public string DonViTinh { get; set; } 
 		public decimal DonGia { get; set; }
-	}
+        public string? Hinh { get; set; } = "/images/anonymous.png";
+    }
 }
