@@ -43,15 +43,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Configure Kestrel to use specific ports
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenLocalhost(7101, listenOptions =>
-    {
-        listenOptions.UseHttps(); // Bind to HTTPS
-    });
-    options.ListenLocalhost(7100); // Optional HTTP
-});
+//// Configure Kestrel to use specific ports
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.ListenLocalhost(7101, listenOptions =>
+//    {
+//        listenOptions.UseHttps(); // Bind to HTTPS
+//    });
+//    options.ListenLocalhost(7100); // Optional HTTP
+//});
+//builder.WebHost.UseUrls("http://0.0.0.0:7201");
 
 // Configure services
 builder.Services.AddCors(options =>
