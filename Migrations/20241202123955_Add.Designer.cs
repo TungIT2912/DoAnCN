@@ -12,8 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241130084759_connect")]
-    partial class connect
+    [Migration("20241202123955_Add")]
+    partial class Add
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,6 +135,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PhuongThucThanhToan")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sdt")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenDieuTri")

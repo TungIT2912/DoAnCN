@@ -134,6 +134,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("PhuongThucThanhToan")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Sdt")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TenDieuTri")
                         .HasColumnType("nvarchar(max)");
 

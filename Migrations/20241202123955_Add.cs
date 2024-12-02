@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class connect : Migration
+    public partial class Add : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -291,7 +291,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     TienDieuTri = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     NgayLap = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    EmailBn = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sdt = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
