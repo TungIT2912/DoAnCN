@@ -37,7 +37,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
 
             
 
-            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "chatbotnhakhoa-tron-fbb926c50080.json");
+            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "chatbotnhakhoa-tron-f83d37937249.json");
             if (!System.IO.File.Exists(credentialPath))
             {
                 return BadRequest($"Không tìm thấy tệp credentials tại: {credentialPath}");
