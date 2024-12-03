@@ -6,7 +6,8 @@ using WebQuanLyNhaKhoa.DTO;
 
 namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 {
-   [Route("customer/controller")]
+[Route("BookAppointment")]
+
    public class BookAppointmentController : Controller
    {
    //    private readonly ApplicationDbContext _context;

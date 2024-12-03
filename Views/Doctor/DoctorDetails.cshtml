@@ -43,10 +43,11 @@
                             <!-- Doctor's Name -->
                             <h3 class="name">@Model.Ten</h3>
                             <!-- Doctor's Designation -->
-                            <span class="designation">@Model.ChucVu?.TenCv</span>
+                            <span class="designation">@Model.TenCv</span>
                             <hr>
                             <!-- Doctor's Biography -->
-                            <div class="text">@Model.Mota test testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest</div>
+                            <div class="text">@(@Model.Mota ?? "Không có chi tiết mô tả")</div>
+
                             <hr>
                             <ul class="doctor-info-list">
                                 @* <li>
@@ -67,7 +68,7 @@
                                 </li>
                                 <li>
                                     <strong>Thời gian</strong>
-                                    <p>T2 - T6 08:00 - 20:00</p>
+                                    <p>T2 - T6 08:00 - 17:00</p>
                                 </li>
                                 <li>
                                     <strong>SĐT</strong>
@@ -90,54 +91,63 @@
 
                             <!-- Appointment Form -->
                                   <!-- The form where you're targeting the button -->
-                        <form action="#" method="post" id="email-form">
+                            <form id="createBenhNhan" method="post" action="/BookAppointment/api/PostBenhNhan">
                             <div class="row">
                                 <div class="form-group col-lg-6 col-md-12">
                                     <input type="text" name="username" placeholder="Họ và tên">
                                 </div>
                                 <div class="form-group col-lg-6 col-md-12">
-                                    <input type="text" name="phone" placeholder="SĐT">
+                                    <div>
+                                        <input  type="radio" name="gender" value="True" />
+                                        <span>Nữ</span>
+                                    </div>
+                                    <div>
+                                        <input  type="radio" name="gender" value="False" />
+                                        <span>Nam</span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-12">
+                                    <input type="text" name="NamSinh" placeholder="Nhập năm sinh">
+                                </div>
+                                <div class="form-group col-lg-6 col-md-12">
+                                    <input type="text" name="Sdt" placeholder="SĐT">
+                                    </div>
+                                <div class="form-group col-lg-12 col-md-12">
+                                    <input type="email" name="EmailBn" placeholder="Email">
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12">
-                                    <input type="email" name="email" placeholder="Email">
+                                    <input type="text" name="DiaChi" placeholder="Nhập địa chỉ của bạn">
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12">
+                                        <label  class="control-label">Ngày Khám Đầu</label>
+                                        <input name="NgayKhamDau" type="date" id="bookingDate"
+                                               class="form-control border-0 datetimepicker-input"
+                                               placeholder="Choose Date"
+                                               data-target="#date" data-toggle="datetimepicker"
+                                               style="height: 55px;"
+                                               value="@ViewBag.SelectedDate">
+                                        <span  class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-lg-12 col-md-12">
+                                        <label class="control-label">Ca khám</label>
+                                        <select id="bookingTime" name="time" required>
+                                            <option value="">Chọn ca khám</option>
+                                           
+                                        </select>
+                                        <span  class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12">
                                     <textarea name="contact_message" placeholder="Triệu chứng"></textarea>
                                 </div>
+
                                 <div class="form-group col-lg-12 col-md-12">
-                                    <button class="theme-btn btn-style-one" type="button" name="submit-form"><span class="btn-title">Gửi yêu cầu</span></button>
+                                    <button class="theme-btn btn-style-one" type="submit" name="submit-form"><span class="btn-title">Gửi yêu cầu</span></button>
                                 </div>
                             </div>
                         </form>
 
                         </div>
                     </div>
-
-
-<script>
-    document.querySelector('#email-form button').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default form submission
-        
-        // Get data from the first form
-        var username = document.querySelector('[name="username"]').value;
-        var phone = document.querySelector('[name="phone"]').value;
-        var email = document.querySelector('[name="email"]').value;
-        var contactMessage = document.querySelector('[name="contact_message"]').value;
-
-        // Construct the URL with query parameters
-        var url = "http://localhost:5271/customer/controller/Create?HoTen=" + encodeURIComponent(username) +
-                  "&Sdt=" + encodeURIComponent(phone) + 
-                  "&EmailBn=" + encodeURIComponent(email) + 
-                  "&TrieuChung=" + encodeURIComponent(contactMessage);
-
-        // Redirect to the second page with query parameters
-        window.location.href = url;
-    });
-</script>
-
-
-
-
                     <!-- Sidebar Side -->
                     <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
                         <div class="sidebar"> 
@@ -164,12 +174,11 @@
                                         <h2>Thời gian biểu</h2>
                                         <span class="divider"></span>
                                         <div class="text">Bác sĩ có mặt trong các giờ sau:</div>
+                                        <ul class="timing-list-two">
+                                            <li>T2 - T6 <span>08:00 - 17:00</span></li>
+                                        </ul>
                                     </div>
-                                    <ul class="timing-list-two">
-                                        <li>T2 - T6 <span>08:00 - 20:00</span></li>
-                                        <li>T7 <span>09:00 - 18:00</span></li>
-                                        <li>Chủ nhật  <span>09:00 - 18:00</span></li>
-                                    </ul>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -199,6 +208,140 @@
             </div>
         </section>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
 
+        $(document).ready(function () {
+            console.log("Document ready!");
+
+          
+            var doctorId = '@(Model.MaNv ?? "")'; 
+            console.log("pick doctor: ", doctorId);
+            $('#bookingDate').change(function () {
+                var selectedDate = $(this).val();
+                console.log("Selected Date: ", selectedDate);
+                console.log(" doctor: ", doctorId);
+                if (selectedDate && doctorId) {
+                    fetchAvailableSlots(doctorId, selectedDate);
+                }
+            });
+
+            function fetchAvailableSlots(doctorId, selectedDate) {
+                console.log("Fetching available slots for doctor " + doctorId + " and date " + selectedDate);
+
+                fetch(`/BookAppointment/getAvailableSlots?ngayKham=${selectedDate}&maNv=${doctorId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            // return response.text().then(errorMessage => {
+                            //     throw new Error(errorMessage);
+                            // });
+                            alert("Dịch vụ chúng tôi không hoạt động vào thứ 7 và chủ nhật.");
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log("Available slots: ", result);
+
+                        const timeSelect = $('#bookingTime');
+                        timeSelect.empty();
+                        timeSelect.append('<option value="">Chọn ca khám</option>');
+
+                        let disabledTimes = result.disabledSlots;
+
+                       
+
+                        result.availableSlots.forEach(slot => {
+                            timeSelect.append(`<option value="${slot}">${slot}</option>`);
+
+                        });
+
+
+                        result.disabledSlots.forEach(slot => {
+                            timeSelect.append(`<option value="${slot}" disabled>${slot} - Ca này đã kín</option>`);
+                        });
+
+
+                      
+
+                    })
+                    .catch(error => {
+                        console.error("Error fetching available slots:", error);
+                        
+                    });
+            }
+            $('#createBenhNhan').submit(function (event) {
+                    event.preventDefault();
+                console.log("Form submission triggered");
+
+                const selectedTime = $('[name="time"]').val();
+                const selectedDay = $('[name="NgayKhamDau"]').val();
+
+                if (!selectedTime || !selectedDay) {
+                    alert("Xin hãy chọn ngày và ca khám.");
+                    return;
+                }
+
+                console.log("Selected Time: ", selectedTime);
+                console.log("Selected Day: ", selectedDay);
+
+                const benhNhanData = {
+                    HoTen: $('[name="username"]').val(),
+                    Gioi: $('[name="gender"]:checked').val() === "True",
+                    NamSinh: $('[name="NamSinh"]').val(),
+                    Sdt: $('[name="Sdt"]').val(),
+                    DiaChi: $('[name="DiaChi"]').val(),
+                    EmailBn: $('[name="EmailBn"]').val(),
+                    IddichVu: '@Model.IddichVu',
+                    MaNv: doctorId,
+                    TrieuChung: $('[name="TrieuChung"]').val(),
+                    NgayKhamDau: selectedDay,
+                    Time: convertToDateTime(selectedTime, selectedDay)
+                };
+
+                console.log("Data being sent:", benhNhanData);
+
+                fetch('/BookAppointment/api/PostBenhNhan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(benhNhanData)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Đăng ký khám thành công!");
+                            window.location.href = "/";
+                        } else {
+                            alert("Đăng ký khám thất bại.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Lỗi khi đăng ký khám.");
+                    });
+            });
+
+            function convertToDateTime(timeString, selectedDay) {
+                const [time, ampm] = timeString.split(" ");
+                const [hours, minutes] = time.split(":").map(Number);
+
+                let adjustedHours = hours;
+                if (ampm === "PM" && adjustedHours < 12) {
+                    adjustedHours += 12;
+                } else if (ampm === "AM" && adjustedHours === 12) {
+                    adjustedHours = 0;
+                }
+
+                const [year, month, day] = selectedDay.split('-');
+
+                const dateTimeString = `${year}-${month}-${day}T${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00.000`;
+
+                console.log("Generated DateTime string:", dateTimeString);
+
+                return dateTimeString;
+            }
+        });
+
+    </script>
 </body>
 </html>

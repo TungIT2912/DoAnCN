@@ -144,7 +144,7 @@
                     <div class="inner-box">
                         <span class="icon @randomIconClass"></span> 
                         <h5>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#serviceModal-@service.IddichVu">
+                           <a href="@Url.Action("ServicesDetail", "Services", new { id = service.IddichVu })">
                                 @service.TenDichVu
                             </a>
                         </h5>
@@ -317,292 +317,474 @@
     </table>
 </div>  *@
 
-    <!-- Time Table Section -->
-    <section class="time-table-section">
-        <div class="auto-container">
-            <div class="table-outer">
-                <!-- Doctors Time Table -->
-                <table class="doctors-time-table">
-                    <thead>
-                        <tr> 
-                            <th class="dark">Thời gian biểu</th>
-                            <th>Thứ 2</th>
-                            <th>Thứ 3</th>
-                            <th>Thứ 4</th>
-                            <th>Thứ 5</th>
-                            <th>Thứ 6</th>
-                            <th>Thứ 7</th>
-                            <th>CN</th>
-                        </tr>
-                    </thead>
+<!-- Time Table Section -->
+<section class="time-table-section">
+    <div class="auto-container">
+        <div class="table-outer">
+            <!-- Doctors Time Table -->
+            <table class="doctors-time-table">
+                <thead>
+                    <tr> 
+                        <th class="dark">Thời gian biểu</th>
+                        <th>Thứ 2</th>
+                        <th>Thứ 3</th>
+                        <th>Thứ 4</th>
+                        <th>Thứ 5</th>
+                        <th>Thứ 6</th>
+                    </tr>
+                </thead>
 
-              <tbody>
-    <!-- Table Row 08:00am -->
-    <tr>
-        <th>08:00am</th>
-        <td>
-                        
-            <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="icon"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 8:00 am - 9:00 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=8:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-    </tr>
+                <tbody>
+                    <!-- Table Row 08:00am -->
+                    <tr>
+                                <th>08:00 AM</th>
+                                <td>
+                                    <strong>8:00 AM - 9:00 AM</strong>
+                                    <div class="doctor-info">
+                                        <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                        <h4 class="name">Khám nha khoa</h4>
+                                        <a href="#" onclick="redirectToBooking('Monday', '08:00 AM - 09:00 AM')" class="theme-btn btn-style-one">
+                                            <span class="btn-title">Đăng ký khám</span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>8:00 AM - 9:00 AM</strong>
+                                    <div class="doctor-info">
+                                        <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                        <h4 class="name">Khám nha khoa</h4>
+                                        <a href="#" onclick="redirectToBooking('Tuesday', '08:00 AM - 09:00 AM')" class="theme-btn btn-style-one">
+                                            <span class="btn-title">Đăng ký khám</span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>8:00 AM - 9:00 AM</strong>
+                                    <div class="doctor-info">
+                                        <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                        <h4 class="name">Khám nha khoa</h4>
+                                        <a href="#" onclick="redirectToBooking('Wednesday', '08:00 AM - 09:00 AM')" class="theme-btn btn-style-one">
+                                            <span class="btn-title">Đăng ký khám</span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>8:00 AM - 9:00 AM</strong>
+                                    <div class="doctor-info">
+                                        <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                        <h4 class="name">Khám nha khoa</h4>
+                                        <a href="#" onclick="redirectToBooking('Thursday', '08:00 AM - 09:00 AM')" class="theme-btn btn-style-one">
+                                            <span class="btn-title">Đăng ký khám</span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong>8:00 AM - 9:00 AM</strong>
+                                    <div class="doctor-info">
+                                        <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                        <h4 class="name">Khám nha khoa</h4>
+                                        <a href="#" onclick="redirectToBooking('Friday', '08:00 AM - 09:00 AM')" class="theme-btn btn-style-one">
+                                            <span class="btn-title">Đăng ký khám</span>
+                                        </a>
+                                    </div>
+                                </td>
+                    </tr>
 
-    <!-- Table Row 10:00am -->
-    <tr>
-        <th>10:00am</th>
-        <td class="empty"></td>
-        <td>
-                        <strong> 10:00 am - 10:30 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 10:00 am - 10:30 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 10:00 am - 10:30 am </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=10:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-    </tr>
+                    <!-- Table Row 09:00am -->
+                    <tr>
+                        <th>09:00AM</th>
+                        <td>
+                            <strong>9:00 AM - 10:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Monday', '09:00 AM - 10:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>9:00 AM - 10:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Tuesday', '09:00 AM - 10:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>9:00 am - 10:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Wednesday', '09:00 AM - 10:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>9:00 AM - 10:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Thursday', '09:00 AM - 10:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>9:00 AM - 10:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Friday', '09:00 AM - 10:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
 
-    <!-- Table Row 11:00am -->
-    <tr>
-        <th>11:00am</th>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        <strong> 11:00 am - 11:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-    </tr>
+                    <!-- Table Row 10:00am -->
+                    <tr>
+                        <th>10:00AM</th>
+                        <td>
+                            <strong>10:00 AM - 11:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Monday', '10:00 AM - 11:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>10:00 AM - 11:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Tuesday', '10:00 AM - 11:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>10:00 AM - 11:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Wednesday', '10:00 AM - 11:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>10:00 AM - 11:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Thursday', '10:00 AM - 11:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>10:00 AM - 11:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Friday', '10:00 AM - 11:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
 
-    <!-- Table Row 11:30am -->
-    <tr>
-        <th>11:30am</th>
-        <td class="empty"></td>
-        <td>
-                        @* <strong>Khám nha khoa</strong> *@
-            <strong> 11:30 am - 12:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        @* <strong>Khám nha khoa</strong> *@
-            <strong> 11:30 am - 12:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-        <td>
-                        @* <strong>Khám nha khoa</strong> *@
-            <strong> 11:30 am - 12:30 pm </strong>
-            <div class="doctor-info">
-                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-                <h4 class="name">Khám nha khoa</h4>
-                <a href="~/customer/controller/Create?time=11:30%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-            </div>
-        </td>
-        <td class="empty"></td>
-    </tr>
+                    <!-- Table Row 11:00am -->
+                    <tr>
+                        <th>11:00AM</th>
+                        <td>
+                            <strong>11:00 AM - 12:00 am</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Monday', '11:00 am - 12:00 am')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>11:00 am - 12:00 am</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Tuesday', '11:00 am - 12:00 am')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>11:00 am - 12:00 am</strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Wednesday', '11:00 am - 12:00 am')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>11:00 am - 12:00 am</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Thursday', '11:00 am - 12:00 am')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>11:00 am - 12:00 AM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                    <a href="#" onclick="redirectToBooking('Friday', '11:00 AM - 12:00 AM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
 
-<!-- Table Row 12:00am -->
-<tr>
-    <th>12:00am</th>
-    <td>
-        <strong> 12:00 pm - 12:30 pm </strong>
-       
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-       <strong> 12:00 pm - 12:30 pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-<strong> 12:00 pm - 12:30 pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-<strong> 12:00 pm - 12:30 pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor icon"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=12:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-</tr>
+                    <!-- Break Time (12:00pm - 01:00pm) -->
+                    <tr>
+                        <th>12:00PM</th>
+                        <td colspan="5" class="break">Nghỉ trưa (12:00 PM - 1:00 PM)</td>
+                    </tr>
 
-<!-- Table Row 01:00pm -->
-<tr>
-    <th>01:00pm</th>
-    <td class="empty"></td>
-    <td>
-        <strong>01:00pm -- 01:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong>01:00pm -- 01:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong>01:00pm -- 01:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=1:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-</tr>
+                    <!-- Table Row 01:00PM -->
+                    <tr>
+                        <th>01:00PM</th>
+                        <td>
+                            <strong>1:00 PM - 2:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Monday', '01:00 PM - 02:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>1:00 PM - 2:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Tuesday', '01:00 PM - 02:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>1:00 PM - 2:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Wednesday', '01:00 PM - 02:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>1:00 PM - 2:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Thursday', '01:00 PM - 02:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>1:00 PM - 2:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Friday', '01:00 PM - 02:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
 
-<!-- Table Row 02:00pm -->
-<tr>
-    <th>02:00pm</th>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=8:00%20am%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-    <td class="empty"></td>
-    <td>
-        <strong> 02:00pm - 02:30pm </strong>
-        <div class="doctor-info">
-            <figure class="thumb"><i class="flaticon-doctor"></i></figure>
-            <h4 class="name">Khám nha khoa</h4>
-            <a href="~/customer/controller/Create?time=2:00%20pm%20-%209:00%20am" class="theme-btn btn-style-one"><span class="btn-title">Đăng ký khám</span></a>
-        </div>
-    </td>
-</tr>
+                    <!-- Table Row 02:00PM -->
+                    <tr>
+                        <th>02:00PM</th>
+                        <td>
+                            <strong>2:00 PM - 3:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Monday', '02:00 PM - 03:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>2:00 PM - 3:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Tuesday', '02:00 PM - 03:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>2:00 PM - 3:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Wednesday', '02:00 PM - 03:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>2:00 PM - 3:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Thursday', '02:00 PM - 03:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>2:00 PM - 3:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Friday', '02:00 PM - 03:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
 
+                    <!-- Table Row 03:00PM -->
+                    <tr>
+                        <th>03:00PM</th>
+                        <td>
+                            <strong>3:00 PM - 4:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Monday', '03:00 PM - 04:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>3:00 PM - 4:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Tuesday', '03:00 PM - 04:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>3:00 PM - 4:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Wednesday', '03:00 PM - 04:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>3:00 PM - 4:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Thursday', '03:00 PM - 04:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>3:00 PM - 4:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Friday', '03:00 PM - 04:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
 
-
+                    <!-- Table Row 04:00PM -->
+                    <tr>
+                        <th>04:00PM</th>
+                        <td>
+                            <strong>4:00 PM - 5:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Monday', '04:00 PM - 05:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>4:00 PM - 5:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Tuesday', '04:00 PM - 05:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>4:00 PM - 5:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="thumb"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Wednesday', '04:00 PM - 05:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>4:00 PM - 5:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Thursday', '04:00 PM - 05:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>4:00 PM - 5:00 PM</strong>
+                            <div class="doctor-info">
+                                <figure class="icon"><i class="flaticon-doctor"></i></figure>
+                                <h4 class="name">Khám nha khoa</h4>
+                                <a href="#" onclick="redirectToBooking('Friday', '04:00 PM - 05:00 PM')" class="theme-btn btn-style-one">
+                                    <span class="btn-title">Đăng ký khám</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
 
 
@@ -639,7 +821,35 @@
 
 </div><!-- End Page Wrapper -->
 
+    <script>
+        function getDateForDay(dayName) {
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const today = new Date();
+            const currentDayIndex = today.getDay();
+            const targetDayIndex = daysOfWeek.indexOf(dayName);
+            console.log("day: ", targetDayIndex);
 
+
+            const diff = targetDayIndex - currentDayIndex;
+            const targetDate = new Date();
+            targetDate.setDate(today.getDate() + diff);
+
+         
+            const year = targetDate.getFullYear();
+            const month = String(targetDate.getMonth() + 1).padStart(2, "0");
+            const day = String(targetDate.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
+
+    
+        function redirectToBooking(dayName, timeSlot) {
+            const date = getDateForDay(dayName); 
+            console.log("day picker:", date);
+            console.log("day s:", dayName);
+            const url = `/BookAppointment/Create?date=${date}&time=${encodeURIComponent(timeSlot)}`;
+            window.location.href = url; 
+        }
+    </script>
 
 </body>
 

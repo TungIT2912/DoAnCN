@@ -48,9 +48,23 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         }
         //[Authorize(Roles = "Admin")]
         [HttpGet("Create")]
-        public IActionResult Create()
+        public IActionResult Create(string date, string time)
         {
             ViewBag.DichVuList = new SelectList(_context.DichVus, "IddichVu", "TenDichVu");
+            
+            if (string.IsNullOrEmpty(date) && string.IsNullOrEmpty(time))
+            {
+              
+                ViewBag.SelectedDate = "null";
+                ViewBag.SelectedTime = "null";
+            }
+            else
+            {
+             
+                ViewBag.SelectedDate = !string.IsNullOrEmpty(date) ? date : DateTime.Now.ToString("yyyy-MM-dd");
+                ViewBag.SelectedTime = time ?? "null"; 
+            }
+
             return View();
         }
 
@@ -207,7 +221,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
 
                 var startTime = DateTime.Parse(timeRange[0]);
 
-                if (existingAppointments.Any(a => a.Time.TimeOfDay == startTime.TimeOfDay && a.Count >= 2))
+                if (existingAppointments.Any(a => a.Time.TimeOfDay == startTime.TimeOfDay && a.Count >= 3))
                 {
                     disabledSlots.Add(slot);
                 }
@@ -245,7 +259,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             var slots = new List<string>();
 
             var morningStart = selectedDate.AddHours(8);  
-            var morningEnd = selectedDate.AddHours(11).AddMinutes(30); 
+            var morningEnd = selectedDate.AddHours(12); 
 
             while (morningStart < morningEnd)
             {
