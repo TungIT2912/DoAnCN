@@ -44,5 +44,6 @@ namespace WebQuanLyNhaKhoa.Data
         public virtual ICollection<DanhSachKham> DanhSachKhams { get; set; } = new List<DanhSachKham>();
         public virtual TaiKhoan? TaiKhoan { get; set; }
         public virtual ChanDoan? ChanDoan { get; set; }
+        public virtual HoaDon? HoaDon { get; set; }
     }
 }

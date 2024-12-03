@@ -26,8 +26,8 @@ namespace WebQuanLyNhaKhoa.Data
         [ForeignKey("ChiTietHoaDon")]
         public int? ChiTietHoaDonId { get; set; }
 
-        public virtual ChiTietHoaDon ChiTietHoaDon { get; set; }
-
+        public virtual ChiTietHoaDon? ChiTietHoaDon { get; set; }
+        public virtual BenhNhan? BenhNhan { get; set; }
         public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
 		public virtual DichVu DichVu { get; set; } = null!;
