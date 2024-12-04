@@ -29,5 +29,9 @@ namespace WebQuanLyNhaKhoa.DTO
         public string NgayKhamDau { get; set; }
         public string? TenDangNhap { get; set; }
         public string? MatKhau { get; set; }
+        public string? QrCodeUrl { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? QrCodeImage { get; set; }
+        public string? Pdf { get; set; }
     }
 }

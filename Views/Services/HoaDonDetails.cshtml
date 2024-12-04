@@ -128,7 +128,7 @@
 
                                 <div class="col-sm-6 top-right">
                                     <h3 class="marginright">HÓA ĐƠN-@chiTiet.IdhoaDon</h3> 
-<span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                    <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
                                 </div>
                             </div>
                             <hr>
@@ -167,47 +167,59 @@
                                         
                                     }
                             </div>
+                            
+                                <div class="row table-row">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="width:5%">#</th>
+                                                <th style="width:30%">Tên Dịch Vụ</th>
+                                                <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                                                <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                                                <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                                                <th class="text-right" style="width:15%">Tổng Tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model != null && Model.Any())
+                                            {
+                                                int index = 1;
+                                                foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center">@index</td>
+                                                        <td>@item.TenDon</td>
+                                                        <td class="text-right">@item.PhuongThucThanhToan</td>
+                                                        <td class="text-right"> @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
+                                                        <td class="text-right"> @(item.TienDieuTri.HasValue ? string.Format("{0:C}", item.TienDieuTri.Value) : "N/A")</td>
+                                                        <td class="text-right"> @(item.TongTien.HasValue ? string.Format("{0:C}", item.TongTien.Value) : "N/A")</td>
 
-                            <div class="row table-row">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" style="width:5%">#</th>
-                                            <th style="width:30%">Tên Dịch Vụ</th>
-                                            <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                                            <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                                            <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                                            <th class="text-right" style="width:15%">Tổng Tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model != null && Model.Any())
-                                        {
-                                            int index = 1;
-                                            foreach (var item in Model)
+                                                    </tr>
+                                                    index++;
+                                                }
+                                            }
+                                            else
                                             {
                                                 <tr>
-                                                    <td class="text-center">@index</td>
-                                                    <td>@item.TenDon</td>
-                                                    <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                    <td class="text-right"> @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
-                                                    <td class="text-right"> @(item.TienDieuTri.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
-                                                    <td class="text-right"> @(item.TongTien.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
-
+                                                    <td colspan="6" class="text-center">No data available</td>
                                                 </tr>
-                                                index++;
                                             }
-                                        }
-                                        else
-                                        {
-                                            <tr>
-                                                <td colspan="6" class="text-center">No data available</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                    <button class="btn btn-primary view-history"
+                                            data-phone="@chiTiet.s"
+                                            data-email="@chiTiet.EmailBn">
+                                        Xem lịch sử bệnh án
+                                    </button>
+
+                                    <!-- Khu vực hiển thị dữ liệu bệnh án -->
+                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
+                                        <h4>Lịch sử bệnh án:</h4>
+                                        <div class="history-content"></div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -259,17 +271,58 @@ $(document).ready(function () {
             $('#loading').hide(); // Hide loading indicator
         }, 500); // Debounce: Wait 500ms after user stops typing
     });
+            $('.view-history').on('click', function () {
+                const phone = $(this).data('phone');
+                const email = $(this).data('email');
+                const historyContainer = $(this).siblings('.medical-history');
+                const historyContent = historyContainer.find('.history-content');
+
+                // Hiển thị trạng thái loading
+                historyContent.html('<p>Đang tải dữ liệu...</p>');
+                historyContainer.show();
+
+                // Gửi yêu cầu đến API
+                $.ajax({
+                    url: '/api/getList', // Đường dẫn đến API
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ phone: phone, mail: email }),
+                    success: function (data) {
+                        if (data) {
+                            // Hiển thị dữ liệu trong vùng lịch sử
+                            let contentHtml = `
+                                <p>Họ tên: ${data.hoTen}</p>
+                                <p>Giới: ${data.gioi}</p>
+                                <p>Năm sinh: ${data.namSinh}</p>
+                                <p>Triệu chứng: ${data.trieuChung}</p>
+                                <h5>Chi tiết đơn thuốc:</h5>
+                                <ul>
+                                    ${data.donThuocs.map(dt => `
+                                        <li>${dt.tenThuoc} - Số lượng: ${dt.soLuong}, Giá: ${dt.thanhGia}</li>
+                                    `).join('')}
+                                </ul>
+                                <h5>Chi tiết điều trị:</h5>
+                                <ul>
+                                    ${data.dieuTris.map(dt => `
+                                        <li>Dịch vụ: ${dt.tenDieuTri || 'Không có'}, Số lượng: ${dt.soLuong}, Giá: ${dt.thanhTien}</li>
+                                    `).join('')}
+                                </ul>
+                            `;
+                            historyContent.html(contentHtml);
+                        } else {
+                            historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
+                        }
+                    },
+                    error: function () {
+                        historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
+                    }
+                });
+            });
 });
 </script>
 
-
-
-
-
-
 </body>
 
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
 </html>
 
 

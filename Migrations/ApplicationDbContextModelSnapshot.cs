@@ -711,7 +711,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.HasOne("WebQuanLyNhaKhoa.Data.DichVu", "DichVu")
                         .WithMany("DieuTris")
                         .HasForeignKey("IddichVu")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.Kho", "Kho")

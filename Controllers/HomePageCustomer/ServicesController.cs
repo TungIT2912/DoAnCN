@@ -101,11 +101,6 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         [HttpPost("api/getList")]
         public async Task<ActionResult<BenhNhan>> PostList(string? phone, string? mail)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var benhnhan = await _context.DanhSachKhams
                                   .Include(bn => bn.BenhNhan)
                                   .Include(bn => bn.NhanVien)
