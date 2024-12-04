@@ -99,7 +99,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             return View();
         }
         [HttpPost("api/getList")]
-        public async Task<ActionResult<BenhNhan>> PostList(string? phone, string? mail)
+        public async Task<ActionResult<BenhNhan>> PostList([FromBody] RequestDTO request)
         {
             var benhnhan = await _context.DanhSachKhams
                                   .Include(bn => bn.BenhNhan)
@@ -109,7 +109,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                                   .ThenInclude(dv => dv.DieuTri.DichVu)
                                   .Include(bn => bn.DonThuocs)
                                   .ThenInclude(dt => dt.Kho.ThiTruong)
-                                  .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == phone  ||  n.BenhNhan.EmailBn == mail);
+                                  .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == request.Phone  ||  n.BenhNhan.EmailBn == request.Mail);
             if (benhnhan?.DieuTris != null)
             {
                 foreach (var dieuTri in benhnhan.DieuTris)
@@ -143,7 +143,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 DieuTris = benhnhan.DieuTris.Select(dt => new DieuTriDTO
                 {
                     IddichVu = dt.IddichVu,
-                  //  tenDieuTri = dt.DichVu.TenDichVu ?? "Không có dữ liệu dịch vụ",
+                    tenDieuTri = dt.DichVu.TenDichVu ?? "Không có dữ liệu dịch vụ",
                     Idkham = dt.Idkham,
                     IddungCu = dt.IddungCu,
                     SoLuong = dt.SoLuong,
@@ -154,6 +154,11 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 
             return Ok(newDTO);
 
+        }
+        public class RequestDTO
+        {
+            public string? Phone { get; set; }
+            public string? Mail { get; set; }
         }
 
     }
