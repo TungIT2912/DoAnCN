@@ -130,7 +130,13 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
 
                 _context.DanhSachKhams.Add(newDanhSachKham);
                 var saveDanhSachKhamResult = await _context.SaveChangesAsync();
+                var CTHD = new ChiTietHoaDon
+                {
+                    Idkham = newDanhSachKham.Idkham,
+                };
 
+                _context.ChiTietHoaDons.Add(CTHD);
+                await _context.SaveChangesAsync();
                 if (saveDanhSachKhamResult > 0)
                 {
                     var nhanVien = await _context.NhanViens.FindAsync(newDanhSachKham.MaNv);
@@ -452,6 +458,10 @@ public string GenerateLichKhamPdf(BenhNhanDTO benhNhan, DanhSachKham danhSachKha
             if (selectedDate.DayOfWeek == DayOfWeek.Saturday || selectedDate.DayOfWeek == DayOfWeek.Sunday)
             {
                 return BadRequest("Dịch vụ chúng tôi không hoạt động vào thứ 7 và chủ nhật.");
+            }
+            if (selectedDate.Day < DateTime.Now.Day)
+            {
+                return BadRequest("Xin lỗi hôm nay la ngày "  + DateTime.Now.ToString("dd/MM/yyyy") + " ngày bạn chọn " + selectedDate.ToString("dd/MM/yyyy") + " đã qua ngày đó." );
             }
 
             var availableSlots = GenerateTimeSlots(selectedDate); 

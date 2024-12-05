@@ -87,6 +87,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         {
             var existingHoaDon = await _context.HoaDons
                     .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
+            var existingCTHD = await _context.ChiTietHoaDons    
+                   .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
@@ -102,10 +104,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                     return BadRequest("Bệnh nhân không hợp lệ.");
                 }
 
-                decimal totalMedicationCost = 0;  // Tổng chi phí thuốc
-                                                  // Kiểm tra hoặc cập nhật ChiTietHoaDon
-                
-                // Duyệt qua từng dụng cụ và xử lý
+                decimal totalMedicationCost = 0;  
                 for (int i = 0; i < newDonThuocDto.IddungCu.Count; i++)
                 {
                     var dungCu = await _context.Khos
@@ -135,7 +134,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         SoLuong = soLuong,
                         ThanhGia = dungCu.ThiTruong.DonGia,
                         TongTien = medicationCost,
-                        NgayLapDt = DateTime.Now
+                        NgayLapDt = DateTime.Now,
+                        ChiTietHoaDonId = existingCTHD.IdchiTiet,
                     };
 
                     // Thêm đơn thuốc vào cơ sở dữ liệu
