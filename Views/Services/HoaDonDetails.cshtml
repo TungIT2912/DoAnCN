@@ -254,12 +254,12 @@ $(document).ready(function () {
                 const phoneText = $(this).find('.to p:last-child').text().trim(); // Extract phone number
                 const phoneNumber = phoneText.replace('Số điện thoại: ', '').trim(); // Clean phone number
 
-                // Extract the name (HoTen) (from the third <p> tag)
-const nameText = $(this).find('.to .patient-name').text().trim();
+                // Extract the name (HoTen) (from the <p> tag with a specific class)
+                const nameText = $(this).find('.to .patient-name').text().trim(); // Assuming 'patient-name' is a class for the name <p> tag
                 const patientName = nameText.toLowerCase(); // Convert name to lowercase for case-insensitive matching
 
-                // Match search term with phone number (exact match) or patient name (case-insensitive match)
-                if ((phoneNumber === searchTerm) || (patientName.includes(searchTerm))) {
+                // Match search term with phone number (exact match) or patient name (exact match)
+                if ((phoneNumber === searchTerm) || (patientName === searchTerm)) {
                     $(this).show(); // Show matching invoice
                     foundAny = true; // Mark as found
                 } else {
@@ -279,6 +279,7 @@ const nameText = $(this).find('.to .patient-name').text().trim();
     });
 });
 </script>
+
 
 
 
