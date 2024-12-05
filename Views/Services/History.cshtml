@@ -1,0 +1,44 @@
+﻿@using WebQuanLyNhaKhoa.DTO
+@model ListOfEachUserDTO
+
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử khám</title>
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Lịch sử khám bệnh</h2>
+        <p><strong>Họ tên:</strong> @Model.HoTen</p>
+        <p><strong>Giới tính:</strong> @Model.Gioi</p>
+        <p><strong>Năm sinh:</strong> @Model.NamSinh</p>
+        <p><strong>Số điện thoại:</strong> @Model.Sdt</p>
+        <p><strong>Email:</strong> @Model.EmailBn</p>
+        <p><strong>Triệu chứng:</strong> @Model.TrieuChung</p>
+        <h3>Chi tiết đơn thuốc</h3>
+        <ul>
+            @foreach (var donThuoc in Model.DonThuocs)
+            {
+                <li>
+                    Thuốc: @donThuoc.tenThuoc - Số lượng: @donThuoc.SoLuong - Giá: @donThuoc.ThanhGia - Tổng tiền: @donThuoc.TongTien
+                </li>
+            }
+        </ul>
+        <h3>Chi tiết điều trị</h3>
+        <ul>
+            @foreach (var dieuTri in Model.DieuTris)
+            {
+                <li>
+                    Dịch vụ: @dieuTri.tenDieuTri - Số lượng: @dieuTri.SoLuong - Giá: @dieuTri.ThanhTien
+                </li>
+            }
+        </ul>
+    </div>
+</body>
+</html>

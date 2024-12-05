@@ -87,8 +87,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         {
             var existingHoaDon = await _context.HoaDons
                     .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
-            var existingCTHD = await _context.ChiTietHoaDons    
-                   .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
+            //var existingCTHD = await _context.ChiTietHoaDons    
+            //       .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
@@ -135,7 +135,6 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         ThanhGia = dungCu.ThiTruong.DonGia,
                         TongTien = medicationCost,
                         NgayLapDt = DateTime.Now,
-                        ChiTietHoaDonId = existingCTHD.IdchiTiet,
                     };
 
                     // Thêm đơn thuốc vào cơ sở dữ liệu

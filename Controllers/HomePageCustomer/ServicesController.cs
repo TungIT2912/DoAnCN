@@ -154,6 +154,60 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             return Ok(newDTO);
 
         }
+
+        [HttpGet("History")]
+        public async Task<IActionResult> History(string phone, string mail)
+        {
+            if (string.IsNullOrEmpty(phone) && string.IsNullOrEmpty(mail))
+            {
+                return BadRequest("Phone hoặc email không hợp lệ.");
+            }
+
+            var benhnhan = await _context.DanhSachKhams
+                                  .Include(bn => bn.BenhNhan)
+                                  .Include(bn => bn.NhanVien)
+                                  .Include(bn => bn.DieuTris)
+                                  .Include(bn => bn.DonThuocs)
+                                  .ThenInclude(dt => dt.Kho.ThiTruong)
+                                  .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == phone || n.BenhNhan.EmailBn == mail);
+
+            if (benhnhan == null)
+            {
+                return NotFound("Không tìm thấy lịch sử khám.");
+            }
+
+            var viewModel = new ListOfEachUserDTO
+            {
+                IdbenhNhan = benhnhan.IdbenhNhan,
+                HoTen = benhnhan.BenhNhan.HoTen,
+                Gioi = benhnhan.BenhNhan.Gioi,
+                NamSinh = benhnhan.BenhNhan.NamSinh,
+                Sdt = benhnhan.BenhNhan.Sdt,
+                EmailBn = benhnhan.BenhNhan.EmailBn,
+                NgayKhamDau = benhnhan.NgayKham.ToString("dd/MM/yyyy"),
+                TenBacSi = benhnhan.NhanVien.Ten,
+                DiaChi = benhnhan.BenhNhan.DiaChi,
+                time = benhnhan.time.ToString("HH:mm:ss"),
+                DonThuocs = benhnhan.DonThuocs.Select(dt => new DonThuoc1DTO
+                {
+                    tenThuoc = dt.Kho.ThiTruong.TenSanPham,
+                    SoLuong = dt.SoLuong,
+                    ThanhGia = dt.ThanhGia,
+                    TongTien = dt.TongTien,
+                    NgayLapDt = dt.NgayLapDt
+                }).ToList(),
+                DieuTris = benhnhan.DieuTris.Select(dt => new DieuTriDTO
+                {
+                    tenDieuTri = dt.DichVu?.TenDichVu ?? "Không có dữ liệu dịch vụ",
+                    SoLuong = dt.SoLuong,
+                    ThanhTien = dt.ThanhTien
+                }).ToList(),
+                TrieuChung = benhnhan.BenhNhan.TrieuChung,
+            };
+
+            return View(viewModel);
+        }
+
         public class RequestDTO
         {
             public string? Phone { get; set; }

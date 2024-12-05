@@ -240,8 +240,8 @@ namespace WebQuanLyNhaKhoa.Controllers
             try
             {
 
-                var existingCTHD = await _context.ChiTietHoaDons
-                  .FirstOrDefaultAsync(h => h.Idkham == newDieuTriDto.Idkham);
+                //var existingCTHD = await _context.ChiTietHoaDons
+                //  .FirstOrDefaultAsync(h => h.Idkham == newDieuTriDto.Idkham);
                 var dichVu = await _context.DichVus.FindAsync(newDieuTriDto.IddichVu);
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDieuTriDto.Idkham);
                 var dungCu = await _context.Khos.FindAsync(newDieuTriDto.IddungCu);
@@ -298,7 +298,15 @@ namespace WebQuanLyNhaKhoa.Controllers
                 _context.HoaDons.Add(newHoaDon);
                 await _context.SaveChangesAsync();
 
+                var benhNhan = await _context.BenhNhans.FirstOrDefaultAsync(bn => bn.EmailBn == newHoaDon.EmailBn);
+                if (benhNhan != null)
+                {
+                    // Cập nhật IdHoaDon trong BenhNhan
+                    benhNhan.HoaDon = newHoaDon;
 
+                    // Lưu thay đổi
+                    await _context.SaveChangesAsync();
+                }
                 var newChiTietHoaDon = new ChiTietHoaDon
                 {
                     IdhoaDon = newHoaDon.IdhoaDon,

@@ -17,6 +17,8 @@
     <link href="~/css/table.css" rel="stylesheet">
     <link href="~/css/reciept.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
 </head>
 <style>
     .search-box {
@@ -176,6 +178,17 @@
                                         <div class="history-content"></div>
                                     </div>
                                 </div>
+
+                                <h5>QR Code Lịch Sử Khám:</h5>
+                                <div id="qrCode-@chiTiet.IdhoaDon" class="qr-code-container"></div>
+
+                                <!-- Nút tạo QR code -->
+                                <button class="btn btn-secondary generate-qr-code"
+                                        data-phone="@chiTiet.Sdt"
+                                        data-email="@chiTiet.EmailBn"
+                                        data-id="@chiTiet.IdhoaDon">
+                                    Tạo QR Code
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -222,6 +235,32 @@
                 }, 500);
             });
 
+            // Xử lý nút tạo QR Code
+            $('.generate-qr-code').on('click', function () {
+                const phone = $(this).data('phone');
+                const email = $(this).data('email');
+                const id = $(this).data('id');
+                const qrCodeContainer = $(`#qrCode-${id}`);
+
+                // Đường dẫn chứa thông tin hóa đơn
+                const qrData = `https://localhost:7101/History?phone=${phone}&mail=${email}`;
+
+                // Xóa QR code cũ nếu có
+                qrCodeContainer.empty();
+
+                // Tạo QR code mới
+                QRCode.toCanvas(document.createElement('canvas'), qrData, {
+                    width: 128,
+                    height: 128
+                }, function (error, canvas) {
+                    if (error) {
+                        console.error("Lỗi tạo QR code:", error);
+                        qrCodeContainer.html('<p>Không thể tạo QR Code</p>');
+                    } else {
+                        qrCodeContainer.append(canvas);
+                    }
+                });
+            });
             // Xem lịch sử bệnh án
             $('.view-history').on('click', function () {
                 const phone = $(this).data('phone');
