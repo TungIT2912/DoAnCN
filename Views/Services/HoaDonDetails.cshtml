@@ -2,6 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    ViewBag.HideFooter = true;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -140,7 +141,7 @@
                                     <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
                                     <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
                                     <p class="patient-name">@chiTiet.DanhSachKham?.BenhNhan?.HoTen</p>
-                                    <p>Số điện thoại: @chiTiet.Sdt</p>
+                                    <p class="sdt">Số điện thoại: @chiTiet.Sdt</p>
                                 </div>
 
                                 @if (Model != null && Model.Any())
@@ -254,7 +255,7 @@ $(document).ready(function () {
             // Loop through all invoices
             $('[id^="invoice-container-"]').each(function () {
                 // Extract phone number (from the last <p> tag)
-                const phoneText = $(this).find('.to p:last-child').text().trim(); // Extract phone number
+                const phoneText = $(this).find('.to .sdt').text().trim(); // Extract phone number
                 const phoneNumber = phoneText.replace('Số điện thoại: ', '').trim(); // Clean phone number
 
                 // Extract the name (HoTen) (from the <p> tag with a specific class)
@@ -279,82 +280,80 @@ $(document).ready(function () {
 
             $('#loading').hide(); // Hide loading indicator
         }, 500); // Debounce: Wait 500ms after user stops typing
+
+    });
+
+    // Xem lịch sử bệnh án button click event
+    $('.view-history').on('click', function () {
+        const phone = $(this).data('phone');
+        const email = $(this).data('email');
+        const historyContainer = $(this).siblings('.medical-history');
+        const historyContent = historyContainer.find('.history-content');
+
+        historyContent.html('<p>Đang tải dữ liệu...</p>');
+        historyContainer.show();
+
+        $.ajax({
+            url: '/api/getList',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ phone: phone, mail: email }),
+
+            success: function (data) {
+                console.log('Response:', data);
+
+                if (data) {
+                    let contentHtml = `
+                        <p>Họ tên: ${data.HoTen}</p>
+                        <p>Giới: ${data.Gioi}</p>
+                        <p>Năm sinh: ${data.NamSinh}</p>
+                        <p>Số điện thoại: ${data.Sdt}</p>
+                        <p>Email: ${data.EmailBn}</p>
+                        <p>Ngày khám đầu: ${data.NgayKhamDau}</p>
+                        <p>Địa chỉ: ${data.DiaChi}</p>
+                        <p>Bác sĩ: ${data.TenBacSi}</p>
+                        <p>Triệu chứng: ${data.TrieuChung}</p>
+                        <p>Thời gian: ${data.time}</p>
+
+                        <h5>Chi tiết đơn thuốc:</h5>
+                        <ul>
+                            ${data.DonThuocs.map(dt => `
+                                <li>
+                                    Tên thuốc: ${dt.tenThuoc} -
+                                    Số lượng: ${dt.SoLuong} -
+                                    Giá: ${dt.ThanhGia} -
+                                    Tổng tiền: ${dt.TongTien} -
+                                    Ngày lập: ${dt.NgayLapDt}
+                                </li>
+                            `).join('')}
+                        </ul>
+
+                        <h5>Chi tiết điều trị:</h5>
+                        <ul>
+                            ${data.DieuTris.map(dt => `
+                                <li>
+                                    Dịch vụ: ${dt.tenDieuTri || 'Không có'} -
+                                    Số lượng: ${dt.SoLuong} -
+                                    Giá: ${dt.ThanhTien}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+
+                    // Cập nhật nội dung trong container
+                    historyContent.html(contentHtml);
+                } else {
+                    historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
+                }
+            },
+            error: function () {
+                historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
+            }
+        });
     });
 });
 </script>
 
-<script>
-            // Xem lịch sử bệnh án
-            $('.view-history').on('click', function () {
-                const phone = $(this).data('phone');
-                const email = $(this).data('email');
-                const historyContainer = $(this).siblings('.medical-history');
-                const historyContent = historyContainer.find('.history-content');
-
-                historyContent.html('<p>Đang tải dữ liệu...</p>');
-                historyContainer.show();
-
-                $.ajax({
-                    url: '/api/getList',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ phone: phone, mail: email }),
-                    
-                    success: function (data) {
-                        console.log('Response:', data);
-
-                        if (data) {
-                            let contentHtml = `
-                                <p>Họ tên: ${data.HoTen}</p>
-                                <p>Giới: ${data.Gioi}</p>
-                                <p>Năm sinh: ${data.NamSinh}</p>
-                                <p>Số điện thoại: ${data.Sdt}</p>
-                                <p>Email: ${data.EmailBn}</p>
-                                <p>Ngày khám đầu: ${data.NgayKhamDau}</p>
-                                <p>Địa chỉ: ${data.DiaChi}</p>
-                                <p>Bác sĩ: ${data.TenBacSi}</p>
-                                <p>Triệu chứng: ${data.TrieuChung}</p>
-                                <p>Thời gian: ${data.time}</p>
-
-                                <h5>Chi tiết đơn thuốc:</h5>
-                                <ul>
-                                    ${data.DonThuocs.map(dt => `
-                                        <li>
-                                            Tên thuốc: ${dt.tenThuoc} -
-                                            Số lượng: ${dt.SoLuong} -
-                                            Giá: ${dt.ThanhGia} -
-                                            Tổng tiền: ${dt.TongTien} -
-                                            Ngày lập: ${dt.NgayLapDt}
-                                        </li>
-                                    `).join('')}
-                                </ul>
-
-                                <h5>Chi tiết điều trị:</h5>
-                                <ul>
-                                    ${data.DieuTris.map(dt => `
-                                        <li>
-                                            Dịch vụ: ${dt.tenDieuTri || 'Không có'} -
-                                            Số lượng: ${dt.SoLuong} -
-                                            Giá: ${dt.ThanhTien}
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            `;
-
-                            // Cập nhật nội dung trong container
-                            historyContent.html(contentHtml);
-                        } else {
-                            historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
-                        }
-                    },
-                    error: function () {
-                        historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
-                    }
-
-                });
-            });
-        });
-   </script>
 
 
 

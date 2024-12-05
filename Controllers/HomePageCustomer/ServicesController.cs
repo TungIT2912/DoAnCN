@@ -26,7 +26,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 
             // Retrieve paginated DichVu data
             var dichVus = await _context.DichVus
-                .OrderBy(dv => dv.IddichVu)  // Optional: Order by specific field
+                .OrderBy(dv => dv.IddichVu)  
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -54,48 +54,42 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // HoaDonDetails search page
-public IActionResult HoaDonDetails(string searchQuery)
-{
-    var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
-        ? _context.ChiTietHoaDons
-            .Include(c => c.DanhSachKham)  
-                .ThenInclude(dsk => dsk.BenhNhan)  
-            .ToList()
-        : _context.ChiTietHoaDons
-            .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
-            .Include(c => c.DanhSachKham)  
-                .ThenInclude(dsk => dsk.BenhNhan)  
-            .ToList();
+    public IActionResult HoaDonDetails(string searchQuery)
+    {
+        var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
+            ? _context.ChiTietHoaDons
+                .Include(c => c.DanhSachKham)  
+                    .ThenInclude(dsk => dsk.BenhNhan)  
+                .ToList()
+            : _context.ChiTietHoaDons
+                .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
+                .Include(c => c.DanhSachKham)  
+                    .ThenInclude(dsk => dsk.BenhNhan)  
+                .ToList();
 
-    ViewData["SearchQuery"] = searchQuery; 
-    return View(chiTietHoaDons);
-}
+        ViewData["SearchQuery"] = searchQuery; 
+        return View(chiTietHoaDons);
+    }
 
-        // Service Details page
         public IActionResult ServicesDetail(int id)
         {
-            // Step 1: Fetch the service details based on the ID
             var service = _context.DichVus.FirstOrDefault(s => s.IddichVu == id);
 
             if (service == null)
             {
-                return NotFound(); // Handle cases where the service isn't found
+                return NotFound(); 
             }
 
-            // Step 2: Fetch the list of doctors associated with the service
-            // Assuming doctors are filtered based on their ChucVu (Role) or another field
             var doctors = _context.NhanViens
-                .Where(d => d.ChucVu.TenCv == "Doctor")  // Adjust this filter to fit your needs
+                .Where(d => d.ChucVu.TenCv == "Bác sĩ")  
                 .ToList();
 
-            // Step 3: Create and populate the ViewModel
             var viewModel = new ServiceDetailViewModel
             {
                 Service = service,
                 Doctors = doctors
             };
 
-            // Step 4: Pass the ViewModel to the view
             return View(viewModel);
         }
         public IActionResult ListEachUser()
@@ -115,6 +109,10 @@ public IActionResult HoaDonDetails(string searchQuery)
                                   .Include(bn => bn.DonThuocs)
                                   .ThenInclude(dt => dt.Kho.ThiTruong)
                                   .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == request.Phone  ||  n.BenhNhan.EmailBn == request.Mail);
+                                  if (benhnhan == null)
+                                    {
+                                        return NotFound("Không tìm thấy bệnh nhân.");
+                                    }
             if (benhnhan?.DieuTris != null)
             {
                 foreach (var dieuTri in benhnhan.DieuTris)
@@ -125,20 +123,20 @@ public IActionResult HoaDonDetails(string searchQuery)
             var newDTO = new ListOfEachUserDTO
             {
                 IdbenhNhan = benhnhan.IdbenhNhan,
-                HoTen = benhnhan.BenhNhan.HoTen,
-                Gioi = benhnhan.BenhNhan.Gioi,
-                NamSinh = benhnhan.BenhNhan.NamSinh,
-                Sdt = benhnhan.BenhNhan.Sdt,
-                EmailBn = benhnhan.BenhNhan.EmailBn,
+                HoTen = benhnhan.BenhNhan?.HoTen ?? "Unknown",
+                Gioi = benhnhan.BenhNhan?.Gioi,
+                NamSinh = benhnhan.BenhNhan?.NamSinh ?? "Unknown",
+                Sdt = benhnhan.BenhNhan?.Sdt ?? "Unknown",
+                EmailBn = benhnhan.BenhNhan?.EmailBn ?? "Unknown",
                 NgayKhamDau = benhnhan.NgayKham.ToString("dd/MM/yyyy"),
-                TenBacSi = benhnhan.NhanVien.Ten,
-                DiaChi = benhnhan.BenhNhan.DiaChi,
+                TenBacSi = benhnhan.NhanVien?.Ten ?? "Unknown",
+                DiaChi = benhnhan.BenhNhan?.DiaChi ?? "Unknown",
                 time = benhnhan.time.ToString("HH:mm:ss"),
                 DonThuocs = benhnhan.DonThuocs.Select(dt => new DonThuoc1DTO
                 {
                     Idkham = dt.Idkham,
                     IddungCu = dt.IddungCu,
-                    tenThuoc = dt.Kho.ThiTruong.TenSanPham,
+                    tenThuoc = dt.Kho.ThiTruong.TenSanPham ?? "Unknown",
                     SoLuong = dt.SoLuong,
                     ThanhGia = dt.ThanhGia,
                     TongTien = dt.TongTien,
@@ -154,7 +152,7 @@ public IActionResult HoaDonDetails(string searchQuery)
                     SoLuong = dt.SoLuong,
                     ThanhTien = dt.ThanhTien
                 }).ToList(),
-                TrieuChung = benhnhan.BenhNhan.TrieuChung,
+                TrieuChung = benhnhan.BenhNhan.TrieuChung ?? "Unknown",
             };
 
             return Ok(newDTO);

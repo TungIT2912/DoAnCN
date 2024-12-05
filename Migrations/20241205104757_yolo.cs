@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:Migrations/20241202123955_Add.cs
-    public partial class Add : Migration
-========
-    public partial class test : Migration
->>>>>>>> origin/Hieu:Migrations/20241203084806_test.cs
+    public partial class yolo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
