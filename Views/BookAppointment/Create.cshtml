@@ -225,12 +225,11 @@
 
                 fetch(`/BookAppointment/getAvailableSlots?ngayKham=${selectedDate}&maNv=${doctorId}`)
                     .then(response => {
-                        if (!response.ok) {
-                            // return response.text().then(errorMessage => {
-                            //     throw new Error(errorMessage);
-                            // });
-                            alert("Dịch vụ chúng tôi không hoạt động vào thứ 7 và chủ nhật.");
-                        }
+                        response.text().then(errorMessage => {
+                            alert(errorMessage);
+                        }).catch(() => {
+                            alert("An error occurred, but no error message was provided by the server.");
+                        });
                         return response.json();
                     })
                     .then(result => {

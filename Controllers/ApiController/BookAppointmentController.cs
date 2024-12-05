@@ -207,6 +207,10 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             {
                 return BadRequest("Dịch vụ chúng tôi không hoạt động vào thứ 7 và chủ nhật.");
             }
+            if (selectedDate.Day < DateTime.Now.Day)
+            {
+                return BadRequest("Xin lỗi hôm nay la ngày "  + DateTime.Now.ToString("dd/MM/yyyy") + " ngày bạn chọn " + selectedDate.ToString("dd/MM/yyyy") + " đã qua ngày đó." );
+            }
 
             var availableSlots = GenerateTimeSlots(selectedDate); 
             var existingAppointments = _context.DanhSachKhams
