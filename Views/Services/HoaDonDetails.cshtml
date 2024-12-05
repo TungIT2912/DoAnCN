@@ -5,8 +5,6 @@
 }
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
 <head>
 <meta charset="utf-8">
 <!-- Stylesheets -->
@@ -35,69 +33,67 @@
 <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
 </head>
 <style>
-.search-box {
-    width: 100%; /* Adjust width as per your design */
-    max-width: 400px; /* Optional: to set a maximum width */
-    padding: 12px 20px; /* Add padding to make the box more spacious */
-    font-size: 16px; /* Font size for better readability */
-    border-radius: 25px; /* Rounded corners for a softer look */
-    border: 1px solid #ccc; /* Light border */
-    outline: none; /* Remove the default outline */
-    transition: border 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-}
+    .search-box {
+        width: 100%;
+        max-width: 400px;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 25px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
 
-.search-box:focus {
-    border-color: #007BFF; /* Highlight border color on focus */
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Subtle shadow for focus effect */
-}
+        .search-box:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
 
-.search-box::placeholder {
-    color: #999; /* Lighter placeholder text */
-    font-style: italic; /* Optional: add italic for placeholder text */
-}
+        .search-box::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+    #loading {
+        text-align: center;
+        color: #007BFF;
+        font-weight: bold;
+    }
+
+    #no-data-message-global {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
 </style>
 <body>
-
-<div class="page-wrapper">
-
-    <!-- Preloader -->
-    <div class="preloader"></div>
-
-     <!--Page Title-->
-<section class="page-title" style="background-image: url('@Url.Content("~/images/background/8.jpg")');">
-        <div class="auto-container">
-            <div class="title-outer">
-                <h1>Hóa đơn</h1>
-                <ul class="page-breadcrumb">
-                    <li><a href="~/Home/Index">Trang chủ</a></li>
-                    <li>Hóa đơn</li>
-                </ul> 
+    <div class="page-wrapper">
+        <section class="page-title" style="background-image: url('@Url.Content("~/images/background/8.jpg")');">
+            <div class="auto-container">
+                <div class="title-outer">
+                    <h1>Hóa đơn</h1>
+                    <ul class="page-breadcrumb">
+                        <li><a href="~/Home/Index">Trang chủ</a></li>
+                        <li>Hóa đơn</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </section>
-    <!--End Page Title--> 
+        </section>
+        <hr>
 
-<hr>
-
-<section>
-
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <!-- Search form that submits the query to the server -->
-            <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn (SĐT)" />       
-            <div id="loading" style="display:none;">Đang tải...</div>
-            <div id="no-data-message" style="display:none;">Không có dữ liệu</div>
- 
-        </div>
-    </div>
-    <br>
-
-</div>
-
-<br>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Search Box -->
+                        <input class="search-box" type="text" id="invoice-search" placeholder="Tìm kiếm Hóa đơn (SĐT)" />
+                        <div id="loading" style="display:none;">Đang tải...</div>
+                        <div id="no-data-message-global" style="display:none;">Không có dữ liệu</div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <br>
 
 
 
@@ -207,6 +203,15 @@
                                     </tbody>
                                 </table>
                             </div>
+                             <button class="btn btn-primary view-history"
+                                            data-phone="@chiTiet.Sdt"
+                                            data-email="@chiTiet.EmailBn">
+                                        Xem lịch sử bệnh án
+                                    </button>
+                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
+                                        <h4>Lịch sử bệnh án:</h4>
+                                        <div class="history-content"></div>
+                                    </div>
                         </div>
                     </div>
                 </div>
@@ -278,22 +283,81 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+            // Xem lịch sử bệnh án
+            $('.view-history').on('click', function () {
+                const phone = $(this).data('phone');
+                const email = $(this).data('email');
+                const historyContainer = $(this).siblings('.medical-history');
+                const historyContent = historyContainer.find('.history-content');
+
+                historyContent.html('<p>Đang tải dữ liệu...</p>');
+                historyContainer.show();
+
+                $.ajax({
+                    url: '/api/getList',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ phone: phone, mail: email }),
+                    
+                    success: function (data) {
+                        console.log('Response:', data);
+
+                        if (data) {
+                            let contentHtml = `
+                                <p>Họ tên: ${data.HoTen}</p>
+                                <p>Giới: ${data.Gioi}</p>
+                                <p>Năm sinh: ${data.NamSinh}</p>
+                                <p>Số điện thoại: ${data.Sdt}</p>
+                                <p>Email: ${data.EmailBn}</p>
+                                <p>Ngày khám đầu: ${data.NgayKhamDau}</p>
+                                <p>Địa chỉ: ${data.DiaChi}</p>
+                                <p>Bác sĩ: ${data.TenBacSi}</p>
+                                <p>Triệu chứng: ${data.TrieuChung}</p>
+                                <p>Thời gian: ${data.time}</p>
+
+                                <h5>Chi tiết đơn thuốc:</h5>
+                                <ul>
+                                    ${data.DonThuocs.map(dt => `
+                                        <li>
+                                            Tên thuốc: ${dt.tenThuoc} -
+                                            Số lượng: ${dt.SoLuong} -
+                                            Giá: ${dt.ThanhGia} -
+                                            Tổng tiền: ${dt.TongTien} -
+                                            Ngày lập: ${dt.NgayLapDt}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+
+                                <h5>Chi tiết điều trị:</h5>
+                                <ul>
+                                    ${data.DieuTris.map(dt => `
+                                        <li>
+                                            Dịch vụ: ${dt.tenDieuTri || 'Không có'} -
+                                            Số lượng: ${dt.SoLuong} -
+                                            Giá: ${dt.ThanhTien}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            `;
+
+                            // Cập nhật nội dung trong container
+                            historyContent.html(contentHtml);
+                        } else {
+                            historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
+                        }
+                    },
+                    error: function () {
+                        historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
+                    }
+
+                });
+            });
+        });
+   </script>
 
 
 
 
 </body>
-
-<!-- Mirrored from skyethemes.com/html/2022/medicoz/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Jun 2024 09:36:40 GMT -->
 </html>
-
-
-
-
-
-
-
-
-
-
-

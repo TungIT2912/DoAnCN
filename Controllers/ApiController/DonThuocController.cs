@@ -92,6 +92,11 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             {
                 // Kiểm tra thông tin bệnh nhân
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDonThuocDto.Idkham);
+                
+                var phuongThucThanhToan = _context.HoaDons
+                    .Where(bn => bn.IddonThuoc == newDonThuocDto.IddonThuoc)
+                    .Select(bn => bn.PhuongThucThanhToan)
+                    .FirstOrDefault();
                 if (danhSachKham == null)
                 {
                     return BadRequest("Bệnh nhân không hợp lệ.");
@@ -161,11 +166,15 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         // Cập nhật ChiTietHoaDon hiện có
                         existingChiTietHoaDon.TienThuoc += totalMedicationCost;
                         existingChiTietHoaDon.TongTien += totalMedicationCost;
+                        existingChiTietHoaDon.PhuongThucThanhToan = phuongThucThanhToan;
                         existingChiTietHoaDon.NgayLap = DateTime.Now;
                         _context.ChiTietHoaDons.Update(existingChiTietHoaDon);
                         await _context.SaveChangesAsync();
+                        // Cập nhật ChiTietHoaDonId cho DieuTri
+                        
                     }
-                    
+                    newDonThuoc.ChiTietHoaDonId = existingChiTietHoaDon.IdchiTiet;
+                    _context.DonThuocs.Update(newDonThuoc); await _context.SaveChangesAsync();
                     totalMedicationCost = 0;
                 }
 

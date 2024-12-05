@@ -215,29 +215,63 @@
 
             // Hiển thị tin nhắn của người dùng (căn phải)
             displayMessage(
-                'Timona Siera',
+                'Bạn',
                 userMessage,
                 'user',
                 '/images/nhanvien17.jpg'
             );
 
-            // Hiển thị tin nhắn của hệ thống (căn trái)
-            displayMessage(
-                'Johnny Bullock',
-                response.data.fulfillmentText,
-                'system',
-                '/images/nhanvien1.jpg'
-            );
+            // Hiển thị và lưu tin nhắn từ fulfillmentText nếu có dữ liệu
+            if (response.data.fulfillmentText) {
+                displayMessage(
+                    'Hệ Thống',
+                    response.data.fulfillmentText,
+                    'system',
+                    '/images/nhanvien1.jpg'
+                );
 
-            // Lưu tin nhắn vào localStorage
-            saveMessage({
-                user: 'Timona Siera',
-                message: userMessage,
-            });
-            saveMessage({
-                user: 'Johnny Bullock',
-                message: response.data.fulfillmentText,
-            });
+                saveMessage({
+                    user: 'Hệ Thống',
+                    message: response.data.fulfillmentText,
+                });
+            }
+
+            // Hiển thị và lưu tin nhắn từ fulfillmentText2 nếu có dữ liệu
+            if (response.data.fulfillmentText2) {
+                displayMessage(
+                    'Hệ Thống',
+                    response.data.fulfillmentText2,
+                    'system',
+                    '/images/nhanvien1.jpg'
+                );
+
+                saveMessage({
+                    user: 'Hệ Thống',
+                    message: response.data.fulfillmentText2,
+                });
+            }
+            if (response.data.fulfillmentText && response.data.fulfillmentText2) {
+                displayMessage(
+                    'Hệ Thống',
+                    response.data.fulfillmentText,
+                    'system',
+                    '/images/nhanvien1.jpg'
+                );
+                displayMessage(
+                    'Hệ Thống',
+                    response.data.fulfillmentText2,
+                    'system',
+                    '/images/nhanvien1.jpg'
+                );
+                saveMessage({
+                    user: 'Hệ Thống',
+                    message: response.data.fulfillmentText,
+                });
+                saveMessage({
+                    user: 'Hệ Thống',
+                    message: response.data.fulfillmentText2,
+                });
+            }
         } catch (error) {
             console.error(error);
             alert('Đã xảy ra lỗi khi gửi tin nhắn');
@@ -258,7 +292,7 @@
             displayMessage(
                 msg.user,
                 msg.message,
-                msg.user === 'Timona Siera' ? 'user' : 'system',
+                msg.user === 'Bạn' ? 'user' : 'system',
                 '/images/nhanvien17.jpg'
             );
         });
@@ -287,7 +321,9 @@
         // Văn bản tin nhắn
         const messageText = document.createElement('div');
         messageText.className = 'message-text';
-        messageText.textContent = message;
+        messageText.innerHTML = message;
+        // Chuyển đổi xuống dòng (\n -> <br>)
+        messageText.innerHTML = message.replace(/\n/g, '<br>');
 
         // Thêm avatar và văn bản vào messageContent
         messageContent.appendChild(avatar);

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
+using WebQuanLyNhaKhoa.DTO;
 using X.PagedList;
 using X.PagedList.Extensions;
 
@@ -97,5 +98,73 @@ public IActionResult HoaDonDetails(string searchQuery)
             // Step 4: Pass the ViewModel to the view
             return View(viewModel);
         }
+        public IActionResult ListEachUser()
+        {
+         
+            return View();
+        }
+        [HttpPost("api/getList")]
+        public async Task<ActionResult<BenhNhan>> PostList([FromBody] RequestDTO request)
+        {
+            var benhnhan = await _context.DanhSachKhams
+                                  .Include(bn => bn.BenhNhan)
+                                  .Include(bn => bn.NhanVien)
+                                  .Include(bn => bn.DieuTris)
+                                  .Include(bn => bn.BenhNhan.HoaDon)
+                                  .ThenInclude(dv => dv.DieuTri.DichVu)
+                                  .Include(bn => bn.DonThuocs)
+                                  .ThenInclude(dt => dt.Kho.ThiTruong)
+                                  .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == request.Phone  ||  n.BenhNhan.EmailBn == request.Mail);
+            if (benhnhan?.DieuTris != null)
+            {
+                foreach (var dieuTri in benhnhan.DieuTris)
+                {
+                    Console.WriteLine($"TenDichVu: {dieuTri.DichVu?.TenDichVu ?? "No Data"}");
+                }
+            }
+            var newDTO = new ListOfEachUserDTO
+            {
+                IdbenhNhan = benhnhan.IdbenhNhan,
+                HoTen = benhnhan.BenhNhan.HoTen,
+                Gioi = benhnhan.BenhNhan.Gioi,
+                NamSinh = benhnhan.BenhNhan.NamSinh,
+                Sdt = benhnhan.BenhNhan.Sdt,
+                EmailBn = benhnhan.BenhNhan.EmailBn,
+                NgayKhamDau = benhnhan.NgayKham.ToString("dd/MM/yyyy"),
+                TenBacSi = benhnhan.NhanVien.Ten,
+                DiaChi = benhnhan.BenhNhan.DiaChi,
+                time = benhnhan.time.ToString("HH:mm:ss"),
+                DonThuocs = benhnhan.DonThuocs.Select(dt => new DonThuoc1DTO
+                {
+                    Idkham = dt.Idkham,
+                    IddungCu = dt.IddungCu,
+                    tenThuoc = dt.Kho.ThiTruong.TenSanPham,
+                    SoLuong = dt.SoLuong,
+                    ThanhGia = dt.ThanhGia,
+                    TongTien = dt.TongTien,
+                    NgayLapDt = dt.NgayLapDt
+                }).ToList(),
+
+                DieuTris = benhnhan.DieuTris.Select(dt => new DieuTriDTO
+                {
+                    IddichVu = dt.IddichVu,
+                    tenDieuTri = dt.DichVu.TenDichVu ?? "Không có dữ liệu dịch vụ",
+                    Idkham = dt.Idkham,
+                    IddungCu = dt.IddungCu,
+                    SoLuong = dt.SoLuong,
+                    ThanhTien = dt.ThanhTien
+                }).ToList(),
+                TrieuChung = benhnhan.BenhNhan.TrieuChung,
+            };
+
+            return Ok(newDTO);
+
+        }
+        public class RequestDTO
+        {
+            public string? Phone { get; set; }
+            public string? Mail { get; set; }
+        }
+
     }
 }

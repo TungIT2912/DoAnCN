@@ -30,8 +30,8 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual ChiTietHoaDon? ChiTietHoaDon { get; set; }
         public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
-
-		public virtual Kho Kho { get; set; } = null!;
+        public virtual BenhNhan? BenhNhan { get; set; }
+        public virtual Kho Kho { get; set; } = null!;
 		public virtual DanhSachKham DanhSachKham { get; set; } = null!;
 	}
 }

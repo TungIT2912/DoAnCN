@@ -3,7 +3,31 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-
+<div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true" style="margin-left:500px; height:450px; margin-top:100px">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="margin-left:20px">
+            <div style="margin-top:-300px;">
+                <div class="modal-header" style="margin-bottom:30px;">
+                    <h5 class="modal-title" id="qrModalLabel">Mã QR Lịch Hẹn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" style="margin-bottom:30px;">
+                    <!-- QR Code -->
+                    <img id="qrCodeImage" src="" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
+                    <div>
+                        <!-- Buttons to download QR and image -->
+                        <a id="qrCodeUrl" href="" class="btn btn-primary mx-2" download>
+                            Tải mã QR
+                        </a>
+                        <a id="pdf" href="#" class="btn btn-secondary mx-2" download>
+                            Tải hình ảnh
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container-xxl py-5">
     <div class="container">
         <div class="row g-5">
@@ -33,103 +57,109 @@
 
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="bg-light rounded h-100 d-flex align-items-center p-5">
-                                <form id="createBenhNhan" class="row g-3 w-100" method="post" enctype="multipart/form-data">
-                                    <div class="col-12 col-sm-6">
-                                        <label asp-for="HoTen" class="control-label">Họ tên</label>
-                                        <input asp-for="HoTen" required type="text" class="form-control border-0" style="height: 55px;">
-                                        <span asp-validation-for="HoTen" class="text-danger"></span>
-                                    </div>
+                    <form id="createBenhNhan" class="row g-3 w-100" method="post" enctype="multipart/form-data">
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="HoTen" class="control-label">Họ tên</label>
+                            <input asp-for="HoTen" required type="text" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="HoTen" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12 col-sm-6">
-                                        <div>
-                                            <input asp-for="Gioi" type="radio" name="gender" value="True" />
-                                            <span>Nữ</span>
-                                        </div>
-                                        <div>
-                                            <input asp-for="Gioi" type="radio" name="gender" value="False" />
-                                            <span>Nam</span>
-                                        </div>
-                                        <span asp-validation-for="Gioi" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6">
+                            <div>
+                                <input asp-for="Gioi" type="radio" name="gender" value="True" />
+                                <span>Nữ</span>
+                            </div>
+                            <div>
+                                <input asp-for="Gioi" type="radio" name="gender" value="False" />
+                                <span>Nam</span>
+                            </div>
+                            <span asp-validation-for="Gioi" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12 col-sm-6">
-                                        <label asp-for="NamSinh" class="control-label">Năm sinh</label>
-                                        <input asp-for="NamSinh" type="text" placeholder="Nhập năm sinh" class="form-control border-0" style="height: 55px;">
-                                        <span asp-validation-for="NamSinh" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="NamSinh" class="control-label">Năm sinh</label>
+                            <input asp-for="NamSinh" type="text" placeholder="Nhập năm sinh" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="NamSinh" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12 col-sm-6">
-                                        <label asp-for="Sdt" class="control-label">Số điện thoại</label>
-                                        <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
-                                        <span asp-validation-for="Sdt" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="Sdt" class="control-label">Số điện thoại</label>
+                            <input asp-for="Sdt" type="tel" class="form-control border-0" style="height: 55px;">
+                            <span asp-validation-for="Sdt" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12 col-sm-6">
-                                        <label asp-for="EmailBn" class="control-label">Email</label>
-                                        <input asp-for="EmailBn" type="email" class="form-control border-0" style="height: 55px;width: 100%">
-                                        <span asp-validation-for="EmailBn" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="EmailBn" class="control-label">Email</label>
+                            <input asp-for="EmailBn" type="email" class="form-control border-0" style="height: 55px;width: 100%">
+                            <span asp-validation-for="EmailBn" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12 col-sm-6">
-                                        <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
-                                        <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;width: 100%">
-                                        <span asp-validation-for="DiaChi" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                            <input asp-for="DiaChi" type="text" class="form-control border-0" style="height: 55px;width: 100%">
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12 col-sm-6" style=" width: 100%;">
-                                        <label asp-for="IddichVu" class="control-label">Chọn chuyên nghành</label>
-                                         <select asp-for="IddichVu" id="IddichVu" class="form-control IddichVu" asp-items="ViewBag.DichVuList" required>
-                                            <option value="" selected>- Chọn chuyên ngành -</option>
-                                        </select>
-                                        <span asp-validation-for="IddichVu" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                            <label asp-for="IddichVu" class="control-label">Chọn chuyên nghành</label>
+                            <select asp-for="IddichVu" id="IddichVu" class="form-control IddichVu" asp-items="ViewBag.DichVuList" required>
+                                <option value="" selected>- Chọn chuyên ngành -</option>
+                            </select>
+                            <span asp-validation-for="IddichVu" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12 col-sm-6" style=" width: 100%;">
-                                        <label asp-for="MaNv" class="control-label">Các bác sĩ chuyên ngành</label>
-                                        <select asp-for="MaNv" id="MaNv" name="MaNv" class="MaNv" required>
-                                            <option value="">Chọn bác sĩ</option>
-                                        </select>
-                                        <span asp-validation-for="MaNv" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                            <label asp-for="MaNv" class="control-label">Các bác sĩ chuyên ngành</label>
+                            <select asp-for="MaNv" id="MaNv" name="MaNv" class="MaNv" required>
+                                <option value="">Chọn bác sĩ</option>
+                            </select>
+                            <span asp-validation-for="MaNv" class="text-danger"></span>
+                        </div>
 
 
-                                    <div class="col-12 col-sm-6" style=" width: 100%;">
-                                        <div class="date" id="date" data-target-input="nearest">
-                                            <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
-                                                <input asp-for="NgayKhamDau" type="date" id="bookingDate"
-                                                class="form-control border-0 datetimepicker-input"
-                                                placeholder="Choose Date"
-                                                data-target="#date" data-toggle="datetimepicker"
-                                                style="height: 55px;"
-                                                value="@ViewBag.SelectedDate">
-                                            <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
-                                        </div>
-                                    </div>
+                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                            <div class="date" id="date" data-target-input="nearest">
+                                <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+                                <input asp-for="NgayKhamDau" type="date" id="bookingDate"
+                                       class="form-control border-0 datetimepicker-input"
+                                       placeholder="Choose Date"
+                                       data-target="#date" data-toggle="datetimepicker"
+                                       style="height: 55px;"
+                                       value="@ViewBag.SelectedDate">
+                                <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+                            </div>
+                        </div>
 
-                                    <div class="col-12 col-sm-6" style=" width: 100%;">
-                                        <div class="date" id="date" data-target-input="nearest">
-                                            <label asp-for="time" class="control-label">Ca khám</label>
-                                                <select id="bookingTime" name="time" required>
-                                                    <option value="">Chọn ca khám</option>
-                                                    @if (!string.IsNullOrEmpty(ViewBag.SelectedTime))
-                                                    {
-                                                        <option value="@ViewBag.SelectedTime" selected>@ViewBag.SelectedTime</option>
-                                                    }
-                                                </select>
-                                            <span asp-validation-for="time" class="text-danger"></span>
-                                        </div>
-                                    </div>
+                        <div class="col-12 col-sm-6" style=" width: 100%;">
+                            <div class="date" id="date" data-target-input="nearest">
+                                <label asp-for="time" class="control-label">Ca khám</label>
+                                <select id="bookingTime" name="time" required>
+                                    <option value="">Chọn ca khám</option>
+                                    @if (!string.IsNullOrEmpty(ViewBag.SelectedTime))
+                                    {
+                                        <option value="@ViewBag.SelectedTime" selected>@ViewBag.SelectedTime</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="time" class="text-danger"></span>
+                            </div>
+                        </div>
 
-                                    <div class="col-12 col-sm-6">
-                                        <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
-                                        <textarea asp-for="TrieuChung" class="form-control custom-textarea" style="height: 150px; width: 208%"></textarea>
-                                        <span asp-validation-for="TrieuChung" class="text-danger"></span>
-                                    </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="TrieuChung" class="control-label">Triệu Chứng</label>
+                            <textarea asp-for="TrieuChung" class="form-control custom-textarea" style="height: 150px; width: 208%"></textarea>
+                            <span asp-validation-for="TrieuChung" class="text-danger"></span>
+                        </div>
 
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch khám</button>
-                                    </div>
-                                </form>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch khám</button>
+                        </div>
+                        <div class="col-12">
+                            <a id="qrCodeUrl" href="#" style="display:none;" target="_blank">Tải mã QR</a>
+                        </div>
+                        <div class="col-12">
+                            <a id="imageUrl" href="#" style="display:none;" target="_blank">Tải hình ảnh lịch khám</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -137,38 +167,38 @@
 </div>
 <style>
     .custom-textarea {
-    height: 200px; /* Make the textarea a bit taller */
-    padding: 12px; /* Add padding for better readability */
-    font-size: 1rem; /* Increase font size for better legibility */
-    border-radius: 8px; /* Rounded corners for a softer look */
-    border: 1px solid #ccc; /* Light border */
-    resize: vertical; /* Allow vertical resizing only */
-    background-color: #f8f9fa; /* Light background color for better contrast */
-    transition: all 0.3s ease-in-out; /* Smooth transition on focus */
-}
+        height: 200px; /* Make the textarea a bit taller */
+        padding: 12px; /* Add padding for better readability */
+        font-size: 1rem; /* Increase font size for better legibility */
+        border-radius: 8px; /* Rounded corners for a softer look */
+        border: 1px solid #ccc; /* Light border */
+        resize: vertical; /* Allow vertical resizing only */
+        background-color: #f8f9fa; /* Light background color for better contrast */
+        transition: all 0.3s ease-in-out; /* Smooth transition on focus */
+    }
 
-.custom-textarea:focus {
-    border-color: #007bff; /* Focus border color */
-    outline: none; /* Remove outline on focus */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow effect on focus */
-    background-color: #ffffff; /* Change background on focus */
-}
+        .custom-textarea:focus {
+            border-color: #007bff; /* Focus border color */
+            outline: none; /* Remove outline on focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow effect on focus */
+            background-color: #ffffff; /* Change background on focus */
+        }
 
-.custom-textarea::placeholder {
-    color: #aaa; /* Lighter placeholder text */
-}
+        .custom-textarea::placeholder {
+            color: #aaa; /* Lighter placeholder text */
+        }
 </style>
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-      
+
         $(document).ready(function () {
             console.log("Document ready!");
 
-            let lastSelectedTime ='';
+            let lastSelectedTime = '';
             $('#IddichVu').change(function () {
-                
-                var dichVuId = $(this).val(); 
+
+                var dichVuId = $(this).val();
                 console.log("Selected DichVu ID: ", dichVuId);
 
                 $.ajax({
@@ -178,7 +208,7 @@
                     success: function (data) {
                         console.log("Doctors fetched: ", data);
                         $('#MaNv').empty();
-                        $('#MaNv').append('<option value="">Chọn bác sĩ</option>'); 
+                        $('#MaNv').append('<option value="">Chọn bác sĩ</option>');
 
                         $.each(data, function (index, nhanVien) {
                             $('#MaNv').append('<option value="' + nhanVien.Id + '">' + nhanVien.Ten + '</option>');
@@ -190,12 +220,12 @@
                 });
             });
 
-        
+
             $('#MaNv').change(function () {
-                var doctorId = $(this).val(); 
+                var doctorId = $(this).val();
                 console.log("Selected Doctor ID: ", doctorId);
 
-                var selectedDate = $('#bookingDate').val(); 
+                var selectedDate = $('#bookingDate').val();
 
                 if (doctorId && selectedDate) {
                     fetchAvailableSlots(doctorId, selectedDate);
@@ -203,10 +233,10 @@
             });
 
             $('#bookingDate').change(function () {
-                var selectedDate = $(this).val(); 
+                var selectedDate = $(this).val();
                 console.log("Selected Date: ", selectedDate);
 
-                var doctorId = $('#MaNv').val(); 
+                var doctorId = $('#MaNv').val();
 
                 if (selectedDate && doctorId) {
                     fetchAvailableSlots(doctorId, selectedDate);
@@ -219,7 +249,7 @@
                 lastSelectedTime = $(this).val();
                 console.log("The time slot user pick: ", lastSelectedTime);
             });
-           
+
             function fetchAvailableSlots(doctorId, selectedDate) {
                 console.log("Fetching available slots for doctor " + doctorId + " and date " + selectedDate);
 
@@ -246,23 +276,23 @@
 
                         result.availableSlots.forEach(slot => {
                             timeSelect.append(`<option value="${slot}">${slot}</option>`);
-                            
+
                             if (!firstAvailableSlot && !disabledTimes.includes(slot)) {
                                 firstAvailableSlot = slot;
                             }
                         });
 
-                     
+
                         result.disabledSlots.forEach(slot => {
                             timeSelect.append(`<option value="${slot}" disabled>${slot} - Ca này đã kín</option>`);
                         });
 
 
                         if (lastSelectedTime && !disabledTimes.includes(lastSelectedTime)) {
-                            $('#bookingTime').val(lastSelectedTime); 
+                            $('#bookingTime').val(lastSelectedTime);
                             console.log("Last selected time restored:", lastSelectedTime);
                         } else if (firstAvailableSlot && lastSelectedTime === '') {
-                     
+
                             $('#bookingTime').val(firstAvailableSlot);
                             console.log("First available time set as default:", firstAvailableSlot);
                         }
@@ -280,11 +310,11 @@
                     });
             }
 
-           
+
 
 
             $('#createBenhNhan').submit(function (event) {
-                event.preventDefault(); 
+                event.preventDefault();
                 console.log("Form submission triggered");
 
                 const selectedTime = $('[name="time"]').val();
@@ -324,15 +354,29 @@
                     .then(response => {
                         if (response.ok) {
                             alert("Đăng ký khám thành công!");
-                            window.location.href = "/"; 
+                            return response.json();
                         } else {
                             alert("Đăng ký khám thất bại.");
                         }
+                    })
+                    .then(data => {
+                        
+                        // Display the QR code and download link
+                        $('#qrCodeUrl').attr('href', data.QrCodeUrl).show();
+                        $('#imageUrl').attr('href', data.ImageUrl).show();
+                        $('#qrCodeImage').attr('src', data.QrCodeImage).show();
+                        $('#pdf').attr('href', data.Pdf).show();
+
+                        console.log("QR Code Download URL: ", data.QrCodeUrl);
+                        console.log("Image Download URL: ", data.ImageUrl);
+                        console.log("Image URL: ", data.QrCodeImage);
+                        $('#qrModal').modal('show');
                     })
                     .catch(error => {
                         console.error("Error:", error);
                         alert("Lỗi khi đăng ký khám.");
                     });
+
             });
 
             function convertToDateTime(timeString, selectedDay) {
@@ -341,9 +385,9 @@
 
                 let adjustedHours = hours;
                 if (ampm === "PM" && adjustedHours < 12) {
-                    adjustedHours += 12; 
+                    adjustedHours += 12;
                 } else if (ampm === "AM" && adjustedHours === 12) {
-                    adjustedHours = 0; 
+                    adjustedHours = 0;
                 }
 
                 const [year, month, day] = selectedDay.split('-');
@@ -358,3 +402,31 @@
 
     </script>
 }
+ <style>
+     #qrModal .modal-content {
+         border-radius: 10px;
+         border: none;
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+     }
+
+     #qrModal .modal-header {
+         border-bottom: none;
+     }
+
+     #qrModal .btn-primary {
+         background-color: #007bff;
+         border-color: #007bff;
+     }
+
+     #qrModal .btn-secondary {
+         background-color: #6c757d;
+         border-color: #6c757d;
+     }
+
+    #qrModal .modal-dialog-left {
+        margin-left: auto;
+        margin-right: auto;
+    }
+ </style>
+
+

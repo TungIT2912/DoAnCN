@@ -244,6 +244,15 @@ namespace WebQuanLyNhaKhoa.Controllers
                 var dichVu = await _context.DichVus.FindAsync(newDieuTriDto.IddichVu);
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDieuTriDto.Idkham);
                 var dungCu = await _context.Khos.FindAsync(newDieuTriDto.IddungCu);
+                var email = _context.BenhNhans
+                    .Where(bn => bn.IdbenhNhan == newDieuTriDto.Idkham)
+                    .Select(bn => bn.EmailBn)
+                    .FirstOrDefault();
+                var sdt = _context.BenhNhans
+                    .Where(bn => bn.IdbenhNhan == newDieuTriDto.Idkham)
+                    .Select(bn => bn.Sdt)
+                    .FirstOrDefault();
+
                 if (dichVu == null || danhSachKham == null || dungCu == null)
                 {
                     return BadRequest("Invalid service or diagnosis ID.");
@@ -263,7 +272,8 @@ namespace WebQuanLyNhaKhoa.Controllers
                     Idkham = newDieuTriDto.Idkham,
                     IddungCu = newDieuTriDto.IddungCu,
                     SoLuong = newDieuTriDto.SoLuong,
-                    ThanhTien = treatmentCost
+                    ThanhTien = treatmentCost,
+
                 };
                 _context.DieuTris.Add(newDieuTri);
                 await _context.SaveChangesAsync();
@@ -281,6 +291,7 @@ namespace WebQuanLyNhaKhoa.Controllers
                     TienThuoc = 0,
                     TongTien = treatmentCost,
                     NgayLap = DateTime.Now,
+                    EmailBn = email
 
                 };
                 _context.HoaDons.Add(newHoaDon);
@@ -293,17 +304,21 @@ namespace WebQuanLyNhaKhoa.Controllers
                     IddieuTri = newDieuTri.IddieuTri,
                     Idkham = newDieuTri.Idkham,
                     PhuongThucThanhToan = newHoaDon.PhuongThucThanhToan,
-                    TenDon = "N/A",  // Assign as necessary, or fetch dynamically
+                    TenDon = "Khám Nha Khoa",  // Assign as necessary, or fetch dynamically
                     TenDieuTri = dichVu.TenDichVu, // Assuming this is the name you want
                     Description = "Description here", // Assign based on your needs
                     TienThuoc = newHoaDon.TienThuoc,
                     TienDieuTri = newHoaDon.TienDieuTri,
                     TongTien = newHoaDon.TongTien,
                     NgayLap = newHoaDon.NgayLap,
-                    EmailBn = null // Assign as necessary, or leave null if not needed
+                    EmailBn = newHoaDon.EmailBn, // Assign as necessary, or leave null if not needed
+                    Sdt = sdt
                 };
                 _context.ChiTietHoaDons.Add(newChiTietHoaDon);
                 await _context.SaveChangesAsync();
+                // Cập nhật ChiTietHoaDonId cho DieuTri
+                newDieuTri.ChiTietHoaDonId = newChiTietHoaDon.IdchiTiet;
+                _context.DieuTris.Update(newDieuTri); await _context.SaveChangesAsync();
                 // Commit transaction
                 await transaction.CommitAsync();
 
@@ -311,6 +326,7 @@ namespace WebQuanLyNhaKhoa.Controllers
                 newDieuTriDto.IddieuTri = newDieuTri.IddieuTri;
                 newDieuTriDto.ThanhTien = treatmentCost;
                 newDieuTriDto.hoaDonId = newHoaDon.IdhoaDon;
+                newDieuTriDto.chiTietId = newChiTietHoaDon.IdchiTiet;
 
                 Console.WriteLine($"HoaDon ID: {newHoaDon.IdhoaDon}");
                 return CreatedAtAction(nameof(CreateDieuTriWithInvoices), new { id = newDieuTriDto.Idkham }, newDieuTriDto);

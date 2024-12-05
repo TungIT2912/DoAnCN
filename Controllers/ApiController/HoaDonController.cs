@@ -171,6 +171,11 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 hoaDon.DaThanhToan = true; 
                 hoaDon.PhuongThucThanhToan = "COD";
                 _context.HoaDons.Update(hoaDon);
+                var chiTietHoaDon = await _context.ChiTietHoaDons.FirstOrDefaultAsync(ct => ct.IdhoaDon == hoaDon.IdhoaDon && ct.IddieuTri == hoaDon.IddieuTri);
+                if (chiTietHoaDon != null) { 
+                    chiTietHoaDon.PhuongThucThanhToan = "COD"; 
+                    _context.ChiTietHoaDons.Update(chiTietHoaDon); 
+                }
                 await _context.SaveChangesAsync();
                 var currentTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                 var patientEmail = hoaDon.DieuTri.DanhSachKham.BenhNhan.EmailBn; // Replace with the patient's email
@@ -196,7 +201,13 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 };
                 hoaDon.DaThanhToan = true;
                 hoaDon.PhuongThucThanhToan = "VNPay";
-            _context.HoaDons.Update(hoaDon);
+                var chiTietHoaDon = await _context.ChiTietHoaDons.FirstOrDefaultAsync(ct => ct.IdhoaDon == hoaDon.IdhoaDon && ct.IddieuTri == hoaDon.IddieuTri);
+                if (chiTietHoaDon != null)
+                {
+                    chiTietHoaDon.PhuongThucThanhToan = "VNPay";
+                    _context.ChiTietHoaDons.Update(chiTietHoaDon);
+                }
+                _context.HoaDons.Update(hoaDon);
             await _context.SaveChangesAsync();
                 var currentTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                 var patientEmail = hoaDon.DieuTri.DanhSachKham.BenhNhan.EmailBn; // Replace with the patient's email
