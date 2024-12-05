@@ -240,7 +240,8 @@ namespace WebQuanLyNhaKhoa.Controllers
             try
             {
 
-                // Validate related entities
+                var existingCTHD = await _context.ChiTietHoaDons
+                  .FirstOrDefaultAsync(h => h.Idkham == newDieuTriDto.Idkham);
                 var dichVu = await _context.DichVus.FindAsync(newDieuTriDto.IddichVu);
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDieuTriDto.Idkham);
                 var dungCu = await _context.Khos.FindAsync(newDieuTriDto.IddungCu);
@@ -263,7 +264,8 @@ namespace WebQuanLyNhaKhoa.Controllers
                     Idkham = newDieuTriDto.Idkham,
                     IddungCu = newDieuTriDto.IddungCu,
                     SoLuong = newDieuTriDto.SoLuong,
-                    ThanhTien = treatmentCost
+                    ThanhTien = treatmentCost,
+                    ChiTietHoaDonId = existingCTHD.IdchiTiet
                 };
                 _context.DieuTris.Add(newDieuTri);
                 await _context.SaveChangesAsync();

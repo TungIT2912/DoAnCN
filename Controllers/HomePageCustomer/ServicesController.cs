@@ -144,7 +144,6 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                     TongTien = dt.TongTien,
                     NgayLapDt = dt.NgayLapDt
                 }).ToList(),
-
                 DieuTris = benhnhan.DieuTris.Select(dt => new DieuTriDTO
                 {
                     IddichVu = dt.IddichVu,

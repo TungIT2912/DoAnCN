@@ -119,10 +119,16 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 };
 
                 _context.DanhSachKhams.Add(newDanhSachKham);
-
+              
                 // Lưu lịch khám vào cơ sở dữ liệu
                 var saveDanhSachKhamResult = await _context.SaveChangesAsync();
+                var CTHD = new ChiTietHoaDon
+                {
+                    Idkham = newDanhSachKham.Idkham,
+                };
 
+                _context.ChiTietHoaDons.Add(CTHD);
+                await _context.SaveChangesAsync();
                 if (saveDanhSachKhamResult > 0)
                 {
                     // Trả về thông tin bệnh nhân và lịch khám
