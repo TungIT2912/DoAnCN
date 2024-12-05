@@ -66,6 +66,82 @@
         color: red;
         font-weight: bold;
     }
+    .medical-history {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+}
+
+.patient-info, .prescription-details, .treatment-details {
+    margin-bottom: 20px;
+}
+
+h4 {
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 5px;
+}
+.patient-info {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.patient-info h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #007BFF;
+}
+
+.info-group {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e3e3e3;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.info-group p {
+    margin: 5px 0;
+}
+
+.info-group p strong {
+    color: #555;
+}
+
+.info-group:last-child {
+    margin-bottom: 0;
+}
+.dental-theme h4 {
+    color: #2a9df4; 
+    border-bottom: 2px solid #2a9df4;
+    padding-bottom: 5px;
+}
+.info-section {
+    margin-bottom: 10px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.info-section p {
+    margin: 5px 0;
+}
+
 </style>
 <body>
     <div class="page-wrapper">
@@ -204,15 +280,18 @@
                                     </tbody>
                                 </table>
                             </div>
-                             <button class="btn btn-primary view-history"
-                                            data-phone="@chiTiet.Sdt"
-                                            data-email="@chiTiet.EmailBn">
-                                        Xem lịch sử bệnh án
-                                    </button>
-                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
-                                        <h4>Lịch sử bệnh án:</h4>
-                                        <div class="history-content"></div>
-                                    </div>
+                                                    <div class="btn-box">
+                                                        <button class="theme-btn btn-style-one bg-scarlet view-history"
+                                                                data-phone="@chiTiet.Sdt"
+                                                                data-email="@chiTiet.EmailBn">
+                                                            <span class="btn-title">Xem lịch sử bệnh án</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
+                                                        <h4>Lịch sử bệnh án:</h4>
+                                                        <div class="history-content"></div>
+                                                    </div>
+
                         </div>
                     </div>
                 </div>
@@ -282,75 +361,94 @@ $(document).ready(function () {
         }, 500); // Debounce: Wait 500ms after user stops typing
 
     });
+$('.view-history').on('click', function () {
+    const phone = $(this).data('phone'); 
+    const email = $(this).data('email'); 
 
-    // Xem lịch sử bệnh án button click event
-    $('.view-history').on('click', function () {
-        const phone = $(this).data('phone');
-        const email = $(this).data('email');
-        const historyContainer = $(this).siblings('.medical-history');
-        const historyContent = historyContainer.find('.history-content');
+    const historyContainer = $(this).closest('.btn-box').siblings('.medical-history');
+    const historyContent = historyContainer.find('.history-content'); 
 
-        historyContent.html('<p>Đang tải dữ liệu...</p>');
-        historyContainer.show();
+    historyContent.html('<p>Đang tải dữ liệu...</p>');
+    historyContainer.show(); // Ensure the container is visible
 
-        $.ajax({
-            url: '/api/getList',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ phone: phone, mail: email }),
+    
+    $.ajax({
+        url: '/api/getList',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ phone: phone, mail: email }),
+        success: function (data) {
+            console.log('Response:', data); 
 
-            success: function (data) {
-                console.log('Response:', data);
+            if (data) {
+               
+                const contentHtml = `
+                  <div class="patient-info dental-theme">
+    <h4>🦷 Thông tin bệnh nhân</h4>
+    <div class="info-section">
+        <p><strong>Họ tên:</strong> ${data.HoTen}</p>
+        <p><strong>Giới:</strong> ${data.Gioi ? 'Nam' : 'Nữ'}</p>
+        <p><strong>Năm sinh:</strong> ${data.NamSinh}</p>
+    </div>
+    <div class="info-section">
+        <p><strong>Số điện thoại:</strong> ${data.Sdt}</p>
+        <p><strong>Email:</strong> ${data.EmailBn}</p>
+    </div>
+    <div class="info-section">
+        <p><strong>Ngày khám đầu:</strong> ${data.NgayKhamDau}</p>
+        <p><strong>Địa chỉ:</strong> ${data.DiaChi}</p>
+    </div>
+    <div class="info-section">
+        <p><strong>Bác sĩ phụ trách:</strong> ${data.TenBacSi}</p>
+        <p><strong>Triệu chứng:</strong> ${data.TrieuChung}</p>
+        <p><strong>Thời gian hẹn:</strong> ${data.time}</p>
+    </div>
+</div>
+                 <div class="prescription-section dental-theme">
+    <h4>💊 Chi tiết đơn thuốc</h4>
+    ${data.DonThuocs.length > 0
+        ? data.DonThuocs.map(dt => `
+            <div class="info-section">
+                <p><strong>Tên thuốc:</strong> ${dt.tenThuoc}</p>
+                <p><strong>Số lượng:</strong> ${dt.SoLuong}</p>
+                <p><strong>Giá:</strong> ${dt.ThanhGia} VND</p>
+                <p><strong>Tổng tiền:</strong> ${dt.TongTien} VND</p>
+                <p><strong>Ngày lập:</strong> ${dt.NgayLapDt}</p>
+            </div>
+        `).join('')
+        : '<p>Không có thông tin về đơn thuốc.</p>'}
+</div>
 
-                if (data) {
-                    let contentHtml = `
-                        <p>Họ tên: ${data.HoTen}</p>
-                        <p>Giới: ${data.Gioi}</p>
-                        <p>Năm sinh: ${data.NamSinh}</p>
-                        <p>Số điện thoại: ${data.Sdt}</p>
-                        <p>Email: ${data.EmailBn}</p>
-                        <p>Ngày khám đầu: ${data.NgayKhamDau}</p>
-                        <p>Địa chỉ: ${data.DiaChi}</p>
-                        <p>Bác sĩ: ${data.TenBacSi}</p>
-                        <p>Triệu chứng: ${data.TrieuChung}</p>
-                        <p>Thời gian: ${data.time}</p>
+<div class="treatment-section dental-theme">
+    <h4>🦷 Chi tiết điều trị</h4>
+    ${data.DieuTris.length > 0
+        ? data.DieuTris.map(dt => `
+            <div class="info-section">
+                <p><strong>Dịch vụ:</strong> ${dt.tenDieuTri || 'Không có'}</p>
+                <p><strong>Số lượng:</strong> ${dt.SoLuong}</p>
+                <p><strong>Giá:</strong> ${dt.ThanhTien} VND</p>
+            </div>
+        `).join('')
+        : '<p>Không có thông tin về điều trị.</p>'}
+</div>
+                    
+                `;
 
-                        <h5>Chi tiết đơn thuốc:</h5>
-                        <ul>
-                            ${data.DonThuocs.map(dt => `
-                                <li>
-                                    Tên thuốc: ${dt.tenThuoc} -
-                                    Số lượng: ${dt.SoLuong} -
-                                    Giá: ${dt.ThanhGia} -
-                                    Tổng tiền: ${dt.TongTien} -
-                                    Ngày lập: ${dt.NgayLapDt}
-                                </li>
-                            `).join('')}
-                        </ul>
-
-                        <h5>Chi tiết điều trị:</h5>
-                        <ul>
-                            ${data.DieuTris.map(dt => `
-                                <li>
-                                    Dịch vụ: ${dt.tenDieuTri || 'Không có'} -
-                                    Số lượng: ${dt.SoLuong} -
-                                    Giá: ${dt.ThanhTien}
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `;
-
-                    // Cập nhật nội dung trong container
-                    historyContent.html(contentHtml);
-                } else {
-                    historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
-                }
-            },
-            error: function () {
-                historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
+                // Update history content with data
+                historyContent.html(contentHtml);
+            } else {
+                historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
             }
-        });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
+        }
     });
+});
+
+
+   
 });
 </script>
 
