@@ -53,17 +53,22 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // HoaDonDetails search page
-        public IActionResult HoaDonDetails(string searchQuery)
-        {
-            var chiTietHoaDons = string.IsNullOrEmpty(searchQuery) 
-                ? _context.ChiTietHoaDons.ToList()
-                : _context.ChiTietHoaDons
-                    .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
-                    .ToList();
+public IActionResult HoaDonDetails(string searchQuery)
+{
+    var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
+        ? _context.ChiTietHoaDons
+            .Include(c => c.DanhSachKham)  
+                .ThenInclude(dsk => dsk.BenhNhan)  
+            .ToList()
+        : _context.ChiTietHoaDons
+            .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
+            .Include(c => c.DanhSachKham)  
+                .ThenInclude(dsk => dsk.BenhNhan)  
+            .ToList();
 
-            ViewData["SearchQuery"] = searchQuery; // Pass the search query to the view
-            return View(chiTietHoaDons);
-        }
+    ViewData["SearchQuery"] = searchQuery; 
+    return View(chiTietHoaDons);
+}
 
         // Service Details page
         public IActionResult ServicesDetail(int id)

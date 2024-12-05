@@ -142,16 +142,13 @@
                                     <p>Email: nhakhoahoanmy@gmail.com</p>
                                 </div>
 
-                                <div class="col-xs-4 to">
-                                    <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
-                                    <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
-                                        <p>Số điện thoại: @chiTiet.Sdt</p> 
+<div class="col-xs-4 to">
+    <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
+    <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
+    <p class="patient-name">@chiTiet.DanhSachKham?.BenhNhan?.HoTen</p>
+    <p>Số điện thoại: @chiTiet.Sdt</p>
+</div>
 
-                                @* <p>Tiền thuốc: @chiTiet.TienThuoc</p>
-                                <p>Tiền điều trị: @chiTiet.TienDieuTri</p>
-                                <p>Tổng tiền: @chiTiet.TongTien</p>
-                                <p>Ngày lập: @Model.NgayLap.ToString("dd/MM/yyyy")</p> *@
-                                </div>
                                 @if (Model != null && Model.Any())
                                         {
 
@@ -161,7 +158,7 @@
                                     <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
                             <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
                                     @* <p>VAT: DK888-777 </p> *@
-                                        <p>Tổng tiền:  @(item.TongTien.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</p>
+<p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
                                     <p>Email khách hàng: @item.EmailBn</p>
                                 </div>
                                         
@@ -190,10 +187,15 @@
                                                     <td class="text-center">@index</td>
                                                     <td>@item.TenDon</td>
                                                     <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                    <td class="text-right"> @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
-                                                    <td class="text-right"> @(item.TienDieuTri.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
-                                                    <td class="text-right"> @(item.TongTien.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")</td>
-
+                                                    <td class="text-right">
+                                                        @(item.TienThuoc.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienThuoc.Value) : "N/A")
+                                                    </td>
+                                                    <td class="text-right">
+                                                        @(item.TienDieuTri.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienDieuTri.Value) : "N/A")
+                                                    </td>
+                                                    <td class="text-right">
+                                                        @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")
+                                                    </td>
                                                 </tr>
                                                 index++;
                                             }
@@ -220,30 +222,44 @@
 
     </section>
 
-
 <script>
 $(document).ready(function () {
+    // Hide all invoices initially
+    $('[id^="invoice-container-"]').hide();
+
     // Debounce timeout for search input
     let timeout;
 
     // Search input handler
     $('#invoice-search').on('keyup', function () {
-        const searchTerm = $(this).val().trim(); // Get and trim input value
+        const searchTerm = $(this).val().trim().toLowerCase(); // Get and trim input value, convert to lowercase
         clearTimeout(timeout); // Clear previous timeout to avoid spamming
 
         $('#loading').show(); // Show loading indicator
-        $('#no-data-message-global').hide(); // Hide "No Results" by default
+        $('#no-data-message').hide(); // Hide "No Data" message by default
 
         timeout = setTimeout(function () {
             let foundAny = false; // Tracks if we find any matching invoice
 
+            // If search term is empty, hide all invoices
+            if (searchTerm === '') {
+                $('[id^="invoice-container-"]').hide();
+                $('#loading').hide();
+                return;
+            }
+
             // Loop through all invoices
             $('[id^="invoice-container-"]').each(function () {
-                const phoneText = $(this).find('.to p:nth-child(3)').text().trim(); // Extract SĐT
+                // Extract phone number (from the last <p> tag)
+                const phoneText = $(this).find('.to p:last-child').text().trim(); // Extract phone number
                 const phoneNumber = phoneText.replace('Số điện thoại: ', '').trim(); // Clean phone number
 
-                // Match search term
-                if (phoneNumber === searchTerm) {
+                // Extract the name (HoTen) (from the third <p> tag)
+const nameText = $(this).find('.to .patient-name').text().trim();
+                const patientName = nameText.toLowerCase(); // Convert name to lowercase for case-insensitive matching
+
+                // Match search term with phone number (exact match) or patient name (case-insensitive match)
+                if ((phoneNumber === searchTerm) || (patientName.includes(searchTerm))) {
                     $(this).show(); // Show matching invoice
                     foundAny = true; // Mark as found
                 } else {
@@ -253,7 +269,9 @@ $(document).ready(function () {
 
             // Show "No Results" if nothing matches
             if (!foundAny) {
-                $('#no-data-message-global').show();
+                $('#no-data-message').show(); // Show "No Data" message
+            } else {
+                $('#no-data-message').hide(); // Hide "No Data" message if there are results
             }
 
             $('#loading').hide(); // Hide loading indicator
@@ -261,6 +279,10 @@ $(document).ready(function () {
     });
 });
 </script>
+
+
+
+
 
 
 
