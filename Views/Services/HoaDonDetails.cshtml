@@ -7,19 +7,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<!-- Stylesheets -->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Hóa đơn | Lịch sử bệnh án</title>
 
-<link href="~/css/bootstrap.css" rel="stylesheet">
-<link href="~/css/style.css" rel="stylesheet">
-<link href="~/css/responsive.css" rel="stylesheet">
-<link href="~/css/table.css" rel="stylesheet">
-<link href="~/css/reciept.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-    <!--Color Themes-->
+    <!-- Stylesheets -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+    <link href="~/css/table.css" rel="stylesheet">
+    <link href="~/css/reciept.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+        <!--Color Themes-->
     <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
 
     <script src="~/js/table.js"></script>
@@ -172,126 +172,113 @@ li {
             </div>
             <br>
 
+            @foreach (var chiTiet in Model)
+            {
+                <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default invoice">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-6 top-left">
+                                            <div class="logo">
+                                                <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 top-right">
+                                            <h3 class="marginright">HÓA ĐƠN - @chiTiet.IdhoaDon</h3>
+                                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-xs-4 from">
+                                            <p class="lead marginbottom">Từ: Nha khoa Hoàn Mỹ</p>
+                                            <p>10/80c Song Hành Xa Lộ Hà Nội</p>
+                                            <p>Hồ Chí Minh, 700000</p>
+                                            <p>SĐT: +(84) 347 123 534</p>
+                                            <p>Email: nhakhoahoanmy@gmail.com</p>
+                                        </div>
+                                        <div class="col-xs-4 to">
+                                            <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
+                                            <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
+                                            <p>Số điện thoại: @chiTiet.Sdt</p>
+                                        </div>
+                                        <div class="col-xs-4 text-right payment-details">
+                                            <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
+                                            <p>Tổng tiền: @(chiTiet.TongTien.HasValue ? string.Format("{0:C}", chiTiet.TongTien.Value) : "N/A")</p>
+                                            <p>Email khách hàng: @chiTiet.EmailBn</p>
+                                        </div>
+                                    </div>
+                                    <div class="row table-row">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="width:5%">#</th>
+                                                    <th style="width:30%">Tên Dịch Vụ</th>
+                                                    <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                                                    <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                                                    <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                                                    <th class="text-right" style="width:15%">Tổng Tiền</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model != null && Model.Any())
+                                                {
+                                                    int index = 1; // Đánh số thứ tự các dịch vụ
+                                                    foreach (var item in Model)
+                                                    {
+                                                        <tr>
+                                                            <td class="text-center">@index</td>
+                                                            <td>@item.TenDon</td>
+                                                            <td class="text-right">@item.PhuongThucThanhToan</td>
+                                                            <td class="text-right">
+                                                                @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")
+                                                            </td>
+                                                            <td class="text-right">
+                                                                @(item.TienDieuTri.HasValue ? string.Format("{0:C}", item.TienDieuTri.Value) : "N/A")
+                                                            </td>
+                                                            <td class="text-right">
+                                                                @(item.TongTien.HasValue ? string.Format("{0:C}", item.TongTien.Value) : "N/A")
+                                                            </td>
+                                                        </tr>
+                                                        index++; // Tăng số thứ tự
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">
+                                                            Không có dữ liệu để hiển thị.
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-
-    @foreach (var chiTiet in Model) 
-    {
-        <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
-                    <div id="no-data-message" style="display: none; text-align: center; color: red;">
-                <h3>Không tìm thấy kết quả</h3>
-            </div>
-    <br>
-    <br>
-            <!-- The rest of the HTML structure for displaying invoice details -->
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default invoice" id="invoice">
-                        <div class="panel-body">
-                            <div class="invoice-ribbon">
-                                <div class="ribbon-inner">PAID</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6 top-left">
-                                    <div class="logo">
-                                        <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+                                    <button class="btn btn-primary view-history"
+                                            data-phone="@chiTiet.Sdt"
+                                            data-email="@chiTiet.EmailBn">
+                                        Xem lịch sử bệnh án
+                                    </button>
+                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
+                                        <h4>Lịch sử bệnh án:</h4>
+                                        <div class="history-content"></div>
                                     </div>
                                 </div>
+                                   <h5>QR Code Lịch Sử Khám:</h5>
+                                <div id="qrCode-@chiTiet.IdhoaDon" class="qr-code-container"></div>
 
-                                <div class="col-sm-6 top-right">
-                                    <h3 class="marginright">HÓA ĐƠN-@chiTiet.IdhoaDon</h3> 
-<span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
-                                </div>
+                                <!-- Nút tạo QR code -->
+                                <button class="btn btn-secondary generate-qr-code"
+                                        data-phone="@chiTiet.Sdt"
+                                        data-email="@chiTiet.EmailBn"
+                                        data-id="@chiTiet.IdhoaDon">
+                                    Tạo QR Code
+                                </button>
                             </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-4 from">
-                                    <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
-                                    <p>10/80c Song Hành Xa Lộ Hà Nội</p>
-                                    <p>Tòa E2, Q.12</p>
-                                    <p>Hồ Chí Minh, 700000</p>
-                                    <p>SĐT: +(84) 347 123 534</p>
-                                    <p>Email: nhakhoahoanmy@gmail.com</p>
-                                </div>
-
-                                <div class="col-xs-4 to">
-                                    <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
-                                    <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
-                                    <p class="patient-name">@chiTiet.DanhSachKham?.BenhNhan?.HoTen</p>
-                                    <p class="sdt">Số điện thoại: @chiTiet.Sdt</p>
-                                </div>
-
-                                @if (Model != null && Model.Any())
-                                        {
-
-                                            var item = Model.First();
-                    
-                                <div class="col-xs-4 text-right payment-details">
-                                    <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
-                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
-                                    @* <p>VAT: DK888-777 </p> *@
-<p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
-                                    <p>Email khách hàng: @item.EmailBn</p>
-                                </div>
-                                        
-                                    }
                             </div>
-
-                            <div class="row table-row">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" style="width:5%">#</th>
-                                            <th style="width:30%">Tên Dịch Vụ</th>
-                                            <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                                            <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                                            <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                                            <th class="text-right" style="width:15%">Tổng Tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model != null && Model.Any())
-                                        {
-                                            int index = 1;
-                                            foreach (var item in Model)
-                                            {
-                                                <tr>
-                                                    <td class="text-center">@index</td>
-                                                    <td>@item.TenDon</td>
-                                                    <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                    <td class="text-right">
-                                                        @(item.TienThuoc.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienThuoc.Value) : "N/A")
-                                                    </td>
-                                                    <td class="text-right">
-                                                        @(item.TienDieuTri.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienDieuTri.Value) : "N/A")
-                                                    </td>
-                                                    <td class="text-right">
-                                                        @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")
-                                                    </td>
-                                                </tr>
-                                                index++;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <tr>
-                                                <td colspan="6" class="text-center">No data available</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                                                    <div class="btn-box">
-                                                        <button class="theme-btn btn-style-one bg-scarlet view-history"
-                                                                data-phone="@chiTiet.Sdt"
-                                                                data-email="@chiTiet.EmailBn">
-                                                            <span class="btn-title">Xem lịch sử bệnh án</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
-                                                        <h4>Lịch sử bệnh án:</h4>
-                                                        <div class="history-content"></div>
-                                                    </div>
-
                         </div>
                     </div>
                 </div>
@@ -357,16 +344,16 @@ $(document).ready(function () {
                 $('#no-data-message').hide(); // Hide "No Data" message if there are results
             }
 
-            $('#loading').hide(); // Hide loading indicator
-        }, 500); // Debounce: Wait 500ms after user stops typing
+                    $('#loading').hide();
+                }, 500);
+            });
 
-    });
-$('.view-history').on('click', function () {
-    const phone = $(this).data('phone'); 
-    const email = $(this).data('email'); 
-
-    const historyContainer = $(this).closest('.btn-box').siblings('.medical-history');
-    const historyContent = historyContainer.find('.history-content'); 
+            // Xem lịch sử bệnh án
+            $('.view-history').on('click', function () {
+                const phone = $(this).data('phone');
+                const email = $(this).data('email');
+                const historyContainer = $(this).siblings('.medical-history');
+                const historyContent = historyContainer.find('.history-content');
 
     historyContent.html('<p>Đang tải dữ liệu...</p>');
     historyContainer.show(); // Ensure the container is visible
@@ -445,6 +432,32 @@ $('.view-history').on('click', function () {
             historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
         }
     });
+        // Xử lý nút tạo QR Code
+            $('.generate-qr-code').on('click', function () {
+                const phone = $(this).data('phone');
+                const email = $(this).data('email');
+                const id = $(this).data('id');
+                const qrCodeContainer = $(`#qrCode-${id}`);
+
+                // Đường dẫn chứa thông tin hóa đơn
+                const qrData = `https://localhost:7101/History?phone=${phone}&mail=${email}`;
+
+                // Xóa QR code cũ nếu có
+                qrCodeContainer.empty();
+
+                // Tạo QR code mới
+                QRCode.toCanvas(document.createElement('canvas'), qrData, {
+                    width: 128,
+                    height: 128
+                }, function (error, canvas) {
+                    if (error) {
+                        console.error("Lỗi tạo QR code:", error);
+                        qrCodeContainer.html('<p>Không thể tạo QR Code</p>');
+                    } else {
+                        qrCodeContainer.append(canvas);
+                    }
+                });
+            });
 });
 
 
