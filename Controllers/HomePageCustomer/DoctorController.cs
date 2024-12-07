@@ -38,6 +38,7 @@ public class DoctorController : Controller
                     .Include(n => n.DichVu)
                     .Include(n => n.TaiKhoan)
                     .Include(n => n.DichVu)
+                    .Include(n => n.Shifts)
                     .FirstOrDefaultAsync(n => n.MaNv == id);
         if (nhanVien == null)
         {
@@ -61,6 +62,14 @@ public class DoctorController : Controller
             MatKhau = nhanVien.TaiKhoan.MatKhau,
             Role = nhanVien.TaiKhoan.Role,
             Mota = nhanVien.Mota,
+            sa = nhanVien.Shifts.Select(s => new ShiftDTO
+            {
+                MaNv =  s.MaNv,
+                DayOfWeek = s.DayOfWeek,
+                StartTime = s.StartTime,
+                EndTime = s.EndTime,
+
+            }).ToList(),
         };
         ViewBag.ChucVuList = new SelectList(_context.ChucVus, "MaCv", "TenCv");
         ViewBag.Roles = new SelectList(new[] { "Admin", "Customer" });

@@ -24,5 +24,6 @@ namespace WebQuanLyNhaKhoa.Data
         public TimeSpan EndTime { get; set; } 
 
         public virtual NhanVien NhanVien { get; set; } = null!;
+
     }
 }

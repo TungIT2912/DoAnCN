@@ -68,7 +68,55 @@
                                 </li>
                                 <li>
                                     <strong>Thời gian</strong>
-                                    <p>T2 - T6 08:00 - 17:00</p>
+                                <li class="zf-radio zf-tempFrmWrapper">
+                                    <div class="zf-tempContDiv">
+                                            @if (@Model.sa.Any())
+                                            {
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-striped">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>Thứ</th>
+                                                            <th>Thời gian làm việc</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                            @foreach (var shift in Model.Shifts)
+                                                            {
+                                                            <tr>
+                                                                <td>
+                                                                        @switch (shift.DayOfWeek)
+                                                                        {
+                                                                            case "Thứ hai":
+                                                                                @:Thứ 2
+                                                                                break;
+                                                                            case "Thứ ba":
+                                                                                @:Thứ 3
+                                                                                break;
+                                                                            case "Thứ tư":
+                                                                                @:Thứ 4
+                                                                                break;
+                                                                            case "Thứ năm":
+                                                                                @:Thứ 5
+                                                                                break;
+                                                                            case "Thứ sáu":
+                                                                                @:Thứ 6
+                                                                                break;
+                                                                        }
+                                                                </td>
+                                                                <td>@shift.StartTime.ToString(@"hh\:mm tt") - @shift.EndTime.ToString(@"hh\:mm tt")</td>
+                                                            </tr>
+                                                            }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            }
+                                            else
+                                            {
+                                            <p class="text-muted">Không có thông tin về ca làm việc của nhân viên này.</p>
+                                            }
+                                    </div>
+                                </li>
                                 </li>
                                 <li>
                                     <strong>SĐT</strong>
@@ -119,7 +167,7 @@
                                     <input type="text" name="DiaChi" placeholder="Nhập địa chỉ của bạn">
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12">
-                                        <label  class="control-label">Ngày Khám Đầu</label>
+                                        <label  class="control-label">Ngày khám đầu</label>
                                         <input name="NgayKhamDau" type="date" id="bookingDate"
                                                class="form-control border-0 datetimepicker-input"
                                                placeholder="Choose Date"

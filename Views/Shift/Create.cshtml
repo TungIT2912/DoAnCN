@@ -1,0 +1,136 @@
+﻿@model WebQuanLyNhaKhoa.DTO.ShiftDTO
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <link href="~/css/form.css" rel="stylesheet" type="text/css">
+</head>
+
+<style>
+    .day {
+        margin: 10px 0;
+    }
+
+    .shift {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        background-color: #f9f9f9;
+    }
+
+        .shift.selected {
+            background-color: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="xs-pd-20-10 pd-ltr-20">
+        <div class="row clearfix progress-box">
+            <div class="col-lg-12">
+                <a asp-action="Index">
+                    <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
+                        ← Quay về lại danh sách
+                    </button>
+                </a>
+                <br>
+                <hr>
+
+                <body class="zf-backgroundBg">
+                    <div class="zf-templateWidth">
+                        <form id="shiftForm">
+                            <div id="shiftContainer">
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </body>
+
+                </html>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const daysOfWeek = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"];
+        const shiftContainer = document.getElementById("shiftContainer");
+
+        daysOfWeek.forEach(day => {
+            const dayDiv = document.createElement("div");
+            dayDiv.className = "day";
+            dayDiv.innerHTML = `<strong>${day}</strong>`;
+
+            const morningShift = document.createElement("div");
+            morningShift.className = "shift";
+            morningShift.dataset.day = day;
+            morningShift.dataset.shift = "Ca sáng";
+            morningShift.textContent = "Ca sáng (8:00 AM - 12:00 PM)";
+            morningShift.onclick = toggleShiftSelection;
+
+            const afternoonShift = document.createElement("div");
+            afternoonShift.className = "shift";
+            afternoonShift.dataset.day = day;
+            afternoonShift.dataset.shift = "Ca chiều";
+            afternoonShift.textContent = "Ca chiều (1:00 PM - 5:00 PM)";
+            afternoonShift.onclick = toggleShiftSelection;
+
+            dayDiv.appendChild(morningShift);
+            dayDiv.appendChild(afternoonShift);
+            shiftContainer.appendChild(dayDiv);
+        });
+        function toggleShiftSelection(event) {
+            event.target.classList.toggle("selected");
+        }
+        document.getElementById("shiftForm").onsubmit = async function (event) {
+            event.preventDefault();
+            const selectedShifts = [];
+
+            document.querySelectorAll(".shift.selected").forEach(shift => {
+                selectedShifts.push({
+                    day: shift.dataset.day,
+                    shift: shift.dataset.shift
+                });
+            });
+
+            console.log(selectedShifts); 
+            try {
+                const response = await fetch("/Shift/bulk", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(selectedShifts.map(shift => ({
+                        MaNv: 1, 
+                        DayOfWeek: shift.day,
+                        StartTime: shift.shift === "Ca sáng" ? "08:00:00" : "13:00:00",
+                        EndTime: shift.shift === "Ca sáng" ? "12:00:00" : "17:00:00"
+                    })))
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Đăng kí ca khám thành công!");
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            } catch (error) {
+                console.error("Lỗi khi đăng ký ca:", error);
+            }
+        };
+    </script>
+}

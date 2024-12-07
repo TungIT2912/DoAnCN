@@ -29,5 +29,6 @@ namespace WebQuanLyNhaKhoa.DTO
         public string NgayKhamDau { get; set; }
         public string? TenDangNhap { get; set; }
         public string? MatKhau { get; set; }
+     
     }
 }

@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241202162100_connect")]
+    [Migration("20241207075602_connect")]
     partial class connect
     {
         /// <inheritdoc />
@@ -130,7 +130,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int?>("IddonThuoc")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdhoaDon")
+                    b.Property<int?>("IdhoaDon")
                         .HasColumnType("int");
 
                     b.Property<int?>("Idkham")
@@ -536,6 +536,35 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.ToTable("NhanViens");
                 });
 
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Shift", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("MaNv")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaNv");
+
+                    b.ToTable("Shifts");
+                });
+
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.TaiKhoan", b =>
                 {
                     b.Property<int>("Id")
@@ -660,9 +689,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.HoaDon", "HoaDon")
                         .WithMany()
-                        .HasForeignKey("IdhoaDon")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdhoaDon");
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.DanhSachKham", "DanhSachKham")
                         .WithMany()
@@ -849,6 +876,17 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
+            modelBuilder.Entity("WebQuanLyNhaKhoa.Data.Shift", b =>
+                {
+                    b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "NhanVien")
+                        .WithMany("Shifts")
+                        .HasForeignKey("MaNv")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NhanVien");
+                });
+
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.UnansweredQuestion", b =>
                 {
                     b.HasOne("WebQuanLyNhaKhoa.Data.NhanVien", "NhanVien")
@@ -914,6 +952,8 @@ namespace WebQuanLyNhaKhoa.Migrations
             modelBuilder.Entity("WebQuanLyNhaKhoa.Data.NhanVien", b =>
                 {
                     b.Navigation("DanhSachKhams");
+
+                    b.Navigation("Shifts");
 
                     b.Navigation("UnansweredQuestions");
                 });

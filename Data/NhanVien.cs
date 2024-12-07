@@ -47,6 +47,8 @@ namespace WebQuanLyNhaKhoa.Data
         public virtual TaiKhoan TaiKhoan { get; set; } = null!;
         public virtual ChucVu ChucVu { get; set; } = null!;
         public virtual DichVu DichVu { get; set; } = null!;
+
+        public virtual ICollection<Shift> Shifts { get; set; } = new List<Shift>();
         public virtual ICollection<UnansweredQuestion> UnansweredQuestions { get; set; } = new List<UnansweredQuestion>();
 
         internal static object Select(Func<object, NhanVienDTO> value)
