@@ -2,23 +2,36 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    ViewBag.HideFooter = true;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Hóa đơn | Lịch sử bệnh án</title>
+<meta charset="utf-8">
+<!-- Stylesheets -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <!-- Stylesheets -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="~/css/bootstrap.css" rel="stylesheet">
-    <link href="~/css/style.css" rel="stylesheet">
-    <link href="~/css/responsive.css" rel="stylesheet">
-    <link href="~/css/table.css" rel="stylesheet">
-    <link href="~/css/reciept.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<link href="~/css/bootstrap.css" rel="stylesheet">
+<link href="~/css/style.css" rel="stylesheet">
+<link href="~/css/responsive.css" rel="stylesheet">
+<link href="~/css/table.css" rel="stylesheet">
+<link href="~/css/reciept.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
+    <!--Color Themes-->
+    <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
+
+    <script src="~/js/table.js"></script>
+
+<link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+<link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+
+<!-- Responsive -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
 </head>
 <style>
     .search-box {
@@ -53,6 +66,82 @@
         color: red;
         font-weight: bold;
     }
+    .medical-history {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+}
+
+.patient-info, .prescription-details, .treatment-details {
+    margin-bottom: 20px;
+}
+
+h4 {
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 5px;
+}
+.patient-info {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.patient-info h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #007BFF;
+}
+
+.info-group {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e3e3e3;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.info-group p {
+    margin: 5px 0;
+}
+
+.info-group p strong {
+    color: #555;
+}
+
+.info-group:last-child {
+    margin-bottom: 0;
+}
+.dental-theme h4 {
+    color: #2a9df4; 
+    border-bottom: 2px solid #2a9df4;
+    padding-bottom: 5px;
+}
+.info-section {
+    margin-bottom: 10px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.info-section p {
+    margin: 5px 0;
+}
+
 </style>
 <body>
     <div class="page-wrapper">
@@ -83,103 +172,130 @@
             </div>
             <br>
 
-            @foreach (var chiTiet in Model)
-            {
-                <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="panel panel-default invoice">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-6 top-left">
-                                            <div class="logo">
-                                                <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 top-right">
-                                            <h3 class="marginright">HÓA ĐƠN - @chiTiet.IdhoaDon</h3>
-                                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-xs-4 from">
-                                            <p class="lead marginbottom">Từ: Nha khoa Hoàn Mỹ</p>
-                                            <p>10/80c Song Hành Xa Lộ Hà Nội</p>
-                                            <p>Hồ Chí Minh, 700000</p>
-                                            <p>SĐT: +(84) 347 123 534</p>
-                                            <p>Email: nhakhoahoanmy@gmail.com</p>
-                                        </div>
-                                        <div class="col-xs-4 to">
-                                            <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
-                                            <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
-                                            <p>Số điện thoại: @chiTiet.Sdt</p>
-                                        </div>
-                                        <div class="col-xs-4 text-right payment-details">
-                                            <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
-                                            <p>Tổng tiền: @(chiTiet.TongTien.HasValue ? string.Format("{0:C}", chiTiet.TongTien.Value) : "N/A")</p>
-                                            <p>Email khách hàng: @chiTiet.EmailBn</p>
-                                        </div>
-                                    </div>
-                                    <div class="row table-row">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center" style="width:5%">#</th>
-                                                    <th style="width:30%">Tên Dịch Vụ</th>
-                                                    <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                                                    <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                                                    <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                                                    <th class="text-right" style="width:15%">Tổng Tiền</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if (Model != null && Model.Any())
-                                                {
-                                                    int index = 1; // Đánh số thứ tự các dịch vụ
-                                                    foreach (var item in Model)
-                                                    {
-                                                        <tr>
-                                                            <td class="text-center">@index</td>
-                                                            <td>@item.TenDon</td>
-                                                            <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                            <td class="text-right">
-                                                                @(item.TienThuoc.HasValue ? string.Format("{0:C}", item.TienThuoc.Value) : "N/A")
-                                                            </td>
-                                                            <td class="text-right">
-                                                                @(item.TienDieuTri.HasValue ? string.Format("{0:C}", item.TienDieuTri.Value) : "N/A")
-                                                            </td>
-                                                            <td class="text-right">
-                                                                @(item.TongTien.HasValue ? string.Format("{0:C}", item.TongTien.Value) : "N/A")
-                                                            </td>
-                                                        </tr>
-                                                        index++; // Tăng số thứ tự
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    <tr>
-                                                        <td colspan="6" class="text-center">
-                                                            Không có dữ liệu để hiển thị.
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
 
-                                    <button class="btn btn-primary view-history"
-                                            data-phone="@chiTiet.Sdt"
-                                            data-email="@chiTiet.EmailBn">
-                                        Xem lịch sử bệnh án
-                                    </button>
-                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
-                                        <h4>Lịch sử bệnh án:</h4>
-                                        <div class="history-content"></div>
+
+    @foreach (var chiTiet in Model) 
+    {
+        <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
+                    <div id="no-data-message" style="display: none; text-align: center; color: red;">
+                <h3>Không tìm thấy kết quả</h3>
+            </div>
+    <br>
+    <br>
+            <!-- The rest of the HTML structure for displaying invoice details -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default invoice" id="invoice">
+                        <div class="panel-body">
+                            <div class="invoice-ribbon">
+                                <div class="ribbon-inner">PAID</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 top-left">
+                                    <div class="logo">
+                                        <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
                                     </div>
                                 </div>
 
-                                <h5>QR Code Lịch Sử Khám:</h5>
+
+
+                                <div class="col-sm-6 top-right">
+                                    <h3 class="marginright">HÓA ĐƠN-@chiTiet.IdhoaDon</h3> 
+<span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-xs-4 from">
+                                    <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
+                                    <p>10/80c Song Hành Xa Lộ Hà Nội</p>
+                                    <p>Tòa E2, Q.12</p>
+                                    <p>Hồ Chí Minh, 700000</p>
+                                    <p>SĐT: +(84) 347 123 534</p>
+                                    <p>Email: nhakhoahoanmy@gmail.com</p>
+                                </div>
+
+                                <div class="col-xs-4 to">
+                                    <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
+                                    <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
+                                    <p class="patient-name">@chiTiet.DanhSachKham?.BenhNhan?.HoTen</p>
+                                    <p class="sdt">Số điện thoại: @chiTiet.Sdt</p>
+                                </div>
+
+                                @if (Model != null && Model.Any())
+                                        {
+
+                                            var item = Model.First();
+                    
+                                <div class="col-xs-4 text-right payment-details">
+                                    <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
+                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                    @* <p>VAT: DK888-777 </p> *@
+<p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
+                                    <p>Email khách hàng: @item.EmailBn</p>
+                                </div>
+                                        
+                                    }
+                            </div>
+
+                            <div class="row table-row">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width:5%">#</th>
+                                            <th style="width:30%">Tên Dịch Vụ</th>
+                                            <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                                            <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                                            <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                                            <th class="text-right" style="width:15%">Tổng Tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null && Model.Any())
+                                        {
+                                            int index = 1;
+                                            foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">@index</td>
+                                                    <td>@item.TenDon</td>
+                                                    <td class="text-right">@item.PhuongThucThanhToan</td>
+                                                    <td class="text-right">
+                                                        @(item.TienThuoc.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienThuoc.Value) : "N/A")
+                                                    </td>
+                                                    <td class="text-right">
+                                                        @(item.TienDieuTri.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienDieuTri.Value) : "N/A")
+                                                    </td>
+                                                    <td class="text-right">
+                                                        @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")
+                                                    </td>
+                                                </tr>
+                                                index++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="6" class="text-center">No data available</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                                                    <div class="btn-box">
+                                                        <button class="theme-btn btn-style-one bg-scarlet view-history"
+                                                                data-phone="@chiTiet.Sdt"
+                                                                data-email="@chiTiet.EmailBn">
+                                                            <span class="btn-title">Xem lịch sử bệnh án</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="medical-history" id="medical-history-@chiTiet.IdhoaDon" style="display: none;">
+                                                        <h4>Lịch sử bệnh án:</h4>
+                                                        <div class="history-content"></div>
+                                                    </div>
+
+                                                    
+                                    <h5>QR Code Lịch Sử Khám:</h5>
                                 <div id="qrCode-@chiTiet.IdhoaDon" class="qr-code-container"></div>
 
                                 <!-- Nút tạo QR code -->
@@ -189,53 +305,163 @@
                                         data-id="@chiTiet.IdhoaDon">
                                     Tạo QR Code
                                 </button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
-                <br>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+    }
 
-                <br>
+
+    </section>
+
+<script>
+$(document).ready(function () {
+    // Hide all invoices initially
+    $('[id^="invoice-container-"]').hide();
+
+    // Debounce timeout for search input
+    let timeout;
+
+    // Search input handler
+    $('#invoice-search').on('keyup', function () {
+        const searchTerm = $(this).val().trim().toLowerCase(); // Get and trim input value, convert to lowercase
+        clearTimeout(timeout); // Clear previous timeout to avoid spamming
+
+        $('#loading').show(); // Show loading indicator
+        $('#no-data-message').hide(); // Hide "No Data" message by default
+
+        timeout = setTimeout(function () {
+            let foundAny = false; // Tracks if we find any matching invoice
+
+            // If search term is empty, hide all invoices
+            if (searchTerm === '') {
+                $('[id^="invoice-container-"]').hide();
+                $('#loading').hide();
+                return;
             }
-        </section>
-    </div>
 
-    <script>
-        $(document).ready(function () {
-            let timeout;
+            // Loop through all invoices
+            $('[id^="invoice-container-"]').each(function () {
+                // Extract phone number (from the last <p> tag)
+                const phoneText = $(this).find('.to .sdt').text().trim(); // Extract phone number
+                const phoneNumber = phoneText.replace('Số điện thoại: ', '').trim(); // Clean phone number
 
-            // Tìm kiếm hóa đơn
-            $('#invoice-search').on('keyup', function () {
-                const searchTerm = $(this).val().trim();
-                clearTimeout(timeout);
+                // Extract the name (HoTen) (from the <p> tag with a specific class)
+                const nameText = $(this).find('.to .patient-name').text().trim(); // Assuming 'patient-name' is a class for the name <p> tag
+                const patientName = nameText.toLowerCase(); // Convert name to lowercase for case-insensitive matching
 
-                $('#loading').show();
-                $('#no-data-message-global').hide();
-
-                timeout = setTimeout(function () {
-                    let foundAny = false;
-
-                    $('[id^="invoice-container-"]').each(function () {
-                        const phoneText = $(this).find('.to p:nth-child(3)').text().trim();
-                        const phoneNumber = phoneText.replace('Số điện thoại: ', '').trim();
-
-                        if (phoneNumber === searchTerm) {
-                            $(this).show();
-                            foundAny = true;
-                        } else {
-                            $(this).hide();
-                        }
-                    });
-
-                    if (!foundAny) {
-                        $('#no-data-message-global').show();
-                    }
-
-                    $('#loading').hide();
-                }, 500);
+                // Match search term with phone number (exact match) or patient name (exact match)
+                if ((phoneNumber === searchTerm) || (patientName === searchTerm)) {
+                    $(this).show(); // Show matching invoice
+                    foundAny = true; // Mark as found
+                } else {
+                    $(this).hide(); // Hide non-matching invoice
+                }
             });
 
-            // Xử lý nút tạo QR Code
+            // Show "No Results" if nothing matches
+            if (!foundAny) {
+                $('#no-data-message').show(); // Show "No Data" message
+            } else {
+                $('#no-data-message').hide(); // Hide "No Data" message if there are results
+            }
+
+            $('#loading').hide(); // Hide loading indicator
+        }, 500); // Debounce: Wait 500ms after user stops typing
+
+    });
+$('.view-history').on('click', function () {
+    const phone = $(this).data('phone'); 
+    const email = $(this).data('email'); 
+
+    const historyContainer = $(this).closest('.btn-box').siblings('.medical-history');
+    const historyContent = historyContainer.find('.history-content'); 
+
+    historyContent.html('<p>Đang tải dữ liệu...</p>');
+    historyContainer.show(); // Ensure the container is visible
+
+    
+    $.ajax({
+        url: '/api/getList',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ phone: phone, mail: email }),
+        success: function (data) {
+            console.log('Response:', data); 
+
+            if (data) {
+               
+                const contentHtml = `
+                  <div class="patient-info dental-theme">
+    <h4>🦷 Thông tin bệnh nhân</h4>
+    <div class="info-section">
+        <p><strong>Họ tên:</strong> ${data.HoTen}</p>
+        <p><strong>Giới:</strong> ${data.Gioi ? 'Nam' : 'Nữ'}</p>
+        <p><strong>Năm sinh:</strong> ${data.NamSinh}</p>
+    </div>
+    <div class="info-section">
+        <p><strong>Số điện thoại:</strong> ${data.Sdt}</p>
+        <p><strong>Email:</strong> ${data.EmailBn}</p>
+    </div>
+    <div class="info-section">
+        <p><strong>Ngày khám đầu:</strong> ${data.NgayKhamDau}</p>
+        <p><strong>Địa chỉ:</strong> ${data.DiaChi}</p>
+    </div>
+    <div class="info-section">
+        <p><strong>Bác sĩ phụ trách:</strong> ${data.TenBacSi}</p>
+        <p><strong>Triệu chứng:</strong> ${data.TrieuChung}</p>
+        <p><strong>Thời gian hẹn:</strong> ${data.time}</p>
+    </div>
+</div>
+                 <div class="prescription-section dental-theme">
+    <h4>💊 Chi tiết đơn thuốc</h4>
+    ${data.DonThuocs.length > 0
+        ? data.DonThuocs.map(dt => `
+            <div class="info-section">
+                <p><strong>Tên thuốc:</strong> ${dt.tenThuoc}</p>
+                <p><strong>Số lượng:</strong> ${dt.SoLuong}</p>
+                <p><strong>Giá:</strong> ${dt.ThanhGia} VND</p>
+                <p><strong>Tổng tiền:</strong> ${dt.TongTien} VND</p>
+                <p><strong>Ngày lập:</strong> ${dt.NgayLapDt}</p>
+            </div>
+        `).join('')
+        : '<p>Không có thông tin về đơn thuốc.</p>'}
+</div>
+
+<div class="treatment-section dental-theme">
+    <h4>🦷 Chi tiết điều trị</h4>
+    ${data.DieuTris.length > 0
+        ? data.DieuTris.map(dt => `
+            <div class="info-section">
+                <p><strong>Dịch vụ:</strong> ${dt.tenDieuTri || 'Không có'}</p>
+                <p><strong>Số lượng:</strong> ${dt.SoLuong}</p>
+                <p><strong>Giá:</strong> ${dt.ThanhTien} VND</p>
+            </div>
+        `).join('')
+        : '<p>Không có thông tin về điều trị.</p>'}
+</div>
+                    
+                `;
+
+                // Update history content with data
+                historyContent.html(contentHtml);
+            } else {
+                historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
+        }
+    });
+});
+
+              // Xử lý nút tạo QR Code
             $('.generate-qr-code').on('click', function () {
                 const phone = $(this).data('phone');
                 const email = $(this).data('email');
@@ -261,76 +487,17 @@
                     }
                 });
             });
-            // Xem lịch sử bệnh án
-            $('.view-history').on('click', function () {
-                const phone = $(this).data('phone');
-                const email = $(this).data('email');
-                const historyContainer = $(this).siblings('.medical-history');
-                const historyContent = historyContainer.find('.history-content');
 
-                historyContent.html('<p>Đang tải dữ liệu...</p>');
-                historyContainer.show();
 
-                $.ajax({
-                    url: '/api/getList',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ phone: phone, mail: email }),
-                    
-                    success: function (data) {
-                        console.log('Response:', data);
 
-                        if (data) {
-                            let contentHtml = `
-                                <p>Họ tên: ${data.HoTen}</p>
-                                <p>Giới: ${data.Gioi}</p>
-                                <p>Năm sinh: ${data.NamSinh}</p>
-                                <p>Số điện thoại: ${data.Sdt}</p>
-                                <p>Email: ${data.EmailBn}</p>
-                                <p>Ngày khám đầu: ${data.NgayKhamDau}</p>
-                                <p>Địa chỉ: ${data.DiaChi}</p>
-                                <p>Bác sĩ: ${data.TenBacSi}</p>
-                                <p>Triệu chứng: ${data.TrieuChung}</p>
-                                <p>Thời gian: ${data.time}</p>
 
-                                <h5>Chi tiết đơn thuốc:</h5>
-                                <ul>
-                                    ${data.DonThuocs.map(dt => `
-                                        <li>
-                                            Tên thuốc: ${dt.tenThuoc} -
-                                            Số lượng: ${dt.SoLuong} -
-                                            Giá: ${dt.ThanhGia} -
-                                            Tổng tiền: ${dt.TongTien} -
-                                            Ngày lập: ${dt.NgayLapDt}
-                                        </li>
-                                    `).join('')}
-                                </ul>
+   
+});
+</script>
 
-                                <h5>Chi tiết điều trị:</h5>
-                                <ul>
-                                    ${data.DieuTris.map(dt => `
-                                        <li>
-                                            Dịch vụ: ${dt.tenDieuTri || 'Không có'} -
-                                            Số lượng: ${dt.SoLuong} -
-                                            Giá: ${dt.ThanhTien}
-                                        </li>
-                                    `).join('')}
-                                </ul>
-                            `;
 
-                            // Cập nhật nội dung trong container
-                            historyContent.html(contentHtml);
-                        } else {
-                            historyContent.html('<p>Không tìm thấy dữ liệu lịch sử bệnh án.</p>');
-                        }
-                    },
-                    error: function () {
-                        historyContent.html('<p>Có lỗi xảy ra khi tải dữ liệu.</p>');
-                    }
 
-                });
-            });
-        });
-    </script>
+
+
 </body>
 </html>

@@ -38,10 +38,11 @@
     @await Html.PartialAsync("_Chatbot")
     <!-- Main Content -->
     @RenderBody()
-
+@if (ViewBag.HideFooter == null || !ViewBag.HideFooter)
+    {
     <!-- Footer -->
     @await Html.PartialAsync("_FooterCustomer")
-
+    }
     <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
