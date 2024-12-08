@@ -238,50 +238,58 @@ li {
                                     }
                             </div>
 
-                            <div class="row table-row">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" style="width:5%">#</th>
-                                            <th style="width:30%">Tên Dịch Vụ</th>
-                                            <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                                            <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                                            <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                                            <th class="text-right" style="width:15%">Tổng Tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (Model != null && Model.Any())
-                                        {
-                                            int index = 1;
-                                            foreach (var item in Model)
-                                            {
-                                                <tr>
-                                                    <td class="text-center">@index</td>
-                                                    <td>@item.TenDon</td>
-                                                    <td class="text-right">@item.PhuongThucThanhToan</td>
-                                                    <td class="text-right">
-                                                        @(item.TienThuoc.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienThuoc.Value) : "N/A")
-                                                    </td>
-                                                    <td class="text-right">
-                                                        @(item.TienDieuTri.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienDieuTri.Value) : "N/A")
-                                                    </td>
-                                                    <td class="text-right">
-                                                        @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")
-                                                    </td>
-                                                </tr>
-                                                index++;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <tr>
-                                                <td colspan="6" class="text-center">No data available</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="row table-row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center" style="width:5%">#</th>
+                <th style="width:30%">Tên Dịch Vụ</th>
+                <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                <th class="text-right" style="width:15%">Tổng Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (chiTiet != null)
+            {
+                int index = 1;
+
+             foreach (var chiTietHoaDon in chiTiet.DieuTris)
+{
+    <tr>
+        <td class="text-center">@index</td>
+        <td>@chiTietHoaDon.DichVu.TenDichVu</td>  <!-- Tên dịch vụ -->
+        <td class="text-right">@chiTietHoaDon.ChiTietHoaDon.PhuongThucThanhToan</td>  <!-- Phương thức thanh toán -->
+        <td class="text-right">
+            @(chiTietHoaDon.ThanhTien != null && chiTietHoaDon.ThanhTien > 0 
+                ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", chiTietHoaDon.ThanhTien) 
+                : "N/A")
+        </td> <!-- Tiền điều trị -->
+        <td class="text-right">
+            @(chiTietHoaDon.ThanhTien != null && chiTietHoaDon.ThanhTien > 0 
+                ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", chiTietHoaDon.ThanhTien) 
+                : "N/A")
+        </td> <!-- Tiền thuốc hoặc thiết bị -->
+        <td class="text-right">
+            @(chiTietHoaDon.ThanhTien != null && chiTietHoaDon.ThanhTien > 0 
+                ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", chiTietHoaDon.ThanhTien) 
+                : "N/A")
+        </td> <!-- Tổng tiền -->
+    </tr>
+    index++;
+}
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">Không có dữ liệu</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
                                                     <div class="btn-box">
                                                         <button class="theme-btn btn-style-one bg-scarlet view-history"
                                                                 data-phone="@chiTiet.Sdt"

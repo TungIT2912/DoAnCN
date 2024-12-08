@@ -54,22 +54,31 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // HoaDonDetails search page
-    public IActionResult HoaDonDetails(string searchQuery)
-    {
-        var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
-            ? _context.ChiTietHoaDons
-                .Include(c => c.DanhSachKham)  
-                    .ThenInclude(dsk => dsk.BenhNhan)  
-                .ToList()
-            : _context.ChiTietHoaDons
-                .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
-                .Include(c => c.DanhSachKham)  
-                    .ThenInclude(dsk => dsk.BenhNhan)  
-                .ToList();
+public IActionResult HoaDonDetails(string searchQuery)
+{
+    var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
+        ? _context.ChiTietHoaDons
+            .Include(c => c.DanhSachKham)  
+                .ThenInclude(dsk => dsk.BenhNhan)  
+            .Include(c => c.DieuTris)  // Thêm bao gồm dịch vụ
+                .ThenInclude(dt => dt.DichVu)  // Dịch vụ đã sử dụng
+            .Include(c => c.DieuTris)  // Thêm bao gồm dịch vụ
+                .ThenInclude(dt => dt.Kho)  // Thiết bị/thuốc đã sử dụng
+            .ToList()
+        : _context.ChiTietHoaDons
+            .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
+            .Include(c => c.DanhSachKham)  
+                .ThenInclude(dsk => dsk.BenhNhan)  
+            .Include(c => c.DieuTris)
+                .ThenInclude(dt => dt.DichVu)
+            .Include(c => c.DieuTris)
+                .ThenInclude(dt => dt.Kho)
+            .ToList();
 
-        ViewData["SearchQuery"] = searchQuery; 
-        return View(chiTietHoaDons);
-    }
+    ViewData["SearchQuery"] = searchQuery; 
+    return View(chiTietHoaDons);
+}
+
 
         public IActionResult ServicesDetail(int id)
         {
@@ -149,7 +158,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                     Idkham = dt.Idkham,
                     IddungCu = dt.IddungCu,
                     SoLuong = dt.SoLuong,
-                    ThanhTien = dt.ThanhTien
+                    ThanhTien = (decimal)dt.ThanhTien
                 }).ToList(),
                 TrieuChung = benhnhan.BenhNhan.TrieuChung ?? "Unknown",
             };
@@ -203,7 +212,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 {
                     tenDieuTri = dt.DichVu?.TenDichVu ?? "Không có dữ liệu dịch vụ",
                     SoLuong = dt.SoLuong,
-                    ThanhTien = dt.ThanhTien
+                    ThanhTien = (decimal)dt.ThanhTien
                 }).ToList(),
                 TrieuChung = benhnhan.BenhNhan.TrieuChung,
             };
