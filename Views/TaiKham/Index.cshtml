@@ -1,0 +1,369 @@
+﻿@model WebQuanLyNhaKhoa.DTO.BenhNhanDTO
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+
+<form id="checkBenhNhanForm" class="row g-3 w-100" method="get" enctype="multipart/form-data">
+    <div class="col-12 col-sm-6">
+        <label for="SdtCheck" class="control-label">Số điện thoại</label>
+        <input id="SdtCheck" type="tel" class="form-control border-0" style="height: 55px;" required>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary w-100 py-3">Kiểm tra bệnh nhân</button>
+    </div>
+</form>
+
+<!-- Form đặt lịch tái khám -->
+<form id="createTaiKhamForm" class="row g-3 w-100" method="post" enctype="multipart/form-data" style="display: none;">
+    <!-- Thông tin bệnh nhân -->
+    <input id="HoTen" type="hidden" name="HoTen" required>
+    <input id="Gioi" type="hidden" name="Gioi" required>
+    <input id="NamSinh" type="hidden" name="NamSinh" required>
+    <input id="Sdt" type="hidden" name="Sdt" required>
+    <input id="EmailBn" type="hidden" name="EmailBn" required>
+    <input id="DiaChi" type="hidden" name="DiaChi" required>
+
+    <!-- Các trường khác -->
+
+    <div class="col-12 col-sm-6" style=" width: 100%;">
+        <label asp-for="IddichVu" class="control-label">Chọn chuyên nghành</label>
+        <select asp-for="IddichVu" id="IddichVu" class="form-control IddichVu" asp-items="ViewBag.DichVuList" required>
+            <option value="" selected>- Chọn chuyên ngành -</option>
+        </select>
+        <span asp-validation-for="IddichVu" class="text-danger"></span>
+    </div>
+
+    <div class="col-12 col-sm-6" style=" width: 100%;">
+        <label asp-for="MaNv" class="control-label">Các bác sĩ chuyên ngành</label>
+        <select asp-for="MaNv" id="MaNv" name="MaNv" class="MaNv" required>
+            <option value="">Chọn bác sĩ</option>
+        </select>
+        <span asp-validation-for="MaNv" class="text-danger"></span>
+    </div>
+
+
+    <div class="col-12 col-sm-6" style=" width: 100%;">
+        <div class="date" id="date" data-target-input="nearest">
+            <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
+            <input asp-for="NgayKhamDau" type="date" id="bookingDate"
+                   class="form-control border-0 datetimepicker-input"
+                   placeholder="Choose Date"
+                   data-target="#date" data-toggle="datetimepicker"
+                   style="height: 55px;"
+                   value="@ViewBag.SelectedDate">
+            <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6" style=" width: 100%;">
+        <div class="date" id="date" data-target-input="nearest">
+            <label asp-for="time" class="control-label">Ca khám</label>
+            <select id="bookingTime" name="time" required>
+                <option value="">Chọn ca khám</option>
+                @if (!string.IsNullOrEmpty(ViewBag.SelectedTime))
+                {
+                    <option value="@ViewBag.SelectedTime" selected>@ViewBag.SelectedTime</option>
+                }
+            </select>
+            <span asp-validation-for="time" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch tái khám</button>
+    </div>
+</form>
+<style>
+    .custom-textarea {
+        height: 200px; /* Make the textarea a bit taller */
+        padding: 12px; /* Add padding for better readability */
+        font-size: 1rem; /* Increase font size for better legibility */
+        border-radius: 8px; /* Rounded corners for a softer look */
+        border: 1px solid #ccc; /* Light border */
+        resize: vertical; /* Allow vertical resizing only */
+        background-color: #f8f9fa; /* Light background color for better contrast */
+        transition: all 0.3s ease-in-out; /* Smooth transition on focus */
+    }
+
+        .custom-textarea:focus {
+            border-color: #007bff; /* Focus border color */
+            outline: none; /* Remove outline on focus */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow effect on focus */
+            background-color: #ffffff; /* Change background on focus */
+        }
+
+        .custom-textarea::placeholder {
+            color: #aaa; /* Lighter placeholder text */
+        }
+</style>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            console.log("Document ready!");
+
+            let lastSelectedTime = '';
+
+            $('#IddichVu').change(function () {
+                var dichVuId = $(this).val();
+                console.log("Selected DichVu ID: ", dichVuId);
+
+                $.ajax({
+                    url: '/GetNhanViensByDichVu',
+                    type: 'GET',
+                    data: { dichVuId: dichVuId },
+                    success: function (data) {
+                        console.log("Doctors fetched: ", data);
+                        $('#MaNv').empty();
+                        $('#MaNv').append('<option value="">Chọn bác sĩ</option>');
+
+                        $.each(data, function (index, nhanVien) {
+                            $('#MaNv').append('<option value="' + nhanVien.Id + '">' + nhanVien.Ten + '</option>');
+                        });
+                    },
+                    error: function (error) {
+                        console.error("Error fetching doctors:", error);
+                    }
+                });
+            });
+
+            $('#MaNv').change(function () {
+                var doctorId = $(this).val();
+                console.log("Selected Doctor ID: ", doctorId);
+
+                var selectedDate = $('#bookingDate').val();
+
+                if (doctorId && selectedDate) {
+                    fetchAvailableSlots(doctorId, selectedDate);
+                }
+            });
+
+            $('#bookingDate').change(function () {
+                var selectedDate = $(this).val();
+                console.log("Selected Date: ", selectedDate);
+
+                var doctorId = $('#MaNv').val();
+
+                if (selectedDate && doctorId) {
+                    fetchAvailableSlots(doctorId, selectedDate);
+                }
+            });
+
+            lastSelectedTime = '@ViewBag.SelectedTime';
+            console.log('time at first', lastSelectedTime);
+            $('#bookingTime').change(function () {
+                lastSelectedTime = $(this).val();
+                console.log("The time slot user pick: ", lastSelectedTime);
+            });
+
+            function fetchAvailableSlots(doctorId, selectedDate) {
+                console.log("Fetching available slots for doctor " + doctorId + " and date " + selectedDate);
+
+                fetch(`/getAvailableSlots?ngayKham=${selectedDate}&maNv=${doctorId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error("Error response:", response);
+                            response.text().then(errorMessage => {
+                                alert(errorMessage);
+                            }).catch(() => {
+                                alert("An error occurred, but no error message was provided by the server.");
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log("Available slots: ", result);
+
+                        const timeSelect = $('#bookingTime');
+                        timeSelect.empty();
+                        timeSelect.append('<option value="">Chọn ca khám</option>');
+
+                        let disabledTimes = result.disabledSlots;
+
+                        let firstAvailableSlot = '';
+
+                        result.availableSlots.forEach(slot => {
+                            timeSelect.append(`<option value="${slot}">${slot}</option>`);
+
+                            if (!firstAvailableSlot && !disabledTimes.includes(slot)) {
+                                firstAvailableSlot = slot;
+                            }
+                        });
+
+                        result.disabledSlots.forEach(slot => {
+                            timeSelect.append(`<option value="${slot}" disabled>${slot} - Ca này đã kín</option>`);
+                        });
+
+                        if (lastSelectedTime && !disabledTimes.includes(lastSelectedTime)) {
+                            $('#bookingTime').val(lastSelectedTime);
+                            console.log("Last selected time restored:", lastSelectedTime);
+                        } else if (firstAvailableSlot && lastSelectedTime === '') {
+                            $('#bookingTime').val(firstAvailableSlot);
+                            console.log("First available time set as default:", firstAvailableSlot);
+                        }
+
+                        if (lastSelectedTime && disabledTimes.includes(lastSelectedTime)) {
+                            alert("Ca khám bạn đã chọn đã kín, vui lòng chọn lại.");
+                            $('#bookingTime').val('');
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error("Error fetching available slots:", error);
+                    });
+            }
+
+            $('#checkBenhNhanForm').submit(function (event) {
+                event.preventDefault();
+                console.log("Checking patient information");
+
+                var sdt = $('#SdtCheck').val();
+
+                $.ajax({
+                    url: '/api/CheckBenhNhan',
+                    type: 'GET',
+                    data: { sdt: sdt },
+                    success: function (data) {
+                        if (!data) {
+                            alert("Bệnh nhân chưa từng đặt lịch hoặc chưa thanh toán hóa đơn lần trước.");
+                            return;
+                        }
+                        console.log("Patient information: ", data);
+                        $('#IdbenhNhan').val(data.IdbenhNhan);
+                        $('#HoTen').val(data.HoTen);
+                        $('#Gioi').val(data.Gioi);
+                        $('#NamSinh').val(data.NamSinh);
+                        $('#Sdt').val(data.Sdt);
+                        $('#EmailBn').val(data.EmailBn);
+                        $('#DiaChi').val(data.DiaChi);
+
+                        $('#checkBenhNhanForm').hide();
+                        $('#createTaiKhamForm').show();
+                    },
+                    error: function (error) {
+                        console.error("Error checking patient information:", error);
+                        alert("Số điện thoại bênh nhân không tồn tại.");
+                    }
+                });
+            });
+
+            $('#createTaiKhamForm').submit(function (event) {
+                event.preventDefault();
+                console.log("Form submission triggered");
+
+                const selectedTime = $('[name="time"]').val();
+                const selectedDay = $('[name="NgayKhamDau"]').val();
+
+                if (!selectedTime || !selectedDay) {
+                    alert("Xin hãy chọn ngày và ca khám.");
+                    return;
+                }
+
+                console.log("Selected Time: ", selectedTime);
+                console.log("Selected Day: ", selectedDay);
+
+                const benhNhanData = {
+                    IdbenhNhan: $('#IdbenhNhan').val(),
+                    HoTen: $('[name="HoTen"]').val(),
+                    Gioi: $('[name="gender"]:checked').val() === "True",
+                    NamSinh: $('[name="NamSinh"]').val(),
+                    Sdt: $('[name="Sdt"]').val(),
+                    DiaChi: $('[name="DiaChi"]').val(),
+                    EmailBn: $('[name="EmailBn"]').val(),
+                    IddichVu: $('[name="IddichVu"]').val(),
+                    MaNv: $('[name="MaNv"]').val(),
+                    TrieuChung: $('[name="TrieuChung"]').val(),
+                    NgayKhamDau: selectedDay,
+                    Time: convertToDateTime(selectedTime, selectedDay),
+                    isTaiKham: true
+                };
+
+                console.log("Data being sent for re-examination:", benhNhanData);
+
+                fetch('/api/PostTaiKham', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(benhNhanData)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Đặt lịch tái khám thành công!");
+                            return response.json();
+                        } else {
+                            alert("Đặt lịch tái khám thất bại.");
+                        }
+                    })
+                    .then(data => {
+
+                        // Hiển thị mã QR và link tải
+                        $('#qrCodeUrl').attr('href', data.QrCodeUrl).show();
+                        $('#imageUrl').attr('href', data.ImageUrl).show();
+                        $('#qrCodeImage').attr('src', data.QrCodeImage).show();
+                        $('#pdf').attr('href', data.Pdf).show();
+
+                        console.log("QR Code Download URL: ", data.QrCodeUrl);
+                        console.log("Image Download URL: ", data.ImageUrl);
+                        console.log("Image URL: ", data.QrCodeImage);
+                        $('#qrModal').modal('show');
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Lỗi khi đặt lịch tái khám.");
+                    });
+
+            });
+
+            function convertToDateTime(timeString, selectedDay) {
+                const [time, ampm] = timeString.split(" ");
+                const [hours, minutes] = time.split(":").map(Number);
+
+                let adjustedHours = hours;
+                if (ampm === "PM" && adjustedHours < 12) {
+                    adjustedHours += 12;
+                } else if (ampm === "AM" && adjustedHours === 12) {
+                    adjustedHours = 0;
+                }
+
+                const [year, month, day] = selectedDay.split('-');
+
+                const dateTimeString = `${year}-${month}-${day}T${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00.000`;
+
+                console.log("Generated DateTime string:", dateTimeString);
+
+                return dateTimeString;
+            }
+        });
+
+    </script>
+}
+<style>
+    #qrModal .modal-content {
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    #qrModal .modal-header {
+        border-bottom: none;
+    }
+
+    #qrModal .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    #qrModal .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    #qrModal .modal-dialog-left {
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>

@@ -157,28 +157,34 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
 
             hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc;
 
-        //    // Cập nhật trạng thái thanh toán là đã thanh toán
-        //    hoaDon.DaThanhToan = true;
-        //    hoaDon.PhuongThucThanhToan = "COD"; // Cập nhật phương thức thanh toán
-        //    hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc; // Tính lại tổng tiền nếu cần
-        //    hoaDon.NgayLap = DateTime.Now;
+            //    // Cập nhật trạng thái thanh toán là đã thanh toán
+            //    hoaDon.DaThanhToan = true;
+            //    hoaDon.PhuongThucThanhToan = "COD"; // Cập nhật phương thức thanh toán
+            //    hoaDon.TongTien = hoaDon.TienDieuTri + hoaDon.TienThuoc; // Tính lại tổng tiền nếu cần
+            //    hoaDon.NgayLap = DateTime.Now;
 
-        //    _context.HoaDons.Update(hoaDon);
-        //    await _context.SaveChangesAsync();
-
+            //    _context.HoaDons.Update(hoaDon);
+            //    await _context.SaveChangesAsync();
+            using var transaction = await _context.Database.BeginTransactionAsync();
             if (paymentMethod == "COD")
         {
                 hoaDon.DaThanhToan = true; 
                 hoaDon.PhuongThucThanhToan = "COD";
                 _context.HoaDons.Update(hoaDon);
-                var chiTietHoaDon = await _context.ChiTietHoaDons.FirstOrDefaultAsync(ct => ct.IdhoaDon == hoaDon.IdhoaDon && ct.IddieuTri == hoaDon.IddieuTri);
+                var chiTietHoaDon = await _context.ChiTietHoaDons
+                    .FirstOrDefaultAsync(ct =>
+                        ct.IdhoaDon == hoaDon.IdhoaDon &&
+                        (ct.IddieuTri == hoaDon.IddieuTri || ct.IddonThuoc == hoaDon.IddonThuoc)
+                    );
+
                 if (chiTietHoaDon != null) { 
                     chiTietHoaDon.PhuongThucThanhToan = "COD"; 
                     _context.ChiTietHoaDons.Update(chiTietHoaDon); 
                 }
                 await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
                 var currentTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                var patientEmail = hoaDon.DieuTri.DanhSachKham.BenhNhan.EmailBn; // Replace with the patient's email
+                var patientEmail = hoaDon.EmailBn; // Replace with the patient's email
                 var emailSubject = "Thanh toán hóa đơn";
                 var emailMessage = $"Bạn đã thanh toán thành công tiền viện phí.<br><br> " +
                                     $"Bạn đã thanh toán thành công tiền viện phí vào lúc {currentTime}.<br><br>" +
@@ -208,7 +214,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                     _context.ChiTietHoaDons.Update(chiTietHoaDon);
                 }
                 _context.HoaDons.Update(hoaDon);
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
                 var currentTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                 var patientEmail = hoaDon.DieuTri.DanhSachKham.BenhNhan.EmailBn; // Replace with the patient's email
                 var emailSubject = "Thanh toán hóa đơn";

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class yolo : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -255,7 +255,8 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IdbenhNhan = table.Column<int>(type: "int", nullable: false),
                     MaNv = table.Column<int>(type: "int", nullable: true),
                     NgayKham = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    time = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isTaiKham = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -401,7 +402,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IdhoaDon = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IddonThuoc = table.Column<int>(type: "int", nullable: true),
-                    IddieuTri = table.Column<int>(type: "int", nullable: false),
+                    IddieuTri = table.Column<int>(type: "int", nullable: true),
                     Idkham = table.Column<int>(type: "int", nullable: true),
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TienThuoc = table.Column<decimal>(type: "decimal(18,2)", nullable: false),

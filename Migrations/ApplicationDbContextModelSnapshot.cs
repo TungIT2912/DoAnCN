@@ -203,6 +203,9 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<DateTime>("NgayKham")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("isTaiKham")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("time")
                         .HasColumnType("datetime2");
 
@@ -358,7 +361,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<string>("EmailBn")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IddieuTri")
+                    b.Property<int?>("IddieuTri")
                         .HasColumnType("int");
 
                     b.Property<int?>("IddonThuoc")
@@ -773,8 +776,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.HasOne("WebQuanLyNhaKhoa.Data.DieuTri", "DieuTri")
                         .WithMany("HoaDons")
                         .HasForeignKey("IddieuTri")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebQuanLyNhaKhoa.Data.DonThuoc", "DonThuoc")
                         .WithMany("HoaDons")

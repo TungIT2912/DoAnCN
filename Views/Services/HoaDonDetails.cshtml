@@ -231,7 +231,7 @@ li {
                                     <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
                             <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
                                     @* <p>VAT: DK888-777 </p> *@
-<p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
+                                    <p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
                                     <p>Email khách hàng: @item.EmailBn</p>
                                 </div>
                                         
