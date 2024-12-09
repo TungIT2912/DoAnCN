@@ -1,3 +1,4 @@
+@using System.ComponentModel.DataAnnotations
 @model IEnumerable<WebQuanLyNhaKhoa.Data.ChiTietHoaDon>
 
 @{
@@ -7,140 +8,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<!-- Stylesheets -->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <!-- Stylesheets -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-<link href="~/css/bootstrap.css" rel="stylesheet">
-<link href="~/css/style.css" rel="stylesheet">
-<link href="~/css/responsive.css" rel="stylesheet">
-<link href="~/css/table.css" rel="stylesheet">
-<link href="~/css/reciept.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+    <link href="~/css/table.css" rel="stylesheet">
+    <link href="~/css/reciept.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
     <!--Color Themes-->
     <link id="theme-color-file" href="~/css/color-themes/scarlet.css" rel="stylesheet">
 
     <script src="~/js/table.js"></script>
 
-<link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
-<link rel="icon" href="~/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
 
-<!-- Responsive -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
-<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+    <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
 </head>
 <style>
     .search-box {
-        width: 100%;
-        max-width: 400px;
-        padding: 12px 20px;
-        font-size: 16px;
-        border-radius: 25px;
-        border: 1px solid #ccc;
-        outline: none;
-        transition: border 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
     }
 
-        .search-box:focus {
-            border-color: #007BFF;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-        }
+    .search-box:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
 
-        .search-box::placeholder {
-            color: #999;
-            font-style: italic;
-        }
+    .search-box::placeholder {
+    color: #999;
+    font-style: italic;
+    }
 
     #loading {
-        text-align: center;
-        color: #007BFF;
-        font-weight: bold;
+    text-align: center;
+    color: #007BFF;
+    font-weight: bold;
     }
 
     #no-data-message-global {
-        text-align: center;
-        color: red;
-        font-weight: bold;
+    text-align: center;
+    color: red;
+    font-weight: bold;
     }
     .medical-history {
     border: 1px solid #ddd;
     padding: 10px;
     margin-top: 10px;
     background-color: #f9f9f9;
-}
+    }
 
-.patient-info, .prescription-details, .treatment-details {
+    .patient-info, .prescription-details, .treatment-details {
     margin-bottom: 20px;
-}
+    }
 
-h4 {
+    h4 {
     color: #333;
     border-bottom: 1px solid #ddd;
     padding-bottom: 5px;
     margin-bottom: 10px;
-}
+    }
 
-ul {
+    ul {
     list-style-type: none;
     padding: 0;
-}
+    }
 
-li {
+    li {
     margin-bottom: 5px;
-}
-.patient-info {
+    }
+    .patient-info {
     background: #f9f9f9;
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     color: #333;
-}
+    }
 
-.patient-info h4 {
+    .patient-info h4 {
     font-size: 1.5em;
     margin-bottom: 10px;
     color: #007BFF;
-}
+    }
 
-.info-group {
+    .info-group {
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #e3e3e3;
     border-radius: 6px;
     background: #fff;
-}
+    }
 
-.info-group p {
+    .info-group p {
     margin: 5px 0;
-}
+    }
 
-.info-group p strong {
+    .info-group p strong {
     color: #555;
-}
+    }
 
-.info-group:last-child {
+    .info-group:last-child {
     margin-bottom: 0;
-}
-.dental-theme h4 {
+    }
+    .dental-theme h4 {
     color: #2a9df4; 
     border-bottom: 2px solid #2a9df4;
     padding-bottom: 5px;
-}
-.info-section {
+    }
+    .info-section {
     margin-bottom: 10px;
     background: #f9f9f9;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.info-section p {
+    }
+    .info-section p {
     margin: 5px 0;
-}
+    }
 
 </style>
 <body>
@@ -174,75 +175,76 @@ li {
 
 
 
-    @foreach (var chiTiet in Model) 
-    {
-        <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
+            @foreach (var chiTiet in Model) 
+            {
+                <div class="container bootstrap snippets bootdeys" id="invoice-container-@chiTiet.IdhoaDon" style="display: none;">
                     <div id="no-data-message" style="display: none; text-align: center; color: red;">
-                <h3>Không tìm thấy kết quả</h3>
-            </div>
-    <br>
-    <br>
-            <!-- The rest of the HTML structure for displaying invoice details -->
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default invoice" id="invoice">
-                        <div class="panel-body">
-                            <div class="invoice-ribbon">
-                                <div class="ribbon-inner">PAID</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6 top-left">
-                                    <div class="logo">
-                                        <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+                        <h3>Không tìm thấy kết quả</h3>
+                    </div>
+                    <br>
+                    <br>
+                    <!-- The rest of the HTML structure for displaying invoice details -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default invoice" id="invoice">
+                                <div class="panel-body">
+                                    <div class="invoice-ribbon">
+                                        <div class="ribbon-inner">PAID</div>
                                     </div>
-                                </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 top-left">
+                                            <div class="logo">
+                                                <a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a>
+                                            </div>
+                                        </div>
 
 
 
-                                <div class="col-sm-6 top-right">
-                                    <h3 class="marginright">HÓA ĐƠN-@chiTiet.IdhoaDon</h3> 
-<span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-xs-4 from">
-                                    <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
-                                    <p>10/80c Song Hành Xa Lộ Hà Nội</p>
-                                    <p>Tòa E2, Q.12</p>
-                                    <p>Hồ Chí Minh, 700000</p>
-                                    <p>SĐT: +(84) 347 123 534</p>
-                                    <p>Email: nhakhoahoanmy@gmail.com</p>
-                                </div>
+                                        <div class="col-sm-6 top-right">
+                                            <h3 class="marginright">HÓA ĐƠN-@chiTiet.IdhoaDon</h3> 
+                                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-xs-4 from">
+                                            <p class="lead marginbottom">Từ: Nha khoa Hoàn Mĩ</p>
+                                            <p>10/80c Song Hành Xa Lộ Hà Nội</p>
+                                            <p>Tòa E2, Q.12</p>
+                                            <p>Hồ Chí Minh, 700000</p>
+                                            <p>SĐT: +(84) 347 123 534</p>
+                                            <p>Email: nhakhoahoanmy@gmail.com</p>
+                                        </div>
 
-                                <div class="col-xs-4 to">
-                                    <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
-                                    <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
-                                    <p class="patient-name">@chiTiet.DanhSachKham?.BenhNhan?.HoTen</p>
-                                    <p class="sdt">Số điện thoại: @chiTiet.Sdt</p>
-                                </div>
+                                        <div class="col-xs-4 to">
+                                            <p class="lead marginbottom">Đến: @chiTiet.EmailBn</p>
+                                            <p>Phương thức thanh toán: @chiTiet.PhuongThucThanhToan</p>
+                                            <p class="patient-name">@chiTiet.DanhSachKham?.BenhNhan?.HoTen</p>
+                                            <p class="sdt">Số điện thoại: @chiTiet.Sdt</p>
+                                        </div>
 
-                                @if (Model != null && Model.Any())
+                                        @if (Model != null && Model.Any())
                                         {
 
                                             var item = Model.First();
-                    
-                                <div class="col-xs-4 text-right payment-details">
-                                    <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
-                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
-                                    @* <p>VAT: DK888-777 </p> *@
-<p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
-                                    <p>Email khách hàng: @item.EmailBn</p>
-                                </div>
-                                        
-                                    }
-                            </div>
+
+                                            <div class="col-xs-4 text-right payment-details">
+                                                <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
+                                                <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                                @* <p>VAT: DK888-777 </p> *@
+                                                <p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
+                                                <p>Email khách hàng: @item.EmailBn</p>
+                                            </div>
+
+                                        }
+                                    </div>
 <div class="row table-row">
+    <!-- Bảng hiển thị thông tin điều trị -->
     <table class="table table-striped">
         <thead>
             <tr>
                 <th class="text-center" style="width:5%">#</th>
-                <th style="width:30%">Tên</th>
+                <th style="width:30%">Tên điều trị</th>
                 <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
                 <th class="text-right" style="width:15%">Tiền Thuốc</th>
                 <th class="text-right" style="width:15%">Tiền Điều Trị</th>
@@ -250,20 +252,19 @@ li {
             </tr>
         </thead>
         <tbody>
-            @if (Model != null)
+            @if (Model != null && Model.Any())
             {
                 int index = 1;
-
-                foreach (var item in Model) // Lặp qua từng ChiTietHoaDon
+                foreach (var item in Model)
                 {
-                    @if (item.DieuTris != null && item.DieuTris.Any())
+                    if (item.DieuTris != null && item.DieuTris.Any())
                     {
-                    // Hiển thị từ bảng DieuTri
+                        // Hiển thị thông tin điều trị
                         foreach (var dieuTri in item.DieuTris)
                         {
                             <tr>
                                 <td class="text-center">@index</td>
-                                <td>@dieuTri.DichVu?.TenDichVu ?? "Không có dịch vụ"</td>
+                                <td>@dieuTri.DichVu?.TenDichVu</td>
                                 <td class="text-right">@item.PhuongThucThanhToan</td>
                                 <td class="text-right">N/A</td>
                                 <td class="text-right">
@@ -280,45 +281,12 @@ li {
                             index++;
                         }
                     }
-                        else
+                    else
                     {
                         <tr>
                             <td colspan="6" class="text-center">Không có thông tin điều trị</td>
                         </tr>
                     }
-@if (chiTiet.DonThuocs != null && chiTiet.DonThuocs.Any())
-{
-                    // Hiển thị từ bảng DonThuoc
-                    foreach (var donThuoc in chiTiet.DonThuocs) // Đổi tên biến ở đây nếu cần
-                    {
-                        <tr>
-                            <td class="text-center">@index</td>
-                            <td>@donThuoc.Kho?.ThiTruong?.TenSanPham ?? "Không có thuốc"</td>
-                            <td class="text-right">@chiTiet.PhuongThucThanhToan</td>
-                            <td class="text-right">
-                                @(donThuoc.TongTien > 0 
-                                    ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", donThuoc.TongTien) 
-                                    : "N/A")
-                            </td>
-                            <td class="text-right">N/A</td>
-                            <td class="text-right">
-                                @(donThuoc.TongTien > 0 
-                                    ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", donThuoc.TongTien) 
-                                    : "N/A")
-                            </td>
-                        </tr>
-                        index++;
-                    }
-}
-
-else
-{
-    <tr>
-        <td colspan="6" class="text-center">Không có thông tin đơn thuốc</td>
-    </tr>
-}
-
-
                 }
             }
             else
@@ -329,7 +297,55 @@ else
             }
         </tbody>
     </table>
+
+    <!-- Bảng hiển thị thông tin đơn thuốc -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center" style="width:5%">#</th>
+                <th style="width:30%">Tên đơn thuốc</th>
+                <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                <th class="text-right" style="width:15%">Tổng Tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (chiTiet.DonThuocs != null && chiTiet.DonThuocs.Any())
+            {
+                int index = 1;
+                foreach (var donThuoc in chiTiet.DonThuocs)
+                {
+                    <tr>
+                        <td class="text-center">@index</td>
+                        <td>@donThuoc.Kho?.ThiTruong?.TenSanPham</td>
+                        <td class="text-right">@chiTiet.PhuongThucThanhToan</td>
+                        <td class="text-right">
+                            @(donThuoc.TongTien > 0 
+                                ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", donThuoc.TongTien) 
+                                : "N/A")
+                        </td>
+                        <td class="text-right">N/A</td>
+                        <td class="text-right">
+                            @(donThuoc.TongTien > 0 
+                                ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", donThuoc.TongTien) 
+                                : "N/A")
+                        </td>
+                    </tr>
+                    index++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="text-center">Không có thông tin đơn thuốc</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
+
 
 
 
