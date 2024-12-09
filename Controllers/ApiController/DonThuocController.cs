@@ -95,7 +95,10 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             {
                 // Kiểm tra thông tin bệnh nhân
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDonThuocDto.Idkham);
-                
+                var sdt = _context.BenhNhans
+                    .Where(bn => bn.IdbenhNhan == newDonThuocDto.Idkham)
+                    .Select(bn => bn.Sdt)
+                    .FirstOrDefault();
                 var phuongThucThanhToan = _context.HoaDons
                     .Where(bn => bn.IddonThuoc == newDonThuocDto.IddonThuoc)
                     .Select(bn => bn.PhuongThucThanhToan)
@@ -179,6 +182,15 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         _context.HoaDons.Add(newHoaDon);
                         await _context.SaveChangesAsync();
                         hoaDonId = newHoaDon.IdhoaDon;
+                        var benhNhan = await _context.BenhNhans.FirstOrDefaultAsync(bn => bn.EmailBn == newHoaDon.EmailBn);
+                        if (benhNhan != null)
+                        {
+                            // Cập nhật IdHoaDon trong BenhNhan
+                            benhNhan.HoaDon = newHoaDon;
+
+                            // Lưu thay đổi
+                            await _context.SaveChangesAsync();
+                        }
                     }
 
 
@@ -200,8 +212,32 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         await _context.SaveChangesAsync();
 
                     }
-                    
-                    
+                    else
+                    {
+                        // Create new ChiTietHoaDon if it doesn't exist
+                        var newChiTietHoaDon = new ChiTietHoaDon
+                        {
+                            IdhoaDon = hoaDonId,
+                            IddonThuoc = newDonThuoc.IddonThuoc,
+                            Idkham = newDonThuoc.Idkham,
+                            PhuongThucThanhToan = "Chưa có",
+                            TenDon = "Khám Nha Khoa",  // Assign as necessary, or fetch dynamically
+                             // Assuming this is the name you want
+                            Description = "Description here", // Assign based on your needs
+                            TienThuoc = totalMedicationCost,
+                            TongTien = totalMedicationCost,
+                            NgayLap = DateTime.Now,
+                            EmailBn = email, // Assign as necessary, or leave null if not needed
+                            Sdt = sdt
+                        };
+                        _context.ChiTietHoaDons.Add(newChiTietHoaDon);
+                        await _context.SaveChangesAsync();
+                        newDonThuoc.ChiTietHoaDonId = newChiTietHoaDon.IdchiTiet;
+                        _context.DonThuocs.Update(newDonThuoc);
+                        await _context.SaveChangesAsync();
+
+                    }
+
                     totalMedicationCost = 0;
                     newDonThuocDto.hoaDonId = hoaDonId;
                 }

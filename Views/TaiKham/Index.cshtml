@@ -239,7 +239,6 @@
                         $('#Sdt').val(data.Sdt);
                         $('#EmailBn').val(data.EmailBn);
                         $('#DiaChi').val(data.DiaChi);
-
                         $('#checkBenhNhanForm').hide();
                         $('#createTaiKhamForm').show();
                     },
@@ -261,7 +260,6 @@
                     alert("Xin hãy chọn ngày và ca khám.");
                     return;
                 }
-
                 console.log("Selected Time: ", selectedTime);
                 console.log("Selected Day: ", selectedDay);
 
@@ -317,7 +315,6 @@
                     });
 
             });
-
             function convertToDateTime(timeString, selectedDay) {
                 const [time, ampm] = timeString.split(" ");
                 const [hours, minutes] = time.split(":").map(Number);
@@ -338,7 +335,6 @@
                 return dateTimeString;
             }
         });
-
     </script>
 }
 <style>

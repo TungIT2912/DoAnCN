@@ -301,7 +301,15 @@ namespace WebQuanLyNhaKhoa.Controllers
                 _context.HoaDons.Add(newHoaDon);
                 await _context.SaveChangesAsync();
 
+                var benhNhan = await _context.BenhNhans.FirstOrDefaultAsync(bn => bn.EmailBn == newHoaDon.EmailBn);
+                if (benhNhan != null)
+                {
+                    // Cập nhật IdHoaDon trong BenhNhan
+                    benhNhan.HoaDon = newHoaDon;
 
+                    // Lưu thay đổi
+                    await _context.SaveChangesAsync();
+                }
 
                 if (existingChiTietHoaDon != null)
                 {
