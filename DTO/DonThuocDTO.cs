@@ -6,7 +6,8 @@ namespace WebQuanLyNhaKhoa.DTO
 {
 	public class DonThuocDTO
 	{
-		public int Idkham { get; set; }
+        public int IddonThuoc { get; set; }
+        public int Idkham { get; set; }
 		
         public string? tenThuoc { get; set; }
         public int hoaDonId { get; set; }

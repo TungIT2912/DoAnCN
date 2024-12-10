@@ -87,13 +87,18 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         {
             var existingHoaDon = await _context.HoaDons
                     .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
-            var existingCTHD = await _context.ChiTietHoaDons    
-                   .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
+            //var existingCTHD = await _context.ChiTietHoaDons    
+            //       .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 // Kiểm tra thông tin bệnh nhân
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDonThuocDto.Idkham);
+                
+                var phuongThucThanhToan = _context.HoaDons
+                    .Where(bn => bn.IddonThuoc == newDonThuocDto.IddonThuoc)
+                    .Select(bn => bn.PhuongThucThanhToan)
+                    .FirstOrDefault();
                 if (danhSachKham == null)
                 {
                     return BadRequest("Bệnh nhân không hợp lệ.");
@@ -130,7 +135,6 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         ThanhGia = dungCu.ThiTruong.DonGia,
                         TongTien = medicationCost,
                         NgayLapDt = DateTime.Now,
-                        ChiTietHoaDonId = existingCTHD.IdchiTiet,
                     };
 
                     // Thêm đơn thuốc vào cơ sở dữ liệu
@@ -161,11 +165,15 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         // Cập nhật ChiTietHoaDon hiện có
                         existingChiTietHoaDon.TienThuoc += totalMedicationCost;
                         existingChiTietHoaDon.TongTien += totalMedicationCost;
+                        existingChiTietHoaDon.PhuongThucThanhToan = phuongThucThanhToan;
                         existingChiTietHoaDon.NgayLap = DateTime.Now;
                         _context.ChiTietHoaDons.Update(existingChiTietHoaDon);
                         await _context.SaveChangesAsync();
+                        // Cập nhật ChiTietHoaDonId cho DieuTri
+                        
                     }
-                    
+                    newDonThuoc.ChiTietHoaDonId = existingChiTietHoaDon.IdchiTiet;
+                    _context.DonThuocs.Update(newDonThuoc); await _context.SaveChangesAsync();
                     totalMedicationCost = 0;
                 }
 

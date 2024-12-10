@@ -71,7 +71,7 @@
         try {
             const response = await fetch(apiUrl);
             const data = await response.json();
-            // select.innerHTML = '<option value="">Select an option</option>';
+            select.innerHTML = '<option value="">Select an option</option>';
             data.forEach(item => {
                 const option = document.createElement("option");
                 option.value = item.Id;
@@ -99,7 +99,7 @@
             const response = await fetch(`/DieuTri/api/GetDiagnosisByPatient/${patientId}`);
             if (response.ok) {
                 const diagnosis = await response.json();
-                diagnosisInfo.textContent = `Diagnosis: ${diagnosis.Content}`;
+                diagnosisInfo.textContent = `Chẩn Đoán: ${diagnosis.Content}`;
                 diagnosisInfo.style.color = '#007bff'; // Info color
             } else if (response.status === 404) {
                 diagnosisInfo.textContent = "No diagnosis found for the selected patient.";

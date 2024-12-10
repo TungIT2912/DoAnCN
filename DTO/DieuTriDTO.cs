@@ -14,6 +14,7 @@ namespace WebQuanLyNhaKhoa.DTO
 		public int IddungCu { get; set; }
 		public int IddonThuoc { get; set; }
         public int hoaDonId { get; set; }
+        public int chiTietId { get; set; }
 
         public int SoLuong { get; set; }
 

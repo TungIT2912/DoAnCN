@@ -26,7 +26,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
 
             // Retrieve paginated DichVu data
             var dichVus = await _context.DichVus
-                .OrderBy(dv => dv.IddichVu)  // Optional: Order by specific field
+                .OrderBy(dv => dv.IddichVu)  
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -54,43 +54,42 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // HoaDonDetails search page
-        public IActionResult HoaDonDetails(string searchQuery)
-        {
-            var chiTietHoaDons = string.IsNullOrEmpty(searchQuery) 
-                ? _context.ChiTietHoaDons.ToList()
-                : _context.ChiTietHoaDons
-                    .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
-                    .ToList();
+    public IActionResult HoaDonDetails(string searchQuery)
+    {
+        var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
+            ? _context.ChiTietHoaDons
+                .Include(c => c.DanhSachKham)  
+                    .ThenInclude(dsk => dsk.BenhNhan)  
+                .ToList()
+            : _context.ChiTietHoaDons
+                .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
+                .Include(c => c.DanhSachKham)  
+                    .ThenInclude(dsk => dsk.BenhNhan)  
+                .ToList();
 
-            ViewData["SearchQuery"] = searchQuery; // Pass the search query to the view
-            return View(chiTietHoaDons);
-        }
+        ViewData["SearchQuery"] = searchQuery; 
+        return View(chiTietHoaDons);
+    }
 
-        // Service Details page
         public IActionResult ServicesDetail(int id)
         {
-            // Step 1: Fetch the service details based on the ID
             var service = _context.DichVus.FirstOrDefault(s => s.IddichVu == id);
 
             if (service == null)
             {
-                return NotFound(); // Handle cases where the service isn't found
+                return NotFound(); 
             }
 
-            // Step 2: Fetch the list of doctors associated with the service
-            // Assuming doctors are filtered based on their ChucVu (Role) or another field
             var doctors = _context.NhanViens
-                .Where(d => d.ChucVu.TenCv == "Doctor")  // Adjust this filter to fit your needs
+                .Where(d => d.ChucVu.TenCv == "Bác sĩ")  
                 .ToList();
 
-            // Step 3: Create and populate the ViewModel
             var viewModel = new ServiceDetailViewModel
             {
                 Service = service,
                 Doctors = doctors
             };
 
-            // Step 4: Pass the ViewModel to the view
             return View(viewModel);
         }
         public IActionResult ListEachUser()
@@ -99,13 +98,8 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             return View();
         }
         [HttpPost("api/getList")]
-        public async Task<ActionResult<BenhNhan>> PostList(string? phone, string? mail)
+        public async Task<ActionResult<BenhNhan>> PostList([FromBody] RequestDTO request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var benhnhan = await _context.DanhSachKhams
                                   .Include(bn => bn.BenhNhan)
                                   .Include(bn => bn.NhanVien)
@@ -114,7 +108,11 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                                   .ThenInclude(dv => dv.DieuTri.DichVu)
                                   .Include(bn => bn.DonThuocs)
                                   .ThenInclude(dt => dt.Kho.ThiTruong)
-                                  .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == phone  ||  n.BenhNhan.EmailBn == mail);
+                                  .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == request.Phone  ||  n.BenhNhan.EmailBn == request.Mail);
+                                  if (benhnhan == null)
+                                    {
+                                        return NotFound("Không tìm thấy bệnh nhân.");
+                                    }
             if (benhnhan?.DieuTris != null)
             {
                 foreach (var dieuTri in benhnhan.DieuTris)
@@ -123,6 +121,65 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 }
             }
             var newDTO = new ListOfEachUserDTO
+            {
+                IdbenhNhan = benhnhan.IdbenhNhan,
+                HoTen = benhnhan.BenhNhan?.HoTen ?? "Unknown",
+                Gioi = benhnhan.BenhNhan?.Gioi,
+                NamSinh = benhnhan.BenhNhan?.NamSinh ?? "Unknown",
+                Sdt = benhnhan.BenhNhan?.Sdt ?? "Unknown",
+                EmailBn = benhnhan.BenhNhan?.EmailBn ?? "Unknown",
+                NgayKhamDau = benhnhan.NgayKham.ToString("dd/MM/yyyy"),
+                TenBacSi = benhnhan.NhanVien?.Ten ?? "Unknown",
+                DiaChi = benhnhan.BenhNhan?.DiaChi ?? "Unknown",
+                time = benhnhan.time.ToString("HH:mm:ss"),
+                DonThuocs = benhnhan.DonThuocs.Select(dt => new DonThuoc1DTO
+                {
+                    Idkham = dt.Idkham,
+                    IddungCu = dt.IddungCu,
+                    tenThuoc = dt.Kho.ThiTruong.TenSanPham ?? "Unknown",
+                    SoLuong = dt.SoLuong,
+                    ThanhGia = dt.ThanhGia,
+                    TongTien = dt.TongTien,
+                    NgayLapDt = dt.NgayLapDt
+                }).ToList(),
+                DieuTris = benhnhan.DieuTris.Select(dt => new DieuTriDTO
+                {
+                    IddichVu = dt.IddichVu,
+                    tenDieuTri = dt.DichVu.TenDichVu ?? "Không có dữ liệu dịch vụ",
+                    Idkham = dt.Idkham,
+                    IddungCu = dt.IddungCu,
+                    SoLuong = dt.SoLuong,
+                    ThanhTien = dt.ThanhTien
+                }).ToList(),
+                TrieuChung = benhnhan.BenhNhan.TrieuChung ?? "Unknown",
+            };
+
+            return Ok(newDTO);
+
+        }
+
+        [HttpGet("History")]
+        public async Task<IActionResult> History(string phone, string mail)
+        {
+            if (string.IsNullOrEmpty(phone) && string.IsNullOrEmpty(mail))
+            {
+                return BadRequest("Phone hoặc email không hợp lệ.");
+            }
+
+            var benhnhan = await _context.DanhSachKhams
+                                  .Include(bn => bn.BenhNhan)
+                                  .Include(bn => bn.NhanVien)
+                                  .Include(bn => bn.DieuTris)
+                                  .Include(bn => bn.DonThuocs)
+                                  .ThenInclude(dt => dt.Kho.ThiTruong)
+                                  .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == phone || n.BenhNhan.EmailBn == mail);
+
+            if (benhnhan == null)
+            {
+                return NotFound("Không tìm thấy lịch sử khám.");
+            }
+
+            var viewModel = new ListOfEachUserDTO
             {
                 IdbenhNhan = benhnhan.IdbenhNhan,
                 HoTen = benhnhan.BenhNhan.HoTen,
@@ -136,8 +193,6 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 time = benhnhan.time.ToString("HH:mm:ss"),
                 DonThuocs = benhnhan.DonThuocs.Select(dt => new DonThuoc1DTO
                 {
-                    Idkham = dt.Idkham,
-                    IddungCu = dt.IddungCu,
                     tenThuoc = dt.Kho.ThiTruong.TenSanPham,
                     SoLuong = dt.SoLuong,
                     ThanhGia = dt.ThanhGia,
@@ -146,18 +201,20 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 }).ToList(),
                 DieuTris = benhnhan.DieuTris.Select(dt => new DieuTriDTO
                 {
-                    IddichVu = dt.IddichVu,
-                  //  tenDieuTri = dt.DichVu.TenDichVu ?? "Không có dữ liệu dịch vụ",
-                    Idkham = dt.Idkham,
-                    IddungCu = dt.IddungCu,
+                    tenDieuTri = dt.DichVu?.TenDichVu ?? "Không có dữ liệu dịch vụ",
                     SoLuong = dt.SoLuong,
                     ThanhTien = dt.ThanhTien
                 }).ToList(),
                 TrieuChung = benhnhan.BenhNhan.TrieuChung,
             };
 
-            return Ok(newDTO);
+            return View(viewModel);
+        }
 
+        public class RequestDTO
+        {
+            public string? Phone { get; set; }
+            public string? Mail { get; set; }
         }
 
     }

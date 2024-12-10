@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.DTO;
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class TaiKhoansController : Controller
     {
         private readonly ApplicationDbContext _context;
