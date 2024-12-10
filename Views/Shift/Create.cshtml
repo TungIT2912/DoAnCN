@@ -53,6 +53,7 @@
                 <body class="zf-backgroundBg">
                     <div class="zf-templateWidth">
                         <form id="shiftForm">
+                            <input type="hidden" name="MaNv" value="@Model.MaNv" />
                             <div id="shiftContainer">
                             </div>
                             <button type="submit">Submit</button>
@@ -67,7 +68,16 @@
     }
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        const daysOfWeek = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"];
+        const maNv = document.querySelector('input[name="MaNv"]').value;
+        const daysMapping = {
+            "Thứ hai": "monday",
+            "Thứ ba": "tuesday",
+            "Thứ tư": "wednesday",
+            "Thứ năm": "thursday",
+            "Thứ sáu": "friday"
+        };
+
+        const daysOfWeek = Object.keys(daysMapping); 
         const shiftContainer = document.getElementById("shiftContainer");
 
         daysOfWeek.forEach(day => {
@@ -77,14 +87,14 @@
 
             const morningShift = document.createElement("div");
             morningShift.className = "shift";
-            morningShift.dataset.day = day;
+            morningShift.dataset.day = daysMapping[day]; 
             morningShift.dataset.shift = "Ca sáng";
             morningShift.textContent = "Ca sáng (8:00 AM - 12:00 PM)";
             morningShift.onclick = toggleShiftSelection;
 
             const afternoonShift = document.createElement("div");
             afternoonShift.className = "shift";
-            afternoonShift.dataset.day = day;
+            afternoonShift.dataset.day = daysMapping[day]; 
             afternoonShift.dataset.shift = "Ca chiều";
             afternoonShift.textContent = "Ca chiều (1:00 PM - 5:00 PM)";
             afternoonShift.onclick = toggleShiftSelection;
@@ -93,30 +103,32 @@
             dayDiv.appendChild(afternoonShift);
             shiftContainer.appendChild(dayDiv);
         });
+
         function toggleShiftSelection(event) {
             event.target.classList.toggle("selected");
         }
+
         document.getElementById("shiftForm").onsubmit = async function (event) {
             event.preventDefault();
             const selectedShifts = [];
 
             document.querySelectorAll(".shift.selected").forEach(shift => {
                 selectedShifts.push({
-                    day: shift.dataset.day,
+                    day: shift.dataset.day, 
                     shift: shift.dataset.shift
                 });
             });
-
-            console.log(selectedShifts); 
+                            console.log("fdfdfdfd", maNv);
+            console.log(selectedShifts);
             try {
-                const response = await fetch("/Shift/bulk", {
-                    method: "POST",
+                    const response = await fetch(`/Shift/bulk/${maNv}`, {
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(selectedShifts.map(shift => ({
-                        MaNv: 1, 
-                        DayOfWeek: shift.day,
+                        MaNv: maNv,
+                        DayOfWeek: shift.day, 
                         StartTime: shift.shift === "Ca sáng" ? "08:00:00" : "13:00:00",
                         EndTime: shift.shift === "Ca sáng" ? "12:00:00" : "17:00:00"
                     })))
@@ -133,4 +145,5 @@
             }
         };
     </script>
+
 }

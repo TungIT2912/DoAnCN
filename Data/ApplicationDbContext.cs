@@ -43,6 +43,11 @@ namespace WebQuanLyNhaKhoa.Data
         public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
 
         public virtual DbSet<Shift> Shifts { get; set; }
+
+        public virtual DbSet<RegisForm> RegisForms { get; set; }
+
+        public virtual DbSet<ResponseForm> ResponseForms { get; set; }
+
         //public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.DTO;
@@ -20,22 +21,53 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             return View();
         }
 
-        [HttpGet("Create")]
-        public IActionResult Create()
+        [HttpGet("Create/{id}")]
+        public async Task<IActionResult> Create(int id)
         {
-            return View();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var nhanVien = await _context.Shifts
+                        .Include(n => n.NhanVien)
+                        .FirstOrDefaultAsync(n => n.MaNv == id);
+            if (nhanVien == null)
+            {
+                return View(new ShiftDTO
+                {
+                    MaNv = id, 
+                    DayOfWeek = null,
+                    StartTime = null,
+                    EndTime = null
+                });
+            }
+
+            var nhanVienDTO = new ShiftDTO
+            {
+                MaNv = id,
+                DayOfWeek  = nhanVien.DayOfWeek,
+                StartTime = nhanVien.StartTime,
+                EndTime = nhanVien.EndTime,
+            };
+            return View(nhanVienDTO);
         }
 
-        [HttpPost("bulk")]
-        public async Task<IActionResult> CreateMultipleShifts([FromBody] List<ShiftDTO> shiftDtos)
+        [HttpPut("bulk/{id}")]
+        public async Task<IActionResult> CreateMultipleShifts(int id, [FromBody] List<ShiftDTO> shiftDtos)
         {
-            
             if (shiftDtos == null || !shiftDtos.Any())
             {
                 return BadRequest("Shift list cannot be empty.");
             }
 
-            var s = new List<Shift>();
+            var existingShifts = await _context.Shifts
+                .Where(s => s.MaNv == id)
+                .ToListAsync();
+
+            var newShifts = new List<Shift>();
+            var updatedShifts = new List<Shift>();
 
             foreach (var shiftDto in shiftDtos)
             {
@@ -44,20 +76,39 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                     return BadRequest(ModelState);
                 }
 
-                var shift = new Shift
+                var existingShift = existingShifts.FirstOrDefault(s => s.DayOfWeek == shiftDto.DayOfWeek);
+                if (existingShift != null)
                 {
-                    MaNv = shiftDto.MaNv,
-                    DayOfWeek = shiftDto.DayOfWeek,
-                    StartTime = shiftDto.StartTime,
-                    EndTime = shiftDto.EndTime
-                };
-
-                s.Add(shift);
+                    existingShift.StartTime = shiftDto.StartTime;
+                    existingShift.EndTime = shiftDto.EndTime;
+                    updatedShifts.Add(existingShift);
+                }
+                else
+                {
+                    var newShift = new Shift
+                    {
+                        MaNv = id,
+                        DayOfWeek = shiftDto.DayOfWeek,
+                        StartTime = shiftDto.StartTime,
+                        EndTime = shiftDto.EndTime
+                    };
+                    newShifts.Add(newShift);
+                }
             }
-            _context.Shifts.AddRange(s);
+
+            if (newShifts.Any())
+            {
+                _context.Shifts.AddRange(newShifts);
+            }
+
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = $"{s.Count} shifts created successfully.", s });
+            return Ok(new
+            {
+                message = $"{newShifts.Count} new shifts created and {updatedShifts.Count} shifts updated successfully.",
+                newShifts,
+                updatedShifts
+            });
         }
     
         [HttpGet("get/shift/{MaNv}")]
