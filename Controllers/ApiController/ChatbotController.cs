@@ -1,6 +1,7 @@
 ﻿using Google.Cloud.Dialogflow.V2;
 using Google.Type;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -30,6 +31,10 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
         [HttpPost("webhook")]
         public IActionResult Webhook([FromBody] UserMessage userMessage)
         {
+            var sdtBenhNhan = _context.DanhSachKhams
+                                 .Include(bn => bn.BenhNhan)
+                                 .Where(bn => userMessage.Message == bn.BenhNhan.Sdt)
+                                 .ToList();
             if (userMessage == null || string.IsNullOrEmpty(userMessage.Message))
             {
                 return BadRequest("Yêu cầu không hợp lệ!");
@@ -37,7 +42,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
 
             
 
-            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "chatbotnhakhoa-tron-f83d37937249.json");
+            string credentialPath = Path.Combine(Directory.GetCurrentDirectory(), "Credentials", "chatbotnhakhoa-tron-9b423d56fced.json");
             if (!System.IO.File.Exists(credentialPath))
             {
                 return BadRequest($"Không tìm thấy tệp credentials tại: {credentialPath}");
@@ -96,9 +101,59 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                         fulfillmentText = $"Số điện thoại {userMessage.Message} bạn nhập không hợp lệ. Vui lòng nhập lại số điện thoại."
                     });
                 }
+                else if (!IsPhoneNumberInBenhNhanList(userMessage.Message))
+                {
+                    return Ok(new
+                    {
+                        fulfillmentText = $"Số điện thoại {userMessage.Message} chưa được đăng kí lịch khám. Vui lòng thử lại."
+                    });
+                }
+                else
+                {
+                    var cancelResult = CancelAppointmentsIfNotInHoaDons(userMessage.Message);
+                    dialogflowResponse = cancelResult;
+                }
+
             }
             return Ok(new { fulfillmentText = dialogflowResponse, fulfillmentText2 = dialogflowResponse2, connectionId = userMessage.ConnectionId, questionId = userMessage.QuestionId });
         }
+        private bool IsPhoneNumberInBenhNhanList(string phoneNumber)
+        {
+            // Kiểm tra xem số điện thoại có tồn tại trong bảng BenhNhan hay không
+            var sdtBenhNhanList = _context.DanhSachKhams
+                                          .Include(bn => bn.BenhNhan)
+                                          .Where(bn => bn.BenhNhan.Sdt == phoneNumber)
+                                          .ToList();
+
+            return sdtBenhNhanList.Count > 0;
+        }
+        private string CancelAppointmentsIfNotInHoaDons(string phoneNumber)
+        {
+            var appointments = _context.DanhSachKhams
+                                       .Include(bn => bn.BenhNhan)
+                                       .Include(bn => bn.BenhNhan.HoaDon)
+                                       .Include(bn => bn.HoaDons)
+                                       .Where(bn => bn.BenhNhan.Sdt == phoneNumber)
+                                       .ToList();
+
+            foreach (var appointment in appointments)
+            {
+                //if (appointment.BenhNhan == null || appointment.BenhNhan.HoaDon == null) { continue; }
+                // Check if there are any related records in HoaDons
+
+                if (appointment.BenhNhan.HoaDon != null)
+                {
+                    return $"Bệnh nhân này đã được khám rồi.";
+                }
+                else
+                {
+                    _context.DanhSachKhams.Remove(appointment);
+                }
+            }
+            _context.SaveChanges();
+            return $"Các lịch hẹn của số điện thoại {phoneNumber} đã được hủy.";
+        }
+
         private string GetDoctorsList()
         {
             try

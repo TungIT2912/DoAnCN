@@ -74,20 +74,49 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
         [HttpGet("api/CheckBenhNhan")]
         public async Task<IActionResult> CheckBenhNhanAsync(string sdt)
         {
-            var benhNhan = _context.BenhNhans
-                                  .Include(bn => bn.HoaDon)
-                                  .FirstOrDefault(bn => bn.Sdt == sdt);
-            var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.IdhoaDon == benhNhan.HoaDon.IdhoaDon);
+            var benhNhan = await _context.DanhSachKhams
+                                 .Include(bn => bn.BenhNhan)
+                                 .Include(bn => bn.NhanVien)
+                                 .Include(bn => bn.DieuTris)
+                                 .ThenInclude(dt => dt.DichVu)
+                                 .Include(bn => bn.BenhNhan.HoaDon)
+                                 .ThenInclude(dv => dv.DieuTri.DichVu)
+                                 .Include(bn => bn.DonThuocs)
+                                 .ThenInclude(dt => dt.Kho.ThiTruong)
+                                 .Where(n => n.BenhNhan.Sdt == sdt)
+                                 .OrderByDescending(n => n.NgayKham) // Sắp xếp theo ngày khám mới nhất
+                                 .FirstOrDefaultAsync();
 
             if (benhNhan == null)
             {
                 return NotFound("Bệnh nhân chưa từng đặt lịch.");
             }
 
-            if (hoaDon == null) { return BadRequest("Bệnh nhân chưa tưng khám tại nha khoa."); }
+            var hoaDon = await _context.HoaDons.FirstOrDefaultAsync(hd => hd.IdhoaDon == benhNhan.BenhNhan.HoaDon.IdhoaDon);
+            if (hoaDon == null)
+            {
+                return BadRequest("Bệnh nhân chưa từng khám tại nha khoa.");
+            }
 
-            return Ok(benhNhan);
+            var response = new
+            {
+                IdbenhNhan = benhNhan.IdbenhNhan,
+                HoTen = benhNhan.BenhNhan?.HoTen ?? "Unknown",
+                Gioi = benhNhan.BenhNhan?.Gioi,
+                NamSinh = benhNhan.BenhNhan?.NamSinh ?? "Unknown",
+                Sdt = benhNhan.BenhNhan?.Sdt ?? "Unknown",
+                EmailBn = benhNhan.BenhNhan?.EmailBn ?? "Unknown",
+                DiaChi = benhNhan.BenhNhan?.DiaChi ?? "Unknown",
+
+                IddichVu = benhNhan.NhanVien?.IddichVu, 
+                MaNv = benhNhan.NhanVien?.MaNv,         
+                NgayKhamDau = benhNhan.NgayKham.ToString("yyyy-MM-dd"), 
+                Time = benhNhan.time.ToString("HH:mm") 
+            };
+
+            return Ok(response);
         }
+
 
 
         [HttpPost("api/PostTaiKham")]

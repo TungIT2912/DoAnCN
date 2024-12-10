@@ -169,11 +169,13 @@
 
 </style>
  *@
-
-<div class="chatbox">
+<div class="chatbox-circle" onclick="toggleChatbox()">
+    💬
+</div>
+<div class="chatbox hide">
     <div class="chatbox-header">
         <h5>Chat messages</h5>
-        <button class="close-btn">X</button>
+        <button class="close-btn" onclick="toggleChatbox()">X</button>
     </div>
     <div id="messagesList" class="chatbox-body"></div>
     <div class="chatbox-footer">
@@ -340,6 +342,18 @@
         // Cuộn xuống cuối danh sách tin nhắn
         messagesList.scrollTop = messagesList.scrollHeight;
     }
+    function toggleChatbox() {
+        const chatbox = document.querySelector('.chatbox');
+        const chatboxCircle = document.querySelector('.chatbox-circle');
+
+        if (chatbox.classList.contains('hide')) {
+            chatbox.classList.remove('hide');
+            chatboxCircle.classList.add('hide');
+        } else {
+            chatbox.classList.add('hide');
+            chatboxCircle.classList.remove('hide');
+        }
+    }
 
 
 
@@ -368,6 +382,34 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
+        .chatbox.hide {
+            display: none;
+        }
+
+    .chatbox-circle {
+        width: 60px;
+        height: 60px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 10000;
+        font-size: 24px;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+
+        .chatbox-circle.hide {
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
     .chatbox-header {
         background-color: #007bff;
         color: #ffffff;

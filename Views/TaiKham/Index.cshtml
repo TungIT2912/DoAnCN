@@ -4,141 +4,149 @@
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
 
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card shadow-lg p-4" style="max-width: 800px; width: 100%; border-radius: 12px; background-color: #f9f9f9;">
+        
 
-<form id="checkBenhNhanForm" class="row g-3 w-100" method="get" enctype="multipart/form-data">
-    <div class="col-12 col-sm-6">
-        <label for="SdtCheck" class="control-label">Số điện thoại</label>
-        <input id="SdtCheck" type="tel" class="form-control border-0" style="height: 55px;" required>
+        <!-- Form kiểm tra bệnh nhân -->
+        <form id="checkBenhNhanForm" class="row g-3" method="get" enctype="multipart/form-data">
+            <h2 class="text-center mb-4" style="color: #343a40; font-weight: bold;">Kiểm Tra Bệnh Nhân</h2>
+            <div class="col-12">
+                <label for="SdtCheck" class="form-label" style="font-weight: bold; color: #495057;">Số điện thoại</label>
+                <input id="SdtCheck" type="tel" class="form-control" style="height: 55px; border: 1px solid #ced4da; border-radius: 8px;" required>
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary px-4 py-3" style="width: 100%; font-size: 18px;">Kiểm tra bệnh nhân</button>
+            </div>
+        </form>
+
+        <!-- Form đặt lịch tái khám -->
+        <form id="createTaiKhamForm" class="row g-3 mt-4" method="post" enctype="multipart/form-data" style="display: none;">
+            <h2 class="text-center mb-4" style="color: #343a40; font-weight: bold;">Đặt Lịch Tái Khám</h2>
+
+            <!-- Thông tin bệnh nhân -->
+            <div class="col-12 col-sm-6">
+                <label for="HoTen" class="form-label" style="font-weight: bold; color: #495057;">Họ và Tên</label>
+                <input id="HoTen" type="text" name="HoTen" class="form-control" style="height: 55px; border-radius: 8px;" readonly required>
+            </div>
+            <div class="col-12 col-sm-6">
+                <label for="Gioi" class="form-label" style="font-weight: bold; color: #495057;">Giới</label>
+                <input id="Gioi" type="text" name="Gioi" class="form-control" style="height: 55px; border-radius: 8px;" readonly required>
+            </div>
+            <div class="col-12 col-sm-6">
+                <label for="NamSinh" class="form-label" style="font-weight: bold; color: #495057;">Năm Sinh</label>
+                <input id="NamSinh" type="text" name="NamSinh" class="form-control" style="height: 55px; border-radius: 8px;" readonly required>
+            </div>
+            <div class="col-12 col-sm-6">
+                <label for="Sdt" class="form-label" style="font-weight: bold; color: #495057;">Số điện thoại</label>
+                <input id="Sdt" type="text" name="Sdt" class="form-control" style="height: 55px; border-radius: 8px;" readonly required>
+            </div>
+            <div class="col-12 col-sm-6">
+                <label for="EmailBn" class="form-label" style="font-weight: bold; color: #495057;">Email</label>
+                <input id="EmailBn" type="text" name="EmailBn" class="form-control" style="height: 55px; border-radius: 8px;" readonly required>
+            </div>
+            <div class="col-12 col-sm-6">
+                <label for="DiaChi" class="form-label" style="font-weight: bold; color: #495057;">Địa Chỉ</label>
+                <input id="DiaChi" type="text" name="DiaChi" class="form-control" style="height: 55px; border-radius: 8px;" readonly required>
+            </div>
+
+            <!-- Các trường khác -->
+            <div class="col-12">
+                <label asp-for="IddichVu" class="form-label" style="font-weight: bold; color: #495057;">Chọn chuyên nghành</label>
+                <select asp-for="IddichVu" id="IddichVu" class="form-control" style="border-radius: 8px;" asp-items="ViewBag.DichVuList" required>
+                    <option value="" selected>- Chọn chuyên ngành -</option>
+                </select>
+                <span asp-validation-for="IddichVu" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="MaNv" class="form-label" style="font-weight: bold; color: #495057;">Các bác sĩ chuyên ngành</label>
+                <select asp-for="MaNv" id="MaNv" name="MaNv" class="form-control" style="border-radius: 8px;" required>
+                    <option value="">Chọn bác sĩ</option>
+                </select>
+                <span asp-validation-for="MaNv" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 col-sm-6">
+                <label asp-for="NgayKhamDau" class="form-label" style="font-weight: bold; color: #495057;">Ngày Khám Đầu</label>
+                <input asp-for="NgayKhamDau" type="date" id="bookingDate" class="form-control" style="height: 55px; border-radius: 8px;" value="@ViewBag.SelectedDate">
+                <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 col-sm-6">
+                <label asp-for="time" class="form-label" style="font-weight: bold; color: #495057;">Ca khám</label>
+                <select id="bookingTime" name="time" class="form-control" style="border-radius: 8px;" required>
+                    <option value="">Chọn ca khám</option>
+                    @if (!string.IsNullOrEmpty(ViewBag.SelectedTime))
+                    {
+                        <option value="@ViewBag.SelectedTime" selected>@ViewBag.SelectedTime</option>
+                    }
+                </select>
+                <span asp-validation-for="time" class="text-danger"></span>
+            </div>
+
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-success px-4 py-3" style="width: 100%; font-size: 18px;">Đặt lịch tái khám</button>
+            </div>
+        </form>
     </div>
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary w-100 py-3">Kiểm tra bệnh nhân</button>
-    </div>
-</form>
+</div>
 
-<!-- Form đặt lịch tái khám -->
-<form id="createTaiKhamForm" class="row g-3 w-100" method="post" enctype="multipart/form-data" style="display: none;">
-    <!-- Thông tin bệnh nhân -->
-    <input id="HoTen" type="hidden" name="HoTen" required>
-    <input id="Gioi" type="hidden" name="Gioi" required>
-    <input id="NamSinh" type="hidden" name="NamSinh" required>
-    <input id="Sdt" type="hidden" name="Sdt" required>
-    <input id="EmailBn" type="hidden" name="EmailBn" required>
-    <input id="DiaChi" type="hidden" name="DiaChi" required>
-
-    <!-- Các trường khác -->
-
-    <div class="col-12 col-sm-6" style=" width: 100%;">
-        <label asp-for="IddichVu" class="control-label">Chọn chuyên nghành</label>
-        <select asp-for="IddichVu" id="IddichVu" class="form-control IddichVu" asp-items="ViewBag.DichVuList" required>
-            <option value="" selected>- Chọn chuyên ngành -</option>
-        </select>
-        <span asp-validation-for="IddichVu" class="text-danger"></span>
-    </div>
-
-    <div class="col-12 col-sm-6" style=" width: 100%;">
-        <label asp-for="MaNv" class="control-label">Các bác sĩ chuyên ngành</label>
-        <select asp-for="MaNv" id="MaNv" name="MaNv" class="MaNv" required>
-            <option value="">Chọn bác sĩ</option>
-        </select>
-        <span asp-validation-for="MaNv" class="text-danger"></span>
-    </div>
-
-
-    <div class="col-12 col-sm-6" style=" width: 100%;">
-        <div class="date" id="date" data-target-input="nearest">
-            <label asp-for="NgayKhamDau" class="control-label">Ngày Khám Đầu</label>
-            <input asp-for="NgayKhamDau" type="date" id="bookingDate"
-                   class="form-control border-0 datetimepicker-input"
-                   placeholder="Choose Date"
-                   data-target="#date" data-toggle="datetimepicker"
-                   style="height: 55px;"
-                   value="@ViewBag.SelectedDate">
-            <span asp-validation-for="NgayKhamDau" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6" style=" width: 100%;">
-        <div class="date" id="date" data-target-input="nearest">
-            <label asp-for="time" class="control-label">Ca khám</label>
-            <select id="bookingTime" name="time" required>
-                <option value="">Chọn ca khám</option>
-                @if (!string.IsNullOrEmpty(ViewBag.SelectedTime))
-                {
-                    <option value="@ViewBag.SelectedTime" selected>@ViewBag.SelectedTime</option>
-                }
-            </select>
-            <span asp-validation-for="time" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch tái khám</button>
-    </div>
-</form>
-<style>
-    .custom-textarea {
-        height: 200px; /* Make the textarea a bit taller */
-        padding: 12px; /* Add padding for better readability */
-        font-size: 1rem; /* Increase font size for better legibility */
-        border-radius: 8px; /* Rounded corners for a softer look */
-        border: 1px solid #ccc; /* Light border */
-        resize: vertical; /* Allow vertical resizing only */
-        background-color: #f8f9fa; /* Light background color for better contrast */
-        transition: all 0.3s ease-in-out; /* Smooth transition on focus */
-    }
-
-        .custom-textarea:focus {
-            border-color: #007bff; /* Focus border color */
-            outline: none; /* Remove outline on focus */
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow effect on focus */
-            background-color: #ffffff; /* Change background on focus */
-        }
-
-        .custom-textarea::placeholder {
-            color: #aaa; /* Lighter placeholder text */
-        }
-</style>
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-
         $(document).ready(function () {
             console.log("Document ready!");
 
             let lastSelectedTime = '';
-
+            let disableChangeEvent = false;
             $('#IddichVu').change(function () {
-                var dichVuId = $(this).val();
-                console.log("Selected DichVu ID: ", dichVuId);
 
-                $.ajax({
-                    url: '/GetNhanViensByDichVu',
-                    type: 'GET',
-                    data: { dichVuId: dichVuId },
-                    success: function (data) {
-                        console.log("Doctors fetched: ", data);
-                        $('#MaNv').empty();
-                        $('#MaNv').append('<option value="">Chọn bác sĩ</option>');
+                if (!disableChangeEvent || confirm("Bạn có chắc chắn muốn thay đổi dịch vụ? ")) {
+                    var dichVuId = $(this).val();
+                    console.log("Selected DichVu ID: ", dichVuId);
 
-                        $.each(data, function (index, nhanVien) {
-                            $('#MaNv').append('<option value="' + nhanVien.Id + '">' + nhanVien.Ten + '</option>');
-                        });
-                    },
-                    error: function (error) {
-                        console.error("Error fetching doctors:", error);
-                    }
-                });
+                    $.ajax({
+                        url: '/GetNhanViensByDichVu',
+                        type: 'GET',
+                        data: { dichVuId: dichVuId },
+                        success: function (data) {
+                            console.log("Doctors fetched: ", data);
+                            $('#MaNv').empty();
+                            $('#MaNv').append('<option value="">Chọn bác sĩ</option>');
+
+                            $.each(data, function (index, nhanVien) {
+                                $('#MaNv').append('<option value="' + nhanVien.Id + '">' + nhanVien.Ten + '</option>');
+                            });
+                            disableChangeEvent = true;
+                        },
+                        error: function (error) {
+                            console.error("Error fetching doctors:", error);
+                        }
+                    });
+                } else {
+                    // Hủy bỏ thay đổi
+                    $(this).val($(this).data('oldVal'));
+                }
+
             });
 
             $('#MaNv').change(function () {
-                var doctorId = $(this).val();
-                console.log("Selected Doctor ID: ", doctorId);
+                if (confirm("Bạn có chắc chắn muốn thay đổi bác sĩ? Điều này có thể ảnh hưởng đến các lựa chọn hiện tại của bạn.")) {
 
-                var selectedDate = $('#bookingDate').val();
+                    var doctorId = $(this).val();
+                    console.log("Selected Doctor ID: ", doctorId);
 
-                if (doctorId && selectedDate) {
-                    fetchAvailableSlots(doctorId, selectedDate);
+                    var selectedDate = $('#bookingDate').val();
+
+                    if (doctorId && selectedDate) {
+                        fetchAvailableSlots(doctorId, selectedDate);
+                    }
+                } else {
+                    // Hủy bỏ thay đổi
+                    $(this).val($(this).data('oldVal'));
                 }
+
             });
 
             $('#bookingDate').change(function () {
@@ -197,6 +205,8 @@
                             timeSelect.append(`<option value="${slot}" disabled>${slot} - Ca này đã kín</option>`);
                         });
 
+                       
+
                         if (lastSelectedTime && !disabledTimes.includes(lastSelectedTime)) {
                             $('#bookingTime').val(lastSelectedTime);
                             console.log("Last selected time restored:", lastSelectedTime);
@@ -219,7 +229,8 @@
             $('#checkBenhNhanForm').submit(function (event) {
                 event.preventDefault();
                 console.log("Checking patient information");
-
+                let disableChangeEvent = true;
+                console.log("Checking patient information", disableChangeEvent);
                 var sdt = $('#SdtCheck').val();
 
                 $.ajax({
@@ -231,7 +242,7 @@
                             alert("Bệnh nhân chưa từng đặt lịch hoặc chưa thanh toán hóa đơn lần trước.");
                             return;
                         }
-                        console.log("Patient information: ", data);
+                        
                         $('#IdbenhNhan').val(data.IdbenhNhan);
                         $('#HoTen').val(data.HoTen);
                         $('#Gioi').val(data.Gioi);
@@ -239,8 +250,24 @@
                         $('#Sdt').val(data.Sdt);
                         $('#EmailBn').val(data.EmailBn);
                         $('#DiaChi').val(data.DiaChi);
+
+                        // Điền thông tin các trường có thể thay đổi
+                        $('#IddichVu').val(data.IddichVu).trigger('change');
+
+                        // Đảm bảo rằng bác sĩ được chọn sau khi dữ liệu bác sĩ được nạp
+                        setTimeout(function() {
+                            $('#MaNv').val(data.MaNv);
+                            // Gọi fetchAvailableSlots khi ngày khám và mã NV được điền
+                            fetchAvailableSlots(data.MaNv, data.NgayKhamDau);
+                        }, 500);
+
+
+                        $('#bookingDate').val(data.NgayKhamDau);
+                        $('#bookingTime').val(data.Time);
+
                         $('#checkBenhNhanForm').hide();
                         $('#createTaiKhamForm').show();
+                        console.log("Patient information: ", data);
                     },
                     error: function (error) {
                         console.error("Error checking patient information:", error);
@@ -248,6 +275,7 @@
                     }
                 });
             });
+
 
             $('#createTaiKhamForm').submit(function (event) {
                 event.preventDefault();
@@ -260,13 +288,14 @@
                     alert("Xin hãy chọn ngày và ca khám.");
                     return;
                 }
+
                 console.log("Selected Time: ", selectedTime);
                 console.log("Selected Day: ", selectedDay);
 
                 const benhNhanData = {
-                    IdbenhNhan: $('#IdbenhNhan').val(),
+                    
                     HoTen: $('[name="HoTen"]').val(),
-                    Gioi: $('[name="gender"]:checked').val() === "True",
+                    Gioi: $('[name="Gioi"]').val() === "True",
                     NamSinh: $('[name="NamSinh"]').val(),
                     Sdt: $('[name="Sdt"]').val(),
                     DiaChi: $('[name="DiaChi"]').val(),
@@ -297,7 +326,6 @@
                         }
                     })
                     .then(data => {
-
                         // Hiển thị mã QR và link tải
                         $('#qrCodeUrl').attr('href', data.QrCodeUrl).show();
                         $('#imageUrl').attr('href', data.ImageUrl).show();
@@ -315,6 +343,7 @@
                     });
 
             });
+
             function convertToDateTime(timeString, selectedDay) {
                 const [time, ampm] = timeString.split(" ");
                 const [hours, minutes] = time.split(":").map(Number);
@@ -329,14 +358,12 @@
                 const [year, month, day] = selectedDay.split('-');
 
                 const dateTimeString = `${year}-${month}-${day}T${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00.000`;
-
-                console.log("Generated DateTime string:", dateTimeString);
-
                 return dateTimeString;
             }
         });
     </script>
 }
+
 <style>
     #qrModal .modal-content {
         border-radius: 10px;
