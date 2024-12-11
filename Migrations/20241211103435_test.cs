@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:Migrations/20241207151300_test.cs
     public partial class test : Migration
-========
-    public partial class connect : Migration
->>>>>>>> origin/TTung:Migrations/20241207075602_connect.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -195,6 +191,28 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RegisForms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaNv = table.Column<int>(type: "int", nullable: false),
+                    CreateDay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReasonForChange = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegisForms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RegisForms_NhanViens_MaNv",
+                        column: x => x.MaNv,
+                        principalTable: "NhanViens",
+                        principalColumn: "MaNv",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Shifts",
                 columns: table => new
                 {
@@ -236,6 +254,49 @@ namespace WebQuanLyNhaKhoa.Migrations
                         column: x => x.MaNv,
                         principalTable: "NhanViens",
                         principalColumn: "MaNv");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NewShifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisFormId = table.Column<int>(type: "int", nullable: false),
+                    DayOfWeek = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NewShifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NewShifts_RegisForms_RegisFormId",
+                        column: x => x.RegisFormId,
+                        principalTable: "RegisForms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResponseForms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegisFormId = table.Column<int>(type: "int", nullable: false),
+                    ResponseStatus = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResponseForms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResponseForms_RegisForms_RegisFormId",
+                        column: x => x.RegisFormId,
+                        principalTable: "RegisForms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -579,6 +640,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 column: "IdsanPham");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NewShifts_RegisFormId",
+                table: "NewShifts",
+                column: "RegisFormId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NhanViens_IddichVu",
                 table: "NhanViens",
                 column: "IddichVu");
@@ -593,6 +659,16 @@ namespace WebQuanLyNhaKhoa.Migrations
                 table: "NhanViens",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RegisForms_MaNv",
+                table: "RegisForms",
+                column: "MaNv");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResponseForms_RegisFormId",
+                table: "ResponseForms",
+                column: "RegisFormId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shifts_MaNv",
@@ -642,10 +718,19 @@ namespace WebQuanLyNhaKhoa.Migrations
                 name: "LichSuNhapXuats");
 
             migrationBuilder.DropTable(
+                name: "NewShifts");
+
+            migrationBuilder.DropTable(
+                name: "ResponseForms");
+
+            migrationBuilder.DropTable(
                 name: "Shifts");
 
             migrationBuilder.DropTable(
                 name: "UnansweredQuestions");
+
+            migrationBuilder.DropTable(
+                name: "RegisForms");
 
             migrationBuilder.DropTable(
                 name: "ChanDoans");

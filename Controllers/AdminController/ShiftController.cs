@@ -131,5 +131,105 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
             return Ok(shifts);
         }
+
+        [HttpGet("CreateRegisForm/{id}")]
+        public IActionResult CreateRegisForm(int id)
+        {
+            var model = new RegisFormDTO { MaNv = id };
+            return View(model);
+        }
+
+        [HttpPost("CreateRegisForm")]
+        public IActionResult CreateRegisForm(int maNv, string reasonForChange)
+        {
+            var regisForm = new RegisForm
+            {
+                MaNv = maNv,
+                CreateDay = DateTime.Now,
+                ReasonForChange = reasonForChange,
+                Status = ShiftChangeStatus.Waiting
+            };
+            _context.RegisForms.Add(regisForm);
+            _context.SaveChanges();
+
+            
+            return RedirectToAction("EditShift", new { regisFormId = regisForm.Id });
+        }
+
+        [HttpGet("EditShift/{regisFormId}")]
+        public async Task<IActionResult> EditShift(int regisFormId)
+        {
+            var regisForm = await _context.RegisForms
+                                          .Include(r => r.NewShifts)
+                                          .FirstOrDefaultAsync(r => r.Id == regisFormId);
+
+            if (regisForm == null)
+            {
+                return NotFound();
+            }
+
+           
+            var allDays = new List<string> { "monday", "tuesday", "wednesday", "thursday", "friday" };
+
+            
+            var existingShifts = await _context.Shifts
+                                               .Where(s => s.MaNv == regisForm.MaNv)
+                                               .ToListAsync();
+
+            var shiftDto = new ShiftDTO
+            {
+                MaNv = regisForm.MaNv,
+                RegisFormId = regisFormId,
+                Shifts = allDays.SelectMany(day => new List<ShiftInfo>
+                {
+                    new ShiftInfo
+                    {
+                        DayOfWeek = day,
+                        StartTime = TimeSpan.Parse("08:00:00"),
+                        EndTime = TimeSpan.Parse("12:00:00"),
+                        IsSelected = existingShifts.Any(s => s.DayOfWeek == day && s.StartTime == TimeSpan.Parse("08:00:00"))
+                    },
+                    new ShiftInfo
+                    {
+                        DayOfWeek = day,
+                        StartTime = TimeSpan.Parse("13:00:00"),
+                        EndTime = TimeSpan.Parse("17:00:00"),
+                        IsSelected = existingShifts.Any(s => s.DayOfWeek == day && s.StartTime == TimeSpan.Parse("13:00:00"))
+                    }
+                }).ToList()
+            };
+
+            return View(shiftDto);
+        }
+
+
+        [HttpPost("CreateNewShifts/{regisFormId}")]
+        public async Task<IActionResult> CreateNewShifts(int regisFormId, [FromBody] List<ShiftUpdateDTO> newShifts)
+        {
+            var regisForm = await _context.RegisForms
+                                          .Include(r => r.NewShifts)
+                                          .FirstOrDefaultAsync(r => r.Id == regisFormId);
+
+            if (regisForm == null)
+            {
+                return BadRequest("Không tồn tại regisFormId.");
+            }
+
+            foreach (var shift in newShifts)
+            {
+                regisForm.NewShifts.Add(new NewShift
+                {
+                    RegisFormId = regisFormId,
+                    DayOfWeek = shift.DayOfWeek,
+                    StartTime = (TimeSpan)shift.StartTime,
+                    EndTime = (TimeSpan)shift.EndTime
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
     }
 }

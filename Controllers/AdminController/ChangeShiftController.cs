@@ -30,7 +30,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
             var nhanViens = await _context.RegisForms
                 .Include(nv => nv.NhanVien)
-                .Include(nv => nv.NhanVien.)
+                .Include(nv => nv.NhanVien.ChucVu)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -38,8 +38,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             var nhanVienDTOs = nhanViens.Select(nv => new RegisFormDTO
             {
                 MaNv = nv.MaNv,
-                Ten = nv.Ten,
-                ChucVu = nv.ChucVu,
+                Ten = nv.NhanVien.Ten,
+                ChucVu = nv.NhanVien.ChucVu.TenCv,
                 CreateDay = nv.CreateDay,
                 Status = nv.Status,
             }).ToList();
