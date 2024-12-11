@@ -88,6 +88,7 @@ const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&
                 <td>
                         <a href="/Admin/NhanViens/api/NhanViens/Edit/${nv.MaNv}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
                         <a href="/Admin/NhanViens/api/NhanViens/Detail/${nv.MaNv}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
+                        <a href="/Shift/Create/${nv.MaNv}" class="dropdown-item"><i class="dw dw-eye"></i>Cập nhật ca khám</a>
                 </td>
             `;
             tableBody.appendChild(row);

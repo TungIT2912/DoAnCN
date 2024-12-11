@@ -13,6 +13,7 @@ using X.PagedList;
 using WebQuanLyNhaKhoa.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using SQLitePCL;
 namespace WebQuanLyNhaKhoa.Controllers.AdminController
 {
     [Route("Admin/[controller]")]
@@ -163,6 +164,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             };
 
             _context.NhanViens.Add(newNhanVien);
+          
             var nhanVienSaveResult = await _context.SaveChangesAsync();
            
             if (nhanVienSaveResult > 0)
@@ -179,7 +181,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                     Hinh = newNhanVien.Hinh,
                     Email = newNhanVien.Email
                 };
-
+                
                 return CreatedAtAction(nameof(GetNhanVienById), new { id = newNhanVien.MaNv }, createdNhanVienDTO);
             }
 

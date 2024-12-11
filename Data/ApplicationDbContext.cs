@@ -41,6 +41,15 @@ namespace WebQuanLyNhaKhoa.Data
 
 		public virtual DbSet<ThiTruong> ThiTruongs { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
+
+        public virtual DbSet<Shift> Shifts { get; set; }
+
+        public virtual DbSet<RegisForm> RegisForms { get; set; }
+
+        public virtual DbSet<ResponseForm> ResponseForms { get; set; }
+
+        public virtual DbSet<NewShift> NewShifts { get; set; }
+
         //public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

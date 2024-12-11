@@ -14,7 +14,7 @@ namespace WebQuanLyNhaKhoa.Data
         public int? IddonThuoc { get; set; }
 
         [ForeignKey("HoaDon")]
-        public int IdhoaDon { get; set; }
+        public int? IdhoaDon { get; set; }
         
         [ForeignKey("DieuTri")]
         public int? IddieuTri { get; set; }

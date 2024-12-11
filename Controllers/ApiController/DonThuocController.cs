@@ -37,7 +37,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                     .Include(d => d.ChiTietHoaDon)
                     .Select(d => new DonThuoc1DTO
                     {
-                        IdhoaDon = d.ChiTietHoaDon != null ? d.ChiTietHoaDon.IdhoaDon : 0,
+                        IdhoaDon = (int)(d.ChiTietHoaDon != null ? d.ChiTietHoaDon.IdhoaDon : 0),
                         Idkham = d.Idkham,
                         tenThuoc = d.Kho.ThiTruong.TenSanPham ?? "Không có tên thuốc",
                         ThanhGia = d.ThanhGia,
