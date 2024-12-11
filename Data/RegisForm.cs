@@ -13,32 +13,25 @@ namespace WebQuanLyNhaKhoa.Data
         [ForeignKey("NhanVien")]
         public int MaNv { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        public string? DayOfWeek { get; set; } = null!;
+        public DateTime CreateDay { get; set; }
 
-        [Required]
-        public TimeSpan? StartTime { get; set; }
-
-        [Required]
-        public TimeSpan? EndTime { get; set; }
         [Required]
         [StringLength(200)]
         public string ReasonForChange { get; set; } = null!; 
 
         [Required]
-        public ShiftChangeStatus Status { get; set; } = ShiftChangeStatus.Waiting;
-
+        public ShiftChangeStatus Status { get; set; } = ShiftChangeStatus.Waiting; 
         public virtual NhanVien NhanVien { get; set; } = null!;
+        public virtual ICollection<NewShift> NewShifts { get; set; } = new List<NewShift>(); 
 
+        public virtual ICollection<ResponseForm> Responses { get; set; } = new List<ResponseForm>();
     }
+
     public enum ShiftChangeStatus
     {
         Waiting = 1,  
         Accepted = 2, 
-        Denied = 3
+        Denied = 3   
     }
-
-
 }
 

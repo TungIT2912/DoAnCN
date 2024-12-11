@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebQuanLyNhaKhoa.Data
 {
-    public class ResponseForm
+    public class NewShift
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,10 +14,14 @@ namespace WebQuanLyNhaKhoa.Data
         public int RegisFormId { get; set; }
 
         [Required]
-        public ShiftChangeStatus ResponseStatus { get; set; }
+        [StringLength(20)]
+        public string DayOfWeek { get; set; } = null!;
 
-        [StringLength(500)]
-        public string? Comment { get; set; }  
+        [Required]
+        public TimeSpan StartTime { get; set; }
+
+        [Required]
+        public TimeSpan EndTime { get; set; }
 
         public virtual RegisForm RegisForm { get; set; } = null!;
     }

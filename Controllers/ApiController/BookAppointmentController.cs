@@ -480,7 +480,7 @@ public string GenerateLichKhamPdf(BenhNhanDTO benhNhan, DanhSachKham danhSachKha
                     _ => day 
                 }));
 
-                return BadRequest("Xin lỗi, bác sĩ bạn muốn không làm vào ngày bạn chọn. Bác sĩ làm vào: " + workingDaysStr);
+                return BadRequest("Xin lỗi, bác sĩ bạn muốn không làm vào ngày bạn chọn. Bác sĩ làm vào các ngày sau: " + workingDaysStr);
             }
 
             var availableSlots = new List<string>();
