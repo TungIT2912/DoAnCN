@@ -227,128 +227,62 @@
                                         {
 
                                             var item = Model.First();
+                    
+                                <div class="col-xs-4 text-right payment-details">
+                                    <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
+                            <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                    @* <p>VAT: DK888-777 </p> *@
+                                    <p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
+                                    <p>Email khách hàng: @item.EmailBn</p>
+                                </div>
+                                        
+                                    }
+                            </div>
 
-                                            <div class="col-xs-4 text-right payment-details">
-                                                <p class="lead marginbottom payment-info">Chi tiết thanh toán</p>
-                                                <span class="marginright">@DateTime.Now.ToString("dd/MM/yyyy")</span>
-                                                @* <p>VAT: DK888-777 </p> *@
-                                                <p>Tổng tiền: @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")</p>
-                                                <p>Email khách hàng: @item.EmailBn</p>
-                                            </div>
-
+                            <div class="row table-row">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width:5%">#</th>
+                                            <th style="width:30%">Tên Dịch Vụ</th>
+                                            <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
+                                            <th class="text-right" style="width:15%">Tiền Thuốc</th>
+                                            <th class="text-right" style="width:15%">Tiền Điều Trị</th>
+                                            <th class="text-right" style="width:15%">Tổng Tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null && Model.Any())
+                                        {
+                                            int index = 1;
+                                            foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td class="text-center">@index</td>
+                                                    <td>@item.TenDon</td>
+                                                    <td class="text-right">@item.PhuongThucThanhToan</td>
+                                                    <td class="text-right">
+                                                        @(item.TienThuoc.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienThuoc.Value) : "N/A")
+                                                    </td>
+                                                    <td class="text-right">
+                                                        @(item.TienDieuTri.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TienDieuTri.Value) : "N/A")
+                                                    </td>
+                                                    <td class="text-right">
+                                                        @(item.TongTien.HasValue ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", item.TongTien.Value) : "N/A")
+                                                    </td>
+                                                </tr>
+                                                index++;
+                                            }
                                         }
-                                    </div>
-<div class="row table-row">
-    <!-- Bảng hiển thị thông tin điều trị -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="text-center" style="width:5%">#</th>
-                <th style="width:30%">Tên điều trị</th>
-                <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                <th class="text-right" style="width:15%">Tổng Tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                int index = 1;
-                foreach (var item in Model)
-                {
-                    if (item.DieuTris != null && item.DieuTris.Any())
-                    {
-                        // Hiển thị thông tin điều trị
-                        foreach (var dieuTri in item.DieuTris)
-                        {
-                            <tr>
-                                <td class="text-center">@index</td>
-                                <td>@dieuTri.DichVu?.TenDichVu</td>
-                                <td class="text-right">@item.PhuongThucThanhToan</td>
-                                <td class="text-right">N/A</td>
-                                <td class="text-right">
-                                    @(dieuTri.ThanhTien > 0 
-                                        ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", dieuTri.ThanhTien) 
-                                        : "N/A")
-                                </td>
-                                <td class="text-right">
-                                    @(dieuTri.ThanhTien > 0 
-                                        ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", dieuTri.ThanhTien) 
-                                        : "N/A")
-                                </td>
-                            </tr>
-                            index++;
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="6" class="text-center">Không có thông tin điều trị</td>
-                        </tr>
-                    }
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="text-center">Không có dữ liệu</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <!-- Bảng hiển thị thông tin đơn thuốc -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="text-center" style="width:5%">#</th>
-                <th style="width:30%">Tên đơn thuốc</th>
-                <th class="text-right" style="width:20%">Phương Thức Thanh Toán</th>
-                <th class="text-right" style="width:15%">Tiền Thuốc</th>
-                <th class="text-right" style="width:15%">Tiền Điều Trị</th>
-                <th class="text-right" style="width:15%">Tổng Tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (chiTiet.DonThuocs != null && chiTiet.DonThuocs.Any())
-            {
-                int index = 1;
-                foreach (var donThuoc in chiTiet.DonThuocs)
-                {
-                    <tr>
-                        <td class="text-center">@index</td>
-                        <td>@donThuoc.Kho?.ThiTruong?.TenSanPham</td>
-                        <td class="text-right">@chiTiet.PhuongThucThanhToan</td>
-                        <td class="text-right">
-                            @(donThuoc.TongTien > 0 
-                                ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", donThuoc.TongTien) 
-                                : "N/A")
-                        </td>
-                        <td class="text-right">N/A</td>
-                        <td class="text-right">
-                            @(donThuoc.TongTien > 0 
-                                ? string.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C}", donThuoc.TongTien) 
-                                : "N/A")
-                        </td>
-                    </tr>
-                    index++;
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6" class="text-center">Không có thông tin đơn thuốc</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-
-
-
-
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="6" class="text-center">No data available</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                                                     <div class="btn-box">
                                                         <button class="theme-btn btn-style-one bg-scarlet view-history"
                                                                 data-phone="@chiTiet.Sdt"

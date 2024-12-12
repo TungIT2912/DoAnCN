@@ -118,15 +118,16 @@ public IActionResult HoaDonDetails(string searchQuery)
                                   .Include(bn => bn.BenhNhan)
                                   .Include(bn => bn.NhanVien)
                                   .Include(bn => bn.DieuTris)
+                                  .ThenInclude(dt => dt.DichVu)
                                   .Include(bn => bn.BenhNhan.HoaDon)
                                   .ThenInclude(dv => dv.DieuTri.DichVu)
                                   .Include(bn => bn.DonThuocs)
                                   .ThenInclude(dt => dt.Kho.ThiTruong)
                                   .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == request.Phone  ||  n.BenhNhan.EmailBn == request.Mail);
-                                  if (benhnhan == null)
-                                    {
-                                        return NotFound("Không tìm thấy bệnh nhân.");
-                                    }
+            if (benhnhan == null)
+            {
+                return NotFound("Không tìm thấy bệnh nhân.");
+            }
             if (benhnhan?.DieuTris != null)
             {
                 foreach (var dieuTri in benhnhan.DieuTris)

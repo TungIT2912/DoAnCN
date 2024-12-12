@@ -23,12 +23,12 @@ namespace WebQuanLyNhaKhoa.Data
 
         public DateTime time {  get; set; }
 
-
+        public bool isTaiKham { get; set; } = false;
         public virtual ICollection<DieuTri> DieuTris { get; set; } = new List<DieuTri>();
         public virtual ICollection<DonThuoc> DonThuocs { get; set; } = new List<DonThuoc>();
         public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
 
         public virtual BenhNhan BenhNhan { get; set; } = null!;
-        public virtual NhanVien? NhanVien { get; set; }
+        public virtual NhanVien? NhanVien { get; set; } 
     }
 }

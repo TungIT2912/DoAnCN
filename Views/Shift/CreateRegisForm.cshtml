@@ -1,0 +1,35 @@
+﻿@model WebQuanLyNhaKhoa.DTO.RegisFormDTO
+
+@{
+    ViewData["Title"] = "Enter Reason";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-container">
+    <div class="xs-pd-20-10 pd-ltr-20">
+        <div class="row clearfix progress-box">
+            <div class="col-lg-12">
+                <a asp-action="Index">
+                    <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
+                        ← Quay về lại danh sách
+                    </button>
+                </a>
+                <br>
+                <hr>
+                <body class="zf-backgroundBg">
+                    <div class="zf-templateWidth">
+                        <form method="post" action="/Shift/CreateRegisForm">
+                            <input type="hidden" name="MaNv" value="@Model.MaNv" />
+                            <div>
+                                <label for="ReasonForChange">Lý do thay đổi:</label>
+                                <input type="text" id="ReasonForChange" name="ReasonForChange" required />
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </body>
+                @section Scripts {
+                    @{
+                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                    }
+                }
