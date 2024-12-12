@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.Hubs;
+using WebQuanLyNhaKhoa.Models;
 using WebQuanLyNhaKhoa.ServicesPay;
 using WebQuanLyNhaKhoa.wwwroot.AutoMapper;
 
@@ -64,10 +66,15 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+{
+    // Add the custom TimeSpan binder provider
+    options.ModelBinderProviders.Insert(0, new TimeSpanBinderProvider());
+})
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddSignalR();
