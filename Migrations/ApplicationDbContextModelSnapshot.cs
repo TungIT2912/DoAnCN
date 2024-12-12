@@ -284,7 +284,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("ThanhTien")
+                    b.Property<decimal>("ThanhTien")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IddieuTri");
