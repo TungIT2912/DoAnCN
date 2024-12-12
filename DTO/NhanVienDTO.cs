@@ -24,5 +24,7 @@ namespace WebQuanLyNhaKhoa.DTO
         public string MatKhau { get; set; }
         public string Role { get; set; }
         public string? Mota { get; set; }
+        public List<ShiftDTO> sa { get; set; } = new List<ShiftDTO>();
+
     }
 }

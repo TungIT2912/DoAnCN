@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+@model WebQuanLyNhaKhoa.DTO.NhanVienDTO
+ 
 @{
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
@@ -66,10 +68,7 @@
                                     <strong>Địa chỉ</strong>
                                     <p>@Model.Diachi</p>
                                 </li>
-                                <li>
-                                    <strong>Thời gian</strong>
-                                    <p>T2 - T6 08:00 - 17:00</p>
-                                </li>
+                                
                                 <li>
                                     <strong>SĐT</strong>
                                     <p><a href="tel:@Model.Sdt">@Model.Sdt</a></p>
@@ -119,7 +118,7 @@
                                     <input type="text" name="DiaChi" placeholder="Nhập địa chỉ của bạn">
                                 </div>
                                 <div class="form-group col-lg-12 col-md-12">
-                                        <label  class="control-label">Ngày Khám Đầu</label>
+                                        <label  class="control-label">Ngày khám đầu</label>
                                         <input name="NgayKhamDau" type="date" id="bookingDate"
                                                class="form-control border-0 datetimepicker-input"
                                                placeholder="Choose Date"
@@ -175,7 +174,55 @@
                                         <span class="divider"></span>
                                         <div class="text">Bác sĩ có mặt trong các giờ sau:</div>
                                         <ul class="timing-list-two">
-                                            <li>T2 - T6 <span>08:00 - 17:00</span></li>
+                                            <li>
+                                                <div class="zf-tempContDiv">
+                                                    @if (Model.sa?.Any() == true)
+                                                    {
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-striped">
+                                                                <thead class="thead-dark">
+                                                                    <tr>
+                                                                        <th>Thứ</th>
+                                                                        <th>Thời gian làm việc</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var shift in Model.sa)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @{
+                                                                                    var dayName = shift.DayOfWeek switch
+                                                                                    {
+                                                                                        "monday" => "Thứ 2",
+                                                                                        "tuesday" => "Thứ 3",
+                                                                                        "wednesday" => "Thứ 4",
+                                                                                        "thursday" => "Thứ 5",
+                                                                                        "friday" => "Thứ 6",
+                                                                                        _ => "Unknown Day"
+                                                                                    };
+                                                                                }
+                                                                                @dayName
+                                                                            </td>
+                                                                          <td>
+                                                                            @(shift.StartTime.HasValue && shift.EndTime.HasValue
+                                                                            ? $"{DateTime.Today.Add(shift.StartTime.Value):hh:mm tt} - {DateTime.Today.Add(shift.EndTime.Value):hh:mm tt}"
+                                                                            : "N/A")
+                                                                        </td>
+
+                                                                        </tr>
+                                                                    }
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="text-muted">Không có thông tin về ca làm việc của nhân viên này.</p>
+                                                    }
+                                                </div>
+                                            </li>
                                         </ul>
                                     </div>
                                     
@@ -215,7 +262,7 @@
             console.log("Document ready!");
 
           
-            var doctorId = '@(Model.MaNv ?? "")'; 
+            var doctorId = '@(Model.MaNv ?? 0)'; 
             console.log("pick doctor: ", doctorId);
             $('#bookingDate').change(function () {
                 var selectedDate = $(this).val();

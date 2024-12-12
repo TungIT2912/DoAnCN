@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class yolo : Migration
+    public partial class connect : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -191,6 +191,28 @@ namespace WebQuanLyNhaKhoa.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Shifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaNv = table.Column<int>(type: "int", nullable: false),
+                    DayOfWeek = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shifts_NhanViens_MaNv",
+                        column: x => x.MaNv,
+                        principalTable: "NhanViens",
+                        principalColumn: "MaNv",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UnansweredQuestions",
                 columns: table => new
                 {
@@ -280,7 +302,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                     IdchiTiet = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IddonThuoc = table.Column<int>(type: "int", nullable: true),
-                    IdhoaDon = table.Column<int>(type: "int", nullable: false),
+                    IdhoaDon = table.Column<int>(type: "int", nullable: true),
                     IddieuTri = table.Column<int>(type: "int", nullable: true),
                     Idkham = table.Column<int>(type: "int", nullable: true),
                     PhuongThucThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -568,6 +590,11 @@ namespace WebQuanLyNhaKhoa.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Shifts_MaNv",
+                table: "Shifts",
+                column: "MaNv");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UnansweredQuestions_MaNv",
                 table: "UnansweredQuestions",
                 column: "MaNv");
@@ -584,8 +611,7 @@ namespace WebQuanLyNhaKhoa.Migrations
                 table: "ChiTietHoaDons",
                 column: "IdhoaDon",
                 principalTable: "HoaDons",
-                principalColumn: "IdhoaDon",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "IdhoaDon");
         }
 
         /// <inheritdoc />
@@ -609,6 +635,9 @@ namespace WebQuanLyNhaKhoa.Migrations
 
             migrationBuilder.DropTable(
                 name: "LichSuNhapXuats");
+
+            migrationBuilder.DropTable(
+                name: "Shifts");
 
             migrationBuilder.DropTable(
                 name: "UnansweredQuestions");
