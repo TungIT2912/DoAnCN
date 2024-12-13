@@ -1,0 +1,265 @@
+﻿@model WebQuanLyNhaKhoa.DTO.RegisFormDTO
+
+@{
+ViewData["Title"] = "Details";
+Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+<meta charset="UTF-8">
+<link href="~/css/form.css" rel="stylesheet" type="text/css">
+</head>
+
+<script>
+$(document).ready(function () {
+$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+<div class="xs-pd-20-10 pd-ltr-20">
+<div class="row clearfix progress-box">
+<div class="col-lg-12">
+<a asp-action="Index">
+    <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
+        ← Quay về lại danh sách
+    </button>
+</a>
+<br>
+<hr>
+
+<body class="zf-backgroundBg">
+    <div class="zf-templateWidth">
+        <form action="/YourAction" name="form" method="POST" enctype="multipart/form-data" id="createNhanVienForm">
+            <div class="zf-templateWrapper">
+                <!-- Header -->
+                <ul class="zf-tempHeadBdr">
+                    <li class="zf-tempHeadContBdr">
+                        <h2 class="zf-frmTitle"><em>Chi tiết đơn xin chuyển ca</em></h2>
+                        <p class="zf-frmDesc">Thông tin đơn</p>
+                        <div class="zf-clearBoth"></div>
+                    </li>
+                </ul>
+                   <input  id="idForm" type="hidden" name="RegisFormId" value="@Model.RegisFormId" />
+                    <input  id="idNv" type="hidden" name="MaNv" value="@Model.MaNv" />
+                <!-- Form Container -->
+                <div class="zf-subContWrap zf-leftAlign">
+                    <ul>
+
+                        <!-- Tên -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Tên nhân viên</label>
+                            <div class="zf-tempContDiv">
+                                <span class="form-control"> @Html.DisplayFor(model => model.Ten)</span
+                            </div>
+                        </li>
+
+                        <!-- Email -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Vị trí</label>
+                            <div class="zf-tempContDiv">
+                                <span class="form-control">@Html.DisplayFor(model => model.ChucVu) </span>
+                            </div>
+                        </li>
+
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Chuyên ngành</label>
+                            <div class="zf-tempContDiv">
+                                <span class="form-control">@Html.DisplayFor(model => model.chuyenNganh) </span>
+                            </div>
+                        </li>
+
+                        <!-- Số điện thoại -->
+                       <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Ngày lập</label>
+                            <div class="zf-tempContDiv">
+                                <span class="form-control">@String.Format("{0:dd/MM/yyyy}", Model.CreateDay)</span>
+                            </div>
+                        </li>
+
+                        <!-- Chức vụ -->
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Lí do</label>
+                            <div class="zf-tempContDiv">
+                               <span class="form-control">@Html.DisplayFor(model => model.ReasonForChange) </span>
+                            </div>
+                        </li>
+
+                        <li class="zf-tempFrmWrapper zf-large">
+                            <label class="zf-labelName">Trạng thái đơn</label>
+                            <div class="zf-tempContDiv">
+                                @if((int)Model.Status == 1)
+                                {
+                                    <span class="form-control">Đang chờ xử lí</span>
+                                }
+                                else if((int)Model.Status == 2)
+                                {
+                                    <span class="form-control">Đã được duyệt</span>
+                                }
+                                else
+                                {
+                                    <span class="form-control">Đã bị từ chối</span>
+                                }
+                            </div>
+                        </li> 
+
+                      
+                        <li class="zf-radio zf-tempFrmWrapper">
+                            <label class="zf-labelName">Ca khám mới </label>
+                            <div class="zf-tempContDiv">
+                                @if (Model.NewShifts.Any())
+                                {
+                                    <div class="table-responsive"> <table class="table table-bordered table-striped"> <thead class="thead-dark"> <tr> <th>Ngày khám</th> <th>Giờ khám</th> </tr> </thead> <tbody> @foreach (var shift in Model.NewShifts)
+                                        {
+                                            <tr class="shift-row">
+                                                <td class="day-of-week">
+                                                                            @{
+                                                        var dayName = shift.DayOfWeek switch
+                                                        {
+                                                            "monday" => "Thứ 2",
+                                                            "tuesday" => "Thứ 3",
+                                                            "wednesday" => "Thứ 4",
+                                                            "thursday" => "Thứ 5",
+                                                            "friday" => "Thứ 6",
+                                                            _ => "Unknown Day"
+                                                        };
+                                                    }
+                                                    @dayName</td>
+                                                    <td class="shift-time">
+                                                            @(shift.StartTime != null && shift.EndTime != null
+                                                            ? $"{DateTime.Today.Add(shift.StartTime):hh:mm tt} - {DateTime.Today.Add(shift.EndTime):hh:mm tt}"
+                                                            : "N/A")
+                                                    </td> 
+                                                </tr>
+                                        } </tbody> </table> </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Không có thông tin về ca mới.</p>
+                                }
+                            </div>
+                        </li>
+                         <li class="zf-tempFrmWrapper zf-large">
+                            <div class="zf-tempContDiv">
+                                <button type="submit" id="acceptButton" name="action" value="accept" class="btn btn-success">Duyệt</button>
+                                <button type="button" id="denyButton" class="btn btn-danger">Từ chối</button>
+                            </div>
+                        </li>
+
+                        <li class="zf-tempFrmWrapper zf-large" id="denyReasonContainer" style="display: none;">
+                            <label class="zf-labelName">Lý do từ chối</label>
+                            <div class="zf-tempContDiv">
+                                <textarea name="denialReason" id="deniedReason" class="form-control" placeholder="Vui lòng nhập lý do từ chối..."></textarea>
+                                <button type="submit" id="denyButton" name="action" value="deny" class="btn btn-success">Gửi</button>
+                            </div>
+                        </li>
+                    </ul>
+
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        const toTimeSpanFormat = (timeStr) => {
+            const [time, period] = timeStr.split(' ');
+            const [hours, minutes] = time.split(':').map(num => parseInt(num, 10));
+
+            let adjustedHours = hours;
+
+            if (period) { 
+                if (period.toUpperCase() === 'PM' && hours < 12) {
+                    adjustedHours += 12;
+                } else if (period.toUpperCase() === 'AM' && hours === 12) {
+                    adjustedHours = 0;
+                }
+            }
+
+            return `${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`; 
+        };
+
+
+
+        document.getElementById('createNhanVienForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+              const action = event.submitter ? event.submitter.value : null; // Get the value of the clicked button
+             if (!action) {
+                alert("No action specified!");
+                return;
+            }
+            console.log("Action:", action);
+            const id = document.getElementById('idForm').value;
+            const idMaNv = document.getElementById('idNv').value;
+            console.log("id nhanvien: ", idMaNv);
+            const shifts = [];
+            const reason = document.getElementById('deniedReason').value;
+            document.querySelectorAll('.shift-row').forEach(row => {
+            const dayOfWeek = row.querySelector('.day-of-week').textContent.trim();
+            const times = row.querySelector('.shift-time').textContent.split(' - ').map(t => t.trim());
+
+            const startTime = toTimeSpanFormat(times[0] || '00:00 AM');
+            const endTime = toTimeSpanFormat(times[1] || '00:00 AM');
+          
+            shifts.push({
+                RegisFormId: id,
+                DayOfWeek: dayOfWeek,
+                StartTime: startTime,
+                EndTime: endTime
+                    });
+                });
+
+            const data = {
+                RegisFormId: id,   
+                MaNv : idMaNv,
+                Comment :action === "deny" ? reason : null,
+                NewShifts: shifts.map(shift => ({ RegisFormId: id, DayOfWeek: shift.DayOfWeek, StartTime: shift.StartTime, EndTime: shift.EndTime })),
+            };
+            console.log("data sending: ", JSON.stringify(data));
+             const endpoint = action === "accept" 
+                            ? '/Admin/ChangeShift/api/ChangeShift/Accept'
+                            : '/Admin/ChangeShift/api/ChangeShift/Deny';
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const responseText = await response.text();
+                if (response.ok) {
+                    if (action === "accept") {
+                        alert("Bạn đã chấp nhận đơn của nhân viên!");
+                       
+                    } else {
+                        alert("Bạn đã từ chối đơn của nhân viên!");
+                       
+                    }   
+                     window.location.href = '@Url.Action("Index", "ChangeShift")';
+                   
+                } else {
+                    let errorMessage = "Đã xảy ra lỗi không xác định.";
+                    try {
+                        const error = JSON.parse(responseText);
+                        errorMessage = error.message;
+                    } catch {
+                        errorMessage = responseText;
+                    }
+                    alert("Lỗi khi điều chỉnh: " + errorMessage);
+                }
+            } catch (error) {
+                alert("Đã xảy ra lỗi: " + error.message);
+            }
+        });
+
+        document.getElementById('denyButton').addEventListener('click', function () {
+            const denyContainer = document.getElementById('denyReasonContainer');
+            denyContainer.style.display = denyContainer.style.display === 'none' ? 'block' : 'none';
+        });
+</script>
+</body>
+
+</html>
+                               
