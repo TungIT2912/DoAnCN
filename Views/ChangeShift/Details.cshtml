@@ -151,7 +151,8 @@ $('[data-toggle="tooltip"]').tooltip();
                         <li class="zf-tempFrmWrapper zf-large" id="denyReasonContainer" style="display: none;">
                             <label class="zf-labelName">Lý do từ chối</label>
                             <div class="zf-tempContDiv">
-                                <textarea name="denialReason" class="form-control" placeholder="Vui lòng nhập lý do từ chối..."></textarea>
+                                <textarea name="denialReason" id="deniedReason" class="form-control" placeholder="Vui lòng nhập lý do từ chối..."></textarea>
+                                <button type="submit" id="denyButton" name="action" value="deny" class="btn btn-success">Gửi</button>
                             </div>
                         </li>
                     </ul>
@@ -161,88 +162,102 @@ $('[data-toggle="tooltip"]').tooltip();
     </div>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-            const toTimeSpanFormat = (timeStr) => {
-                const [time, period] = timeStr.split(' ');
-                const [hours, minutes] = time.split(':').map(num => parseInt(num, 10));
+        const toTimeSpanFormat = (timeStr) => {
+            const [time, period] = timeStr.split(' ');
+            const [hours, minutes] = time.split(':').map(num => parseInt(num, 10));
 
-                let adjustedHours = hours;
+            let adjustedHours = hours;
 
-                if (period) { // Handle AM/PM format
-                    if (period.toUpperCase() === 'PM' && hours < 12) {
-                        adjustedHours += 12;
-                    } else if (period.toUpperCase() === 'AM' && hours === 12) {
-                        adjustedHours = 0;
-                    }
+            if (period) { 
+                if (period.toUpperCase() === 'PM' && hours < 12) {
+                    adjustedHours += 12;
+                } else if (period.toUpperCase() === 'AM' && hours === 12) {
+                    adjustedHours = 0;
                 }
+            }
 
-                // Adjust to format 'HH:mm:ss'
-                return `${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`; // Add seconds part as '00'
-            };
+            return `${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`; 
+        };
 
 
 
-            document.getElementById('createNhanVienForm').addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const id = document.getElementById('idForm').value;
-                const idMaNv = document.getElementById('idNv').value;
-                console.log("id nhanvien: ", idMaNv);
-                const shifts = [];
-
-                document.querySelectorAll('.shift-row').forEach(row => {
+        document.getElementById('createNhanVienForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+              const action = event.submitter ? event.submitter.value : null; // Get the value of the clicked button
+             if (!action) {
+                alert("No action specified!");
+                return;
+            }
+            console.log("Action:", action);
+            const id = document.getElementById('idForm').value;
+            const idMaNv = document.getElementById('idNv').value;
+            console.log("id nhanvien: ", idMaNv);
+            const shifts = [];
+            const reason = document.getElementById('deniedReason').value;
+            document.querySelectorAll('.shift-row').forEach(row => {
             const dayOfWeek = row.querySelector('.day-of-week').textContent.trim();
             const times = row.querySelector('.shift-time').textContent.split(' - ').map(t => t.trim());
 
             const startTime = toTimeSpanFormat(times[0] || '00:00 AM');
             const endTime = toTimeSpanFormat(times[1] || '00:00 AM');
-
+          
             shifts.push({
                 RegisFormId: id,
-             
                 DayOfWeek: dayOfWeek,
-                StartTime: startTime, // Send as string "HH:mm"
-                EndTime: endTime // Send as string "HH:mm"
+                StartTime: startTime,
+                EndTime: endTime
                     });
                 });
 
-                const data = {
-                    RegisFormId: id,   
-                    MaNv : idMaNv,
-                    NewShifts: shifts.map(shift => ({ RegisFormId: id, DayOfWeek: shift.DayOfWeek, StartTime: shift.StartTime, EndTime: shift.EndTime })),
-                };
-                console.log("data sending: ", JSON.stringify(data));
-                try {
-                    const response = await fetch('/Admin/ChangeShift/api/ChangeShift/Accept', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    });
+            const data = {
+                RegisFormId: id,   
+                MaNv : idMaNv,
+                Comment :action === "deny" ? reason : null,
+                NewShifts: shifts.map(shift => ({ RegisFormId: id, DayOfWeek: shift.DayOfWeek, StartTime: shift.StartTime, EndTime: shift.EndTime })),
+            };
+            console.log("data sending: ", JSON.stringify(data));
+             const endpoint = action === "accept" 
+                            ? '/Admin/ChangeShift/api/ChangeShift/Accept'
+                            : '/Admin/ChangeShift/api/ChangeShift/Deny';
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
 
-                    const responseText = await response.text();
-                    if (response.ok) {
+                const responseText = await response.text();
+                if (response.ok) {
+                    if (action === "accept") {
                         alert("Bạn đã chấp nhận đơn của nhân viên!");
-                        window.location.href = '@Url.Action("Index", "ChangeShift")';
+                       
                     } else {
-                        let errorMessage = "Đã xảy ra lỗi không xác định.";
-                        try {
-                            const error = JSON.parse(responseText);
-                            errorMessage = error.message;
-                        } catch {
-                            errorMessage = responseText;
-                        }
-                        alert("Lỗi khi điều chỉnh: " + errorMessage);
+                        alert("Bạn đã từ chối đơn của nhân viên!");
+                       
+                    }   
+                     window.location.href = '@Url.Action("Index", "ChangeShift")';
+                   
+                } else {
+                    let errorMessage = "Đã xảy ra lỗi không xác định.";
+                    try {
+                        const error = JSON.parse(responseText);
+                        errorMessage = error.message;
+                    } catch {
+                        errorMessage = responseText;
                     }
-                } catch (error) {
-                    alert("Đã xảy ra lỗi: " + error.message);
+                    alert("Lỗi khi điều chỉnh: " + errorMessage);
                 }
-            });
+            } catch (error) {
+                alert("Đã xảy ra lỗi: " + error.message);
+            }
+        });
 
-    document.getElementById('denyButton').addEventListener('click', function () {
-        const denyContainer = document.getElementById('denyReasonContainer');
-        denyContainer.style.display = denyContainer.style.display === 'none' ? 'block' : 'none';
-    });
+        document.getElementById('denyButton').addEventListener('click', function () {
+            const denyContainer = document.getElementById('denyReasonContainer');
+            denyContainer.style.display = denyContainer.style.display === 'none' ? 'block' : 'none';
+        });
 </script>
 </body>
 

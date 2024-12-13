@@ -154,10 +154,11 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 }
 
                 bool isShiftAssigned = false;
+                bool isMatch = false;
 
                 foreach (var t in dto.NewShifts)
                 {
-                    if (patient.NgayKham.DayOfWeek.ToString() == t.DayOfWeek && patient.NgayKham.Date > DateTime.Now.Date)
+                    if (patient.NgayKham.DayOfWeek.ToString().ToLower() == t.DayOfWeek.ToLower() && patient.NgayKham.Date > DateTime.Now.Date)
                     {
                         var newEmployee = await _context.Shifts
                             .Include(n => n.NhanVien)
@@ -166,112 +167,27 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                                 && n.DayOfWeek == patient.NgayKham.DayOfWeek.ToString())
                             .ToListAsync();
 
-                        foreach (var employee in newEmployee)
+                    foreach (var employee in newEmployee)
+                    {
+                        if (employee.MaNv == dto.MaNv)
                         {
-                            if (employee.MaNv == dto.MaNv)
-                            {
-                                continue;
-                            }
-
-                            var availableShifts = _context.Shifts
-                                .Where(s => s.MaNv == employee.MaNv
-                                    && s.DayOfWeek == patient.NgayKham.DayOfWeek.ToString()
-                                    && s.StartTime <= patient.NgayKham.TimeOfDay
-                                    && s.EndTime >= patient.NgayKham.TimeOfDay)
-                                .ToList();
-
-                            var availableShiftsWithPatientCount = new List<Shift>();
-
-                            foreach (var shift in availableShifts)
-                            {
-                                var patientCountForShift = _context.DanhSachKhams
-                                    .Where(a => a.MaNv == employee.MaNv
-                                                && a.NgayKham.Date == patient.NgayKham.Date
-                                                && a.time.TimeOfDay >= shift.StartTime
-                                                && a.time.TimeOfDay <= shift.EndTime)
-                                    .Count();
-
-                                if (patientCountForShift < 1)
-                                {
-                                    availableShiftsWithPatientCount.Add(shift);
-                                }
-                            }
-
-                            if (availableShiftsWithPatientCount.Any())
-                            {
-                                var selectedShift = availableShiftsWithPatientCount.First();
-
-                                patient.MaNv = employee.MaNv;
-                                if (selectedShift.StartTime.HasValue)
-                                {
-                                    patient.NgayKham = patient.NgayKham.Date.Add(selectedShift.StartTime.Value);
-                                    patient.time = patient.NgayKham.Date.Add(selectedShift.StartTime.Value);
-                                }
-                                else
-                                {
-                                    return BadRequest("Selected shift does not have a valid start time.");
-                                }
-
-                                isShiftAssigned = true;
-                                _context.SaveChanges();
-                                break;
-                            }
-                            else
-                            {
-                                var availableEmployee = _context.Shifts
-                                    .Where(s => s.DayOfWeek == patient.NgayKham.DayOfWeek.ToString())
-                                    .Select(s => s.MaNv)
-                                    .FirstOrDefault();
-
-                                if (availableEmployee != default)
-                                {
-                                    patient.MaNv = availableEmployee;
-
-                                    var nextAvailableShift = _context.Shifts
-                                        .Where(s => s.MaNv == availableEmployee
-                                                    && s.DayOfWeek == patient.NgayKham.DayOfWeek.ToString()
-                                                    && s.StartTime <= patient.NgayKham.TimeOfDay)
-                                        .OrderBy(s => s.StartTime)
-                                        .FirstOrDefault();
-
-                                    if (nextAvailableShift != null && nextAvailableShift.StartTime.HasValue)
-                                    {
-                                        var adjustedStartTime = nextAvailableShift.StartTime.Value.Add(new TimeSpan(1, 0, 0));
-
-                                        patient.NgayKham = patient.NgayKham.Date.Add(adjustedStartTime);
-                                        patient.time = patient.NgayKham.Date.Add(adjustedStartTime);
-                                        isShiftAssigned = true;
-                                        _context.SaveChanges();
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        return BadRequest($"No available shifts for the employee on {patient.NgayKham.DayOfWeek}.");
-                                    }
-                                }
-                                else
-                                {
-                                    return BadRequest($"No employees are available on {patient.NgayKham.DayOfWeek}.");
-                                }
-                            }
+                            continue;
                         }
-
-                        if (isShiftAssigned)
-                        {
-                            break;
+                        isMatch = true;
+                        continue;    
                         }
                     }
-                    
                 }
                 foreach (var t in dto.NewShifts)
                 {
+                    if (isMatch) break;
                     if (isShiftAssigned) break; 
 
-                    if (patient.NgayKham.DayOfWeek.ToString() != t.DayOfWeek && patient.NgayKham.Date > DateTime.Now.Date)
+                    if (patient.NgayKham.DayOfWeek.ToString().ToLower() != t.DayOfWeek.ToLower() && patient.NgayKham.Date > DateTime.Now.Date)
                     {
                         var newEmployee = await _context.Shifts.Include(n => n.NhanVien).ThenInclude(n => n.DichVu)
-                            .Where(n => n.NhanVien.DichVu.TenDichVu == patient.NhanVien.DichVu.TenDichVu && n.DayOfWeek == patient.NgayKham.DayOfWeek.ToString()).ToListAsync();
-
+                            .Where(n => n.NhanVien.DichVu.TenDichVu == patient.NhanVien.DichVu.TenDichVu && n.DayOfWeek.ToLower() == patient.NgayKham.DayOfWeek.ToString().ToLower()).ToListAsync();
+                       
                         foreach (var employee in newEmployee)
                         {
                             if (employee.MaNv == dto.MaNv)
@@ -281,7 +197,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                           
                             var availableShifts = _context.Shifts
                                 .Where(s => s.MaNv == employee.MaNv
-                                    && s.DayOfWeek == patient.NgayKham.DayOfWeek.ToString()
+                                    && s.DayOfWeek == patient.NgayKham.DayOfWeek.ToString().ToLower()
                                     && s.StartTime <= patient.NgayKham.TimeOfDay
                                     && s.EndTime >= patient.NgayKham.TimeOfDay)
                                 .ToList();
@@ -325,8 +241,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                                 var emailMessage = string.Empty;
                                
                                 var newDoctor = employee.NhanVien.Ten;
-                                var newShift = patient.time.TimeOfDay.ToString("hh:mm tt");
-                                var newDay = patient.NgayKham.ToString("dd/MM/yyyy HH:mm:ss");
+                                var newShift = patient.time.ToString("hh:mm tt");
+                                var newDay = patient.NgayKham.ToString("dd/MM/yyyy");
                                 var emailSubject = "Thông báo thay đổi ca khám";
                                 emailMessage = $"<h1>Thông báo</h1<br><br>" +
                                               $"Chúng tôi rất tiếc khi phải thông báo với bạn rằng .<br><br> " +
@@ -343,7 +259,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                             else
                             {
                                 var availableEmployee = _context.Shifts
-                                    .Where(s => s.DayOfWeek == patient.NgayKham.DayOfWeek.ToString())
+                                    .Where(s => s.DayOfWeek.ToLower() == patient.NgayKham.DayOfWeek.ToString())
                                     .Select(s => s.MaNv)
                                     .FirstOrDefault();
 
@@ -353,7 +269,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
                                     var nextAvailableShift = _context.Shifts
                                         .Where(s => s.MaNv == availableEmployee
-                                                    && s.DayOfWeek == patient.NgayKham.DayOfWeek.ToString()
+                                                    && s.DayOfWeek.ToLower() == patient.NgayKham.DayOfWeek.ToString().ToLower()
                                                     && s.StartTime <= patient.NgayKham.TimeOfDay)
                                         .OrderBy(s => s.StartTime)
                                         .FirstOrDefault();
@@ -369,8 +285,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                                         var emailMessage = string.Empty;
 
                                         var newDoctor = employee.NhanVien.Ten;
-                                        var newShift = patient.time.TimeOfDay.ToString("hh:mm tt");
-                                        var newDay = patient.NgayKham.ToString("dd/MM/yyyy HH:mm:ss");
+                                        var newShift = patient.time.ToString("hh:mm tt");
+                                        var newDay = patient.NgayKham.ToString("dd/MM/yyyy");
                                         var emailSubject = "Thông báo thay đổi ca khám";
                                         emailMessage = $"<h1>Thông báo</h1<br><br>" +
                                                       $"Chúng tôi rất tiếc khi phải thông báo với bạn rằng .<br><br> " +
@@ -394,6 +310,10 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                                     return BadRequest($"No employees are available on {patient.NgayKham.DayOfWeek}.");
                                 }
                             }
+                            if(newEmployee == null)
+                            {
+
+                            }
                         }
                     }
                 }
@@ -410,6 +330,41 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                
             });
         }
+        [HttpPost("api/ChangeShift/Deny")]
+        public async Task<IActionResult> Deny([FromBody] ResponseFormDTO dto)
+        {
+            if (dto == null)
+            {
+                return BadRequest("Không nhận được dữ liệu");
+            }
+            var existForm = await _context.RegisForms.FirstOrDefaultAsync(n => n.Id == dto.RegisFormId);
+            existForm.Status = ShiftChangeStatus.Denied;
+            var respone = new ResponseForm
+            {
+                RegisFormId = dto.RegisFormId,
+                ResponseStatus = ShiftChangeStatus.Denied,
+                Comment = dto.Comment,
+            };
+            var exitsEmployee = await _context.RegisForms.Include(n => n.NhanVien).FirstOrDefaultAsync(n => n.MaNv == dto.MaNv);
+            var emailMessage = string.Empty;
+            var employeeEmail = exitsEmployee.NhanVien.Email;
+            var newDoctor = dto.Comment;
+            var emailSubject = "Thông báo thay vấn đề về việc đổi ca khám";
+            emailMessage = $"<h1>Thông báo</h1<br><br>" +
+                          $"Chúng tôi rất tiếc khi phải thông báo với bạn rằng .<br><br> " +
+                          $"Việc thay đổi ca khám của bạn đã bị thất bại.<br><br>" +
+                          $"Lý do: {newDoctor}.<br><br>";
+
+            await _emailService.SendEmailAsync(employeeEmail, emailSubject, emailMessage);
+
+            await _context.SaveChangesAsync();
+            return Ok(new
+            {
+                message = $"{respone} successful to deny this form.",
+
+            });
+        }
+
     }
 }
 
