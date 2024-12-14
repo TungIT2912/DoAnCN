@@ -108,7 +108,7 @@
 </script>
 
 <div class="main-container">
-                <a asp-action="Admin" asp-action="NhanViens">
+    <a href="@Url.Content("~/Admin/NhanViens")"s>
             <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
                 ← Quay về lại danh sách
             </button>
@@ -199,6 +199,7 @@
                 const data = await response.json();
                 if (response.ok) {
                     alert("Đăng kí ca khám thành công!");
+                     window.location.href = '@Url.Action("Index", "NhanViens")';
                 } else {
                     alert("Lỗi: " + data.message);
                 }
