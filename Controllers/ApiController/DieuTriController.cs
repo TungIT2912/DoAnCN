@@ -236,12 +236,16 @@ namespace WebQuanLyNhaKhoa.Controllers
         [HttpPost("api/PostDieuTri")]
         public async Task<ActionResult<DieuTriDTO>> CreateDieuTriWithInvoices([FromBody] DieuTriDTO newDieuTriDto)
         {
+            var existingHoaDon = await _context.HoaDons
+                    .AsTracking()
+                   .FirstOrDefaultAsync(h => h.Idkham == newDieuTriDto.Idkham);
+            var existingChiTietHoaDon = await _context.ChiTietHoaDons
+                    .AsTracking()
+                    .FirstOrDefaultAsync(c => c.Idkham == newDieuTriDto.Idkham);
+            decimal totalMedicationCost = 0;
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-
-                //var existingCTHD = await _context.ChiTietHoaDons
-                //  .FirstOrDefaultAsync(h => h.Idkham == newDieuTriDto.Idkham);
                 var dichVu = await _context.DichVus.FindAsync(newDieuTriDto.IddichVu);
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDieuTriDto.Idkham);
                 var dungCu = await _context.Khos.FindAsync(newDieuTriDto.IddungCu);
@@ -268,13 +272,11 @@ namespace WebQuanLyNhaKhoa.Controllers
 
                 var newDieuTri = new DieuTri
                 {
-
                     IddichVu = newDieuTriDto.IddichVu,
                     Idkham = newDieuTriDto.Idkham,
                     IddungCu = newDieuTriDto.IddungCu,
                     SoLuong = newDieuTriDto.SoLuong,
                     ThanhTien = treatmentCost,
-
                 };
                 _context.DieuTris.Add(newDieuTri);
                 await _context.SaveChangesAsync();
@@ -282,6 +284,7 @@ namespace WebQuanLyNhaKhoa.Controllers
                 dungCu.SoLuong -= newDieuTriDto.SoLuong;
                 _context.Khos.Update(dungCu);
                 await _context.SaveChangesAsync();
+
 
                 var newHoaDon = new HoaDon
                 {
@@ -292,8 +295,8 @@ namespace WebQuanLyNhaKhoa.Controllers
                     TienThuoc = 0,
                     TongTien = treatmentCost,
                     NgayLap = DateTime.Now,
-                    EmailBn = email
-
+                    EmailBn = email,
+                    DaThanhToan = false
                 };
                 _context.HoaDons.Add(newHoaDon);
                 await _context.SaveChangesAsync();
@@ -307,37 +310,86 @@ namespace WebQuanLyNhaKhoa.Controllers
                     // Lưu thay đổi
                     await _context.SaveChangesAsync();
                 }
-                var newChiTietHoaDon = new ChiTietHoaDon
+
+                if (existingChiTietHoaDon != null)
                 {
-                    IdhoaDon = newHoaDon.IdhoaDon,
-                    IddieuTri = newDieuTri.IddieuTri,
-                    Idkham = newDieuTri.Idkham,
-                    PhuongThucThanhToan = newHoaDon.PhuongThucThanhToan,
-                    TenDon = "Khám Nha Khoa",  // Assign as necessary, or fetch dynamically
-                    TenDieuTri = dichVu.TenDichVu, // Assuming this is the name you want
-                    Description = "Description here", // Assign based on your needs
-                    TienThuoc = newHoaDon.TienThuoc,
-                    TienDieuTri = newHoaDon.TienDieuTri,
-                    TongTien = newHoaDon.TongTien,
-                    NgayLap = newHoaDon.NgayLap,
-                    EmailBn = newHoaDon.EmailBn, // Assign as necessary, or leave null if not needed
-                    Sdt = sdt
-                };
-                _context.ChiTietHoaDons.Add(newChiTietHoaDon);
+                    existingChiTietHoaDon.TienDieuTri += treatmentCost;
+                    existingChiTietHoaDon.TongTien += treatmentCost;
+                    existingChiTietHoaDon.IddieuTri = newDieuTri.IddieuTri;
+                    existingChiTietHoaDon.NgayLap = DateTime.Now;
+                    _context.ChiTietHoaDons.Update(existingChiTietHoaDon);
+                    newDieuTri.ChiTietHoaDonId = existingChiTietHoaDon.IdchiTiet;
+                    _context.DieuTris.Update(newDieuTri);
+                    await _context.SaveChangesAsync();
+
+                }
+                else
+                {
+                    // Create new ChiTietHoaDon if it doesn't exist
+                    var newChiTietHoaDon = new ChiTietHoaDon
+                    {
+                        IdhoaDon = newHoaDon.IdhoaDon,
+                        IddieuTri = newDieuTri.IddieuTri,
+                        Idkham = newDieuTri.Idkham,
+                        PhuongThucThanhToan = newHoaDon.PhuongThucThanhToan,
+                        TenDon = "Khám Nha Khoa",  // Assign as necessary, or fetch dynamically
+                        TenDieuTri = dichVu.TenDichVu, // Assuming this is the name you want
+                        Description = "Description here", // Assign based on your needs
+                        TienThuoc = newHoaDon.TienThuoc,
+                        TienDieuTri = newHoaDon.TienDieuTri,
+                        TongTien = newHoaDon.TongTien,
+                        NgayLap = newHoaDon.NgayLap,
+                        EmailBn = newHoaDon.EmailBn, // Assign as necessary, or leave null if not needed
+                        Sdt = sdt
+                    };
+                    _context.ChiTietHoaDons.Add(newChiTietHoaDon);
+                    await _context.SaveChangesAsync();
+                    newDieuTri.ChiTietHoaDonId = newChiTietHoaDon.IdchiTiet;
+                    _context.DieuTris.Update(newDieuTri);
+                    await _context.SaveChangesAsync();
+
+                }
                 await _context.SaveChangesAsync();
-                // Cập nhật ChiTietHoaDonId cho DieuTri
-                newDieuTri.ChiTietHoaDonId = newChiTietHoaDon.IdchiTiet;
-                _context.DieuTris.Update(newDieuTri); await _context.SaveChangesAsync();
-                // Commit transaction
                 await transaction.CommitAsync();
 
                 // Update the DTO with the new treatment ID and return it
                 newDieuTriDto.IddieuTri = newDieuTri.IddieuTri;
                 newDieuTriDto.ThanhTien = treatmentCost;
                 newDieuTriDto.hoaDonId = newHoaDon.IdhoaDon;
-                newDieuTriDto.chiTietId = newChiTietHoaDon.IdchiTiet;
 
-                Console.WriteLine($"HoaDon ID: {newHoaDon.IdhoaDon}");
+
+                //await transaction.CommitAsync();
+                //var newChiTietHoaDon = new ChiTietHoaDon
+                //{
+                //    IdhoaDon = newHoaDon.IdhoaDon,
+                //    IddieuTri = newDieuTri.IddieuTri,
+                //    Idkham = newDieuTri.Idkham,
+                //    PhuongThucThanhToan = newHoaDon.PhuongThucThanhToan,
+                //    TenDon = "Khám Nha Khoa",  // Assign as necessary, or fetch dynamically
+                //    TenDieuTri = dichVu.TenDichVu, // Assuming this is the name you want
+                //    Description = "Description here", // Assign based on your needs
+                //    TienThuoc = newHoaDon.TienThuoc,
+                //    TienDieuTri = newHoaDon.TienDieuTri,
+                //    TongTien = newHoaDon.TongTien,
+                //    NgayLap = newHoaDon.NgayLap,
+                //    EmailBn = newHoaDon.EmailBn, // Assign as necessary, or leave null if not needed
+                //    Sdt = sdt
+                //};
+                //_context.ChiTietHoaDons.Add(newChiTietHoaDon);
+                //await _context.SaveChangesAsync();
+                //// Cập nhật ChiTietHoaDonId cho DieuTri
+                //newDieuTri.ChiTietHoaDonId = newChiTietHoaDon.IdchiTiet;
+                //_context.DieuTris.Update(newDieuTri); await _context.SaveChangesAsync();
+                //// Commit transaction
+                //await transaction.CommitAsync();
+
+                //// Update the DTO with the new treatment ID and return it
+                //newDieuTriDto.IddieuTri = newDieuTri.IddieuTri;
+                //newDieuTriDto.ThanhTien = treatmentCost;
+                //newDieuTriDto.hoaDonId = newHoaDon.IdhoaDon;
+                //newDieuTriDto.chiTietId = newChiTietHoaDon.IdchiTiet;
+
+
                 return CreatedAtAction(nameof(CreateDieuTriWithInvoices), new { id = newDieuTriDto.Idkham }, newDieuTriDto);
             }
             catch
@@ -346,6 +398,10 @@ namespace WebQuanLyNhaKhoa.Controllers
                 return StatusCode(500, "An error occurred while creating the treatment and associated invoices.");
             }
         }
+
+
+
+
 
         // Update treatment via API
         [HttpPut("api/PutDieuTri/{id}")]

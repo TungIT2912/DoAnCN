@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using WebQuanLyNhaKhoa.DTO;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
 {
@@ -86,7 +87,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         public async Task<ActionResult<DonThuocDTO>> CreateDonThuocAndUpdateInvoice([FromBody] DonThuocDTO newDonThuocDto)
         {
             var existingHoaDon = await _context.HoaDons
-                    .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
+                    .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham && h.DaThanhToan == false);
             //var existingCTHD = await _context.ChiTietHoaDons    
             //       .FirstOrDefaultAsync(h => h.Idkham == newDonThuocDto.Idkham);
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -94,10 +95,17 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             {
                 // Kiểm tra thông tin bệnh nhân
                 var danhSachKham = await _context.DanhSachKhams.FindAsync(newDonThuocDto.Idkham);
-                
+                var sdt = _context.BenhNhans
+                    .Where(bn => bn.IdbenhNhan == newDonThuocDto.Idkham)
+                    .Select(bn => bn.Sdt)
+                    .FirstOrDefault();
                 var phuongThucThanhToan = _context.HoaDons
                     .Where(bn => bn.IddonThuoc == newDonThuocDto.IddonThuoc)
                     .Select(bn => bn.PhuongThucThanhToan)
+                    .FirstOrDefault();
+                var email = _context.BenhNhans
+                    .Where(bn => bn.IdbenhNhan == newDonThuocDto.Idkham)
+                    .Select(bn => bn.EmailBn)
                     .FirstOrDefault();
                 if (danhSachKham == null)
                 {
@@ -145,9 +153,10 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                     dungCu.SoLuong -= soLuong;
                     _context.Khos.Update(dungCu);
                     await _context.SaveChangesAsync();
-                    
-                    
 
+
+
+                    int hoaDonId;
                     if (existingHoaDon != null)
                     {
                         existingHoaDon.IddonThuoc = newDonThuoc.IddonThuoc;
@@ -155,6 +164,33 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         existingHoaDon.TongTien += totalMedicationCost;
                         _context.HoaDons.Update(existingHoaDon);
                         await _context.SaveChangesAsync();
+                        hoaDonId = existingHoaDon.IdhoaDon;
+                    }
+                    else
+                    {
+                        var newHoaDon = new HoaDon
+                        {
+                            Idkham = newDonThuoc.Idkham,
+                            IddonThuoc = newDonThuoc.IddonThuoc,
+                            PhuongThucThanhToan = "Chưa có",
+                            TienDieuTri = 0,
+                            TienThuoc = medicationCost,
+                            TongTien = medicationCost,
+                            NgayLap = DateTime.Now,
+                            EmailBn = email
+                        };
+                        _context.HoaDons.Add(newHoaDon);
+                        await _context.SaveChangesAsync();
+                        hoaDonId = newHoaDon.IdhoaDon;
+                        var benhNhan = await _context.BenhNhans.FirstOrDefaultAsync(bn => bn.EmailBn == newHoaDon.EmailBn);
+                        if (benhNhan != null)
+                        {
+                            // Cập nhật IdHoaDon trong BenhNhan
+                            benhNhan.HoaDon = newHoaDon;
+
+                            // Lưu thay đổi
+                            await _context.SaveChangesAsync();
+                        }
                     }
 
 
@@ -165,16 +201,45 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                         // Cập nhật ChiTietHoaDon hiện có
                         existingChiTietHoaDon.TienThuoc += totalMedicationCost;
                         existingChiTietHoaDon.TongTien += totalMedicationCost;
-                        existingChiTietHoaDon.PhuongThucThanhToan = phuongThucThanhToan;
+                        existingChiTietHoaDon.IddonThuoc = newDonThuoc.IddonThuoc;
+                        existingChiTietHoaDon.IdhoaDon = hoaDonId;
                         existingChiTietHoaDon.NgayLap = DateTime.Now;
                         _context.ChiTietHoaDons.Update(existingChiTietHoaDon);
                         await _context.SaveChangesAsync();
                         // Cập nhật ChiTietHoaDonId cho DieuTri
-                        
+                        newDonThuoc.ChiTietHoaDonId = existingChiTietHoaDon.IdchiTiet;
+                        _context.DonThuocs.Update(newDonThuoc);
+                        await _context.SaveChangesAsync();
+
                     }
-                    newDonThuoc.ChiTietHoaDonId = existingChiTietHoaDon.IdchiTiet;
-                    _context.DonThuocs.Update(newDonThuoc); await _context.SaveChangesAsync();
+                    else
+                    {
+                        // Create new ChiTietHoaDon if it doesn't exist
+                        var newChiTietHoaDon = new ChiTietHoaDon
+                        {
+                            IdhoaDon = hoaDonId,
+                            IddonThuoc = newDonThuoc.IddonThuoc,
+                            Idkham = newDonThuoc.Idkham,
+                            PhuongThucThanhToan = "Chưa có",
+                            TenDon = "Khám Nha Khoa",  // Assign as necessary, or fetch dynamically
+                             // Assuming this is the name you want
+                            Description = "Description here", // Assign based on your needs
+                            TienThuoc = totalMedicationCost,
+                            TongTien = totalMedicationCost,
+                            NgayLap = DateTime.Now,
+                            EmailBn = email, // Assign as necessary, or leave null if not needed
+                            Sdt = sdt
+                        };
+                        _context.ChiTietHoaDons.Add(newChiTietHoaDon);
+                        await _context.SaveChangesAsync();
+                        newDonThuoc.ChiTietHoaDonId = newChiTietHoaDon.IdchiTiet;
+                        _context.DonThuocs.Update(newDonThuoc);
+                        await _context.SaveChangesAsync();
+
+                    }
+
                     totalMedicationCost = 0;
+                    newDonThuocDto.hoaDonId = hoaDonId;
                 }
 
                 // Cập nhật thông tin hóa đơn (nếu có)
@@ -183,8 +248,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 // Commit transaction
                 await transaction.CommitAsync();
 
-                newDonThuocDto.hoaDonId = existingHoaDon.IdhoaDon;
-                Console.WriteLine($"HoaDon ID: {existingHoaDon.IdhoaDon}");
+                //newDonThuocDto.hoaDonId = newHoaDon.IdhoaDon;
+                
                 return CreatedAtAction(nameof(CreateDonThuocAndUpdateInvoice), new { id = newDonThuocDto.Idkham }, newDonThuocDto);
             }
             catch (Exception ex)

@@ -52,6 +52,15 @@ namespace WebQuanLyNhaKhoa.Data
 
         //public DbSet<User> Users { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .UseSqlServer("Server=phra\\SQLEXPRESS;Database=QLNhaKhoaa;Integrated Security=True;Trust Server Certificate=True")
+                .EnableSensitiveDataLogging(); // Enable sensitive data logging for detailed exception information
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);

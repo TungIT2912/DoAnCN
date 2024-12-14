@@ -1,0 +1,259 @@
+﻿@model WebQuanLyNhaKhoa.DTO.ShiftDTO
+
+@{
+    ViewData["Title"] = "Edit Shift";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <link href="~/css/form.css" rel="stylesheet" type="text/css">
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-container {
+        padding: 20px;
+    }
+
+    .day {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .shift {
+        display: inline-block;
+        padding: 15px 30px;
+        margin: 10px;
+        border: 2px solid #000;
+        cursor: pointer;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .shift.selected {
+        background-color: #4caf50;
+        color: white;
+        border-color: #4caf50;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .shift:hover {
+        background-color: #e0e0e0;
+    }
+
+    .shift-container {
+        padding: 20px;
+        border: 2px solid #000;
+        border-radius: 10px;
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .shift-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        display: block;
+        margin: 20px auto 0;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .back-btn {
+        margin-bottom: 20px;
+    }
+
+    .back-btn button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-btn button:hover {
+        background-color: #d32f2f;
+    }
+
+    .form-section {
+        margin-bottom: 20px;
+    }
+
+    .form-section label {
+        font-weight: bold;
+    }
+
+    .form-section input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .form-section select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<div class="main-container">
+    <div class="xs-pd-20-10 pd-ltr-20">
+        <div class="row clearfix progress-box">
+            <div class="col-lg-12">
+                <a asp-controller="Admin" asp-action="NhanViens">
+                    <button class="rounded-lg px-4 py-2 border-2 border-black-500 text-black-500 hover:bg-blue-600 hover:text-blue-100 duration-300">
+                        ← Quay về lại danh sách
+                    </button>
+                </a>
+
+                <br>
+                <hr>
+                <br>
+    <div class="shift-container">
+                    <h2><strong>Chỉnh sửa ca khám:</strong> Vui lòng chọn các ca làm việc dưới đây.</h2>
+
+                <form id="shiftForm">
+                    <input type="hidden" name="MaNv" value="@Model.MaNv" />
+                    <input type="hidden" name="RegisFormId" value="@Model.RegisFormId" />
+
+
+                    <div id="shiftContainer"></div>
+
+                    <button type="submit" class="btn btn-primary mt-4">Lưu thay đổi</button>
+                </form>
+    </div>>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        const shifts = @Html.Raw(Json.Serialize(Model.Shifts));
+        const shiftContainer = document.getElementById("shiftContainer");
+
+        const daysMapping = {
+            "monday": "Thứ hai",
+            "tuesday": "Thứ ba",
+            "wednesday": "Thứ tư",
+            "thursday": "Thứ năm",
+            "friday": "Thứ sáu"
+        };
+
+        const shiftsByDay = shifts.reduce((grouped, shift) => {
+            if (!grouped[shift.DayOfWeek]) {
+                grouped[shift.DayOfWeek] = [];
+            }
+            grouped[shift.DayOfWeek].push(shift);
+            return grouped;
+        }, {});
+
+        for (const [day, shifts] of Object.entries(shiftsByDay)) {
+            const dayDiv = document.createElement("div");
+            dayDiv.className = "day";
+            dayDiv.innerHTML = `<strong>${daysMapping[day]}</strong>`;
+
+            shifts.forEach(shift => {
+                const shiftDiv = document.createElement("div");
+                shiftDiv.className = "shift";
+                shiftDiv.textContent = shift.StartTime === "08:00:00"
+                    ? "Ca sáng (8:00 AM - 12:00 PM)"
+                    : "Ca chiều (1:00 PM - 5:00 PM)";
+
+                if (shift.IsSelected) {
+                    shiftDiv.classList.add("selected");
+                }
+
+                shiftDiv.dataset.day = shift.DayOfWeek;
+                shiftDiv.dataset.shift = shift.StartTime;
+
+                shiftDiv.onclick = toggleShiftSelection;
+                dayDiv.appendChild(shiftDiv);
+            });
+
+            shiftContainer.appendChild(dayDiv);
+        }
+
+        function toggleShiftSelection(event) {
+            event.target.classList.toggle("selected");
+        }
+
+        document.getElementById("shiftForm").onsubmit = async function (event) {
+            event.preventDefault();
+            const maNv = document.querySelector('input[name="MaNv"]').value;
+            const regisFormId = document.querySelector('input[name="RegisFormId"]').value;
+            const selectedShifts = [];
+
+            document.querySelectorAll(".shift.selected").forEach(shift => {
+                selectedShifts.push({
+                    day: shift.dataset.day,
+                    startTime: shift.dataset.shift === "Ca sáng" ? "08:00:00" : "13:00:00",
+                    endTime: shift.dataset.shift === "Ca sáng" ? "12:00:00" : "17:00:00"
+                });
+            });
+
+            try {
+                const response = await fetch(`/Shift/CreateNewShifts/${regisFormId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(selectedShifts.map(shift => ({
+                        DayOfWeek: shift.day,
+                        StartTime: shift.startTime,
+                        EndTime: shift.endTime
+                    })))
+                });
+
+                if (response.ok) {
+                    alert("Đã tạo mới ca khám thành công!");
+                } else {
+                    const data = await response.json();
+                    alert("Lỗi: " + data.message);
+                }
+            } catch (error) {
+                console.error("Lỗi khi tạo mới ca khám:", error);
+            }
+        };
+    </script>
+}

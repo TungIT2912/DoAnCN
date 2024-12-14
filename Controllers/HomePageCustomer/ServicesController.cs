@@ -54,22 +54,36 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         }
 
         // HoaDonDetails search page
-    public IActionResult HoaDonDetails(string searchQuery)
-    {
-        var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
-            ? _context.ChiTietHoaDons
-                .Include(c => c.DanhSachKham)  
-                    .ThenInclude(dsk => dsk.BenhNhan)  
-                .ToList()
-            : _context.ChiTietHoaDons
-                .Where(c => c.IdhoaDon.ToString().Contains(searchQuery))
-                .Include(c => c.DanhSachKham)  
-                    .ThenInclude(dsk => dsk.BenhNhan)  
-                .ToList();
+public IActionResult HoaDonDetails(string searchQuery)
+{
+    // Kiểm tra nếu không có searchQuery, trả về tất cả hóa đơn
+    var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
+        ? _context.ChiTietHoaDons
+            .Include(c => c.DanhSachKham)  
+                .ThenInclude(dsk => dsk.BenhNhan)  // Bao gồm bảng Bệnh Nhân
+            .Include(c => c.DieuTris)  
+                .ThenInclude(dt => dt.DichVu)  // Bao gồm dịch vụ đã sử dụng
+            .Include(c => c.DieuTris)  
+                .ThenInclude(dt => dt.Kho)  // Bao gồm thuốc/thiết bị đã sử dụng
+            .ToList()
+        : _context.ChiTietHoaDons
+            .Where(c => c.DanhSachKham.BenhNhan.Sdt.Contains(searchQuery)  // Tìm theo số điện thoại
+                     || c.DanhSachKham.BenhNhan.EmailBn.Contains(searchQuery)) // Hoặc email
+            .Include(c => c.DanhSachKham)  
+                .ThenInclude(dsk => dsk.BenhNhan)  
+            .Include(c => c.DieuTris)
+                .ThenInclude(dt => dt.DichVu)
+            .Include(c => c.DieuTris)
+                .ThenInclude(dt => dt.Kho)
+            .ToList();
 
-        ViewData["SearchQuery"] = searchQuery; 
-        return View(chiTietHoaDons);
-    }
+    // Gắn dữ liệu tìm kiếm vào ViewData để hiển thị lại trên giao diện
+    ViewData["SearchQuery"] = searchQuery; 
+
+    return View(chiTietHoaDons);
+}
+
+
 
         public IActionResult ServicesDetail(int id)
         {
@@ -104,15 +118,16 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                                   .Include(bn => bn.BenhNhan)
                                   .Include(bn => bn.NhanVien)
                                   .Include(bn => bn.DieuTris)
+                                  .ThenInclude(dt => dt.DichVu)
                                   .Include(bn => bn.BenhNhan.HoaDon)
                                   .ThenInclude(dv => dv.DieuTri.DichVu)
                                   .Include(bn => bn.DonThuocs)
                                   .ThenInclude(dt => dt.Kho.ThiTruong)
                                   .FirstOrDefaultAsync(n => n.BenhNhan.Sdt == request.Phone  ||  n.BenhNhan.EmailBn == request.Mail);
-                                  if (benhnhan == null)
-                                    {
-                                        return NotFound("Không tìm thấy bệnh nhân.");
-                                    }
+            if (benhnhan == null)
+            {
+                return NotFound("Không tìm thấy bệnh nhân.");
+            }
             if (benhnhan?.DieuTris != null)
             {
                 foreach (var dieuTri in benhnhan.DieuTris)
@@ -149,7 +164,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                     Idkham = dt.Idkham,
                     IddungCu = dt.IddungCu,
                     SoLuong = dt.SoLuong,
-                    ThanhTien = dt.ThanhTien
+                    ThanhTien = (decimal)dt.ThanhTien
                 }).ToList(),
                 TrieuChung = benhnhan.BenhNhan.TrieuChung ?? "Unknown",
             };
@@ -203,7 +218,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 {
                     tenDieuTri = dt.DichVu?.TenDichVu ?? "Không có dữ liệu dịch vụ",
                     SoLuong = dt.SoLuong,
-                    ThanhTien = dt.ThanhTien
+                    ThanhTien = (decimal)dt.ThanhTien
                 }).ToList(),
                 TrieuChung = benhnhan.BenhNhan.TrieuChung,
             };

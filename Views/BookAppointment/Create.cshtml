@@ -3,31 +3,33 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
 }
-<div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true" style="margin-left:500px; height:450px; margin-top:100px">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="margin-left:20px">
-            <div style="margin-top:-300px;">
-                <div class="modal-header" style="margin-bottom:30px;">
-                    <h5 class="modal-title" id="qrModalLabel">Mã QR Lịch Hẹn</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center" style="margin-bottom:30px;">
-                    <!-- QR Code -->
-                    <img id="qrCodeImage" src="" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
-                    <div>
-                        <!-- Buttons to download QR and image -->
-                        <a id="qrCodeUrl" href="" class="btn btn-primary mx-2" download>
-                            Tải mã QR
-                        </a>
-                        <a id="pdf" href="#" class="btn btn-secondary mx-2" download>
-                            Tải hình ảnh
-                        </a>
-                    </div>
+<div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true" data-bs-backdrop="false" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 450px; z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered" id="modalDialog" style="max-width: 600px; cursor: move;">
+        <div class="modal-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative;">
+            <div class="modal-header" style="border-bottom: none; margin-bottom: 20px; width: 100%; text-align: center;">
+                <h5 class="modal-title" id="qrModalLabel">Mã QR Lịch Hẹn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" style="padding: 20px 0;">
+                <!-- QR Code -->
+                <img id="qrCodeImage" src="" alt="QR Code" class="img-fluid mb-3" style="max-width: 200px;">
+                <div>
+                    <!-- Buttons to download QR and image -->
+                    <a id="qrCodeUrl" href="" class="btn btn-primary mx-2" download>
+                        Tải mã QR
+                    </a>
+                    <a id="pdf" href="#" class="btn btn-secondary mx-2" download>
+                        Tải hình ảnh
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
 <div class="container-xxl py-5">
     <div class="container">
         <div class="row g-5">
@@ -153,13 +155,20 @@
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary w-100 py-3">Đặt lịch khám</button>
                         </div>
-                        <div class="col-12">
+                        @* <div class="col-12" >
                             <a id="qrCodeUrl" href="#" style="display:none;" target="_blank">Tải mã QR</a>
                         </div>
                         <div class="col-12">
-                            <a id="imageUrl" href="#" style="display:none;" target="_blank">Tải hình ảnh lịch khám</a>
-                        </div>
+                            <a id="pdf" href="#" style="display:none;" target="_blank">Tải hình ảnh lịch khám</a>
+                        </div> *@
                     </form>
+
+
+
+
+
+
+
                 </div>
             </div>
         </div>
@@ -187,6 +196,61 @@
         .custom-textarea::placeholder {
             color: #aaa; /* Lighter placeholder text */
         }
+        /* Ensure modal is centered both vertically and horizontally */
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px; /* Optional: limit width */
+    margin: 0 auto; /* Center horizontally */
+}
+
+/* Optional: Additional adjustments to the modal content */
+.modal-content {
+    width: 100%;
+    background-color: #fff; /* Optional: White background */
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Optional: Shadow effect */
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Optional: Customize buttons for better alignment */
+.modal-body .btn {
+    margin: 10px 5px;
+}
+
+/* Optional: Ensure modal text is centered */
+.text-center {
+    text-align: center;
+}
+     #qrModal .modal-content {
+         border-radius: 10px;
+         border: none;
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+     }
+
+     #qrModal .modal-header {
+         border-bottom: none;
+     }
+
+     #qrModal .btn-primary {
+         background-color: #007bff;
+         border-color: #007bff;
+     }
+
+     #qrModal .btn-secondary {
+         background-color: #6c757d;
+         border-color: #6c757d;
+     }
+
+    #qrModal .modal-dialog-left {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
 </style>
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -404,31 +468,5 @@
 
     </script>
 }
- <style>
-     #qrModal .modal-content {
-         border-radius: 10px;
-         border: none;
-         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-     }
-
-     #qrModal .modal-header {
-         border-bottom: none;
-     }
-
-     #qrModal .btn-primary {
-         background-color: #007bff;
-         border-color: #007bff;
-     }
-
-     #qrModal .btn-secondary {
-         background-color: #6c757d;
-         border-color: #6c757d;
-     }
-
-    #qrModal .modal-dialog-left {
-        margin-left: auto;
-        margin-right: auto;
-    }
- </style>
 
 
