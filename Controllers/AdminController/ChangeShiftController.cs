@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iText.Layout.Properties;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 using System.Globalization;
 using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.DTO;
@@ -244,13 +246,74 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                                 var newShift = patient.time.ToString("hh:mm tt");
                                 var newDay = patient.NgayKham.ToString("dd/MM/yyyy");
                                 var emailSubject = "Thông báo thay đổi ca khám";
-                                emailMessage = $"<h1>Thông báo</h1<br><br>" +
-                                              $"Chúng tôi rất tiếc khi phải thông báo với bạn rằng .<br><br> " +
-                                              $"Bác sĩ {patientDoctor} đã bận vào ngày đó nên chúng tôi sẽ thay đôi bác sĩ mới chính là bác {newDoctor}.<br><br>" +
-                                              $"Chúng tôi xin cam đoan bác sĩ mới này có tay nghề tương đương với bác {patientDoctor}.<br><br>" +
-                                              $"Ca khám mới của bạn sẽ vào ngày {newDay} và vào lúc {newShift}<br><br>" +
-                                              $"Chúng tôi xin chân thành xin lỗi bạn vì sự bất tiện này.<br><br>" +
-                                              $"Nếu bạn muốn thay đổi chỉ cần đăng kí lại ngày khác.<br><br>";
+                                emailMessage = $@"<!DOCTYPE html>
+                                                <html>
+                                                <head>
+                                                    <style>
+                                                        body {{
+                                                            font-family: Arial, sans-serif;
+                                                            line-height: 1.6;
+                                                            margin: 0;
+                                                            padding: 0;
+                                                            background-color: #f4f4f9;
+                                                            color: #333;
+                                                        }}
+                                                        .email-container {{
+                                                            max-width: 600px;
+                                                            margin: 20px auto;
+                                                            background: #ffffff;
+                                                            padding: 20px;
+                                                            border-radius: 10px;
+                                                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                                        }}
+                                                        h1 {{
+                                                            color: #007bff;
+                                                            text-align: center;
+                                                        }}
+                                                        p {{
+                                                            margin: 15px 0;
+                                                        }}
+                                                        .highlight {{
+                                                            font-weight: bold;
+                                                            color: #007bff;
+                                                        }}
+                                                        .button-container {{
+                                                            text-align: center;
+                                                            margin: 20px 0;
+                                                        }}
+                                                        a.button {{
+                                                            background-color: #007bff;
+                                                            color: #ffffff;
+                                                            text-decoration: none;
+                                                            padding: 10px 20px;
+                                                            border-radius: 5px;
+                                                            font-size: 16px;
+                                                        }}
+                                                        a.button:hover {{
+                                                            background-color: #0056b3;
+                                                        }}
+                                                    </style>
+                                                </head>
+                                                <body>
+                                                    <div class='email-container'>
+                                                        <h1>Thông Báo</h1>
+                                                        <p>Chúng tôi rất tiếc khi phải thông báo với bạn rằng:</p>
+                                                        <p>Bác sĩ <span class='highlight'>{patientDoctor}</span> đã bận vào ngày đã đăng ký.</p>
+                                                        <p>Chúng tôi sẽ thay thế bằng bác sĩ mới, đó là bác sĩ <span class='highlight'>{newDoctor}</span>.</p>
+                                                        <p>Chúng tôi xin cam đoan rằng bác sĩ <span class='highlight'>{newDoctor}</span> có tay nghề tương đương với bác sĩ <span class='highlight'>{patientDoctor}</span>.</p>
+                                                        <p>Ca khám mới của bạn sẽ diễn ra vào:</p>
+                                                        <ul>
+                                                            <li><strong>Ngày:</strong> <span class='highlight'>{newDay}</span></li>
+                                                            <li><strong>Giờ:</strong> <span class='highlight'>{newShift}</span></li>
+                                                        </ul>
+                                                        <p>Chúng tôi xin chân thành xin lỗi vì sự bất tiện này.</p>
+                                                        <p>Nếu bạn muốn thay đổi, chỉ cần đăng ký lại ngày khác.</p>
+                                                        <p>Trân trọng,<br>Phòng Khám</p>
+                                                    </div>
+                                                </body>
+                                                </html>
+                            
+                                ";
 
                                 await _emailService.SendEmailAsync(patientEmail, emailSubject, emailMessage);
                                 isShiftAssigned = true; 
@@ -288,13 +351,58 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                                         var newShift = patient.time.ToString("hh:mm tt");
                                         var newDay = patient.NgayKham.ToString("dd/MM/yyyy");
                                         var emailSubject = "Thông báo thay đổi ca khám";
-                                        emailMessage = $"<h1>Thông báo</h1<br><br>" +
-                                                      $"Chúng tôi rất tiếc khi phải thông báo với bạn rằng .<br><br> " +
-                                                      $"Bác sĩ {patientDoctor} đã bận vào ngày đó nên chúng tôi sẽ thay đôi bác sĩ mới chính là bác {newDoctor}.<br><br>" +
-                                                      $"Chúng tôi xin cam đoan bác sĩ mới này có tay nghề tương đương với bác {patientDoctor}.<br><br>" +
-                                                      $"Ca khám mới của bạn sẽ vào ngày {newDay} và vào lúc {newShift}<br><br>" +
-                                                      $"Chúng tôi xin chân thành xin lỗi bạn vì sự bất tiện này.<br><br>" +
-                                                      $"Nếu bạn muốn thay đổi chỉ cần đăng kí lại ngày khác.<br><br>";
+                                        emailMessage = $@"
+                                                        <html>
+                                                        <head>
+                                                            <style>
+                                                                body {{
+                                                                    font-family: Arial, sans-serif;
+                                                                    line-height: 1.6;
+                                                                    background-color: #f9f9f9;
+                                                                    color: #333;
+                                                                    margin: 0;
+                                                                    padding: 0;
+                                                                }}
+                                                                .email-container {{
+                                                                    max-width: 600px;
+                                                                    margin: 20px auto;
+                                                                    background: #ffffff;
+                                                                    padding: 20px;
+                                                                    border-radius: 8px;
+                                                                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                                                }}
+                                                                h1 {{
+                                                                    color: #007bff;
+                                                                    text-align: center;
+                                                                    margin-bottom: 20px;
+                                                                }}
+                                                                p {{
+                                                                    margin: 15px 0;
+                                                                }}
+                                                                .highlight {{
+                                                                    font-weight: bold;
+                                                                    color: #007bff;
+                                                                }}
+                                                            </style>
+                                                        </head>
+                                                        <body>
+                                                            <div class='email-container'>
+                                                                <h1>Thông Báo</h1>
+                                                                <p>Chúng tôi rất tiếc khi phải thông báo với bạn rằng:</p>
+                                                                <p>Bác sĩ <span class='highlight'>{patientDoctor}</span> đã bận vào ngày đó. Vì vậy, chúng tôi sẽ thay đổi bác sĩ mới chính là bác sĩ <span class='highlight'>{newDoctor}</span>.</p>
+                                                                <p>Chúng tôi cam đoan rằng bác sĩ mới này có tay nghề tương đương với bác sĩ <span class='highlight'>{patientDoctor}</span>.</p>
+                                                                <p>Lịch khám mới của bạn sẽ là:</p>
+                                                                <ul>
+                                                                    <li><strong>Ngày:</strong> <span class='highlight'>{newDay}</span></li>
+                                                                    <li><strong>Giờ:</strong> <span class='highlight'>{newShift}</span></li>
+                                                                </ul>
+                                                                <p>Chúng tôi xin chân thành xin lỗi vì sự bất tiện này.</p>
+                                                                <p>Nếu bạn muốn thay đổi, chỉ cần đăng ký lại ngày khác.</p>
+                                                                <p>Trân trọng,<br>Phòng Khám</p>
+                                                            </div>
+                                                        </body>
+                                                        </html>";
+
 
                                         await _emailService.SendEmailAsync(patientEmail, emailSubject, emailMessage);
                                         isShiftAssigned = true; 
@@ -302,17 +410,13 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                                     }
                                     else
                                     {
-                                        return BadRequest($"No available shifts for the employee on {patient.NgayKham.DayOfWeek}.");
+                                        return BadRequest($"Không có ca nào trống {patient.NgayKham.DayOfWeek}.");
                                     }
                                 }
                                 else
                                 {
-                                    return BadRequest($"No employees are available on {patient.NgayKham.DayOfWeek}.");
+                                    return BadRequest($"Không có nhân viên nào rảnh {patient.NgayKham.DayOfWeek}.");
                                 }
-                            }
-                            if(newEmployee == null)
-                            {
-
                             }
                         }
                     }
@@ -350,10 +454,85 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             var employeeEmail = exitsEmployee.NhanVien.Email;
             var newDoctor = dto.Comment;
             var emailSubject = "Thông báo thay vấn đề về việc đổi ca khám";
-            emailMessage = $"<h1>Thông báo</h1<br><br>" +
-                          $"Chúng tôi rất tiếc khi phải thông báo với bạn rằng .<br><br> " +
-                          $"Việc thay đổi ca khám của bạn đã bị thất bại.<br><br>" +
-                          $"Lý do: {newDoctor}.<br><br>";
+            emailMessage = $@"
+                            <html>
+                            <head>
+                                <style>
+                                    body {{
+                                        font-family: Arial, sans-serif;
+                                        line-height: 1.6;
+                                        background-color: #f9f9f9;
+                                        color: #333;
+                                        margin: 0;
+                                        padding: 0;
+                                    }}
+                                    .email-container {{
+                                        max-width: 600px;
+                                        margin: 20px auto;
+                                        background: #ffffff;
+                                        padding: 20px;
+                                        border-radius: 8px;
+                                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                    }}
+                                    h1 {{
+                                        color: #007bff;
+                                        text-align: center;
+                                        margin-bottom: 20px;
+                                    }}
+                                    p {{
+                                        margin: 15px 0;
+                                    }}
+                                    .highlight {{
+                                        font-weight: bold;
+                                        color: #007bff;
+                                    }}
+                                    table {{
+                                        width: 100%;
+                                        border-collapse: collapse;
+                                        margin-top: 20px;
+                                    }}
+                                    th, td {{
+                                        padding: 8px;
+                                        text-align: left;
+                                        border: 1px solid #ddd;
+                                    }}
+                                    th {{
+                                        background-color: #f2f2f2;
+                                    }}
+                                </style>
+                            </head>
+                            <body>
+                                <div class='email-container'>
+                                    <h1>Thông Báo</h1>
+                                    <p>Chúng tôi rất tiếc khi phải thông báo với bạn rằng:</p>
+                                    <p>Ca khám mà bạn đăng kí:</p>
+
+                                    <!-- Table to display shifts -->
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Ca Khám</th>
+                                                <th>Giờ bắt đầu</th>
+                                                <th>Giờ kết thúc</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {string.Join("", dto.NewShifts.Select(shift => $"<tr>" +
+                                            $"<td>{shift.DayOfWeek}</td>" +
+                                            $"<td>{shift.StartTime}</td>" +
+                                            $"<td>{shift.EndTime}</td>" +
+                                            $"</tr>"))}
+                                        </tbody>
+                                    </table>
+
+                                    <p>Việc thay đổi ca khám của bạn đã bị từ chối.</p>
+                                    <p>Lý do: <span class='highlight'>{newDoctor}</span></p>
+
+                                    
+                                </div>
+                            </body>
+                            </html>";
+
 
             await _emailService.SendEmailAsync(employeeEmail, emailSubject, emailMessage);
 

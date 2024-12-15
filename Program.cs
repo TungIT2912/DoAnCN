@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -85,6 +86,12 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+var hangfireConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(hangfireConnectionString));
+builder.Services.AddHangfireServer();
+
+
 // Dependency Injection setup
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
 builder.Services.AddScoped<EmailService>();
@@ -123,6 +130,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
+
+app.UseHangfireDashboard();
+app.UseHangfireServer();
+
 
 // Map Controller Routes
 app.MapAreaControllerRoute(

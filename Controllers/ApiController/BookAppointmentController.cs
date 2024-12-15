@@ -18,6 +18,7 @@ using iText.Forms.Fields;
 using iText.Forms;
 using iText.Kernel.Pdf;
 using System.IO;
+using Hangfire;
 
 
 namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
@@ -27,10 +28,12 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
     public class BookAppointmentController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly EmailService _emailService;
 
-        public BookAppointmentController(ApplicationDbContext context)
+        public BookAppointmentController(ApplicationDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
         //[Authorize(Roles = "Admin")]
         [HttpGet("Index")]
@@ -92,6 +95,85 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
 
             return Json(nhanViens);
         }
+        public void ScheduleReminder(DateTime bookingDate, string userEmail)
+        {
+            var reminderDate = bookingDate.AddDays(-1);
+            BackgroundJob.Schedule(() => SendReminder(userEmail, bookingDate), reminderDate);
+        }
+
+        public async Task SendReminder(string userEmail, DateTime bookingDate)
+        {
+            var subject = "Thông báo lịch hẹn";
+            var body = $@"
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    background-color: #f9f9f9;
+                                    margin: 0;
+                                    padding: 0;
+                                }}
+                                .email-container {{
+                                    max-width: 600px;
+                                    margin: auto;
+                                    background: #ffffff;
+                                    border: 1px solid #dddddd;
+                                    border-radius: 8px;
+                                    overflow: hidden;
+                                }}
+                                .header {{
+                                    background-color: #5CB15A;
+                                    color: white;
+                                    text-align: center;
+                                    padding: 20px;
+                                }}
+                                .header h1 {{
+                                    margin: 0;
+                                }}
+                                .content {{
+                                    padding: 20px;
+                                    text-align: center;
+                                    color: #333333;
+                                }}
+                                .content p {{
+                                    font-size: 16px;
+                                    line-height: 1.5;
+                                    margin: 10px 0;
+                                }}
+                                .cta-button {{
+                                    display: inline-block;
+                                    padding: 10px 20px;
+                                    margin: 20px 0;
+                                    background-color: #5CB15A;
+                                    color: white;
+                                    text-decoration: none;
+                                    border-radius: 4px;
+                                    font-size: 16px;
+                                }}
+                                
+                            </style>
+                        </head>
+                        <body>
+                            <div class='email-container'>
+                                <div class='header'>
+                                    <h1>Thông báo hẹn lịch</h1>
+                                </div>
+                                <div class='content'>
+                                    <p>Xin chào quý khách,</p>
+                                    <p>Chúng tôi xin thông báo đến với bạn rằng bạn đã đăng kí dịch vụ chúng tôi vào:</p>
+                                    <p><strong>Ngày:</strong> {bookingDate:dd/MM/yyyy}</p>
+                                    <p><strong>Lúc:</strong> {bookingDate:HH:mm}</p>
+                                    <p>Xin vui lòng đến đúng giờ. Cảm ơn bạn đã tin dùng vào phòng khám của chúng tôi</p>
+                                </div>
+                            </div>
+                        </body>
+                        </html>
+                        ";
+            await _emailService.SendEmailAsync(userEmail, subject, body);
+
+        }
 
         // POST: api/BenhNhan
         //[Authorize(Roles = "Admin,Staff")]
@@ -132,6 +214,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
 
                     _context.DanhSachKhams.Add(newDanhSachKham);
                     var saveDanhSachKhamResult = await _context.SaveChangesAsync();
+                    ScheduleReminder(newDanhSachKham.NgayKham.Add(newDanhSachKham.time.TimeOfDay), newBenhNhan.EmailBn);
+
                     await transaction.CommitAsync();
 
                     if (saveDanhSachKhamResult > 0)
