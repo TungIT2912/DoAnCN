@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit Shift";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
 <head>
@@ -227,8 +227,8 @@
             document.querySelectorAll(".shift.selected").forEach(shift => {
                 selectedShifts.push({
                     day: shift.dataset.day,
-                    startTime: shift.dataset.shift === "Ca sáng" ? "08:00:00" : "13:00:00",
-                    endTime: shift.dataset.shift === "Ca sáng" ? "12:00:00" : "17:00:00"
+                    startTime: shift.dataset.shift,  // Dùng trực tiếp giá trị trong dataset
+                    endTime: shift.dataset.shift === "08:00:00" ? "12:00:00" : "17:00:00"  // Dựa vào giá trị thời gian để xác định giờ kết thúc
                 });
             });
 
@@ -257,3 +257,5 @@
         };
     </script>
 }
+
+

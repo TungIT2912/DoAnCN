@@ -144,7 +144,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role),
-                new Claim("EmployeeId", user.Id.ToString())
+                new Claim("EmployeeId", user.Id.ToString()),
+
             };
 
             var token = new JwtSecurityToken(
