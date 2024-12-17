@@ -18,7 +18,7 @@
                 <th scope="col">Bệnh Nhân Điều Trị</th>
                 <th scope="col">Số Lượng</th>
                 <th scope="col">Tổng Tiền </th>
-                <th scope="col">Hành Động</th>
+                <th style="width: 150px" scope="col">Hành Động</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -41,12 +41,12 @@
                 <td>${treatment.TenBenhNhan}</td>
                 <td>${treatment.SoLuong}</td>
                 <td>${treatment.ThanhTien}</td>
-                <td>
+                <td style="width: 150px;">
                     <button class="btn btn-sm btn-info" onclick="editTreatment(${treatment.IddieuTri})">
-                        <i class="fas fa-edit"></i> Edit
+                        <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn btn-sm btn-danger" onclick="deleteTreatment(${treatment.IddieuTri})">
-                        <i class="fas fa-trash-alt"></i> Delete
+                        <i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
             `;
