@@ -247,6 +247,7 @@
 
                 if (response.ok) {
                     alert("Đã tạo mới ca khám thành công!");
+                    window.location.href = '@Url.Action("Index", "Home")';
                 } else {
                     const data = await response.json();
                     alert("Lỗi: " + data.message);
