@@ -142,7 +142,7 @@
                                         <option value="@ViewBag.SelectedTime" selected>@ViewBag.SelectedTime</option>
                                     }
                                 </select>
-                                <span asp-validation-for="time" class="text-danger"></span>
+                             @*     <span asp-validation-for="time" class="text-danger">Bạn cần chọn miền này</span> *@
                             </div>
                         </div>
 
@@ -260,6 +260,9 @@
             console.log("Document ready!");
 
             let lastSelectedTime = '';
+            if (lastSelectedTime == null) {
+                lastSelectedTime = "";
+            }
             $('#IddichVu').change(function () {
 
                 var dichVuId = $(this).val();
@@ -308,6 +311,9 @@
             });
             lastSelectedTime = '@ViewBag.SelectedTime';
             console.log('time at first', lastSelectedTime);
+            if (lastSelectedTime==null) {
+                lastSelectedTime = "";
+            }
             $('#bookingTime').change(function () {
 
                 lastSelectedTime = $(this).val();
