@@ -52,36 +52,13 @@
                             <div class="charts-container">
                                 <div class="chart">
                                     <h4 class="text-blue h4" style="text-align:center">Biểu đồ thống kê doanh thu năm <span id="chartYear"></span></h4>
-                                    <canvas id="myChart"></canvas>
+                                    <canvas id="myChart" width="400" height="200"></canvas>
+
                                 </div>
                             </div>
                         </div>
                         </div>
-                       @*  
-                        else
-                        {
-                             <div class="container-fluid pt-4 px-4 ">
-                                <div class="col-sm-6 col-xl-3">
-                                    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                                        <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                                        <div class="ms-3">
-                                            <p class="mb-2">Tổng doanh thu  </p>
-                                            <h6 class="mb-0">@totalRevenue.Value.ToString("C", cultureInfo)</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xl-3">
-                                    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                                        <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                                        <div class="ms-3">
-                                            <p class="mb-2">Tổng bệnh nhân</p>
-                                            <h6 class="mb-0">@userCount</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        } *@
-                  
+                     
                     </div>
                 </div>
             </div>
@@ -90,17 +67,77 @@
     </div>
 @section Scripts {
     <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <script>
         let chartInstance = null;
-        window.addEventListener('DOMContentLoaded', function () {
-            const year = document.getElementById('inputYear').value;
-            if (!year) {
-                document.getElementById('revenueData').style.display = 'none';
+        const initialRevenueData = @Html.Raw(Json.Serialize(ViewData["InitialRevenueData"]));
+        const initialYear = @ViewData["Years"];
+        const totalRevenue = @ViewData["TotalRevenue1"];
+        const userCount = @ViewData["UserCount"];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Initial Revenue Data:", initialRevenueData);
+            console.log("Initial Year:", initialYear);
+            console.log("Total Revenue:", totalRevenue);
+            console.log("User Count:", userCount);
+
+            const revenueYearElement = document.getElementById('revenueYear');
+            const chartYearElement = document.getElementById('chartYear');
+            const totalRevenueElement = document.getElementById('totalRevenue');
+            const userCountElement = document.getElementById('userCount');
+
+            if (revenueYearElement) revenueYearElement.textContent = initialYear;
+            if (chartYearElement) chartYearElement.textContent = initialYear;
+            if (totalRevenueElement) totalRevenueElement.textContent = totalRevenue.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            if (userCountElement) userCountElement.textContent = userCount;
+
+            const revenuePerMonth = Array.isArray(initialRevenueData) && initialRevenueData.length === 12 ? initialRevenueData : Array(12).fill(0);
+            const chartLabels = Array.from({ length: 12 }, (_, i) => `Tháng ${i + 1}`);
+
+            if (chartInstance) {
+                chartInstance.destroy(); // Destroy previous chart instance
+            }
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+            
+
+            if (ctx) {
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [{
+                            label: 'Doanh thu',
+                            data: revenuePerMonth,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + ' triệu';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log(Chart); 
+
             } else {
-                document.getElementById('revenueData').style.display = 'block'; 
+                console.error("Chart canvas not found!");
             }
         });
+
 
         document.getElementById('yearForm').addEventListener('submit', async function (event) {
             event.preventDefault(); 

@@ -20,11 +20,31 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
         [HttpGet]
         public IActionResult Index()
         {
-            var totalRevenue1 =  _context.HoaDons 
-                .SumAsync(o => o.TongTien);
-            var userCount =  _context.BenhNhans.CountAsync();
-            ViewData["TotalRevenue1"] = totalRevenue1;
-            ViewData["UserCount"] = userCount;
+            int initialYear = 2024;
+            DateTime startDate = new DateTime(initialYear, 1, 1);
+            DateTime endDate = startDate.AddYears(1).AddDays(-1);
+
+            var revenueData = _context.HoaDons
+                .Where(h => h.NgayLap >= startDate && h.NgayLap <= endDate)
+                .GroupBy(h => h.NgayLap.Month)
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    TotalRevenue = g.Sum(h => h.TongTien)
+                })
+                .ToList();
+
+            var revenuePerMonth = new decimal?[12];
+            foreach (var data in revenueData)
+            {
+                revenuePerMonth[data.Month - 1] = data.TotalRevenue;
+            }
+
+            ViewData["InitialRevenueData"] = revenuePerMonth;
+            ViewData["TotalRevenue1"] = revenuePerMonth.Sum() ?? 0;
+            ViewData["UserCount"] = _context.BenhNhans.Count();
+            ViewData["Years"] = initialYear;
+
             return View();
         }
         [HttpGet("api/Statics/{year}")]

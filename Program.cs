@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 using WebQuanLyNhaKhoa.Data;
 using WebQuanLyNhaKhoa.Hubs;
+using WebQuanLyNhaKhoa.Models;
 using WebQuanLyNhaKhoa.ServicesPay;
 using WebQuanLyNhaKhoa.wwwroot.AutoMapper;
 
@@ -64,10 +67,15 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+{
+    // Add the custom TimeSpan binder provider
+    options.ModelBinderProviders.Insert(0, new TimeSpanBinderProvider());
+})
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddSignalR();
@@ -77,6 +85,12 @@ builder.Services.AddHttpContextAccessor();
 // Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+var hangfireConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(hangfireConnectionString));
+builder.Services.AddHangfireServer();
+
 
 // Dependency Injection setup
 builder.Services.AddSingleton<IVnPayService, VnPayService>();
@@ -116,6 +130,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseStatusCodePagesWithReExecute("/Home/HandleError", "?statusCode={0}");
+
+app.UseHangfireDashboard();
+app.UseHangfireServer();
+
 
 // Map Controller Routes
 app.MapAreaControllerRoute(

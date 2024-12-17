@@ -70,8 +70,8 @@
                 </div>
                 <div class="navbar-nav w-100">
                     <a asp-action="Index" asp-controller="ChanDoan" class="nav-item nav-link "><i class="micon fa fa-users"></i>Quản Lí Chẩn Đoán</a>
-                    <a href="chandoanbenh" class="nav-item nav-link "><i class="micon fa fa-users"></i>Chẩn Đoán Bệnh</a>
-                    <a asp-action="Index" asp-controller="Answer" class="nav-item nav-link "><i class="micon fa fa-users"></i>C Hỏi Chưa Trả Lời</a>
+                    <a asp-action="chandoanbenh" asp-controller="ChanDoan" class="nav-item nav-link "><i class="micon fa fa-users"></i>Chẩn Đoán Bệnh</a>
+                    <a asp-action="Index" asp-controller="Answer" class="nav-item nav-link "><i class="micon fa fa-users"></i>Câu Hỏi Chưa Trả Lời</a>
                     <a asp-action="PhoneAndDate" asp-controller="DanhSachKhams" class="nav-item nav-link "><i class="micon fa fa-users"></i>Danh Sách Khám</a>
                     <a asp-action="Index" asp-controller="DieuTri" class="nav-item nav-link "><i class="micon fa fa-users"></i>Điều Trị</a>
                     <a asp-action="Index" asp-controller="DonThuoc" class="nav-item nav-link "><i class="micon fa fa-users"></i>Đơn Thuốc</a>
@@ -140,13 +140,13 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <img class="rounded-circle me-lg-2" src="~/images/customer-3.jpg" alt="" style="width: 40px; height: 40px;">
-                        <span class="d-none d-lg-inline-flex">Thanh Tùng</span>
+                        <span class="d-none d-lg-inline-flex">Admin</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                    @* <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                         <a href="#" class="dropdown-item">My Profile</a>
                         <a href="#" class="dropdown-item">Settings</a>
                         <a href="#" class="dropdown-item">Log Out</a>
-                    </div>
+                    </div> *@
                 </div>
             </nav>
             <main>

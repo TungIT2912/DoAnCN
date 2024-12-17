@@ -18,6 +18,7 @@ using iText.Forms.Fields;
 using iText.Forms;
 using iText.Kernel.Pdf;
 using System.IO;
+using Hangfire;
 
 
 namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
@@ -27,10 +28,12 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
     public class BookAppointmentController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly EmailService _emailService;
 
-        public BookAppointmentController(ApplicationDbContext context)
+        public BookAppointmentController(ApplicationDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
         //[Authorize(Roles = "Admin")]
         [HttpGet("Index")]
@@ -92,6 +95,85 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
 
             return Json(nhanViens);
         }
+        public void ScheduleReminder(DateTime bookingDate, string userEmail)
+        {
+            var reminderDate = bookingDate.AddDays(-1);
+            BackgroundJob.Schedule(() => SendReminder(userEmail, bookingDate), reminderDate);
+        }
+
+        public async Task SendReminder(string userEmail, DateTime bookingDate)
+        {
+            var subject = "Thông báo lịch hẹn";
+            var body = $@"
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    background-color: #f9f9f9;
+                                    margin: 0;
+                                    padding: 0;
+                                }}
+                                .email-container {{
+                                    max-width: 600px;
+                                    margin: auto;
+                                    background: #ffffff;
+                                    border: 1px solid #dddddd;
+                                    border-radius: 8px;
+                                    overflow: hidden;
+                                }}
+                                .header {{
+                                    background-color: #5CB15A;
+                                    color: white;
+                                    text-align: center;
+                                    padding: 20px;
+                                }}
+                                .header h1 {{
+                                    margin: 0;
+                                }}
+                                .content {{
+                                    padding: 20px;
+                                    text-align: center;
+                                    color: #333333;
+                                }}
+                                .content p {{
+                                    font-size: 16px;
+                                    line-height: 1.5;
+                                    margin: 10px 0;
+                                }}
+                                .cta-button {{
+                                    display: inline-block;
+                                    padding: 10px 20px;
+                                    margin: 20px 0;
+                                    background-color: #5CB15A;
+                                    color: white;
+                                    text-decoration: none;
+                                    border-radius: 4px;
+                                    font-size: 16px;
+                                }}
+                                
+                            </style>
+                        </head>
+                        <body>
+                            <div class='email-container'>
+                                <div class='header'>
+                                    <h1>Thông báo hẹn lịch</h1>
+                                </div>
+                                <div class='content'>
+                                    <p>Xin chào quý khách,</p>
+                                    <p>Chúng tôi xin thông báo đến với bạn rằng bạn đã đăng kí dịch vụ chúng tôi vào:</p>
+                                    <p><strong>Ngày:</strong> {bookingDate:dd/MM/yyyy}</p>
+                                    <p><strong>Lúc:</strong> {bookingDate:HH:mm}</p>
+                                    <p>Xin vui lòng đến đúng giờ. Cảm ơn bạn đã tin dùng vào phòng khám của chúng tôi</p>
+                                </div>
+                            </div>
+                        </body>
+                        </html>
+                        ";
+            await _emailService.SendEmailAsync(userEmail, subject, body);
+
+        }
 
         // POST: api/BenhNhan
         //[Authorize(Roles = "Admin,Staff")]
@@ -102,90 +184,101 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             {
                 return BadRequest(ModelState);
             }
-
-            var newBenhNhan = new BenhNhan
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                HoTen = benhNhan.HoTen,
-                Gioi = benhNhan.Gioi,
-                NamSinh = benhNhan.NamSinh,
-                Sdt = benhNhan.Sdt,
-                DiaChi = benhNhan.DiaChi,
-                TrieuChung = benhNhan.TrieuChung,
-                NgayKhamDau = DateTime.Parse(benhNhan.NgayKhamDau),
-                EmailBn = benhNhan.EmailBn
-            };
-
-            _context.BenhNhans.Add(newBenhNhan);
-            var saveResult = await _context.SaveChangesAsync();
-
-            if (saveResult > 0)
-            {
-                var newDanhSachKham = new DanhSachKham
+                var newBenhNhan = new BenhNhan
                 {
-                    IdbenhNhan = newBenhNhan.IdbenhNhan,
-                    NgayKham = DateTime.Parse(benhNhan.NgayKhamDau),
-                    MaNv = benhNhan.MaNv,
-                    time = DateTime.Parse(benhNhan.time),
+                    HoTen = benhNhan.HoTen,
+                    Gioi = benhNhan.Gioi,
+                    NamSinh = benhNhan.NamSinh,
+                    Sdt = benhNhan.Sdt,
+                    DiaChi = benhNhan.DiaChi,
+                    TrieuChung = benhNhan.TrieuChung,
+                    NgayKhamDau = DateTime.Parse(benhNhan.NgayKhamDau),
+                    EmailBn = benhNhan.EmailBn
                 };
 
-                _context.DanhSachKhams.Add(newDanhSachKham);
-                var saveDanhSachKhamResult = await _context.SaveChangesAsync();
+                _context.BenhNhans.Add(newBenhNhan);
+                var saveResult = await _context.SaveChangesAsync();
 
-                if (saveDanhSachKhamResult > 0)
+                if (saveResult > 0)
                 {
-                    var nhanVien = await _context.NhanViens.FindAsync(newDanhSachKham.MaNv);
-                    // Tạo nội dung mã QR
-                    var qrData = new
+                    var newDanhSachKham = new DanhSachKham
                     {
-                        HoTen = newBenhNhan.HoTen,
-                        Sdt = newBenhNhan.Sdt,
-                        DiaChi = newBenhNhan.DiaChi,
-                        EmailBn = newBenhNhan.EmailBn,
-                        TrieuChung = newBenhNhan.TrieuChung,
-                        NgayKham = newDanhSachKham.NgayKham.ToString("dd/MM/yyyy"),
-                        GioKham = newDanhSachKham.time.ToString("HH:mm"),
-                        MaNv = newDanhSachKham.MaNv,
-                        BacSiKham = nhanVien.Ten
-
-
+                        IdbenhNhan = newBenhNhan.IdbenhNhan,
+                        NgayKham = DateTime.Parse(benhNhan.NgayKhamDau),
+                        MaNv = benhNhan.MaNv,
+                        time = DateTime.Parse(benhNhan.time),
                     };
 
-                    var qrContent = System.Text.Json.JsonSerializer.Serialize(qrData);
-                    var qrFileName = GenerateQrCode(qrContent);
-                    var qrCodeDownloadUrl = $"{Request.Scheme}://{Request.Host}/BookAppointment/api/downloadQrCode/{qrFileName}";
+                    _context.DanhSachKhams.Add(newDanhSachKham);
+                    var saveDanhSachKhamResult = await _context.SaveChangesAsync();
+                    ScheduleReminder(newDanhSachKham.NgayKham.Add(newDanhSachKham.time.TimeOfDay), newBenhNhan.EmailBn);
 
-                    // Tạo hình ảnh lịch khám
-                    var imageFileName = GenerateLichKhamImage(benhNhan, newDanhSachKham, nhanVien.Ten);
-                    var imageUrl = $"{Request.Scheme}://{Request.Host}/BookAppointment/api/downloadLichKham/{imageFileName}";
-                    var qrCodeImage = $"{Request.Scheme}://{Request.Host}/qr_codes/{qrFileName}";
+                    await transaction.CommitAsync();
 
-                    // Tạo file PDF lịch khám
-                    var pdfFileName = GenerateLichKhamPdf(benhNhan, newDanhSachKham, nhanVien.Ten);
-                    var pdfUrl = $"{Request.Scheme}://{Request.Host}/BookAppointment/api/downloadLichKhamPdf/{pdfFileName}";
-                    var createdBenhNhanDTO = new BenhNhanDTO
+                    if (saveDanhSachKhamResult > 0)
                     {
-                        HoTen = newBenhNhan.HoTen,
-                        Gioi = newBenhNhan.Gioi,
-                        NamSinh = newBenhNhan.NamSinh,
-                        Sdt = newBenhNhan.Sdt,
-                        DiaChi = newBenhNhan.DiaChi,
-                        EmailBn = newBenhNhan.EmailBn,
-                        TrieuChung = newBenhNhan.TrieuChung,
-                        NgayKhamDau = newBenhNhan.NgayKhamDau.ToString(),
-                        QrCodeUrl = qrCodeDownloadUrl,
-                        ImageUrl = imageUrl,
-                        QrCodeImage = qrCodeImage,
-                        Pdf = pdfUrl
-                    };
+                        var nhanVien = await _context.NhanViens.FindAsync(newDanhSachKham.MaNv);
+                        // Tạo nội dung mã QR
+                        var qrData = new
+                        {
+                            HoTen = newBenhNhan.HoTen,
+                            Sdt = newBenhNhan.Sdt,
+                            DiaChi = newBenhNhan.DiaChi,
+                            EmailBn = newBenhNhan.EmailBn,
+                            TrieuChung = newBenhNhan.TrieuChung,
+                            NgayKham = newDanhSachKham.NgayKham.ToString("dd/MM/yyyy"),
+                            GioKham = newDanhSachKham.time.ToString("HH:mm"),
+                            MaNv = newDanhSachKham.MaNv,
+                            BacSiKham = nhanVien.Ten
 
-                    return CreatedAtAction(nameof(GetBenhhNhans), new { id = newBenhNhan.IdbenhNhan }, createdBenhNhanDTO);
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Failed to create appointment." });
+
+                        };
+
+                        var qrContent = System.Text.Json.JsonSerializer.Serialize(qrData);
+                        var qrFileName = GenerateQrCode(qrContent);
+                        var qrCodeDownloadUrl = $"{Request.Scheme}://{Request.Host}/BookAppointment/api/downloadQrCode/{qrFileName}";
+
+                        // Tạo hình ảnh lịch khám
+                        var imageFileName = GenerateLichKhamImage(benhNhan, newDanhSachKham, nhanVien.Ten);
+                        var imageUrl = $"{Request.Scheme}://{Request.Host}/BookAppointment/api/downloadLichKham/{imageFileName}";
+                        var qrCodeImage = $"{Request.Scheme}://{Request.Host}/qr_codes/{qrFileName}";
+
+                        // Tạo file PDF lịch khám
+                        var pdfFileName = GenerateLichKhamPdf(benhNhan, newDanhSachKham, nhanVien.Ten);
+                        var pdfUrl = $"{Request.Scheme}://{Request.Host}/BookAppointment/api/downloadLichKhamPdf/{pdfFileName}";
+                        var createdBenhNhanDTO = new BenhNhanDTO
+                        {
+                            HoTen = newBenhNhan.HoTen,
+                            Gioi = newBenhNhan.Gioi,
+                            NamSinh = newBenhNhan.NamSinh,
+                            Sdt = newBenhNhan.Sdt,
+                            DiaChi = newBenhNhan.DiaChi,
+                            EmailBn = newBenhNhan.EmailBn,
+                            TrieuChung = newBenhNhan.TrieuChung,
+                            NgayKhamDau = newBenhNhan.NgayKhamDau.ToString(),
+                            QrCodeUrl = qrCodeDownloadUrl,
+                            ImageUrl = imageUrl,
+                            QrCodeImage = qrCodeImage,
+                            Pdf = pdfUrl
+                        };
+
+                        return CreatedAtAction(nameof(GetBenhhNhans), new { id = newBenhNhan.IdbenhNhan }, createdBenhNhanDTO);
+                    }
+                    else
+                    {
+                        return BadRequest(new { success = false, message = "Lối khi tạo." });
+                    }
                 }
             }
-
+            catch
+            {
+                // Rollback in case of an error
+                await transaction.RollbackAsync();
+                return BadRequest(new { success = false, message = "Đã có một số lỗi xảy ra xin bạn vui lòng đăng kí lại." });
+            }
             return BadRequest(new { success = false, message = "Failed to create appointment." });
         }
         public string GenerateQrCode(string qrContent)
