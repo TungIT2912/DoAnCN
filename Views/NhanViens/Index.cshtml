@@ -89,7 +89,6 @@ const response = await fetch(`/Admin/NhanViens/api/NhanViens?pageNumber=${page}&
                         <a href="/Admin/NhanViens/api/NhanViens/Edit/${nv.MaNv}" class="dropdown-item"><i class="dw dw-edit2"></i> Cập nhật</a>
                         <a href="/Admin/NhanViens/api/NhanViens/Detail/${nv.MaNv}" class="dropdown-item"><i class="dw dw-eye"></i> Chi tiết</a>
                         <a href="/Shift/Create/${nv.MaNv}" class="dropdown-item"><i class="dw dw-eye"></i>Đăng kí ca khám</a>
-                        <a href="/Shift/CreateRegisForm/${nv.MaNv}" class="dropdown-item"><i class="dw dw-eye"></i>Cập nhật ca khám</a>
                 </td>
             `;
             tableBody.appendChild(row);
