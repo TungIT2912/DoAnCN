@@ -578,6 +578,7 @@ public string GenerateLichKhamPdf(BenhNhanDTO benhNhan, DanhSachKham danhSachKha
             if (!DateTime.TryParse(ngayKham, out DateTime selectedDate))
             {
                 return BadRequest("Invalid date format.");
+               
             }
             if (selectedDate.DayOfWeek == DayOfWeek.Saturday || selectedDate.DayOfWeek == DayOfWeek.Sunday)
             {
