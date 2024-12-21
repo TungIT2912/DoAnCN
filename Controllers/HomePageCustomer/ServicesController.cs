@@ -24,20 +24,20 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         {
             int pageSize = 6;
 
-            // Retrieve paginated DichVu data
+         
             var dichVus = await _context.DichVus
                 .OrderBy(dv => dv.IddichVu)  
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Retrieve total count for pagination
+          
             var totalCount = await _context.DichVus.CountAsync();
 
-            // Create a PagedList for the DichVu data
+           
             var pagedList = new StaticPagedList<DichVu>(dichVus, page, pageSize, totalCount);
 
-            // Pass the paged list to the view
+          
             return View(pagedList);
         }
 
@@ -45,43 +45,66 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
         public ActionResult Pricing(int? page)
         {
             int pageSize = 4;  
-            int pageNumber = (page ?? 1);  // Default to page 1 if no page parameter
+            int pageNumber = (page ?? 1);  
 
-            // Use AsQueryable() to ensure that ToPagedList can be applied
-            var pricingData = _context.DichVus.AsQueryable();  // Convert to IQueryable
+         
+            var pricingData = _context.DichVus.AsQueryable();  
 
-            return View(pricingData.ToPagedList(pageNumber, pageSize)); // Use ToPagedList from X.PagedList
+            return View(pricingData.ToPagedList(pageNumber, pageSize)); 
         }
 
-        // HoaDonDetails search page
+   
+
 public IActionResult HoaDonDetails(string searchQuery)
 {
-    // Kiểm tra nếu không có searchQuery, trả về tất cả hóa đơn
-    var chiTietHoaDons = string.IsNullOrEmpty(searchQuery)
-        ? _context.ChiTietHoaDons
-            .Include(c => c.DanhSachKham)  
-                .ThenInclude(dsk => dsk.BenhNhan)  // Bao gồm bảng Bệnh Nhân
-            .Include(c => c.DieuTris)  
-                .ThenInclude(dt => dt.DichVu)  // Bao gồm dịch vụ đã sử dụng
-            .Include(c => c.DieuTris)  
-                .ThenInclude(dt => dt.Kho)  // Bao gồm thuốc/thiết bị đã sử dụng
-            .ToList()
-        : _context.ChiTietHoaDons
-            .Where(c => c.DanhSachKham.BenhNhan.Sdt.Contains(searchQuery)  // Tìm theo số điện thoại
-                     || c.DanhSachKham.BenhNhan.EmailBn.Contains(searchQuery)) // Hoặc email
-            .Include(c => c.DanhSachKham)  
-                .ThenInclude(dsk => dsk.BenhNhan)  
-            .Include(c => c.DieuTris)
-                .ThenInclude(dt => dt.DichVu)
-            .Include(c => c.DieuTris)
-                .ThenInclude(dt => dt.Kho)
-            .ToList();
+    // Truy vấn từ ChiTietHoaDon, bao gồm các bảng liên quan
+    var query = _context.ChiTietHoaDons
+        .Include(cthd => cthd.DanhSachKham)
+            .ThenInclude(dsk => dsk.BenhNhan)
+        .Include(cthd => cthd.DonThuocs)
+            .ThenInclude(dt => dt.Kho)
+        .Include(cthd => cthd.DieuTris)
+            .ThenInclude(dt => dt.DichVu);
 
-    // Gắn dữ liệu tìm kiếm vào ViewData để hiển thị lại trên giao diện
-    ViewData["SearchQuery"] = searchQuery; 
+    // Áp dụng điều kiện tìm kiếm (nếu có)
+    if (!string.IsNullOrEmpty(searchQuery))
+    {
+        query = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<ChiTietHoaDon, DichVu>)query.Where(cthd =>
+            cthd.DanhSachKham.BenhNhan.Sdt.Contains(searchQuery) ||
+            cthd.DanhSachKham.BenhNhan.EmailBn.Contains(searchQuery));
+    }
 
-    return View(chiTietHoaDons);
+    var chiTietHoaDons = query.ToList();
+
+    // Map dữ liệu sang ViewModel
+    var viewModel = chiTietHoaDons.Select(cthd => new HoaDonDetailsViewModel
+    {
+        IdHoaDon = cthd.IdhoaDon,
+        HoTenBenhNhan = cthd.DanhSachKham?.BenhNhan?.HoTen,
+        EmailBenhNhan = cthd.DanhSachKham?.BenhNhan?.EmailBn,
+        SoDienThoai = cthd.DanhSachKham?.BenhNhan?.Sdt,
+        PhuongThucThanhToan = cthd.PhuongThucThanhToan,
+        NgayLap = cthd.NgayLap,
+        TongTien = cthd.TongTien ?? 0,
+        DonThuocs = cthd.DonThuocs.Select(dt => new HoaDonDetailsViewModel.DonThuocDTO
+        {
+            tenThuoc = dt.Kho?.ThiTruong?.TenSanPham,
+            SoLuong = dt.SoLuong,
+            TongTien = dt.ThanhGia
+        }).ToList(),
+        DichVus = cthd.DieuTris.Select(dt => new HoaDonDetailsViewModel.DichVuDTO
+        {
+            TenDichVu = dt.DichVu?.TenDichVu,
+            ThanhTien = dt.ThanhTien
+        }).ToList()
+    }).ToList();
+
+    // Gán search query vào ViewData để hiển thị lại trên giao diện
+    ViewData["SearchQuery"] = searchQuery;
+
+    return View(viewModel);
 }
+
 
 
 
@@ -106,6 +129,8 @@ public IActionResult HoaDonDetails(string searchQuery)
 
             return View(viewModel);
         }
+
+        
         public IActionResult ListEachUser()
         {
          
