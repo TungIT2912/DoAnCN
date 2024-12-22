@@ -53,57 +53,63 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
             return View(pricingData.ToPagedList(pageNumber, pageSize)); 
         }
 
-   
-
-public IActionResult HoaDonDetails(string searchQuery)
-{
-    // Truy vấn từ ChiTietHoaDon, bao gồm các bảng liên quan
-    var query = _context.ChiTietHoaDons
-        .Include(cthd => cthd.DanhSachKham)
-            .ThenInclude(dsk => dsk.BenhNhan)
-        .Include(cthd => cthd.DonThuocs)
-            .ThenInclude(dt => dt.Kho)
-        .Include(cthd => cthd.DieuTris)
-            .ThenInclude(dt => dt.DichVu);
-
-    // Áp dụng điều kiện tìm kiếm (nếu có)
-    if (!string.IsNullOrEmpty(searchQuery))
-    {
-        query = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<ChiTietHoaDon, DichVu>)query.Where(cthd =>
-            cthd.DanhSachKham.BenhNhan.Sdt.Contains(searchQuery) ||
-            cthd.DanhSachKham.BenhNhan.EmailBn.Contains(searchQuery));
-    }
-
-    var chiTietHoaDons = query.ToList();
-
-    // Map dữ liệu sang ViewModel
-    var viewModel = chiTietHoaDons.Select(cthd => new HoaDonDetailsViewModel
-    {
-        IdHoaDon = cthd.IdhoaDon,
-        HoTenBenhNhan = cthd.DanhSachKham?.BenhNhan?.HoTen,
-        EmailBenhNhan = cthd.DanhSachKham?.BenhNhan?.EmailBn,
-        SoDienThoai = cthd.DanhSachKham?.BenhNhan?.Sdt,
-        PhuongThucThanhToan = cthd.PhuongThucThanhToan,
-        NgayLap = cthd.NgayLap,
-        TongTien = cthd.TongTien ?? 0,
-        DonThuocs = cthd.DonThuocs.Select(dt => new HoaDonDetailsViewModel.DonThuocDTO
+        [HttpGet]
+        public DonThuoc GetDonThuocById(int id)
         {
-            tenThuoc = dt.Kho?.ThiTruong?.TenSanPham,
-            SoLuong = dt.SoLuong,
-            TongTien = dt.ThanhGia
-        }).ToList(),
-        DichVus = cthd.DieuTris.Select(dt => new HoaDonDetailsViewModel.DichVuDTO
+            return _context.DonThuocs.FirstOrDefault(d => d.IddonThuoc == id);  // Adjust to your table and logic
+        }
+
+
+        public IActionResult HoaDonDetails(string searchQuery)
         {
-            TenDichVu = dt.DichVu?.TenDichVu,
-            ThanhTien = dt.ThanhTien
-        }).ToList()
-    }).ToList();
+            // Load data from ChiTietHoaDon and related tables
+            var query = _context.ChiTietHoaDons
+                .Include(cthd => cthd.DanhSachKham)
+                    .ThenInclude(dsk => dsk.BenhNhan)
+                .Include(cthd => cthd.DonThuocs)
+                    .ThenInclude(dt => dt.Kho)
+                    .ThenInclude(kho => kho.ThiTruong)
+                .Include(cthd => cthd.DieuTris)
+                    .ThenInclude(dt => dt.DichVu);
 
-    // Gán search query vào ViewData để hiển thị lại trên giao diện
-    ViewData["SearchQuery"] = searchQuery;
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                query = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<ChiTietHoaDon, DichVu>)query.Where(cthd =>
+                    (cthd.DanhSachKham != null && cthd.DanhSachKham.BenhNhan != null && cthd.DanhSachKham.BenhNhan.Sdt != null && cthd.DanhSachKham.BenhNhan.Sdt.Contains(searchQuery)) ||
+                    (cthd.DanhSachKham != null && cthd.DanhSachKham.BenhNhan != null && cthd.DanhSachKham.BenhNhan.EmailBn != null && cthd.DanhSachKham.BenhNhan.EmailBn.Contains(searchQuery)));
+            }
 
-    return View(viewModel);
-}
+            var chiTietHoaDons = query.ToList();
+
+            var viewModel = chiTietHoaDons.Select(cthd => new HoaDonDetailsViewModel
+            {
+                IdHoaDon = cthd.IdhoaDon,
+                HoTenBenhNhan = cthd.DanhSachKham?.BenhNhan?.HoTen,
+                EmailBenhNhan = cthd.EmailBn ?? cthd.DanhSachKham?.BenhNhan?.EmailBn,
+                SoDienThoai = cthd.Sdt ?? cthd.DanhSachKham?.BenhNhan?.Sdt,
+                PhuongThucThanhToan = cthd.PhuongThucThanhToan,
+                NgayLap = cthd.NgayLap,
+                TongTien = cthd.TongTien ?? 0,
+                TenDon = cthd.TenDon,
+                TenDieuTri = cthd.TenDieuTri,
+                MoTa = cthd.Description,
+                DonThuocs = cthd.DonThuocs?.Select(dt => new HoaDonDetailsViewModel.DonThuocDTO
+                {
+                    TenThuoc = dt.Kho?.ThiTruong?.TenSanPham,
+                    SoLuong = dt.SoLuong,
+                    TongTien = dt.ThanhGia
+                }).ToList() ?? new List<HoaDonDetailsViewModel.DonThuocDTO>(),
+                DichVus = cthd.DieuTris?.Select(dt => new HoaDonDetailsViewModel.DichVuDTO
+                {
+                    TenDichVu = dt.DichVu?.TenDichVu,
+                    ThanhTien = dt.ThanhTien
+                }).ToList() ?? new List<HoaDonDetailsViewModel.DichVuDTO>()
+            }).ToList();
+
+            ViewData["SearchQuery"] = searchQuery;
+
+            return View(viewModel);
+        }
 
 
 

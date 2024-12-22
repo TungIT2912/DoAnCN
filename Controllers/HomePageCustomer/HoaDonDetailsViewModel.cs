@@ -1,4 +1,4 @@
-public class HoaDonDetailsViewModel
+﻿public class HoaDonDetailsViewModel
 {
     public int? IdHoaDon { get; set; }
     public string? HoTenBenhNhan { get; set; }
@@ -8,29 +8,21 @@ public class HoaDonDetailsViewModel
     public DateTime? NgayLap { get; set; }
     public decimal TongTien { get; set; }
 
-    public List<DonThuocDTO>? DonThuocs { get; set; }
-    public List<DichVuDTO>? DichVus { get; set; }
+    public int? IdDonThuoc { get; set; }
+    public string? TenDon { get; set; }
+    public string? TenDieuTri { get; set; }
+    public string? MoTa { get; set; }
+
+    public List<DonThuocDTO>? DonThuocs { get; set; } = new();
+    public List<DichVuDTO>? DichVus { get; set; } = new();
 
     public class DonThuocDTO
-    {
-        public int IdhoaDon { get; set; }
-        public int Idkham { get; set; }
-
-        public string? tenThuoc { get; set; }
-
-        public decimal ThanhGia { get; set; }
-        public decimal TongTien { get; set; }
-        public int IddungCu { get; set; }
-        public int SoLuong { get; set; }
-
-        public DateTime? NgayLapDt { get; set; }
-    }
-    public class DonThuoc1DTO
     {
         public string? TenThuoc { get; set; }
         public int SoLuong { get; set; }
         public decimal TongTien { get; set; }
     }
+
     public class DichVuDTO
     {
         public string? TenDichVu { get; set; }
