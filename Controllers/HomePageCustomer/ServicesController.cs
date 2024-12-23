@@ -94,8 +94,8 @@ public IActionResult HoaDonDetails(string searchQuery)
                 return NotFound(); 
             }
 
-            var doctors = _context.NhanViens
-                .Where(d => d.ChucVu.TenCv == "Bác sĩ")  
+            var doctors = _context.NhanViens.Include(nv => nv.DichVu)
+                .Where(d => d.IddichVu == id)  
                 .ToList();
 
             var viewModel = new ServiceDetailViewModel
