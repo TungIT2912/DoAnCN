@@ -73,13 +73,13 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
             {
               
                 ViewBag.SelectedDate = "null";
-                ViewBag.SelectedTime = "null";
+                ViewBag.SelectedTime = "";
             }
             else
             {
              
                 ViewBag.SelectedDate = !string.IsNullOrEmpty(date) ? date : DateTime.Now.ToString("yyyy-MM-dd");
-                ViewBag.SelectedTime = time ?? "null"; 
+                ViewBag.SelectedTime = time ?? ""; 
             }
 
             return View();
@@ -98,86 +98,122 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         public void ScheduleReminder(DateTime bookingDate, string userEmail)
         {
             var reminderDate = bookingDate.AddDays(-1);
-            BackgroundJob.Schedule(() => SendReminder(userEmail, bookingDate), reminderDate);
+            var delay = (reminderDate - DateTime.Now).TotalSeconds;
+
+            // Ensure delay is non-negative
+            if (delay > 0)
+            {
+                BackgroundJob.Schedule(() => SendReminder(userEmail, bookingDate), TimeSpan.FromSeconds(delay));
+            }
+            else
+            {
+                Console.WriteLine("Reminder date is in the past, skipping scheduling.");
+            }
         }
 
         public async Task SendReminder(string userEmail, DateTime bookingDate)
         {
             var subject = "Thông báo lịch hẹn";
             var body = $@"
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <style>
-                                body {{
-                                    font-family: Arial, sans-serif;
-                                    background-color: #f9f9f9;
-                                    margin: 0;
-                                    padding: 0;
-                                }}
-                                .email-container {{
-                                    max-width: 600px;
-                                    margin: auto;
-                                    background: #ffffff;
-                                    border: 1px solid #dddddd;
-                                    border-radius: 8px;
-                                    overflow: hidden;
-                                }}
-                                .header {{
-                                    background-color: #5CB15A;
-                                    color: white;
-                                    text-align: center;
-                                    padding: 20px;
-                                }}
-                                .header h1 {{
-                                    margin: 0;
-                                }}
-                                .content {{
-                                    padding: 20px;
-                                    text-align: center;
-                                    color: #333333;
-                                }}
-                                .content p {{
-                                    font-size: 16px;
-                                    line-height: 1.5;
-                                    margin: 10px 0;
-                                }}
-                                .cta-button {{
-                                    display: inline-block;
-                                    padding: 10px 20px;
-                                    margin: 20px 0;
-                                    background-color: #5CB15A;
-                                    color: white;
-                                    text-decoration: none;
-                                    border-radius: 4px;
-                                    font-size: 16px;
-                                }}
-                                
-                            </style>
-                        </head>
-                        <body>
-                            <div class='email-container'>
-                                <div class='header'>
-                                    <h1>Thông báo hẹn lịch</h1>
-                                </div>
-                                <div class='content'>
-                                    <p>Xin chào quý khách,</p>
-                                    <p>Chúng tôi xin thông báo đến với bạn rằng bạn đã đăng kí dịch vụ chúng tôi vào:</p>
-                                    <p><strong>Ngày:</strong> {bookingDate:dd/MM/yyyy}</p>
-                                    <p><strong>Lúc:</strong> {bookingDate:HH:mm}</p>
-                                    <p>Xin vui lòng đến đúng giờ. Cảm ơn bạn đã tin dùng vào phòng khám của chúng tôi</p>
-                                </div>
-                            </div>
-                        </body>
-                        </html>
-                        ";
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    background-color: #f9f9f9;
+                    margin: 0;
+                    padding: 0;
+                }}
+                .email-container {{
+                    max-width: 600px;
+                    margin: auto;
+                    background: #ffffff;
+                    border: 1px solid #dddddd;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }}
+                .header {{
+                    background-color: #5CB15A;
+                    color: white;
+                    text-align: center;
+                    padding: 20px;
+                }}
+                .header h1 {{
+                    margin: 0;
+                }}
+                .content {{
+                    padding: 20px;
+                    text-align: center;
+                    color: #333333;
+                }}
+                .content p {{
+                    font-size: 16px;
+                    line-height: 1.5;
+                    margin: 10px 0;
+                }}
+                .cta-button {{
+                    display: inline-block;
+                    padding: 10px 20px;
+                    margin: 20px 0;
+                    background-color: #5CB15A;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 4px;
+                    font-size: 16px;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='email-container'>
+                <div class='header'>
+                    <h1>Thông báo hẹn lịch</h1>
+                </div>
+                <div class='content'>
+                    <p>Xin chào quý khách,</p>
+                    <p>Bạn đã đăng kí dịch vụ với chúng tôi vào:</p>
+                    <p><strong>Ngày:</strong> {bookingDate:dd/MM/yyyy}</p>
+                    <p><strong>Lúc:</strong> {bookingDate:HH:mm}</p>
+                    <p>Xin vui lòng đến đúng giờ. Cảm ơn bạn đã tin tưởng phòng khám của chúng tôi.</p>
+                </div>
+            </div>
+        </body>
+        </html>";
             await _emailService.SendEmailAsync(userEmail, subject, body);
-
         }
 
-        // POST: api/BenhNhan
-        //[Authorize(Roles = "Admin,Staff")]
-        [HttpPost("api/PostBenhNhan")]
+
+        [NonAction]
+        public void CheckAndSendReminders()
+        {
+            var tomorrow = DateTime.Now.AddDays(1).Date;
+            var danhSachKhamTomorrow = _context.DanhSachKhams
+                .Where(d => d.NgayKham.Date == tomorrow)
+                .ToList();
+
+            foreach (var danhSachKham in danhSachKhamTomorrow)
+            {
+                var benhNhan = _context.BenhNhans.Find(danhSachKham.IdbenhNhan);
+                if (benhNhan != null)
+                {
+                    SendReminder(benhNhan.EmailBn, danhSachKham.NgayKham.Add(danhSachKham.time.TimeOfDay));
+                }
+            }
+        }
+
+        // 5. Schedule Daily Job for Sending Reminders
+        public void ScheduleDailyJob()
+        {
+            RecurringJob.AddOrUpdate(
+                "daily-send-reminders",
+                () => CheckAndSendReminders(),
+                Cron.Daily); // Runs daily at midnight
+        }
+    
+
+    // POST: api/BenhNhan
+    //[Authorize(Roles = "Admin,Staff")]
+    [HttpPost("api/PostBenhNhan")]
         public async Task<ActionResult<BenhNhan>> PostBenhNhan([FromBody] BenhNhanDTO benhNhan)
         {
             if (!ModelState.IsValid)
@@ -213,9 +249,10 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
                     };
 
                     _context.DanhSachKhams.Add(newDanhSachKham);
-                    var saveDanhSachKhamResult = await _context.SaveChangesAsync();
                     ScheduleReminder(newDanhSachKham.NgayKham.Add(newDanhSachKham.time.TimeOfDay), newBenhNhan.EmailBn);
 
+                    var saveDanhSachKhamResult = await _context.SaveChangesAsync();
+                  
                     await transaction.CommitAsync();
 
                     if (saveDanhSachKhamResult > 0)
@@ -541,6 +578,7 @@ public string GenerateLichKhamPdf(BenhNhanDTO benhNhan, DanhSachKham danhSachKha
             if (!DateTime.TryParse(ngayKham, out DateTime selectedDate))
             {
                 return BadRequest("Invalid date format.");
+               
             }
             if (selectedDate.DayOfWeek == DayOfWeek.Saturday || selectedDate.DayOfWeek == DayOfWeek.Sunday)
             {
@@ -621,6 +659,15 @@ public string GenerateLichKhamPdf(BenhNhanDTO benhNhan, DanhSachKham danhSachKha
 
             var startTime = selectedDate.Date.Add(start.Value);
             var endTime = selectedDate.Date.Add(end.Value);
+
+            if (selectedDate.Date == DateTime.Now.Date)
+            {
+                var now = DateTime.Now;
+                if (now > startTime)
+                {
+                    startTime = now.AddMinutes(slotDurationMinutes - (now.Minute % slotDurationMinutes));
+                }
+            }
 
             while (startTime < endTime)
             {

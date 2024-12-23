@@ -65,9 +65,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             var existingShifts = await _context.Shifts
                 .Where(s => s.MaNv == id)
                 .ToListAsync();
-
+            _context.Shifts.RemoveRange(existingShifts);
             var newShifts = new List<Shift>();
-            var updatedShifts = new List<Shift>();
 
             foreach (var shiftDto in shiftDtos)
             {
@@ -76,15 +75,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                     return BadRequest(ModelState);
                 }
 
-                var existingShift = existingShifts.FirstOrDefault(s => s.DayOfWeek == shiftDto.DayOfWeek);
-                if (existingShift != null)
-                {
-                    existingShift.StartTime = shiftDto.StartTime;
-                    existingShift.EndTime = shiftDto.EndTime;
-                    updatedShifts.Add(existingShift);
-                }
-                else
-                {
+               
                     var newShift = new Shift
                     {
                         MaNv = id,
@@ -93,7 +84,6 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                         EndTime = shiftDto.EndTime
                     };
                     newShifts.Add(newShift);
-                }
             }
 
             if (newShifts.Any())
@@ -105,9 +95,8 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
 
             return Ok(new
             {
-                message = $"{newShifts.Count} new shifts created and {updatedShifts.Count} shifts updated successfully.",
-                newShifts,
-                updatedShifts
+                message = $"{newShifts.Count} new shifts created and  shifts updated successfully.",
+                newShifts
             });
         }
     
