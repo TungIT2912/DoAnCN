@@ -63,17 +63,16 @@
                         </div>
                         <div class="ms-3 text-center">
 
-                            <span>Nhân Viên</span>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                var name = User.FindFirst("EmployeeName")?.Value;
+                                
+                                    <span>Nhân viên</span>
+
+                            }
                         </div>
                     </div>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        var name = User.FindFirst("EmployeeName")?.Value;
-                        <div class="ms-3 text-center">
-                            <h6 class="mb-0">@name</h6>
-                            <span>Nhân viên</span>
-                        </div>
-                    }
+                    
                 </div>
                 <div class="navbar-nav w-100">
                     <a asp-action="Index" asp-controller="ChanDoan" class="nav-item nav-link "><i class="micon fa fa-users"></i>Quản Lí Chẩn Đoán</a>
@@ -88,11 +87,11 @@
 
                         if (userId != null)
                         {
-                          <a href="/Shift/Create/@userId" class="nav-item nav-link">
-                                <i class="micon fa fa-users"></i> <strong>Đăng kí ca khám</strong>
-                            </a>
+                           @* <a href="/Shift/Create/@userId" class="nav-item nav-link">
+                                 <i class="micon fa fa-users"></i> <strong>Đăng kí ca khám</strong>
+                             </a> *@
                             <a href="/Shift/CreateRegisForm/@userId" class="nav-item nav-link">
-                                <i class="micon fa fa-users"></i> <strong>Đăng kí thay đổi ca khám</strong>
+                                <i class="micon fa fa-users"></i> Đăng kí thay đổi ca khám
                             </a>
                         }
                         else
