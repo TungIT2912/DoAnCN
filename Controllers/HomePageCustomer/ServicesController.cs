@@ -95,7 +95,7 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 MoTa = cthd.Description,
                 DonThuocs = cthd.DonThuocs?.Select(dt => new HoaDonDetailsViewModel.DonThuocDTO
                 {
-                    TenThuoc = dt.Kho?.ThiTruong?.TenSanPham,
+                    tenThuoc = dt.Kho?.ThiTruong?.TenSanPham,
                     SoLuong = dt.SoLuong,
                     TongTien = dt.ThanhGia
                 }).ToList() ?? new List<HoaDonDetailsViewModel.DonThuocDTO>(),
@@ -123,10 +123,9 @@ namespace WebQuanLyNhaKhoa.Controllers.HomePageCustomer
                 return NotFound(); 
             }
 
-            var doctors = _context.NhanViens
-                .Where(d => d.ChucVu.TenCv == "Bác sĩ")  
+            var doctors = _context.NhanViens.Include(nv => nv.DichVu)
+                .Where(d => d.IddichVu == id)
                 .ToList();
-
             var viewModel = new ServiceDetailViewModel
             {
                 Service = service,

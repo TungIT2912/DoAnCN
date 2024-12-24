@@ -199,7 +199,7 @@
                 const data = await response.json();
                 if (response.ok) {
                     alert("Đăng kí ca khám thành công!");
-                     window.location.href = '@Url.Action("Index", "Home")';
+                     window.location.href = '@Url.Action("Index", "NhanViens")';
                 } else {
                     alert("Lỗi: " + data.message);
                 }

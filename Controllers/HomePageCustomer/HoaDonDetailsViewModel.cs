@@ -18,7 +18,7 @@
 
     public class DonThuocDTO
     {
-        public string? TenThuoc { get; set; }
+        public string? tenThuoc { get; set; }
         public int SoLuong { get; set; }
         public decimal TongTien { get; set; }
     }

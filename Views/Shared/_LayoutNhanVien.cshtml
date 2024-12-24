@@ -63,39 +63,24 @@
                         </div>
                         <div class="ms-3 text-center">
 
-                            <span>Nhân Viên</span>
-                        </div>
-                    </div>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        var name = User.FindFirst("EmployeeName")?.Value;
-                        <div class="ms-3 text-center">
-                            <h6 class="mb-0">@name</h6>
-                            <span>Nhân viên</span>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                var name = User.FindFirst("EmployeeName")?.Value;
+                                
+                                    <span>Nhân viên</span>
+
+                            }
                         </div>
                     </div>
                     
                 </div>
                 <div class="navbar-nav w-100">
-            <a asp-action="Index" asp-controller="ChanDoan" class="nav-item nav-link">
-                <i class="micon fa fa-stethoscope"></i> <strong>Quản Lí Chẩn Đoán</strong>
-            </a>
+                    <a asp-action="Index" asp-controller="ChanDoan" class="nav-item nav-link "><i class="micon fa fa-users"></i>Quản Lí Chẩn Đoán</a>
                     <a asp-action="chandoan" asp-controller="ChanDoan" class="nav-item nav-link "><i class="micon fa fa-users"></i>Chẩn Đoán Bệnh</a>
-                    
-        <a asp-action="Index" asp-controller="Answer" class="nav-item nav-link text-nowrap">
-            <i class="micon fa fa-question-circle"></i> <strong>Câu Hỏi Chưa Trả Lời</strong>
-        </a>
-
-            <a asp-action="PhoneAndDate" asp-controller="DanhSachKhams" class="nav-item nav-link">
-                <i class="micon fa fa-list"></i> <strong>Danh Sách Khám</strong>
-            </a>
-            <a asp-action="Index" asp-controller="DieuTri" class="nav-item nav-link">
-                <i class="micon fa fa-user-md"></i> <strong>Điều Trị</strong>
-            </a>
-            <a asp-action="Index" asp-controller="DonThuoc" class="nav-item nav-link">
-                <i class="micon fa fa-pills"></i> <strong>Đơn Thuốc</strong>
-            </a>
-
+                    <a asp-action="Index" asp-controller="Answer" class="nav-item nav-link "><i class="micon fa fa-users"></i>Câu Hỏi Chưa Trả Lời</a>
+                    <a asp-action="PhoneAndDate" asp-controller="DanhSachKhams" class="nav-item nav-link "><i class="micon fa fa-users"></i>Danh Sách Khám</a>
+                    <a asp-action="Index" asp-controller="DieuTri" class="nav-item nav-link "><i class="micon fa fa-users"></i>Điều Trị</a>
+                    <a asp-action="Index" asp-controller="DonThuoc" class="nav-item nav-link "><i class="micon fa fa-users"></i>Đơn Thuốc</a>
                     @if (User.Identity.IsAuthenticated)
                     {
                         var userId = User.FindFirst("EmployeeId")?.Value;
