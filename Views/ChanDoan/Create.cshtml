@@ -1,24 +1,46 @@
-﻿@model IEnumerable<WebQuanLyNhaKhoa.DTO.ChanDoanDTO>
-@{
+﻿@{
     ViewData["Title"] = "Thêm mới chẩn đoán";
     Layout = "~/Views/Shared/_LayoutNhanVien.cshtml";
 }
 
-<h2>Thêm mới Chẩn Đoán</h2>
+<h4 class="text-center text-primary my-4" style="font-family: 'Arial', sans-serif;
+        font-size:30px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;">
+    THÊM MỚI CHẨN ĐOÁN
+</h4>
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card" style="width: 100%; max-width: 500px; padding: 20px; margin-bottom:500px">
+        <form id="createForm">
+            <div class="form-group">
+                <label for="tenChanDoan">Tên Chẩn Đoán</label>
+                <input type="text" id="tenChanDoan" class="form-control" required placeholder="Nhập tên chẩn đoán...">
+            </div>
 
-<form id="createForm">
-    <div class="form-group">
-        <label for="tenChanDoan">Tên Chẩn Đoán</label>
-        <input type="text" id="tenChanDoan" class="form-control" required>
+            <!-- Thêm thông báo lỗi nếu có -->
+            <div id="errorMessage" class="alert alert-danger" style="display:none;">
+                Không thể thêm chẩn đoán. Vui lòng thử lại.
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Thêm</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/ChanDoan/Index'">Hủy</button>
+            </div>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary">Thêm</button>
-    <button type="button" onclick="window.location.href='/ChanDoan/Index'">Hủy</button>
-</form>
+</div>
 
 <script>
     document.getElementById("createForm").addEventListener("submit", async function (e) {
         e.preventDefault();
         const tenChanDoan = document.getElementById("tenChanDoan").value;
+
+        // Kiểm tra nếu trường không để trống
+        if (!tenChanDoan.trim()) {
+            alert("Vui lòng nhập tên chẩn đoán.");
+            return;
+        }
 
         const response = await fetch("/ChanDoan/api/PostChanDoan", {
             method: "POST",
@@ -29,7 +51,8 @@
         if (response.ok) {
             window.location.href = "/ChanDoan/Index"; // Quay về danh sách sau khi thêm
         } else {
-            alert("Không thể thêm chẩn đoán. Vui lòng thử lại.");
+            // Hiển thị thông báo lỗi
+            document.getElementById("errorMessage").style.display = "block";
         }
     });
 </script>

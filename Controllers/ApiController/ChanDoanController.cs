@@ -158,7 +158,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
 
             return NoContent();
         }
-        [HttpGet("ChanDoanBenh")]
+        [HttpGet("ChanDoan")]
         public IActionResult ChanDoanBenh()
         {
 

@@ -46,7 +46,7 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 Gioi = bn.Gioi,
                 NamSinh = bn.NamSinh,
                 Sdt = bn.Sdt,
-                DiaChi = bn.DiaChi, 
+                DiaChi = bn.DiaChi,
                 TrieuChung = bn.TrieuChung,
                 NgayKhamDau = bn.NgayKhamDau.ToString()
             }).ToList();
@@ -88,13 +88,13 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
 
             var danhSachKhamsDTO = danhSachKhams.Select(ds => new DanhSachKhamDTO
             {
-                IdbenhNhan =ds.IdbenhNhan,
+                IdbenhNhan = ds.IdbenhNhan,
                 Idkham = ds.Idkham,
                 NgayKham = ds.NgayKham,
-                hoTenBenhNhan =ds.BenhNhan.HoTen,
+                hoTenBenhNhan = ds.BenhNhan.HoTen,
                 sdtBenhnhan = ds.BenhNhan.Sdt,
                 diaChiBenhnhan = ds.BenhNhan.DiaChi
-                
+
             }).ToList();
 
             return Ok(danhSachKhamsDTO);
@@ -111,7 +111,11 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
         {
             var currentDay = DateTime.Now;
             var queryable = _context.BenhNhans.AsQueryable();
-
+            var danhSachBenhNhan = await queryable.Select(bn => bn.IdbenhNhan).ToListAsync();
+            var time = await _context.DanhSachKhams
+            .Where(ds => danhSachBenhNhan.Contains(ds.BenhNhan.IdbenhNhan))
+            .Select(ds => ds.time)
+            .FirstOrDefaultAsync();
             if (!string.IsNullOrEmpty(query))
             {
                 queryable = queryable.Where(n => n.HoTen.Contains(query));
@@ -140,7 +144,8 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                     Sdt = n.Sdt,
                     NamSinh = n.NamSinh,
                     DiaChi = n.DiaChi,
-                    NgayKhamDau = n.NgayKhamDau.ToString()
+                    NgayKhamDau = n.NgayKhamDau.Value.ToString("dd/MM/yyyy"),
+                    time = time.ToString("HH:mm") ?? "Chưa có thời gian khám"
                 })
                 .ToListAsync();
 

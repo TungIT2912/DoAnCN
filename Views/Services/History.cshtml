@@ -1,4 +1,4 @@
-﻿@using WebQuanLyNhaKhoa.DTO
+﻿@* @using WebQuanLyNhaKhoa.DTO
 @model ListOfEachUserDTO
 
 @{
@@ -39,6 +39,122 @@
                 </li>
             }
         </ul>
+    </div>
+</body>
+</html>
+ *@
+ @using WebQuanLyNhaKhoa.DTO
+@model ListOfEachUserDTO
+
+@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử khám</title>
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        .container {
+            margin-top: 40px;
+        }
+        h2, h4 {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        .info-section {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .info-section p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .prescription-section, .treatment-section {
+            margin-top: 30px;
+        }
+        .prescription-section .info-section, .treatment-section .info-section {
+            background-color: #f1f8f6;
+        }
+        .prescription-section h4, .treatment-section h4 {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #2e8b57;
+        }
+        .prescription-section p, .treatment-section p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Thông tin bệnh nhân -->
+        <h2>🦷 Thông tin bệnh nhân</h2>
+        <div class="info-section">
+            <p><strong>Họ tên:</strong> @Model.HoTen</p>
+            <p><strong>Giới:</strong> @Model.Gioi</p>
+            <p><strong>Năm sinh:</strong> @Model.NamSinh</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Số điện thoại:</strong> @Model.Sdt</p>
+            <p><strong>Email:</strong> @Model.EmailBn</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Ngày khám đầu:</strong> @Model.NgayKhamDau</p>
+            <p><strong>Địa chỉ:</strong> @Model.DiaChi</p>
+        </div>
+        <div class="info-section">
+            <p><strong>Bác sĩ phụ trách:</strong> @Model.TenBacSi</p>
+            <p><strong>Triệu chứng:</strong> @Model.TrieuChung</p>
+        </div>
+
+        <!-- Chi tiết đơn thuốc -->
+        <div class="prescription-section">
+            <h4>💊 Chi tiết đơn thuốc</h4>
+            @if (Model.DonThuocs != null && Model.DonThuocs.Count > 0)
+            {
+                foreach (var donThuoc in Model.DonThuocs)
+                {
+                    <div class="info-section">
+                        <p><strong>Tên thuốc:</strong> @donThuoc.tenThuoc</p>
+                        <p><strong>Số lượng:</strong> @donThuoc.SoLuong</p>
+                        <p><strong>Giá:</strong> @donThuoc.ThanhGia VND</p>
+                        <p><strong>Tổng tiền:</strong> @donThuoc.TongTien VND</p>
+                        <p><strong>Ngày lập:</strong> @donThuoc.NgayLapDt</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Không có thông tin về đơn thuốc.</p>
+            }
+        </div>
+
+        <!-- Chi tiết điều trị -->
+        <div class="treatment-section">
+            <h4>🦷 Chi tiết điều trị</h4>
+            @if (Model.DieuTris != null && Model.DieuTris.Count > 0)
+            {
+                foreach (var dieuTri in Model.DieuTris)
+                {
+                    <div class="info-section">
+                        <p><strong>Dịch vụ:</strong> @dieuTri.tenDieuTri ?? "Không có"</p>
+                        <p><strong>Số lượng:</strong> @dieuTri.SoLuong</p>
+                        <p><strong>Giá:</strong> @dieuTri.ThanhTien VND</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Không có thông tin về điều trị.</p>
+            }
+        </div>
     </div>
 </body>
 </html>
