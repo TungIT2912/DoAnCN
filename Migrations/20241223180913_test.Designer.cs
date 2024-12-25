@@ -12,7 +12,7 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241216010122_test")]
+    [Migration("20241223180913_test")]
     partial class test
     {
         /// <inheritdoc />

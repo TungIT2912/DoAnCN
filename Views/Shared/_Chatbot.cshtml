@@ -222,7 +222,7 @@
                 'user',
                 '/images/nhanvien17.jpg'
             );
-
+            saveMessage({ user: 'Bạn', message: userMessage });
             // Hiển thị và lưu tin nhắn từ fulfillmentText nếu có dữ liệu
             if (response.data.fulfillmentText) {
                 displayMessage(
@@ -267,12 +267,13 @@
                 );
                 saveMessage({
                     user: 'Hệ Thống',
-                    message: response.data.fulfillmentText,
+                    message: response.data.fulfillmentText2,
                 });
                 saveMessage({
                     user: 'Hệ Thống',
-                    message: response.data.fulfillmentText2,
+                    message: response.data.fulfillmentText,
                 });
+                
             }
         } catch (error) {
             console.error(error);
@@ -282,24 +283,40 @@
 
     function saveMessage(message) {
         let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-        messages.push({ ...message, timestamp: new Date().getTime() });
+        messages.push({
+            ...message,
+            timestamp: new Date().getTime(),
+            type: message.user === 'Bạn' ? 'user' : 'system',
+            avatarUrl: message.user === 'Bạn' ? '/images/nhanvien17.jpg' : '/images/nhanvien1.jpg'
+        });
         localStorage.setItem('chatMessages', JSON.stringify(messages));
     }
-    
+
     function loadMessages() {
         let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
         const tenMinutesAgo = new Date().getTime() - 10 * 60 * 1000;
+
+        // Lọc tin nhắn trong 10 phút gần nhất
         messages = messages.filter((msg) => msg.timestamp > tenMinutesAgo);
+
+        // Xóa nội dung cũ
+        const messagesList = document.getElementById('messagesList');
+        messagesList.innerHTML = '';
+
+        // Hiển thị từng tin nhắn
         messages.forEach((msg) => {
             displayMessage(
                 msg.user,
                 msg.message,
-                msg.user === 'Bạn' ? 'user' : 'system',
-                '/images/nhanvien17.jpg'
+                msg.type || (msg.user === 'Bạn' ? 'user' : 'system'),
+                msg.avatarUrl || (msg.user === 'Bạn' ? '/images/nhanvien17.jpg' : '/images/nhanvien1.jpg')
             );
         });
+
         localStorage.setItem('chatMessages', JSON.stringify(messages));
     }
+
+
 
     function displayMessage(user, message, messageType, avatarUrl) {
         const messageDiv = document.createElement('div');
@@ -345,10 +362,12 @@
     function toggleChatbox() {
         const chatbox = document.querySelector('.chatbox');
         const chatboxCircle = document.querySelector('.chatbox-circle');
+        const messagesList = document.getElementById('messagesList');
 
         if (chatbox.classList.contains('hide')) {
             chatbox.classList.remove('hide');
             chatboxCircle.classList.add('hide');
+            loadMessages(); 
         } else {
             chatbox.classList.add('hide');
             chatboxCircle.classList.remove('hide');
