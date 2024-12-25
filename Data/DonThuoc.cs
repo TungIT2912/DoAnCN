@@ -17,7 +17,9 @@ namespace WebQuanLyNhaKhoa.Data
 		public int IddungCu { get; set; }
         public int SoLuong { get; set; }
 
-		[Range(0, double.MaxValue)]
+		// public string TenThuoc { get; set; } = null!;
+
+        [Range(0, double.MaxValue)]
 		public decimal ThanhGia { get; set; }
 
 		[Range(0, double.MaxValue)]

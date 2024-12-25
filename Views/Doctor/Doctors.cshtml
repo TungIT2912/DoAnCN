@@ -73,8 +73,10 @@
                                     </ul>
                                 </div>
                                 <div class="info-box">
-                                    <h5 class="name"><a href="doctor-detail/@doctor.MaNv">@doctor.Ten</a></h5>
-                                    <span class="designation">@doctor.KinhNghiem kinh nghiệm</span>
+                                                    <h5 class="name">
+                                                        <a href="@Url.Action("DoctorDetails", "Doctor", new { id = doctor.MaNv })">@doctor.Ten</a>
+                                                    </h5>
+                                            <span class="designation">@doctor.KinhNghiem kinh nghiệm</span>
                                 </div>
                                 
                             </div>

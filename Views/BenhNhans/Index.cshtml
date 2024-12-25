@@ -8,7 +8,7 @@
 <div class="table-wrapper">
     <div class="table-title">
         <h2>Danh sách bệnh nhân</h2>
-        <a href="Create" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i> Thêm mới</a>
+        @* <a href="Create" class="btn btn-outline-primary"><i class="bi bi-plus-square-fill"></i> Thêm mới</a> *@
                     </div>
     <div class="table-responsive">
         <table class="table table-striped table-hover" id="benhNhanTable">
@@ -66,7 +66,7 @@
 
         benhNhans.forEach(nv => {
             const row = document.createElement('tr');
-            const formattedNgayKhamDau = new Date(nv.NgayKhamDau).toLocaleDateString('en-GB');
+            const formattedNgayKhamDau = new Date(nv.ngayKhamDau).toLocaleDateString('en-GB');
             const genderText = nv.Gioi ? 'Nữ' : 'Nam';
 
             row.innerHTML = `

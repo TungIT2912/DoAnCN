@@ -27,124 +27,88 @@
         </div>
         <!-- End Header Top -->
         
-        <!-- Header Lower -->
-        <div class="header-lower">
-            <div class="auto-container">    
-                <!-- Main box -->
-                <div class="main-box">
+    <div class="header-lower">
+    <div class="auto-container">
+        <div class="main-box d-flex align-items-center justify-content-between">
+            
+            <!-- Logo Box -->
+            <div class="logo-box">
+                <div class="logo"><a href="~/Home/Index"><img src="~/images/logo-6.png" alt="Logo" title=""></a></div>
+            </div>
 
-                    <div class="logo-box">
-                        <div class="logo"><a href="~/Home/Index"><img src="~/images/logo-6.png" alt="" title=""></a></div>
-                    </div>
-
-                    <!--Nav Box-->
-                    <div class="nav-outer">
-                        <nav class="nav main-menu">
-                            <ul class="navigation" id="navbar">
-                              
-                                       
-                                        <li class="current"><a href="~/Home/Index">Trang chủ</a></li>                                
-
-
-                               
-                             
-
-                                <li class="dropdown">
-                                    <span>Dịch vụ</span>
-                                    <ul>
-                                        <li><a href="~/Services/Index">Dịch vụ</a></li>
-                                        @* <li><a href="~/Services/Pricing">Bảng giá</a></li> *@
-
-                                        <li><a href="~/Services/HoaDonDetails">Chi tiết hóa đơn</a></li>
-                                        <li><a href="~/Services/ListEachUser">Hồ sơ lịch sử khám</a></li>
-                                        <li><a href="~/TaiKham">Tái Khám</a></li>
-                                        
-                                    </ul>
-                                </li>
-                               
-                                    
-                                        <li><a href="~/Doctor/Doctors">Bác sĩ</a></li>
-                                   
-                              
-                                @* <li class="dropdown">
-                                    <span>Departments</span>
-                                    <ul>
-                                        <li><a href="departments.html">Departments</a></li>
-                                        <li><a href="department-detail.html">Cardiology</a></li>
-                                        <li><a href="department-detail.html">Neurology</a></li>
-                                        <li><a href="department-detail.html">Urology</a></li>
-                                        <li><a href="department-detail.html">Gynecological</a></li>
-                                        <li><a href="department-detail.html">Pediatrical</a></li>
-                                        <li><a href="department-detail.html">Laboratory</a></li>
-                                        <li><a href="department-detail.html">Department Detail</a></li>
-                                    </ul>
-                                </li> *@
-
-                                @* <li class="dropdown">
-                                    <span>Blog</span>
-                                    <ul>
-                                        <li><a href="blog-standard.html">Standard</a></li>
-                                        <li><a href="blog-checkboard.html">Checkerboard</a></li>
-                                        <li><a href="blog-masonry.html">Masonry</a></li>
-                                        <li><a href="blog-two-col.html">Two Columns</a></li>
-                                        <li><a href="blog-three-col.html">Three Colums</a></li>
-                                        <li><a href="blog-four-col-wide.html">Four Colums</a></li>
-                                        <li class="dropdown">
-                                            <span>Post Types</span>
-                                            <ul>
-                                                <li><a href="blog-post-image.html">Image Post</a></li>
-                                                <li><a href="blog-post-gallery.html">Gallery Post</a></li>
-                                                <li><a href="blog-post-link.html">Link Post</a></li>
-                                                <li><a href="blog-post-audio.html">Audio Post</a></li>
-                                                <li><a href="blog-post-quote.html">Quote Post</a></li>
-                                                <li><a href="blog-post-video.html">Video Post</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li> *@
-                                @* <li class="dropdown">
-                                    <span>Shop</span>
-                                    <ul>
-                                        <li><a href="shop.html">Shop</a></li>
-                                        <li><a href="shop-single.html">Shop Single</a></li>
-                                        <li><a href="shopping-cart.html">Shopping Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="login.html">Login</a></li>
-                                    </ul>
-                                </li> *@
-
-                                <li><a href="~/Contact/Index">Địa chỉ</a></li>
-                                <li><a href="~/Contact/AboutUs">Về chúng tôi</a></li>
-
-                                
-                                @if (ViewBag.UserName != null)
-                            {
-                                <p>Xin chào, @ViewBag.Username!</p>
-                                <form asp-controller="Auth" asp-action="Logout" method="post">
-                                    <button class="btn btn-secondary mx-1" type="submit">Đăng xuất</button>
-                                </form>
-                            }
-                            else
-                            {
-                   
-
-                                @* <li class="nav-item">
-                                    <a class="btn btn-secondary mx-1" asp-controller="Auth" asp-action="Register">Đăng ký</a>
-                                </li> *@
-                            }
+            <!-- Navigation -->
+            <div class="nav-outer">
+                <nav class="nav main-menu">
+                    <ul class="navigation d-flex align-items-center" id="navbar">
+                        <li class="current"><a href="~/Home/Index">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <span>Dịch vụ</span>
+                            <ul>
+                                <li><a href="~/Services/Index">Dịch vụ</a></li>
+                                <li><a href="~/Services/HoaDonDetails">Chi tiết hóa đơn</a></li>
+                                @* <li><a href="~/Services/ListEachUser">Hồ sơ lịch sử khám</a></li> *@
+                                <li><a href="~/TaiKham">Tái Khám</a></li>
                             </ul>
+                        </li>
+                        <li><a href="~/Doctor/Doctors">Bác sĩ</a></li>
+                        <li><a href="~/Contact/Index">Địa chỉ</a></li>
+                        <li><a href="~/Contact/AboutUs">Về chúng tôi</a></li>
+                             @* @if (ViewBag.UserName != null)
+                         @if (ViewBag.UserName != null)
+                    {
+                                              <li class="dropdown">
+                            <span>Quản lý</span>
+                            <ul>
+                                <li><a href="~/Admin/Nhanviens">Trang quản trị</a></li>
+                                <li><a href="~/ChanDoan/Index">Trang nhân viên</a></li>
+                   
+                            </ul>
+                        </li>
+                        } *@
 
-                        </nav>
-                        <!-- Main Menu End-->
+                    </ul>
+                </nav>
+            </div>
 
-                        <div class="outer-box">
-                            <!-- Search Btn -->
-                            <button class="search-btn"><span class="fa fa-search"></span></button>
+            <!-- Outer Box -->
+            <div class="outer-box d-flex align-items-center">
+                <!-- Search Button -->
+                <button class="search-btn"><span class="fa fa-search"></span></button>
 
-                            <!-- Appointment Btn -->
-<!-- HTML -->
-                            <button class="button-86" role="button" onclick="location.href='@Url.Action("Create", "BookAppointment")'" style="margin-right: 20px;">Đăng ký khám</button>                             
-                    <button class="button-86" role="button" onclick="confirmLogin()">Đăng nhập</button>                           
+                <!-- Appointment Button -->
+                <button class="button-86" role="button" onclick="location.href='@Url.Action("Create", "BookAppointment")'" style="margin-right: 20px;">
+                    Đăng ký khám
+                </button>
+
+                <!-- Login/Logout Section -->
+                <div class="d-flex align-items-center">
+                    @if (ViewBag.UserName != null)
+                    {
+<p class="mb-0 me-2 small-text">Xin chào, @ViewBag.UserName!</p>
+                        <form asp-controller="Auth" asp-action="Logout" method="post" class="mb-0">
+                            <button class="button-86" role="button" type="submit">Đăng xuất</button>
+                        </form>
+   @* <!-- Dropdown Menu -->
+        <div class="dropdown ms-2">
+            <button class="button-86 dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Quản lý
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="~/Admin/Nhanviens">Trang Quản Trị</a></li>
+                <li><a class="dropdown-item" href="~/ChanDoan/Index">Trang Chẩn Đoán</a></li>
+            </ul>
+        </div> *@
+                    }
+                    else
+                    {
+                        <button class="button-86" role="button" onclick="confirmLogin()">Đăng nhập</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     function confirmLogin() {
@@ -157,6 +121,12 @@
 
 <!-- CSS -->
 <style>
+    .small-text {
+    font-size: 10px; /* Adjust the font size to be smaller */
+    line-height: 1;  /* Compact the line height */
+    margin: 0;       /* Ensure no additional margins */
+}
+
     .outer-box {
     display: flex; /* Use flexbox for layout */
     align-items: center; /* Center items vertically */
