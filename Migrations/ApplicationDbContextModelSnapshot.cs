@@ -328,10 +328,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
 
-                    b.Property<string>("TenThuoc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("ThanhGia")
                         .HasColumnType("decimal(18,2)");
 

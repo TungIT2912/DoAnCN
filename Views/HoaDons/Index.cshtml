@@ -81,13 +81,24 @@
             const row = document.createElement('tr');
             const date = new Date(nv.NgayLap);
             const formattedDate = date.toLocaleDateString('en-GB'); // Formats as dd/MM/yyyy
-
+            const formattedDonGiaThuoc = parseFloat(nv.TienThuoc).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
+            const formattedDonGiaDieuTri = parseFloat(nv.TienDieuTri).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
+            const formattedDonGiaTongTien = parseFloat(nv.TongTien).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
             row.innerHTML = `
                 <td>${nv.tenBn}</td>
                 <td>${nv.PhuongThucThanhToan}</td>
-                <td>${nv.TienThuoc}</td>
-                <td>${nv.TienDieuTri}</td>
-                <td>${nv.TongTien}</td>
+                <td>${formattedDonGiaThuoc}</td>
+                <td>${formattedDonGiaDieuTri}</td>
+                <td>${formattedDonGiaTongTien}</td>
                         <td>${formattedDate}</td>
                         <td>
                     <a href="/Admin/ChiTietHoaDons/api/ChiTietHoaDons/Detail/${nv.Idkham}"><i class="dw dw-delete"></i> Chi tiết</a>

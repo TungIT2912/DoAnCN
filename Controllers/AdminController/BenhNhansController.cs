@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -45,7 +46,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
                 NamSinh = nv.NamSinh,
                 Sdt = nv.Sdt,
                 DiaChi = nv.DiaChi,
-                NgayKhamDau = nv.NgayKhamDau.ToString(),
+                NgayKhamDau = nv.NgayKhamDau.HasValue ? nv.NgayKhamDau.Value.ToString("dd/M/yyyy") : "Lỗi định dạng",
             }).ToList();
 
             return Ok(new { data = benhNhanDTOs, totalItems });

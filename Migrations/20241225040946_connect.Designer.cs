@@ -12,8 +12,8 @@ using WebQuanLyNhaKhoa.Data;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241222110902_AddProductDetailsToPrescription")]
-    partial class AddProductDetailsToPrescription
+    [Migration("20241225040946_connect")]
+    partial class connect
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -330,10 +330,6 @@ namespace WebQuanLyNhaKhoa.Migrations
 
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
-
-                    b.Property<string>("TenThuoc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ThanhGia")
                         .HasColumnType("decimal(18,2)");

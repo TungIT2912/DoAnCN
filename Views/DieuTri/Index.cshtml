@@ -36,11 +36,15 @@
 
         treatments.forEach(treatment => {
             const row = document.createElement('tr');
+            const formattedDonGiaTongTien = parseFloat(treatment.ThanhTien).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            });
             row.innerHTML = `
                 <td>${treatment.TenDichVu}</td>
                 <td>${treatment.TenBenhNhan}</td>
                 <td>${treatment.SoLuong}</td>
-                <td>${treatment.ThanhTien}</td>
+                <td>${formattedDonGiaTongTien}</td>
                 <td style="width: 150px;">
                     <button class="btn btn-sm btn-info" onclick="editTreatment(${treatment.IddieuTri})">
                         <i class="fas fa-edit"></i>

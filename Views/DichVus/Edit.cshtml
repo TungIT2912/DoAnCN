@@ -46,13 +46,8 @@
                                 <!-- Form Container -->
                                 <div class="zf-subContWrap zf-leftAlign">
                                     <ul>
-                                        <input type="hidden" asp-for="IddichVu" />
-                                        <li class="zf-tempFrmWrapper zf-large" >
-                                            <label class="zf-labelName">Tên chuẩn đoán</label>
-                                            <div class="zf-tempContDiv">
-                                                
-                                            </div>
-                                        </li>
+                                        <input type="hidden" asp-for="IddichVu" id="Dichvu"/>
+                                      
                                         <!-- Tên -->
                                         <li class="zf-tempFrmWrapper zf-large">
                                             <label class="zf-labelName">Tên chuẩn đoán</label>
@@ -128,6 +123,7 @@
             event.preventDefault();
 
             const formData = new FormData();
+            formData.append('IddichVu', document.getElementById('Dichvu').value);
             formData.append('IdchanDoan', document.getElementById('IdchanDoan').value);
             formData.append('TenDichVu', document.getElementById('TenDichVu').value);
             formData.append('DonViTinh', document.getElementById('DonViTinh').value);
@@ -138,15 +134,14 @@
                 formData.append('hinh', avatar);
             }
 
-            const id = data.IddichVu;
+            const id = document.getElementById('Dichvu').value;
             console.log("Updating DichVu with id:", id);
+            console.log("Updating DichVu with id:", formData);
 
             try {
                 const response = await fetch(`/Admin/DichVus/api/DichVus/Update/${id}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json' 
-                    },
+                   
                     body: formData
                 });
 

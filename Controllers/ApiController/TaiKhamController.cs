@@ -28,14 +28,14 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
             if (string.IsNullOrEmpty(date) && string.IsNullOrEmpty(time))
             {
 
-                ViewBag.SelectedDate = "null";
-                ViewBag.SelectedTime = "null";
+                ViewBag.SelectedDate = "";
+                ViewBag.SelectedTime = "";
             }
             else
             {
 
                 ViewBag.SelectedDate = !string.IsNullOrEmpty(date) ? date : DateTime.Now.ToString("yyyy-MM-dd");
-                ViewBag.SelectedTime = time ?? "null";
+                ViewBag.SelectedTime = time ?? "";
             }
 
             return View();
@@ -339,7 +339,33 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 return BadRequest("Xin lỗi hôm nay la ngày " + DateTime.Now.ToString("dd/MM/yyyy") + " ngày bạn chọn " + selectedDate.ToString("dd/MM/yyyy") + " đã qua ngày đó.");
             }
 
-            var availableSlots = GenerateTimeSlots(selectedDate);
+            var employeeShifts = _context.Shifts
+                .Where(s => s.MaNv == maNv && s.DayOfWeek == selectedDate.DayOfWeek.ToString())
+                .ToList();
+            var employees = _context.Shifts
+               .Where(s => s.MaNv == maNv)
+               .ToList();
+            if (!employeeShifts.Any())
+            {
+                var workingDays = employees.Select(s => s.DayOfWeek).Distinct();
+
+                string workingDaysStr = string.Join(", ", workingDays.Select(day => day switch
+                {
+                    "monday" => "Thứ hai",
+                    "tuesday" => "Thứ ba",
+                    "wednesday" => "Thứ tư",
+                    "thursday" => "Thứ năm",
+                    "friday" => "Thứ sáu",
+                    _ => day
+                }));
+
+                return BadRequest("Xin lỗi, bác sĩ bạn muốn không làm vào ngày bạn chọn. Bác sĩ làm vào các ngày sau: " + workingDaysStr);
+            }
+            var availableSlots = new List<string>();
+            foreach (var shift in employeeShifts)
+            {
+                availableSlots.AddRange(GenerateTimeSlotsForShift(selectedDate, shift.StartTime, shift.EndTime));
+            }
             var existingAppointments = _context.DanhSachKhams
                 .Where(a => a.MaNv == maNv && a.NgayKham.Date == selectedDate.Date)
                 .GroupBy(a => a.time)
@@ -347,17 +373,12 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
                 .ToList();
 
             List<string> disabledSlots = new List<string>();
-
             foreach (var slot in availableSlots.ToList())
             {
                 var timeRange = slot.Split(" - ");
-                if (timeRange.Length != 2)
-                {
-                    continue;
-                }
+                if (timeRange.Length != 2) continue;
 
                 var startTime = DateTime.Parse(timeRange[0]);
-
                 if (existingAppointments.Any(a => a.Time.TimeOfDay == startTime.TimeOfDay && a.Count >= 3))
                 {
                     disabledSlots.Add(slot);
@@ -391,36 +412,39 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiController
         }
 
 
-        private List<string> GenerateTimeSlots(DateTime selectedDate)
+        private List<string> GenerateTimeSlotsForShift(DateTime selectedDate, TimeSpan? start, TimeSpan? end, int slotDurationMinutes = 60)
         {
             var slots = new List<string>();
 
-            var morningStart = selectedDate.AddHours(8);
-            var morningEnd = selectedDate.AddHours(12);
+            if (start == null || end == null)
+                throw new ArgumentException("Start and end times must not be null.");
 
-            while (morningStart < morningEnd)
+            if (start >= end)
+                throw new ArgumentException("Start time must be earlier than end time.");
+
+            var startTime = selectedDate.Date.Add(start.Value);
+            var endTime = selectedDate.Date.Add(end.Value);
+
+            if (selectedDate.Date == DateTime.Now.Date)
             {
-                var nextSlot = morningStart.AddHours(1);
-                if (nextSlot > morningEnd) break;
-
-                slots.Add($"{morningStart:hh\\:mm tt} - {nextSlot:hh\\:mm tt}");
-                morningStart = nextSlot;
+                var now = DateTime.Now;
+                if (now > startTime)
+                {
+                    startTime = now.AddMinutes(slotDurationMinutes - (now.Minute % slotDurationMinutes));
+                }
             }
 
-            var afternoonStart = selectedDate.AddHours(13);
-            var afternoonEnd = selectedDate.AddHours(17);
-
-            while (afternoonStart < afternoonEnd)
+            while (startTime < endTime)
             {
-                var nextSlot = afternoonStart.AddHours(1);
+                var nextSlot = startTime.AddMinutes(slotDurationMinutes);
+                if (nextSlot > endTime) nextSlot = endTime;
 
-                if (nextSlot > afternoonEnd) break;
-
-                slots.Add($"{afternoonStart:hh\\:mm tt} - {nextSlot:hh\\:mm tt}");
-                afternoonStart = nextSlot;
+                slots.Add($"{startTime:hh\\:mm tt} - {nextSlot:hh\\:mm tt}");
+                startTime = nextSlot;
             }
 
             return slots;
         }
+
     }
 }

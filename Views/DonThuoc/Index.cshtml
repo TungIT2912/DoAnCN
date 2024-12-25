@@ -30,7 +30,8 @@
                 container.innerHTML = '<p>Không tìm thấy dữ liệu.</p>';
                 return;
             }
-
+         
+           
             let htmlContent = `
                 <table class="styled-table">
                     <thead>
@@ -48,12 +49,20 @@
             `;
 
             donThuocs.forEach(donThuoc => {
+                const formattedDonGiaThanhGia = parseFloat(donThuoc.ThanhGia).toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                const formattedDonGiaTongTien = parseFloat(donThuoc.TongTien).toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
                 htmlContent += `
                     <tr id="row-${donThuoc.Idkham}">
                         <td>${donThuoc.Idkham}</td>
                         <td>${donThuoc.tenThuoc}</td>
-                        <td>${donThuoc.ThanhGia}</td>
-                        <td>${donThuoc.TongTien}</td>
+                        <td>${formattedDonGiaThanhGia}</td>
+                        <td>${formattedDonGiaTongTien}</td>
                         <td>${donThuoc.SoLuong}</td>
                         <td>${new Date(donThuoc.NgayLapDt).toLocaleDateString()}</td>
                         <td>

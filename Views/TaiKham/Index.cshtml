@@ -169,16 +169,27 @@
 
             function fetchAvailableSlots(doctorId, selectedDate) {
                 console.log("Fetching available slots for doctor " + doctorId + " and date " + selectedDate);
-
-                fetch(`/getAvailableSlots?ngayKham=${selectedDate}&maNv=${doctorId}`)
+                const dateInput = document.getElementById('date');
+                fetch(`/BookAppointment/getAvailableSlots?ngayKham=${selectedDate}&maNv=${doctorId}`)
                     .then(response => {
                         if (!response.ok) {
-                            console.error("Error response:", response);
-                            response.text().then(errorMessage => {
-                                alert(errorMessage);
-                            }).catch(() => {
-                                alert("An error occurred, but no error message was provided by the server.");
-                            });
+                            if (response.status === 400) {
+
+                                if (dateInput) {
+                                    dateInput.value = '';
+                                    dateInput.setAttribute('value', '');
+                                    dateInput.dispatchEvent(new Event('change'));
+                                    console.log("Cleared date input value. Current value:", dateInput.value);
+
+                                }
+
+                                response.text().then(errorMessage => {
+                                    alert(errorMessage);
+                                }).catch(() => {
+                                    alert("An error occurred, but no error message was provided by the server.");
+                                });
+                            }
+                            throw new Error("Non-OK response received.");
                         }
                         return response.json();
                     })
@@ -201,19 +212,21 @@
                             }
                         });
 
+
                         result.disabledSlots.forEach(slot => {
                             timeSelect.append(`<option value="${slot}" disabled>${slot} - Ca này đã kín</option>`);
                         });
 
-                       
 
                         if (lastSelectedTime && !disabledTimes.includes(lastSelectedTime)) {
                             $('#bookingTime').val(lastSelectedTime);
                             console.log("Last selected time restored:", lastSelectedTime);
                         } else if (firstAvailableSlot && lastSelectedTime === '') {
+
                             $('#bookingTime').val(firstAvailableSlot);
                             console.log("First available time set as default:", firstAvailableSlot);
                         }
+
 
                         if (lastSelectedTime && disabledTimes.includes(lastSelectedTime)) {
                             alert("Ca khám bạn đã chọn đã kín, vui lòng chọn lại.");
@@ -223,6 +236,7 @@
                     })
                     .catch(error => {
                         console.error("Error fetching available slots:", error);
+                        // alert("An error occurred while fetching available slots.");
                     });
             }
 

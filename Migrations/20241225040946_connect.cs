@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebQuanLyNhaKhoa.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProductDetailsToPrescription : Migration
+    public partial class connect : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -449,7 +449,6 @@ namespace WebQuanLyNhaKhoa.Migrations
                     Idkham = table.Column<int>(type: "int", nullable: false),
                     IddungCu = table.Column<int>(type: "int", nullable: false),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
-                    TenThuoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ThanhGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     NgayLapDt = table.Column<DateTime>(type: "datetime2", nullable: true),
