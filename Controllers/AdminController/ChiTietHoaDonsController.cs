@@ -73,7 +73,7 @@ namespace WebQuanLyNhaKhoa.Controllers.AdminController
             {
                 Idkham = dt.Idkham,
                 IddungCu = dt.IddungCu,
-                tenThuoc = dt.Kho.ThiTruong.TenSanPham,
+                tenThuoc = dt.Kho.ThiTruong.TenSanPham ?? "Không tìm thấy",
                 SoLuong = dt.SoLuong,
                 ThanhGia = dt.ThanhGia,
                 TongTien = dt.TongTien,
