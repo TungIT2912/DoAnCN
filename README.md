@@ -37,6 +37,7 @@ This is a **dental service booking system** that allows users to browse dental s
    ```
 2. **Setup database:**
    - Go to ApplicationnDbContext in foder Data change
+   ```ApplicationnDbContext
        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
       optionsBuilder
@@ -45,6 +46,7 @@ This is a **dental service booking system** that allows users to browse dental s
 
       base.OnConfiguring(optionsBuilder);
   }
+  ```
    - Update the connection string in `appsettings.json`.
    ```json
    "ConnectionStrings": {
@@ -63,16 +65,6 @@ This is a **dental service booking system** that allows users to browse dental s
    ```
    http://localhost:5000
    ```
-
-## **API Endpoints**
-| Method | Endpoint | Description |
-|--------|-------------|-------------|
-| GET | `/api/Services` | Get list of dental services |
-| POST | `/api/Appointments` | Book a new appointment |
-| GET | `/api/Appointments/{id}` | Get details of an appointment |
-| GET | `/api/Admin/Revenue` | Get yearly revenue report |
-| POST | `/api/Admin/ImportData` | Import patient data |
-| GET | `/api/Admin/ExportData` | Export invoices & reports |
 
 ## **Contributing**
 Feel free to submit issues and pull requests if you'd like to contribute to this project!
