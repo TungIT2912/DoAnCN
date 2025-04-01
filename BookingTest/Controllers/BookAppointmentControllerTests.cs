@@ -26,7 +26,7 @@ namespace BookingTest.Controllers
 
             var dto = new BenhNhanDTO
             {
-                HoTen = "Test Patient",
+                HoTen = "AA Patient",
                 time = "10:00",
                 NgayKhamDau = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"),
                 EmailBn = "testing@gmail.com"
@@ -72,7 +72,7 @@ namespace BookingTest.Controllers
             var emailService = new Mock<EmailService>().Object; 
             var controller = new BookAppointmentController(context, emailService);
 
-            var benhNhan = new BenhNhan { HoTen = "Test" };
+            var benhNhan = new BenhNhan { HoTen = "AA" };
             context.BenhNhans.Add(benhNhan);
             await context.SaveChangesAsync();
 
