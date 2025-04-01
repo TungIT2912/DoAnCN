@@ -49,11 +49,40 @@ builder.Services.AddAuthentication(options =>
 // Configure Kestrel to use specific ports
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(7101, listenOptions =>
+    //if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+    //{
+    //    options.ListenAnyIP(80);
+    //}
+    //else
+    //{
+    //    options.ListenLocalhost(7101, listenOptions =>
+    //    {
+    //        listenOptions.UseHttps();
+    //        listenOptions.UseHttps("aspnetapp.pfx", "Aa@123456789");
+
+    //    });
+    //    options.ListenLocalhost(7100); // Optional HTTP
+    //}
+    if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
     {
-        listenOptions.UseHttps(); // Bind to HTTPS
-    });
-    options.ListenLocalhost(7100); // Optional HTTP
+        // Listen on HTTP (port 80)
+        options.ListenAnyIP(80);
+
+        // Listen on HTTPS (port 443) with the certificate
+        options.ListenAnyIP(443, listenOptions =>
+        {
+            listenOptions.UseHttps("/https/aspnetapp.pfx", "Aa@123456789");
+        });
+    }
+    else
+    {
+        // Development settings (unchanged)
+        options.ListenLocalhost(7101, listenOptions =>
+        {
+            listenOptions.UseHttps("aspnetapp.pfx", "Aa@123456789");
+        });
+        options.ListenLocalhost(7100);
+    }
 });
 
 // Configure services

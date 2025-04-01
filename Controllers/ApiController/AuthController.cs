@@ -112,17 +112,18 @@ namespace WebQuanLyNhaKhoa.Controllers.ApiConrtroller
         {
             var user = await _context.TaiKhoans.SingleOrDefaultAsync(u => u.TenDangNhap == loginRequest.TenDangNhap);
 
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.MatKhau, user.MatKhau))
+            {
+
+                ModelState.AddModelError("", "Sai tên đăng nhập hoặc mật khẩu.");
+                return View(loginRequest);
+            }
             if (user.isLoocked == true)
             {
                 return Unauthorized("Tài khoản đã bị vô hiệu hóa");
             }
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginRequest.MatKhau, user.MatKhau))
-            {
-              
-                ModelState.AddModelError("", "Sai tên đăng nhập hoặc mật khẩu.");
-                return View(loginRequest);
-            }
+            
 
             // Set JWT token as a cookie (optional)
             var token = GenerateJwtToken(user);
