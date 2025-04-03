@@ -54,6 +54,7 @@ namespace WebQuanLyNhaKhoa.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+          
             optionsBuilder
                 .UseSqlServer("Server=RON;Database=QLNhaKhoaa;Integrated Security=True;Trust Server Certificate=True")
                 .EnableSensitiveDataLogging(); // Enable sensitive data logging for detailed exception information
