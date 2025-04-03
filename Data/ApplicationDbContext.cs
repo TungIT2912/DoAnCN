@@ -59,7 +59,7 @@ namespace WebQuanLyNhaKhoa.Data
                 .UseSqlServer("Server=RON;Database=QLNhaKhoaa;Integrated Security=True;Trust Server Certificate=True")
                 .EnableSensitiveDataLogging(); // Enable sensitive data logging for detailed exception information
 
-            base.OnConfiguring(optionsBuilder);
+            base.OnConfiguring(optionsBuilder);//testing
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
