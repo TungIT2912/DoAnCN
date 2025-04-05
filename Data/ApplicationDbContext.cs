@@ -69,9 +69,9 @@ namespace WebQuanLyNhaKhoa.Data
 				.HasOne(h => h.DieuTri)
 				.WithMany(d => d.HoaDons)
 				.HasForeignKey(h => h.IddieuTri)
-				.OnDelete(DeleteBehavior.Cascade);
+				.OnDelete(DeleteBehavior.Cascade); // Change cascade to restrict or set null
 
-			modelBuilder.Entity<HoaDon>()
+            modelBuilder.Entity<HoaDon>()
 				.HasOne(h => h.DonThuoc)
 				.WithMany(d => d.HoaDons)
 				.HasForeignKey(h => h.IddonThuoc)
